@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.loginContainer {
+	margin: 0 auto;
+	text-align: center;
+}
+hr{
+	margin-left: 13%;
+	margin-right: 13%;
+}
+.loginContainer p {
+	font-family: 'Libre Barcode 39 Text', cursive;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 5rem;
+	line-height: 110%;
+	/* or 165px */
+	text-align: center;
+	color: #B983FF;
+}
+
+.inputContainer {
+	display: inline-block;
+	width: 60%;
+}
+
+.inputContainer input {
+	width: 90%;
+	height: 4rem;
+	margin: 0.3rem;
+	background: #FFFFFF;
+	border: 1px solid #919191;
+	border-radius: 20px;
+}
+#submit{
+	width: 20%;
+	height: 10rem;
+	background: #B983FF;
+border-radius: 20px;
+vertical-align:top;
+margin-left:0;
+
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 2rem;
+line-height: 110%;
+/* or 44px */
+
+text-align: center;
+
+color: #FFFFFF;
+
+border: 0.5px solid #FFFFFF;
+text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+
+}
+
+@media(min-width : 1024px){
+	.loginContainer{
+		width: 60%;
+	}
+}
+@media(min-width : 1024px)and(max-width:768px){
+	.loginContainer{
+		width: 60%;
+	}
+}
+@media(min-width:768px)and(max-width:320px){
+	.loginContainer{
+		width: 60%;
+		margin-top:100px;
+	}
+}
+</style>
+</head>
+<body>
+	<div class="loginContainer">
+		<p id="logo">uyeonhi</p>
+		<form>
+			<div class="inputContainer">
+				<input type="text" placeholder="id" id="uid"><br> <input
+					type="password" placeholder="password" id="upassword">
+			</div>
+			<input type="submit" id = "submit" value="로그인"><br>
+			</form>
+			<hr>
+			 <a>아이디 찾기|</a><a>비밀번호
+				찾기|</a><a>회원가입</a><br> <input type="button" id="kakaoBtn"
+				value="카카오로 시작하기"><br> <input type="button"
+				id="mangerBtn" value="우연히 매니저 입장하기"><br>
+		
+	</div>
+	<script>
+		var signUpBtn = document.querySelector('#signUpBtn');
+		var kakaoBtn = document.querySelector('#kakaoBtn');
+		signUpBtn.onclick = function() {
+			location.href = "signUp2";
+		}
+	</script>
+</body>
+</html>
