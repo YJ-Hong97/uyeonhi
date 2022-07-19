@@ -12,8 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import com.kosta.uyeonhi.VO.UserVO;
-import com.kosta.uyeonhi.repository.ManagerRepository;
+import com.kosta.uyeonhi.signUp.ManagerRepository;
+import com.kosta.uyeonhi.signUp.UserVO;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

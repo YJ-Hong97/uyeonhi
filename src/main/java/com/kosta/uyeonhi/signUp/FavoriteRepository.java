@@ -1,8 +1,6 @@
-package com.kosta.uyeonhi.repository;
+package com.kosta.uyeonhi.signUp;
 
 import org.springframework.data.repository.CrudRepository;
-
-import com.kosta.uyeonhi.VO.FavoriteMenuVO;
 
 public interface FavoriteRepository extends CrudRepository<FavoriteMenuVO, Long>{
 

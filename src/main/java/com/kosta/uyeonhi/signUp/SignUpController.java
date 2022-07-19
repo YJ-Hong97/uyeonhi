@@ -1,4 +1,4 @@
-package com.kosta.uyeonhi.controller;
+package com.kosta.uyeonhi.signUp;
 
 
 
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.*;
-import com.kosta.uyeonhi.repository.ManagerRepository;
-import com.kosta.uyeonhi.repository.UserRepository;
 
 import lombok.extern.java.Log;
 //http://aaaaaaaaa/hello.do/100

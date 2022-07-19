@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.kosta.uyeonhi.VO.UserVO;
-import com.kosta.uyeonhi.repository.UserRepository;
+import com.kosta.uyeonhi.signUp.UserRepository;
+import com.kosta.uyeonhi.signUp.UserVO;
 
 @Service
 public class MemberService implements UserDetailsService{

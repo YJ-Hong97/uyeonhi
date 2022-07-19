@@ -1,9 +1,16 @@
-package com.kosta.uyeonhi.VO;
+package com.kosta.uyeonhi.signUp;
+
+import java.sql.Date;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.kosta.uyeonhi.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +29,12 @@ import lombok.ToString;
 @Builder
 @RequiredArgsConstructor //nonnull인것만 가지고 생성
 @Entity
-@Table(name = "ideal_menu")
-public class IdealMenuVO {
+@Table(name = "favorite")
+public class FavoriteVO {
 	@Id
-	private Long idealId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long favoriteId;
 	@Column(nullable = false)
 	@NonNull
-	private String idealValue;
+	private String user_id;
 }

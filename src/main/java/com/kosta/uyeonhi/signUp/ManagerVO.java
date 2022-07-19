@@ -1,4 +1,4 @@
-package com.kosta.uyeonhi.VO;
+package com.kosta.uyeonhi.signUp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

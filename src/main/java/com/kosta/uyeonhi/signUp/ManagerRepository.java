@@ -1,8 +1,6 @@
-package com.kosta.uyeonhi.repository;
+package com.kosta.uyeonhi.signUp;
 
 import org.springframework.data.repository.CrudRepository;
-
-import com.kosta.uyeonhi.VO.ManagerVO;
 
 public interface ManagerRepository extends CrudRepository<ManagerVO, String>{
 
