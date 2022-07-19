@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class Sns {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long board_id;
 
 	@Column(nullable = false, length = 255)
