@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.signUpContainer {
+	margin: 0 auto;
+	display: inline-block;
+	width: 100%;
+	position: relative;
+	text-align: center;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.signUpContainer .logo {
+	margin-top: 5%;
+	text-align: center;
+	font-family: 'Libre Barcode 39 Text', cursive;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 50px;
+	line-height: 110%;
+	color: #B983FF;
+	text-align: center;
+}
+
+.signUpContainer .signUpBox {
+	display: inline-block;
+	width: 50%;
+	height: 50%;
+	background: #FFFFFF;
+	border: 1px solid #E4E2E2;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 110%;
+}
+
+.signUpBox {
+	margin-top: 3%;
+}
+
+.signUpBox #ment {
+	margin: 10%;
+}
+.signUpBox hr{
+	margin-left: 15%;
+	margin-right: 15%;
+}
+#phone {
+	margin: 0;
+	border : 0 solid;
+	width: 59%;
+	cursor: pointer;
+	border: 0 solid;
+}
+
+#textValid{
+	display : inline-block;
+	color:red;
+	font-size:15px;
+}
+#hiddenContainer{
+	display: none;
+}
+#findId{
+	margin: 0;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+#findPW{
+margin: 0;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+#validTest {
+	margin: 0;
+	width: 10%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+
+.signUpBox #nextBtn {
+	cursor: pointer;
+	width: 70%;
+	height: 50px;
+	background: #B983FF;
+	border: 0 solid;
+	border-radius: 3px;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 25px;
+	line-height: 110%;
+	/* or 44px */
+	text-align: center;
+}
+
+#btnBox {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+
+#btnBox input {
+	margin: 1%;
+}
+</style>
+</head>
+<body>
+	<div class="signUpContainer">
+		<div class="logo">uyeonhi</div>
+		<div class="signUpBox">
+			<p id = "ment">
+				우연히 가입을 위해<br>휴대폰 인증을 진행해 주세요.
+			</p>
+			<input type="text" id="phone" placeholder="전화번호 입력"> 
+			<input type="button" id="validTest" value="인증요청">
+			<input type ="hidden" id = "validCfrm">
+				<hr>
+			<div id = "hiddenContainer">
+				<p id = "textValid">이미 사용중인 계정이 있나요</p>
+				<input
+				type="button" id="findId" value="아이디 찾기">
+				<input
+				type="button" id="findPW" value="비밀번호 찾기">
+			</div>
+			<div id="btnBox">
+				<input type="button" id="nextBtn" value="다음">
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		var nextBtn = document.querySelector('#nextBtn');
+		var validTest = document.querySelector('#validTest');
+		var hiddenContainer = document.querySelector('#hiddenContainer');
+		
+		nextBtn.onclick = nextFunc;
+		validTest.onclick = validFunc;
+		
+		function nextFunc(){
+			
+			//전화번호 가지고 controller로 넘기기
+			if(document.querySelector('#validCfrm').value == 'sucess'){
+				let phone = document.querySelector('#phone').value; 
+				$.ajax({
+					url:`signUp3/${phone}`,
+					type:"POST",
+					success: function(responseTest){
+						alert("success" + responseTest);
+						location.href = "signUp3";
+					},
+					fail : function(a){
+						alert(a);
+					}
+				});
+			}else{
+				hiddenContainer.style.display = "block";//$("#hiddenContainer").css("display","block" )
+				alert("전화번호 인증을 완료해주세요.");
+			}
+			
+		}
+		
+		//전화번호 인증
+		function validFunc(){
+			document.querySelector('#validCfrm').value = 'sucess';
+		}
+	</script>
+</body>
+</html>
