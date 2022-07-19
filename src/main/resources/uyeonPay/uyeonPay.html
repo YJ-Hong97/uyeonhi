@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout1}">>
+<head>
+<meta charset="EUC-KR">
+<title>우연히 UYEONHI | 우연충전</title>
+<link
+	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
+	rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap"
+	rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<style>
+* {
+	margin: 0;
+	font-family: Gowun Dodum;
+}
+
+#header {
+	height: 5%;
+	padding: 1.5%;
+	border-bottom: 1px solid #eee;
+}
+
+.userArea {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-top: 3%;
+	padding-bottom: 3%;
+	font-size: 20px;
+}
+.userCount {
+	color: #B983FF;
+	font-weight: bold;
+}
+.userPhoto {
+	display: inline-block;
+	width: 70px;
+	height: 70px;
+	background-color: blue;
+	border: 1px solid #000000;
+	border-radius: 135px;
+	margin-left: 5%;
+}
+
+.userText {
+	margin-left: 1.5%;
+}
+.btnArea {
+	border-collapse: collapse;
+	margin-left: 5%;
+	margin-right: 5%;
+	background: #FBFBFC;
+	border-spacing: 0px;
+    border-style: none;
+    padding: 0px;
+    width:88%;
+    text-align: center;
+}
+td {
+    border-spacing: 0px;
+    border-style: none;
+    padding: 0px;
+    border: 1px solid #E3E3E3;
+	background: #FBFBFC;
+	padding: 1% 0;
+}
+.blank {
+	width: 70%;
+	border: 1px solid #E3E3E3;
+}
+.cursor{
+	cursor: pointer;
+}
+.btn {
+	border: none;
+	background: #FBFBFC;
+	font-size: 20px;
+}
+</style>
+</head>
+<body>
+	<div id="header">헤더</div>
+	<div class="userArea">
+		<span class="userPhoto"></span> 
+		<span class="userText"> 
+			<span class="userId">asdf99</span>님이 보유 중인 우연 <span class="userCount">10개</span>
+		</span>
+	</div>
+	<table class= "btnArea">
+		<tr>
+			<td class="cursor one"><button class="tab1Btn btn">우연충전</button></td>
+			<td class="cursor two"><button class="tab2Btn btn">충전내역</button></td>
+			<td class="cursor three"><button class="tab3Btn btn">사용내역</button></td>
+			<td class="blank"></td>
+		</tr>
+	</table>
+	
+	<script th:inline="javascript">
+		$(".one").click(function() {
+			 $(".one")
+			 	.css("background-color","white")
+			 	.css("border-bottom", "1px solid #fff");
+			 
+			 $(".two")
+			 	.css("background-color","#FBFBFC")
+			 	.css("border-bottom", "1px solid #E3E3E3");
+				
+				$(".three")
+			 	.css("background-color","#FBFBFC")
+			 	.css("border", "1px solid #E3E3E3");
+				
+			
+		});
+		
+		$(".two").click(function(){
+			$(".one")
+		 	.css("background-color","#FBFBFC")
+		 	.css("border", "1px solid #E3E3E3");
+			
+			$(".two")
+		 	.css("background-color","white")
+		 	.css("border-bottom", "1px solid #fff");
+			
+			$(".three")
+		 	.css("background-color","#FBFBFC")
+		 	.css("border", "1px solid #E3E3E3");
+			
+			 $.ajax({
+					url : "data.json", 
+					type : "get", 
+					datatype : "json",
+					success : function(data) { 
+
+					}
+				});
+		});
+		
+		$(".three").click(function(){
+			$(".one")
+		 	.css("background-color","#FBFBFC")
+		 	.css("border", "1px solid #E3E3E3");
+			
+			$(".two")
+		 	.css("background-color","#FBFBFC")
+		 	.css("border-bottom", "1px solid #E3E3E3");
+			
+			$(".three")
+		 	.css("background-color","white")
+		 	.css("border-bottom", "1px solid #fff");
+		});
+			
+	</script>
+</body>
+</html>
