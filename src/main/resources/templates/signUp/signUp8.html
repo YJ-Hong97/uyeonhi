@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.signUpContainer {
+	margin: 0 auto;
+	display: inline-block;
+	width: 100%;
+	position: relative;
+	text-align: center;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.signUpContainer .logo {
+	margin-top: 5%;
+	text-align: center;
+	font-family: 'Libre Barcode 39 Text', cursive;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 50px;
+	line-height: 110%;
+	color: #B983FF;
+	text-align: center;
+}
+
+.signUpContainer .signUpBox {
+	display: inline-block;
+	width: 50%;
+	height: 50%;
+	background: #FFFFFF;
+	border: 1px solid #E4E2E2;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 110%;
+	text-align: left;
+}
+
+.signUpBox {
+	margin-top: 3%;
+}
+
+.signUpBox #ment {
+	margin: 15%;
+}
+.signUpBox label{
+	margin-left: 15%;
+}
+
+.signUpBox input{
+	width:43%;
+	border : 0 solid;
+}
+.signUpBox hr{
+	margin-left: 30%;
+	margin-right: 30%;
+}
+.signUpBox select{
+	margin-left:21%;
+	width: 40%;
+	text-align: center;
+}
+#hogam {
+	
+	margin: 0;
+	margin-left:5%;
+	width: 15%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+#uyeon {
+	margin: 0;
+	margin-left:5%;
+	width: 20%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+#male {
+	margin: 0;
+	margin-left:21.5%;
+	width: 15%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+#female {
+	margin: 0;
+	width: 15%;
+	margin-left:5%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+
+.signUpBox #nextBtn {
+	margin-left:15%;
+	cursor: pointer;
+	width: 70%;
+	background: #B983FF;
+	border: 0 solid;
+	border-radius: 3px;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 25px;
+	line-height: 110%;
+	/* or 44px */
+	text-align: center;
+}
+
+#btnBox {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+
+#btnBox input {
+	margin: 1%;
+}
+</style>
+</head>
+<body>
+	<div class="signUpContainer">
+		<div class="logo">uyeonhi</div>
+		<div class="signUpBox">
+			<p id = "ment">
+				마침내 마지막입니다.
+			</p>
+			<form action= "" method = "post">
+				<label>호감 알림 보내기</label><input type = "button" name = "hogam" id  ="hogam" value = "보낼래요">
+				<input type = "button" name= "uyeon" id = "uyeon" value = "우연히 만날래요"><br>
+				<label>mbti</label><select name = "mbti">
+					<option value = "istj">istj</option>
+					<option value = "isfj">isfj</option>
+					<option value = "infj">infj</option>
+					<option value= "intj">intj</option>
+					<option value= "istp">istp</option>
+					<option value= "isfp">isfp</option>
+					<option value= "infp">infp</option>
+					<option value = "intp">intp</option>
+					<option value= "estp">estp</option>
+					<option value= "esfp">esfp</option>
+					<option value = "enfp">enfp</option>
+					<option value= "entp">entp</option>
+					<option value=  "estj">estj</option>
+					<option value = "esfj">esfj</option>
+					<option value = "enfj">enfj</option>
+					<option value = "entj">entj</option>
+				</select><br>
+				<label>성별</label><input type = "button" name = "male" id  ="male" value = "남자">
+				<input type = "button" name= "female" id = "female" value = "여자"><br>
+				<label id = "nickLabel">프로필 사진</label><input type = "file" name = "profile" id = "profile">
+				<div id="btnBox">
+					<input type="submit" id="nextBtn" value="다음">
+				</div>
+			</form>
+			
+		</div>
+	</div>
+</body>
+</html>
