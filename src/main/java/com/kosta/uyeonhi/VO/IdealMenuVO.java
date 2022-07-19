@@ -25,8 +25,8 @@ import lombok.ToString;
 @Table(name = "ideal_menu")
 public class IdealMenuVO {
 	@Id
-	private Long key;
+	private Long idealId;
 	@Column(nullable = false)
 	@NonNull
-	private String value;
+	private String idealValue;
 }

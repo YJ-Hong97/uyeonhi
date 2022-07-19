@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.*;
+import com.kosta.uyeonhi.repository.ManagerRepository;
 import com.kosta.uyeonhi.repository.UserRepository;
 
 import lombok.extern.java.Log;
@@ -27,6 +28,8 @@ import lombok.extern.java.Log;
 public class SignUpController {
 	@Autowired
 	UserRepository uRepo;
+	@Autowired
+	ManagerRepository mRepo;
 	
 	Map<String, String> signUpInfo = new HashMap<>();
 	
@@ -67,6 +70,7 @@ public class SignUpController {
 	public String validTestId(String uid) {
 		boolean result = true;
 		result = uRepo.existsById(uid);
+		result = mRepo.existsById(uid);
 		if(result) {
 			return "fail";
 		}else {

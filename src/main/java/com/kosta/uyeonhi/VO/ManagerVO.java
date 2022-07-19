@@ -23,6 +23,8 @@ import lombok.ToString;
 public class ManagerVO {
 	@Id
 	@Column(name = "manager_id")
-	private UserVO user;
+	private String manager_id;
+	@Column(name = "manager_pw")
+	private String manager_pw;
 
 }

@@ -33,7 +33,7 @@ import lombok.ToString;
 public class IdealTypeVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long key;
+	private Long idealId;
 	@Column(nullable = false)
 	@NonNull
 	private String user_id;

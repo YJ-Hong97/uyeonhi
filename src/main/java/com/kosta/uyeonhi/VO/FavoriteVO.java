@@ -33,7 +33,7 @@ import lombok.ToString;
 public class FavoriteVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long key;
+	private Long favoriteId;
 	@Column(nullable = false)
 	@NonNull
 	private String user_id;

@@ -40,6 +40,7 @@ public class SecurityUser extends User{
 	//Role을 여러개 가질수 있도록 되어있음 
 	private static List<GrantedAuthority> makeRole(UserVO user) {
 		List<GrantedAuthority> roleList = new ArrayList<>();
+		//매니저 아이디와 사용자 아이디 중복 불가. 아이디만 검사하면 매니저인지 아닌지 판별가능
 		boolean manager = mRepo.existsById(user.getId());
 		if(manager) {
 			roleList.add(new SimpleGrantedAuthority(ROLE_PREFIX + "manager"));
