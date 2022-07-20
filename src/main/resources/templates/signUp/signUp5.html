@@ -54,6 +54,7 @@
 .signUpBox .nextBtn {
 	cursor: pointer;
 	width: 70%;
+	height:50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -80,6 +81,9 @@
 	border-radius: 30px;
 	border:0 solid;
 }
+.idealBox{
+	display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -89,7 +93,9 @@
 			<p>
 				우연히 이상형을 찾아보세요.
 			</p>
-			<button class = "idealBtn">#180cm이상</button>	
+			<div class = "idealBox" th:each = "ideal:${idealMap}">
+				<button class = "idealBtn" value="${ideal.idealId}">$[[ideal.idealValue]]</button>
+			 </div>
 			<div id="btnBox">
 				<input type="submit" class="nextBtn" value="다음"><br>
 			</div>
