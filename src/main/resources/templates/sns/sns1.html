@@ -7,27 +7,34 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 
-const modal =  document.getElementById("modal");
+window.onload = function(){
+	function modalOn() {
+	    modal.style.display = "flex";
+	};
 
+	function modalOff() {
+	    modal.style.display = "none";
+	};
 
-
-/* function modalOn() {
-    modal.style.display = "flex";
+	var btnModal = document.getElementById("btnModal");
+	btnModal.addEventListener("click", e => {
+	    modalOn();
+	})
+	;
+	var closeBtn = document.getElementById("closeBtn");
+	closeBtn.addEventListener("click", e => {
+	    modalOff();
+	});
+	
+	 $("#searchBtn").click(function(){
+	        alert("테스트 클릭 성공");
+	    });
+	 
+	 document.querySelector('#toggleBtn').addEventListener('click', function() {
+		  document.querySelector('.section.collapsible').classList.toggle('collapsed');
+		
+		}); 
 };
-
-function modalOff() {
-    modal.style.display = "none";
-};
-
-const btnModal = document.getElementById("more");
-btnModal.addEventListener("click", e => {
-    modalOn();
-})
-;
-const closeBtn = document.getElementById("cancle");
-closeBtn.addEventListener("click", e => {
-    modalOff();
-}); */
 
 	
 
@@ -171,7 +178,7 @@ top: 125px;
 
 background: #FFFFFF;
 }
-#searchicon{
+#searchBtn{
 font-size: 2.3em;
 color: black;
 margin-top: 16px;
@@ -206,7 +213,7 @@ border-bottom: 1px solid lightgray;
 color: red;
 font-size: 1.3em;
 }
-#cancle{border-bottom: none; color: black;}
+#closeBtn{border-bottom: none; color: black;}
 td:hover{
 background: rgba(85, 85, 85, 0.2);
 }
@@ -232,6 +239,16 @@ background: rgba(85, 85, 85, 0.2);
             margin-top: 20px;
             padding: 0px 10px;          
         }
+        
+.section {
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+  height: auto;
+  max-height: 600px;
+}
+.section.collapsed {
+  max-height: 0;
+}
 </style>
 </head>
 <body>
@@ -239,11 +256,16 @@ background: rgba(85, 85, 85, 0.2);
 	<div id="container">
 		<span class="material-symbols-outlined" id="person">
 			account_circle </span>
-		<input type="text" class="box" >
+		<input type="text" class="box" id="toggleBtn">
+		<div class="section collapsible">
+		<span class="material-symbols-outlined">event_available</span>
+		<span class="material-symbols-outlined">image</span>
+		<span class="material-symbols-outlined">cloud_upload</span>
+		</div>
 	</div>
 	<div id="container2">
 		<span id="ellipse"></span> <span class="material-symbols-outlined"
-			id="more"> more_horiz </span>
+			id="btnModal"> more_horiz </span>
 	</div>
 	<div id="container3">이미지넣는곳</div>
 	<div id="container4">
@@ -255,7 +277,7 @@ background: rgba(85, 85, 85, 0.2);
 
 <div id="search">
 	<div id="searchbox">
-		<span class="material-symbols-outlined" id="searchicon">search</span>
+		<span class="material-symbols-outlined" id="searchBtn">search</span>
 		<input type="text" class="box" >
 	</div>
 	<div class="text">
@@ -275,7 +297,7 @@ background: rgba(85, 85, 85, 0.2);
 						<td>팔로우 취소</td>
 					</tr>
 					<tr>
-						<td id="cancle">취소</td>
+						<td id="closeBtn">취소</td>
 					</tr>
 				</table>
 			</div>
