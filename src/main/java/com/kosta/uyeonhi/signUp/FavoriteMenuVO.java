@@ -2,6 +2,8 @@ package com.kosta.uyeonhi.signUp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -25,7 +27,8 @@ import lombok.ToString;
 @Table(name = "favorite_menu")
 public class FavoriteMenuVO {
 	@Id
-	private Long favoriteMenu;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long favortieId;
 	@Column(nullable = false)
 	@NonNull
 	private String favoriteValue;

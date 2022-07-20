@@ -40,6 +40,7 @@
 	font-weight: 400;
 	font-size: 20px;
 	line-height: 110%;
+	text-align: center;
 }
 
 .signUpBox {
@@ -50,10 +51,9 @@
 	margin: 10%;
 }
 
-.signUpBox .signUpBtn {
+.signUpBox .nextBtn {
 	cursor: pointer;
 	width: 70%;
-	height:50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -73,20 +73,12 @@
 #btnBox input{
 	margin : 1%;
 }
-.signUpBox .kakaoBtn {
-	cursor: pointer;
-	border: 0 solid;
-	width: 70%;
-	height:50px;
-	background: #FBE300;
-	border-radius: 3px;
-	font-family: 'Gowun Dodum';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 25px;
-	line-height: 110%;
-	/* or 44px */
-	text-align: center;
+.idealBtn{
+	width: 15%;
+	height:30px;
+	background-color: rgba(185, 131, 255, 0.3);
+	border-radius: 30px;
+	border:0 solid;
 }
 </style>
 </head>
@@ -95,21 +87,14 @@
 		<div class="logo">uyeonhi</div>
 		<div class="signUpBox">
 			<p>
-				가입을 시작합니다!<br> 앞으로 우연히에서 즐거운 추억을 함께 만들어봐요.
+				당신의 취향은 어떻게 되세요?
 			</p>
+			<button class = "idealBtn">#180cm이상</button>	
 			<div id="btnBox">
-				<input type="button" id = "signUpBtn" class="signUpBtn" value="우연히 계정 만들기"><br>
-				<input type="button" id= "kakaoBtn" class="kakaoBtn" value="카카오로 가입하기">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input type="submit" class="nextBtn" value="다음"><br>
 			</div>
+			
 		</div>
 	</div>
-	<script>
-		var signUpBtn = document.querySelector('#signUpBtn');
-		var kakaoBtn = document.querySelector('#kakaoBtn');
-		signUpBtn.onclick = function(){
-			location.href = "signUp2";
-		}
-	</script>
 </body>
 </html>

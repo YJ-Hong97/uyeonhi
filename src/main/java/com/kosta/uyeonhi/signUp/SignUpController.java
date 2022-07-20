@@ -11,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.*;
 
+import antlr.TokenWithIndex;
 import lombok.extern.java.Log;
 //http://aaaaaaaaa/hello.do/100
 //http://aaaaaaaaa/hello.do?id=100
@@ -28,10 +31,12 @@ public class SignUpController {
 	UserRepository uRepo;
 	@Autowired
 	ManagerRepository mRepo;
+	@Autowired
+	IdealMenuRepository iRepo;
 	
 	Map<String, String> signUpInfo = new HashMap<>();
 	
-	@RequestMapping("/signUp")
+	@GetMapping("/signUp")
 	public ModelAndView uSignUp1(ModelAndView mnv) {
 		mnv.setViewName("signUp/signUp1");
 		return mnv;
@@ -65,7 +70,7 @@ public class SignUpController {
 		return mnv;
 	}
 	@PostMapping("/validTestId")
-	public String validTestId(String uid) {
+	public String validTestId( String uid) {
 		boolean result = true;
 		result = uRepo.existsById(uid);
 		result = mRepo.existsById(uid);
@@ -85,6 +90,11 @@ public class SignUpController {
 			return "success";
 		}
 	}
+	@PostMapping("/validEmail/{email}")
+	public boolean validEmail(@PathVariable String email) {
+		boolean result = uRepo.existsByEmail(email);
+		return result;
+	}
 	@PostMapping("/signUp5")
 	public void uSignUp5(String uname, String uid, String upassword, String unick) {
 		
@@ -97,6 +107,11 @@ public class SignUpController {
 	}
 	@GetMapping("/signUp5")
 	public ModelAndView uSignUp5(ModelAndView mnv) {
+		Map<Long, String> idealMap = new HashMap<>();
+		iRepo.findAll().forEach(i->{
+			idealMap.put(i.getIdealId(), i.getIdealValue());
+		});
+		mnv.addObject("idealMap", idealMap);
 		mnv.setViewName("signUp/signUp5");
 		return mnv;
 	}
