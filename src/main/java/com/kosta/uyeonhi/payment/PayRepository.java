@@ -1,4 +1,4 @@
-package com.kosta.uyeonhi.pay;
+package com.kosta.uyeonhi.payment;
 
 import org.springframework.data.repository.CrudRepository;
 

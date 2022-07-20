@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout1}">>
+<html>
 <head>
-<meta charset="EUC-KR">
-<title>øÏø¨»˜ UYEONHI | øÏø¨√Ê¿¸</title>
+<meta charset="UTF-8">
+<title>Ïö∞Ïó∞Ìûà UYEONHI | Ïö∞Ïó∞Ï∂©Ï†Ñ</title>
 <link
 	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
 	rel="stylesheet" />
@@ -17,7 +15,9 @@
 	margin: 0;
 	font-family: Gowun Dodum;
 }
-
+html{
+	font-size: 20px;
+}
 #header {
 	height: 5%;
 	padding: 1.5%;
@@ -48,11 +48,11 @@
 
 .userText {
 	margin-left: 1.5%;
+	font-size: 1rem;
 }
 .btnArea {
 	border-collapse: collapse;
 	margin-left: 5%;
-	margin-right: 5%;
 	background: #FBFBFC;
 	border-spacing: 0px;
     border-style: none;
@@ -72,48 +72,68 @@ td {
 	width: 70%;
 	border: 1px solid #E3E3E3;
 }
-.cursor{
+.cursor, .btn{
 	cursor: pointer;
 }
 .btn {
 	border: none;
 	background: #FBFBFC;
-	font-size: 20px;
+	font-size: 1rem;
+	font-weight: bold;
 }
 </style>
 </head>
+<script>
+$(document).ready(function(){
+	$(".one").trigger("click");
+});
+</script>
 <body>
-	<div id="header">«Ï¥ı</div>
+	<div id="header">header</div>
 	<div class="userArea">
 		<span class="userPhoto"></span> 
 		<span class="userText"> 
-			<span class="userId">asdf99</span>¥‘¿Ã ∫∏¿Ø ¡ﬂ¿Œ øÏø¨ <span class="userCount">10∞≥</span>
+			<span class="userId">asdf99</span>ÎãòÏù¥ Î≥¥Ïú† Ï§ëÏù∏ Ïö∞Ïó∞ <span class="userCount">10Í∞ú</span>
 		</span>
 	</div>
 	<table class= "btnArea">
 		<tr>
-			<td class="cursor one"><button class="tab1Btn btn">øÏø¨√Ê¿¸</button></td>
-			<td class="cursor two"><button class="tab2Btn btn">√Ê¿¸≥ªø™</button></td>
-			<td class="cursor three"><button class="tab3Btn btn">ªÁøÎ≥ªø™</button></td>
+			<td class="cursor one"><button class="tab1Btn btn">Ïö∞Ïó∞Ï∂©Ï†Ñ</button></td>
+			<td class="cursor two"><button class="tab2Btn btn">Ï∂©Ï†ÑÎÇ¥Ïó≠</button></td>
+			<td class="cursor three"><button class="tab3Btn btn">ÏÇ¨Ïö©ÎÇ¥Ïó≠</button></td>
 			<td class="blank"></td>
 		</tr>
 	</table>
 	
+	<div id="select_tab">
+	
+	</div>
+	
 	<script th:inline="javascript">
 		$(".one").click(function() {
-			 $(".one")
+			$(".one")
 			 	.css("background-color","white")
 			 	.css("border-bottom", "1px solid #fff");
 			 
-			 $(".two")
-			 	.css("background-color","#FBFBFC")
-			 	.css("border-bottom", "1px solid #E3E3E3");
+			$(".two")
+				.css("background-color","#FBFBFC")
+				.css("border-bottom", "1px solid #E3E3E3");
 				
-				$(".three")
-			 	.css("background-color","#FBFBFC")
-			 	.css("border", "1px solid #E3E3E3");
+			$(".three")
+				.css("background-color","#FBFBFC")
+				.css("border", "1px solid #E3E3E3");
 				
+			$(".tab1Btn").css("color", "#B983FF");
+			$(".tab2Btn").css("color", "#000");
+			$(".tab3Btn").css("color", "#000");
 			
+			$("#select_tab").load("/uyeonhi/payView1.go");
+/* 			$.ajax({
+				url : "payView.go", 
+				type : "post", 
+				success : function(data) { 
+				}
+			}); */
 		});
 		
 		$(".two").click(function(){
@@ -129,14 +149,11 @@ td {
 		 	.css("background-color","#FBFBFC")
 		 	.css("border", "1px solid #E3E3E3");
 			
-			 $.ajax({
-					url : "data.json", 
-					type : "get", 
-					datatype : "json",
-					success : function(data) { 
-
-					}
-				});
+			$(".tab1Btn").css("color", "#000");
+			$(".tab2Btn").css("color", "#B983FF");
+			$(".tab3Btn").css("color", "#000");
+			
+			$("#select_tab").load("/uyeonhi/payView2.go");
 		});
 		
 		$(".three").click(function(){
@@ -151,6 +168,12 @@ td {
 			$(".three")
 		 	.css("background-color","white")
 		 	.css("border-bottom", "1px solid #fff");
+			
+			$(".tab1Btn").css("color", "#000");
+			$(".tab2Btn").css("color", "#000");
+			$(".tab3Btn").css("color", "#B983FF");
+			
+			$("#select_tab").load("/uyeonhi/payView3.go");
 		});
 			
 	</script>
