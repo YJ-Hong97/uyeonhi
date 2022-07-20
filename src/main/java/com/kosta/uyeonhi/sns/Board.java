@@ -57,7 +57,7 @@ public class Board {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id")
-	private UserVO user;
+	private UserVO userVO;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "reply_id")

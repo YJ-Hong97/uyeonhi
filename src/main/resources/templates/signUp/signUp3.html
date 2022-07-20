@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.signUpContainer {
+	margin: 0 auto;
+	display: inline-block;
+	width: 100%; position : relative;
+	text-align: center;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.signUpContainer .logo {
+	margin-top: 5%; text-align : center;
+	font-family: 'Libre Barcode 39 Text', cursive;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 50px;
+	line-height: 110%;
+	color: #B983FF;
+	text-align: center;
+}
+
+.signUpContainer .signUpBox {
+	display: inline-block;
+	width: 50%;
+	height: 50%;
+	background: #FFFFFF;
+	border: 1px solid #E4E2E2;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 110%;
+}
+
+.signUpBox {
+	margin-top: 3%;
+}
+
+.signUpBox p {
+	margin: 10%;
+}
+.signUpBox hr{
+	margin : 0 auto;
+}
+#emailHead{
+	margin: 0;
+	border : 0 solid;
+	width: 25%;
+	cursor: pointer;
+	border: 0 solid;
+}
+#emailTail{
+	margin: 0;
+	border : 0 solid;
+	width: 25%;
+	cursor: pointer;
+	border: 0 solid;
+}
+#directEmail{
+	display :none;
+	margin: 0;
+	border : 0 solid;
+	width: 25%;
+	cursor: pointer;
+	border: 0 solid;
+}
+.signUpBox .nextBtn {
+	cursor: pointer;
+	width: 70%;
+	height: 50px;
+	background: #B983FF;
+	border: 0 solid;
+	border-radius: 3px;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 25px;
+	line-height: 110%;
+	/* or 44px */
+	text-align: center;
+}
+#hiddenContainer{
+	display: none;
+}
+#textValid{
+	display : inline-block;
+	color:red;
+	font-size:15px;
+}
+#findId{
+	margin: 0;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+#findPW{
+margin: 0;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+
+
+#btnBox {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+#btnBox input{
+	margin : 1%;
+}
+#validTest {
+	margin: 0;
+	width: 10%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+.signUpBox hr{
+	margin-left: 15%;
+	margin-right: 15%;
+}
+#emailHead{}
+</style>
+</head>
+<body>
+	<div class="signUpContainer">
+		<div class="logo">uyeonhi</div>
+		<div class="signUpBox">
+			<p>
+				이메일을 입력해 주세요.
+			</p>
+			<input type=  "text" id = "emailHead" name = "emailHead" placeholder = "uyeon1004">@
+			<select name = "emailTail" id = "emailTail">
+				<option value = ""></option>
+				<option value = "direct" id = "direct">직접 입력하기</option>
+				<option value = "naver.com">naver.com</option>
+				<option value = "kakao.com">kakao.com</option>
+			</select>
+			<input type= "text" name = "directEmail" id = "directEmail">
+			<input type = "button" value = "인증하기" id = "validTest"><br>
+			<input type = "hidden" id = "validCfrm">
+			<hr>
+			
+			<div id = "hiddenContainer">
+				<p id = "textValid">이미 사용중인 계정이 있나요</p>
+				<input
+				type="button" id="findId" value="아이디 찾기">
+				<input
+				type="button" id="findPW" value="비밀번호 찾기">
+			</div>
+			<div id="btnBox">
+				<input type="button" id = "nextBtn"class="nextBtn" value="다음"><br>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script>
+		////////////select option 보여주기+ 직접 입력하기 
+		function directOn(){
+			if(document.querySelector('#emailTail').value=='direct'){
+				document.querySelector('#emailTail').style.display= "none";
+				document.querySelector('#directEmail').style.display = "inline-block";
+			}
+		};
+		function selectOn(event){
+			if(event.target == document.querySelector('#direct')||event.target == document.querySelector('#directEmail')||event.target == document.querySelector('#validTest')){
+				document.querySelector('#emailTail').style.display = "none";
+				document.querySelector('#directEmail').style.display = "inline-block";
+				
+			}else{
+				document.querySelector('#emailTail').style.display = "inline-block";
+				document.querySelector('#directEmail').style.display = "none";
+			}
+		}
+		window.addEventListener('click', selectOn);
+		window.addEventListener('change',directOn);
+		/////////////////
+		var validTest = document.querySelector('#validTest');
+		var nextBtn = document.querySelector('#nextBtn');
+		
+		///이메일 인증
+		validTest.onclick = function(){
+			let emailTail = document.querySelector('#emailTail').value;
+			let email = document.querySelector('#emailHead').value+"@"+emailTail;
+			if(emailTail == 'direct'){
+				let directEmail = document.querySelector('#directEmail').value;
+				email = document.querySelector('#emailHead').value+"@"+directEmail;
+			}
+			//중복테스트
+			$.ajax({
+				url:`validEmail/${email}`,
+				type:"POST",
+				success:function(result){
+					if(result){
+						document.querySelector('#validCfrm').value = "fail";
+					}else{
+						document.querySelector('#validCfrm').value = "success";
+					}
+				}
+			});
+		}
+		//다음 버튼 클릭
+		nextBtn.onclick = function(){
+			
+			//이메일 정보가지고 post로 넘기기
+			if(document.querySelector('#validCfrm').value == 'success'){
+				let emailTail = document.querySelector('#emailTail').value;
+				let email = document.querySelector('#emailHead').value+"@"+emailTail;
+				if(emailTail == 'direct'){
+					let directEmail = document.querySelector('#directEmail').value;
+					email = document.querySelector('#emailHead').value+"@"+directEmail;
+				}
+				
+				$.ajax({
+					url: `signUp4/${email}`,
+					type:"POST",
+					success: function(){
+						location.href = "signUp4";
+					}
+					
+				});
+			}else{
+				hiddenContainer.style.display = "block";
+				alert("이메일 인증을 완료해주세요.");
+			}
+			
+		}
+		
+	</script>
+</body>
+</html>

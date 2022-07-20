@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.signUpContainer {
+	margin: 0 auto;
+	display: inline-block;
+	width: 100%;
+	position: relative;
+	text-align: center;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.signUpContainer .logo {
+	margin-top: 5%;
+	text-align: center;
+	font-family: 'Libre Barcode 39 Text', cursive;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 50px;
+	line-height: 110%;
+	color: #B983FF;
+	text-align: center;
+}
+
+.signUpContainer .signUpBox {
+	display: inline-block;
+	width: 50%;
+	height: 50%;
+	background: #FFFFFF;
+	border: 1px solid #E4E2E2;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 110%;
+	text-align: left;
+}
+
+.signUpBox {
+	margin-top: 3%;
+}
+
+.signUpBox #ment {
+	margin: 15%;
+}
+
+.signUpBox label {
+	margin-left: 15%;
+}
+
+.signUpBox input {
+	width: 43%;
+	border: 0 solid;
+}
+
+#uname {
+	margin-left: 10%;
+}
+
+#uid {
+	margin-left: 12%;
+}
+
+#upassword {
+	margin-left: 4%;
+}
+
+#unick {
+	margin-left: 3%;
+}
+
+.signUpBox hr {
+	margin-left: 30%;
+	margin-right: 30%;
+}
+
+#nickLabel {
+	margin-right: 3%;
+}
+
+#validTestId {
+cursor:pointer;
+	margin: 0;
+	width: 15%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+
+#validTestNick {
+cursor:pointer;
+	margin: 0;
+	width: 15%;
+	background: #FFFFFF;
+	border: 1px solid #979797;
+	border-radius: 30px;
+}
+
+.signUpBox #nextBtn {
+cursor:pointer;
+	margin-left: 15%;
+	cursor: pointer;
+	width: 70%;
+	height:50px;
+	background: #B983FF;
+	border: 0 solid;
+	border-radius: 3px;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 25px;
+	line-height: 110%;
+	/* or 44px */
+	text-align: center;
+}
+
+#btnBox {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+
+#btnBox input {
+	margin: 1%;
+}
+</style>
+</head>
+<body>
+	<div class="signUpContainer">
+		<div class="logo">uyeonhi</div>
+		<div class="signUpBox">
+			<p id="ment">거의 다 왔습니다!!</p>
+			<label>이름</label><input type="text" name="uname" id="uname">
+			<hr>
+			<label>id</label><input type="text" name="uid" id="uid">
+			<button id="validTestId">중복 확인</button>
+			<hr>
+			<label>비밀번호</label><input type="text" name="upassword" id="upassword">
+			<hr>
+			<label id="nickLabel">닉네임</label><input type="text" name="unick"
+				id="unick">
+			<button id="validTestNick">중복 확인</button>
+			<hr>
+			<div id="btnBox">
+				<input type="button" id="nextBtn" value="다음">
+			</div>
+
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		//id 중복확인
+		var validId = null;
+		var validIdBtn = document.querySelector('#validTestId');
+		validIdBtn.onclick = function(){
+			let uid = document.querySelector('#uid').value;
+			$.ajax({
+				url:"validTestId",
+				type:"POST",
+				data:{"uid":uid},
+				success: function(response){
+					if(response == 'success'){
+						
+						validId = 'success';
+					}else{
+						alert('사용할 수 없는 아이디입니다.');
+						validId = 'fail';
+					}
+				}	
+			});
+		};
+		//닉네임 중복확인
+		var validNick = null;
+		var validNickBtn = document.querySelector('#validTestNick');
+		validNickBtn.onclick = function(){
+			let unick = document.querySelector('#unick').value;
+			$.ajax({
+				url:"validTestNick",
+				type:"POST",
+				data:{"unick":unick},
+				success: function(response){
+					if(response == 'success'){
+						validNick = 'success';
+					}else{
+						alert('사용할 수 없는 닉네임입니다.');
+						validNick = 'fail';
+					}
+				}	
+			});
+		};
+		//비밀번호 유효성 검사
+		
+		///데이터 post로 넘기기
+		var nextBtn = document.querySelector('#nextBtn');
+		nextBtn.onclick = function(){
+			if(chkPW()){
+				if(validId=='success'&&validNick=='success'){
+					let uname = document.querySelector('#uname').value;
+					let uid = document.querySelector('#uid').value;
+					let upassword = document.querySelector('#upassword').value;
+					let unick = document.querySelector('#unick').value;
+					$.ajax({
+						url:"signUp5",
+						type:"POST",
+						data:{"uname":uname,"uid":uid,"upassword":upassword,"unick":unick},
+						success:function(){
+							location.href = "signUp5";
+						}
+						
+					});
+				}else if(validId == null||validId =='fail'){
+					alert('아이디 중복확인을 완료해주세요.')
+				}
+				else if(validNick == null||validNick =='fail'){
+					alert('닉네임 중복확인을 완료해주세요.')
+				}
+			}else{
+				
+			}
+			
+		};
+		//비밀번호 유효성 검사
+		function chkPW(){
+
+ 			var pw = $("#upassword").val();
+			var num = pw.search(/[0-9]/g);
+ 			var eng = pw.search(/[a-z]/ig);
+ 			var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+ 			if(pw.length < 8 || pw.length > 20){
+
+ 				 alert("8자리 ~ 20자리 이내로 입력해주세요.");
+  				return false;
+			 }else if(pw.search(/\s/) != -1){
+ 			 alert("비밀번호는 공백 없이 입력해주세요.");
+ 			 return false;
+ 			}else if(num < 0 || eng < 0 || spe < 0 ){
+ 			 alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+			  return false;
+			 }else {
+				console.log("통과"); 
+ 			   return true;
+			 }
+
+		}
+	</script>
+</body>
+</html>
