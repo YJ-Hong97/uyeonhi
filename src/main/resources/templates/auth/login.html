@@ -13,19 +13,38 @@
 	margin: 0 auto;
 	text-align: center;
 }
-hr{
+
+hr {
 	margin-left: 13%;
-	margin-right: 13%;
+	margin-right: 10%;
+	border: 1px solid #CFCFCF;
 }
+
 .loginContainer p {
 	font-family: 'Libre Barcode 39 Text', cursive;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 5rem;
+	font-size: 6rem;
 	line-height: 110%;
 	/* or 165px */
 	text-align: center;
 	color: #B983FF;
+}
+
+.aContainer {
+	margin-top: 5%;
+}
+
+.loginContainer a {
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 2rem;
+	line-height: 110%;
+	/* or 35px */
+	color: #BABABA;
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	cursor: pointer;
 }
 
 .inputContainer {
@@ -40,46 +59,84 @@ hr{
 	background: #FFFFFF;
 	border: 1px solid #919191;
 	border-radius: 20px;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 2rem;
+	line-height: 110%;
+	text-align: left;
+	color: #AFAFAF;
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-#submit{
-	width: 20%;
+
+#submit {
+	cursor: pointer; width : 20%;
 	height: 10rem;
 	background: #B983FF;
-border-radius: 20px;
-vertical-align:top;
-margin-left:0;
-
-font-family: 'Gowun Dodum';
-font-style: normal;
-font-weight: 400;
-font-size: 2rem;
-line-height: 110%;
-/* or 44px */
-
-text-align: center;
-
-color: #FFFFFF;
-
-border: 0.5px solid #FFFFFF;
-text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-
+	border-radius: 20px;
+	vertical-align: top;
+	margin-left: 0;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 2rem;
+	line-height: 110%;
+	/* or 44px */
+	text-align: center;
+	color: #FFFFFF;
+	border: 0.5px solid #FFFFFF;
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	width: 20%;
 }
 
-@media(min-width : 1024px){
-	.loginContainer{
+.btnContainer {
+	margin-top: 5%;
+	text-align: center;
+}
+
+#kakaoBtn {
+	border: 2px solid #C1C1C1;
+	border-radius: 10px;
+	width: 45%;
+	height: 4rem;
+	background: #FBE300;
+	margin-bottom: 1%;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 110%;
+}
+
+#mangerBtn {
+	border: 2px solid #C1C1C1;
+	border-radius: 10px;
+	width: 45%;
+	height: 4rem;
+	background: #B983FF;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 110%;
+}
+
+@media ( min-width : 1024px) {
+	.loginContainer {
 		width: 60%;
 	}
 }
-@media(min-width : 1024px)and(max-width:768px){
-	.loginContainer{
+
+@media ( min-width : 1024px)and(max-width:768px) {
+	.loginContainer {
 		width: 60%;
 	}
 }
-@media(min-width:768px)and(max-width:320px){
-	.loginContainer{
+
+@media ( min-width :768px)and(max-width:320px) {
+	.loginContainer {
 		width: 60%;
-		margin-top:100px;
+		margin-top: 100px;
 	}
 }
 </style>
@@ -87,25 +144,27 @@ text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 <body>
 	<div class="loginContainer">
 		<p id="logo">uyeonhi</p>
-		<form>
+		<form action = "login" method ="post">
 			<div class="inputContainer">
-				<input type="text" placeholder="id" id="uid"><br> <input
-					type="password" placeholder="password" id="upassword">
+				<input type="text" placeholder="id"name= username id="mid"><br> 
+				<input type="password" placeholder="password"name = "password" id="upassword">
 			</div>
-			<input type="submit" id = "submit" value="로그인"><br>
-			</form>
-			<hr>
-			 <a>아이디 찾기|</a><a>비밀번호
-				찾기|</a><a>회원가입</a><br> <input type="button" id="kakaoBtn"
-				value="카카오로 시작하기"><br> <input type="button"
-				id="mangerBtn" value="우연히 매니저 입장하기"><br>
-		
+			<input type="submit" id="submit" value="로그인"><br>
+		</form>
+		<hr>
+		<div class="aContainer">
+			<a>아이디 찾기|</a><a>비밀번호 찾기|</a><a id = "signUpBtn">회원가입</a>
+		</div>
+
+		<div class="btnContainer">
+			<input type="button" id="kakaoBtn" value="카카오로 시작하기"><br>
+			<input type="button" id="mangerBtn" value="우연히 매니저 입장하기"><br>
+		</div>
 	</div>
 	<script>
 		var signUpBtn = document.querySelector('#signUpBtn');
-		var kakaoBtn = document.querySelector('#kakaoBtn');
-		signUpBtn.onclick = function() {
-			location.href = "signUp2";
+		signUpBtn.onclick = function(){
+			location.href = "/uyeonhi/signUp";
 		}
 	</script>
 </body>

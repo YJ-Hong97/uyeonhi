@@ -52,52 +52,41 @@
 .signUpBox #ment {
 	margin: 15%;
 }
-
-.signUpBox label {
+.signUpBox label{
 	margin-left: 15%;
 }
 
-.signUpBox input {
-	width: 43%;
-	border: 0 solid;
+.signUpBox input{
+	width:43%;
+	border : 0 solid;
 }
-
-#uname {
+#uname{
 	margin-left: 10%;
 }
-
-#uid {
+#uid{
 	margin-left: 12%;
-}
-
-#upassword {
+	}
+#upassword{
 	margin-left: 4%;
 }
-
-#unick {
+#unick{
 	margin-left: 3%;
 }
-
-.signUpBox hr {
+.signUpBox hr{
 	margin-left: 30%;
 	margin-right: 30%;
 }
-
-#nickLabel {
+#nickLabel{
 	margin-right: 3%;
 }
-
 #validTestId {
-cursor:pointer;
 	margin: 0;
 	width: 15%;
 	background: #FFFFFF;
 	border: 1px solid #979797;
 	border-radius: 30px;
 }
-
 #validTestNick {
-cursor:pointer;
 	margin: 0;
 	width: 15%;
 	background: #FFFFFF;
@@ -106,11 +95,9 @@ cursor:pointer;
 }
 
 .signUpBox #nextBtn {
-cursor:pointer;
-	margin-left: 15%;
+	margin-left:15%;
 	cursor: pointer;
 	width: 70%;
-	height:50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -137,22 +124,19 @@ cursor:pointer;
 	<div class="signUpContainer">
 		<div class="logo">uyeonhi</div>
 		<div class="signUpBox">
-			<p id="ment">거의 다 왔습니다!!</p>
-			<label>이름</label><input type="text" name="uname" id="uname">
-			<hr>
-			<label>id</label><input type="text" name="uid" id="uid">
-			<button id="validTestId">중복 확인</button>
-			<hr>
-			<label>비밀번호</label><input type="text" name="upassword" id="upassword">
-			<hr>
-			<label id="nickLabel">닉네임</label><input type="text" name="unick"
-				id="unick">
-			<button id="validTestNick">중복 확인</button>
-			<hr>
-			<div id="btnBox">
-				<input type="button" id="nextBtn" value="다음">
-			</div>
-
+			<p id = "ment">
+				거의 다 왔습니다!!
+			</p>
+				<label>이름</label><input type = "text" name = "uname" id  ="uname"><hr>
+				<label>id</label><input type = "text" name = "uid" id = "uid">
+				<button id = "validTestId">중복 확인</button><hr>
+				<label>비밀번호</label><input type = "text" name = "upassword" id = "upassword"><hr>
+				<label id = "nickLabel">닉네임</label><input type = "text" name = "unick" id = "unick">
+				<button id = "validTestNick">중복 확인</button><hr>
+				<div id="btnBox">
+					<input type="button" id="nextBtn" value="다음">
+				</div>
+			
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -166,9 +150,8 @@ cursor:pointer;
 				url:"validTestId",
 				type:"POST",
 				data:{"uid":uid},
-				success: function(response){
+				success: function(respose){
 					if(response == 'success'){
-						
 						validId = 'success';
 					}else{
 						alert('사용할 수 없는 아이디입니다.');
@@ -180,13 +163,13 @@ cursor:pointer;
 		//닉네임 중복확인
 		var validNick = null;
 		var validNickBtn = document.querySelector('#validTestNick');
-		validNickBtn.onclick = function(){
+		validIdBtn.onclick = function(){
 			let unick = document.querySelector('#unick').value;
 			$.ajax({
 				url:"validTestNick",
 				type:"POST",
 				data:{"unick":unick},
-				success: function(response){
+				success: function(respose){
 					if(response == 'success'){
 						validNick = 'success';
 					}else{
@@ -201,56 +184,27 @@ cursor:pointer;
 		///데이터 post로 넘기기
 		var nextBtn = document.querySelector('#nextBtn');
 		nextBtn.onclick = function(){
-			if(chkPW()){
-				if(validId=='success'&&validNick=='success'){
-					let uname = document.querySelector('#uname').value;
-					let uid = document.querySelector('#uid').value;
-					let upassword = document.querySelector('#upassword').value;
-					let unick = document.querySelector('#unick').value;
-					$.ajax({
-						url:"signUp5",
-						type:"POST",
-						data:{"uname":uname,"uid":uid,"upassword":upassword,"unick":unick},
-						success:function(){
-							location.href = "signUp5";
-						}
-						
-					});
-				}else if(validId == null||validId =='fail'){
-					alert('아이디 중복확인을 완료해주세요.')
-				}
-				else if(validNick == null||validNick =='fail'){
-					alert('닉네임 중복확인을 완료해주세요.')
-				}
-			}else{
-				
+			if(validId=='success'&&validNick=='success'){
+				let uname = document.querySelector('#uname').value;
+				let uid = document.querySelector('#uid').value;
+				let upassword = document.querySelector('#upassword').value;
+				let unick = document.querySelector('#unick').value;
+				$.ajax({
+					url:"signUp5",
+					type:"POST",
+					data:{"uname":uname,"uid":uid,"upassword":upassword,"unick":unick},
+					success:function(){
+						location.href = "signUp5";
+					}
+					
+				});
+			}else if(validId == null||validId =='fail'){
+				alert('아이디 중복확인을 완료해주세요.')
 			}
-			
+			else if(validNick == null||validNick =='fail'){
+				alert('닉네임 중복확인을 완료해주세요.')
+			}
 		};
-		//비밀번호 유효성 검사
-		function chkPW(){
-
- 			var pw = $("#upassword").val();
-			var num = pw.search(/[0-9]/g);
- 			var eng = pw.search(/[a-z]/ig);
- 			var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-
- 			if(pw.length < 8 || pw.length > 20){
-
- 				 alert("8자리 ~ 20자리 이내로 입력해주세요.");
-  				return false;
-			 }else if(pw.search(/\s/) != -1){
- 			 alert("비밀번호는 공백 없이 입력해주세요.");
- 			 return false;
- 			}else if(num < 0 || eng < 0 || spe < 0 ){
- 			 alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
-			  return false;
-			 }else {
-				console.log("통과"); 
- 			   return true;
-			 }
-
-		}
 	</script>
 </body>
 </html>
