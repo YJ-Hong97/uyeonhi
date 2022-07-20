@@ -7,4 +7,5 @@ import com.kosta.uyeonhi.*;
 
 public interface UserRepository extends CrudRepository<UserVO, String>{
 	boolean existsByNickname(String nick);
+	boolean existsByEmail(String email);
 }

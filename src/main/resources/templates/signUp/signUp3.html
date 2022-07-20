@@ -77,6 +77,7 @@
 .signUpBox .nextBtn {
 	cursor: pointer;
 	width: 70%;
+	height: 50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -189,13 +190,30 @@ margin: 0;
 		
 		///이메일 인증
 		validTest.onclick = function(){
-			document.querySelector('#validCfrm').value = "sucess";
+			let emailTail = document.querySelector('#emailTail').value;
+			let email = document.querySelector('#emailHead').value+"@"+emailTail;
+			if(emailTail == 'direct'){
+				let directEmail = document.querySelector('#directEmail').value;
+				email = document.querySelector('#emailHead').value+"@"+directEmail;
+			}
+			//중복테스트
+			$.ajax({
+				url:`validEmail/${email}`,
+				type:"POST",
+				success:function(result){
+					if(result){
+						document.querySelector('#validCfrm').value = "fail";
+					}else{
+						document.querySelector('#validCfrm').value = "success";
+					}
+				}
+			});
 		}
 		//다음 버튼 클릭
 		nextBtn.onclick = function(){
 			
 			//이메일 정보가지고 post로 넘기기
-			if(document.querySelector('#validCfrm').value == 'sucess'){
+			if(document.querySelector('#validCfrm').value == 'success'){
 				let emailTail = document.querySelector('#emailTail').value;
 				let email = document.querySelector('#emailHead').value+"@"+emailTail;
 				if(emailTail == 'direct'){
@@ -203,7 +221,6 @@ margin: 0;
 					email = document.querySelector('#emailHead').value+"@"+directEmail;
 				}
 				
-				alert(email);
 				$.ajax({
 					url: `signUp4/${email}`,
 					type:"POST",
