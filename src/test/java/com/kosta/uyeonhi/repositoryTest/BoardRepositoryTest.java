@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.kosta.uyeonhi.signUp.UserVO;
 import com.kosta.uyeonhi.sns.Board;
 import com.kosta.uyeonhi.sns.BoardRepository;
-import com.kosta.uyeonhi.sns.Sns;
 
 @SpringBootTest
 public class BoardRepositoryTest {
