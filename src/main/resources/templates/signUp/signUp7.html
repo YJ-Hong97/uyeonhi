@@ -54,6 +54,7 @@
 .signUpBox .nextBtn {
 	cursor: pointer;
 	width: 70%;
+	height:50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -73,12 +74,28 @@
 #btnBox input{
 	margin : 1%;
 }
-.idealBtn{
-	width: 15%;
-	height:30px;
+.favBtn{
+cursor:pointer;
+	width: 100%;
+	height:2rem;
 	background-color: rgba(185, 131, 255, 0.3);
 	border-radius: 30px;
 	border:0 solid;
+	
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
+}
+.favBox{
+	display: inline-block;
+	width: 25%;
+	margin:0.2rem;
+}
+.favContainer{
+	width:60%;
+	margin:0 auto;
 }
 </style>
 </head>
@@ -89,12 +106,51 @@
 			<p>
 				당신의 취향은 어떻게 되세요?
 			</p>
-			<button class = "idealBtn">#180cm이상</button>	
+			<div class ="favContainer">
+			<div class = "favBox" th:each = "fav:${favMap}">
+				<button class = "favBtn" th:value="${fav.key}">#<span th:text = "${fav.value}"></span></button>
+			 </div>
+			 </div>
 			<div id="btnBox">
-				<input type="submit" class="nextBtn" value="다음"><br>
+				<input type="button" class="nextBtn" value="다음"><br>
 			</div>
 			
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		var favArr = [];
+		var nextBtn = document.querySelector('.nextBtn');
+		
+		$('.favBtn').click(function(){
+			if(favArr.length==5&&favArr.includes($(this).val())){
+				$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+				favArr = favArr.filter(f=>f!=$(this).val());
+				console.log(favArr);
+			}else if(favArr.includes($(this).val())){
+				$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+				favArr = favArr.filter(f=>f!=$(this).val());
+				console.log(favArr);
+			}else if(favArr.length<5){
+				favArr.push($(this).val());
+				$(this).css("background-color","#B983FF");console.log(favArr);
+			}else{
+				alert("5개 이하로 선택해주세요.");
+				console.log(favArr);
+			}
+		});
+		
+		nextBtn.onclick = function(){
+			$.ajax({
+				url :"signUp8",
+				type :"POST",
+				traditional: true,
+				data:{"favArr":favArr},
+				success: function(){
+					location.href = "signUp8";
+				}
+			});
+		};
+	</script>
 </body>
 </html>

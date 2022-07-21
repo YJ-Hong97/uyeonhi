@@ -54,6 +54,7 @@
 .signUpBox .nextBtn {
 	cursor: pointer;
 	width: 70%;
+	height:50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -73,12 +74,29 @@
 #btnBox input{
 	margin : 1%;
 }
-.idealBtn{
-	width: 15%;
-	height:30px;
+
+.hobbyBtn{
+cursor:pointer;
+	width: 100%;
+	height:2rem;
 	background-color: rgba(185, 131, 255, 0.3);
 	border-radius: 30px;
 	border:0 solid;
+	
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
+}
+.hobbyBox{
+	display: inline-block;
+	width: 25%;
+	margin:0.2rem;
+}
+.hobbyContainer{
+	width:60%;
+	margin:0 auto;
 }
 </style>
 </head>
@@ -89,12 +107,51 @@
 			<p>
 				취미로 소울메이트를 찾아보세요.
 			</p>
-			<button class = "idealBtn">#180cm이상</button>	
+			<div class ="hobbyContainer">
+			<div class = "hobbyBox" th:each = "hobby:${hobbyMap}">
+				<button class = "hobbyBtn" th:value="${hobby.key}">#<span th:text = "${hobby.value}"></span></button>
+			 </div>
+			 </div>
 			<div id="btnBox">
-				<input type="submit" class="nextBtn" value="다음"><br>
+				<input type="button" class="nextBtn" value="다음"><br>
 			</div>
 			
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		var hobbyArr = [];
+		var nextBtn = document.querySelector('.nextBtn');
+		
+		$('.hobbyBtn').click(function(){
+			if(hobbyArr.length==5&&hobbyArr.includes($(this).val())){
+				$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+				hobbyArr = hobbyArr.filter(h=>h!=$(this).val());
+				console.log(hobbyArr);
+			}else if(hobbyArr.includes($(this).val())){
+				$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+				hobbyArr = hobbyArr.filter(h=>h!=$(this).val());
+				console.log(hobbyArr);
+			}else if(hobbyArr.length<5){
+				hobbyArr.push($(this).val());
+				$(this).css("background-color","#B983FF");console.log(hobbyArr);
+			}else{
+				alert("5개 이하로 선택해주세요.");
+				console.log(hobbyArr);
+			}
+		});
+		
+		nextBtn.onclick = function(){
+			$.ajax({
+				url :"signUp7",
+				type :"POST",
+				traditional: true,
+				data:{"hobbyArr":hobbyArr},
+				success: function(){
+					location.href = "signUp7";
+				}
+			});
+		};
+	</script>
 </body>
 </html>
