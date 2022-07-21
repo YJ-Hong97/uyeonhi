@@ -40,7 +40,7 @@
 	font-family: 'Gowun Dodum';
 	font-style: normal;
 	font-weight: 400;
-	font-size: 20px;
+	font-size: 1.5rem;
 	line-height: 110%;
 	text-align: left;
 }
@@ -53,39 +53,33 @@
 	margin: 15%;
 }
 
-.signUpBox label {
+.signUpBox .labelContainer{
+	display :inline-block;
 	margin-left: 15%;
 }
-
-.signUpBox input {
-	width: 43%;
-	border: 0 solid;
+.signUpBox .inputContainer {
+	width:60%;
+	display: inline-block;
 }
-
-#uname {
+.signUpBox input{
+	width: 70%;
+	height:1.5rem;
 	margin-left: 10%;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 110%;
+	text-align: left;
+	border:0 solid;
+	
+}
+.signUpBox hr{
+	width: 70%;
+	margin-right: 20%;
 }
 
-#uid {
-	margin-left: 12%;
-}
 
-#upassword {
-	margin-left: 4%;
-}
-
-#unick {
-	margin-left: 3%;
-}
-
-.signUpBox hr {
-	margin-left: 30%;
-	margin-right: 30%;
-}
-
-#nickLabel {
-	margin-right: 3%;
-}
 
 #validTestId {
 cursor:pointer;
@@ -138,17 +132,26 @@ cursor:pointer;
 		<div class="logo">uyeonhi</div>
 		<div class="signUpBox">
 			<p id="ment">거의 다 왔습니다!!</p>
-			<label>이름</label><input type="text" name="uname" id="uname">
+			<div class = "labelContainer">
+			<label>이름</label><br><br>
+			<label>id</label><br><br>
+			<label>비밀번호</label><br><br>
+			<label>닉네임</label><br><br>
+			</div>
+			<div class = "inputContainer"> 
+			<input type="text" name="uname" id="uname">
 			<hr>
-			<label>id</label><input type="text" name="uid" id="uid">
+			<input type="text" name="uid" id="uid">
 			<button id="validTestId">중복 확인</button>
 			<hr>
-			<label>비밀번호</label><input type="text" name="upassword" id="upassword">
+			<input type="text" name="upassword" id="upassword">
 			<hr>
-			<label id="nickLabel">닉네임</label><input type="text" name="unick"
+			<input type="text" name="unick"
 				id="unick">
 			<button id="validTestNick">중복 확인</button>
 			<hr>
+			</div>
+			
 			<div id="btnBox">
 				<input type="button" id="nextBtn" value="다음">
 			</div>
@@ -208,11 +211,11 @@ cursor:pointer;
 					let upassword = document.querySelector('#upassword').value;
 					let unick = document.querySelector('#unick').value;
 					$.ajax({
-						url:"signUp5",
+						url:"signUp4-1",
 						type:"POST",
 						data:{"uname":uname,"uid":uid,"upassword":upassword,"unick":unick},
 						success:function(){
-							location.href = "signUp5";
+							location.href = "signUp4-1";
 						}
 						
 					});

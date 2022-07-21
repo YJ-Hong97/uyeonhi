@@ -75,14 +75,27 @@
 	margin : 1%;
 }
 .idealBtn{
-	width: 15%;
-	height:30px;
+cursor:pointer;
+	width: 100%;
+	height:2rem;
 	background-color: rgba(185, 131, 255, 0.3);
 	border-radius: 30px;
 	border:0 solid;
+	
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
 }
 .idealBox{
 	display: inline-block;
+	width: 25%;
+	margin:0.2rem;
+}
+.idealContainer{
+	width:60%;
+	margin:0 auto;
 }
 </style>
 </head>
@@ -93,14 +106,51 @@
 			<p>
 				우연히 이상형을 찾아보세요.
 			</p>
+			<div class ="idealContainer">
 			<div class = "idealBox" th:each = "ideal:${idealMap}">
-				<button class = "idealBtn" value="${ideal.idealId}">$[[ideal.idealValue]]</button>
+				<button class = "idealBtn" th:value="${ideal.key}">#<span th:text = "${ideal.value}"></span></button>
+			 </div>
 			 </div>
 			<div id="btnBox">
-				<input type="submit" class="nextBtn" value="다음"><br>
+				<input type="button" class="nextBtn" value="다음"><br>
 			</div>
 			
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		var idealArr = [];
+		var nextBtn = document.querySelector('.nextBtn');
+		
+		$('.idealBtn').click(function(){
+			if(idealArr.length==5&&idealArr.includes($(this).val())){
+				$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+				idealArr = idealArr.filter(i=>i!=$(this).val());
+				console.log(idealArr);
+			}else if(idealArr.includes($(this).val())){
+				$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+				idealArr = idealArr.filter(i=>i!=$(this).val());
+				console.log(idealArr);
+			}else if(idealArr.length<5){
+				idealArr.push($(this).val());
+				$(this).css("background-color","#B983FF");console.log(idealArr);
+			}else{
+				alert("5개 이하로 선택해주세요.");
+				console.log(idealArr);
+			}
+		});
+		
+		nextBtn.onclick = function(){
+			$.ajax({
+				url :"signUp6",
+				type :"POST",
+				traditional: true,
+				data:{"idealArr":idealArr},
+				success: function(){
+					location.href = "signUp6";
+				}
+			});
+		};
+	</script>
 </body>
 </html>
