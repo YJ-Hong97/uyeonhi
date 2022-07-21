@@ -1,4 +1,4 @@
-package com.kosta.uyeonhi.controller;
+package com.kosta.uyeonhi.manager;
  
 import org.springframework.web.bind.annotation.RestController;
 
