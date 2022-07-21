@@ -52,61 +52,12 @@
 .signUpBox #ment {
 	margin: 15%;
 }
-.signUpBox label{
-	margin-left: 15%;
-}
-
-.signUpBox input{
-	width:43%;
-	border : 0 solid;
-}
-.signUpBox hr{
-	margin-left: 30%;
-	margin-right: 30%;
-}
-.signUpBox select{
-	margin-left:21%;
-	width: 40%;
-	text-align: center;
-}
-#hogam {
-	
-	margin: 0;
-	margin-left:5%;
-	width: 15%;
-	background: #FFFFFF;
-	border: 1px solid #979797;
-	border-radius: 30px;
-}
-#uyeon {
-	margin: 0;
-	margin-left:5%;
-	width: 20%;
-	background: #FFFFFF;
-	border: 1px solid #979797;
-	border-radius: 30px;
-}
-#male {
-	margin: 0;
-	margin-left:21.5%;
-	width: 15%;
-	background: #FFFFFF;
-	border: 1px solid #979797;
-	border-radius: 30px;
-}
-#female {
-	margin: 0;
-	width: 15%;
-	margin-left:5%;
-	background: #FFFFFF;
-	border: 1px solid #979797;
-	border-radius: 30px;
-}
 
 .signUpBox #nextBtn {
 	margin-left:15%;
 	cursor: pointer;
 	width: 70%;
+	height:50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -127,6 +78,74 @@
 #btnBox input {
 	margin: 1%;
 }
+.signUpBox .labelContainer{
+	display :inline-block;
+	margin-left: 15%;
+}
+.signUpBox .inputContainer {
+	width:60%;
+	display: inline-block;
+	vertical-align: top;
+}
+.signUpBox input{
+	width: 70%;
+	height:1.5rem;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
+	text-align: left;
+	margin-top:5%;
+	
+}
+.signUpBox select{
+	width: 60%;
+	margin-top:5%;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
+	text-align: left;
+	border:0 solid;
+}
+
+#hogam{
+cursor:pointer;
+width:8%;
+	margin: 0;
+	border: 1px solid #979797;
+	border-radius: 30px;
+	accent-color:#B983FF;
+	}
+#uyeon{
+cursor:pointer;
+width:8%;
+	margin: 0;
+	border: 1px solid #979797;
+	border-radius: 30px;
+	accent-color:#B983FF;
+}
+#male{
+cursor:pointer;
+width:8%;
+	margin: 0;
+	margin-top:4%;
+	border: 1px solid #979797;
+	border-radius: 30px;
+	accent-color:#B983FF;
+}
+#female{
+cursor:pointer;
+width:8%;
+	margin: 0;
+	margin-top:4%;
+	border: 1px solid #979797;
+	border-radius: 30px;
+	accent-color:#B983FF;
+}
+
 </style>
 </head>
 <body>
@@ -136,10 +155,17 @@
 			<p id = "ment">
 				마침내 마지막입니다.
 			</p>
-			<form action= "" method = "post">
-				<label>호감 알림 보내기</label><input type = "button" name = "hogam" id  ="hogam" value = "보낼래요">
-				<input type = "button" name= "uyeon" id = "uyeon" value = "우연히 만날래요"><br>
-				<label>mbti</label><select name = "mbti">
+			<div class = "labelContainer">
+			<label>호감 알림 보내기</label><br><br>
+			<label>mbti</label><br><br>
+			<label>성별</label><br><br>
+			<label>프로필 사진</label><br><br>
+			</div>
+			<div class ="inputContainer">
+			<form action = "signUpFinal" method ="post" enctype="multipart/form-data">
+			<label><input type = "radio" name = "hogam" id = "hogam" value = "hogam">보낼래요</label>
+			<label><input type = "radio" name = "hogam" id = "uyeon" value = "uyeon">우연히 만날래요</label><br>
+				<select name = "mbti">
 					<option value = "istj">istj</option>
 					<option value = "isfj">isfj</option>
 					<option value = "infj">infj</option>
@@ -157,15 +183,26 @@
 					<option value = "enfj">enfj</option>
 					<option value = "entj">entj</option>
 				</select><br>
-				<label>성별</label><input type = "button" name = "male" id  ="male" value = "남자">
-				<input type = "button" name= "female" id = "female" value = "여자"><br>
-				<label id = "nickLabel">프로필 사진</label><input type = "file" name = "profile" id = "profile">
+				<label><input type = "radio" name = "gender" id  ="male" value = "male">남자</label>
+				<label><input type = "radio" name= "gender" id = "female" value = "femail">여자</label><br>
+				<input type = "file" name = "profile" id = "profile" multiple="multiple">
+			</div>
+				
 				<div id="btnBox">
 					<input type="submit" id="nextBtn" value="다음">
 				</div>
-			</form>
-			
+		</form>
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		var min_file_num = 3;
+		$('#nextBtn').click(function(){
+			if(min_file_num>$('#profile')[0].files.length){
+				event.preventDefault();
+				alert('이미지 파일은 3개 이상 업로드해주세요.');
+			}
+		});
+	</script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 package com.kosta.uyeonhi.signUp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -21,10 +21,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "favorite_menu")
-public class FavoriteMenuVO {
+@Table(name = "m_ideal")
+public class MIdealVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long favoriteId;
-	private String favoriteValue;
+	private Long idealId;
+	@ManyToOne
+	private UserVO user;
 }

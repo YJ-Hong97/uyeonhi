@@ -1,7 +1,8 @@
 package com.kosta.uyeonhi.signUp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,13 +21,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@RequiredArgsConstructor //nonnull인것만 가지고 생성
 @Entity
 @Table(name = "hobby_menu")
 public class HobbyMenuVO {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long hobbyId;
-	@Column(nullable = false)
-	@NonNull
 	private String hobbyValue;
 }
