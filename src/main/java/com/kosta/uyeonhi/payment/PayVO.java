@@ -1,6 +1,6 @@
 package com.kosta.uyeonhi.payment;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,20 +28,15 @@ public class PayVO {
 	
 	@Id
 	@GeneratedValue( strategy =GenerationType.AUTO)
-	private Long  promise_id;
+	private Long  pay_id;
 	
-	@Column(length = 1000)
-	private String location;
+	@Column(length = 255)
+	private String id;
 	
-	@UpdateTimestamp
-	private Timestamp time;
+	private int uNum;
 	
-	@Column(length = 1)
-	private int promise_ox;
-	private int cancel_ox;
+	@CreationTimestamp
+	private Date regdate;
 	
-	private int room_no;
-	
-	@Column(length = 400)
-	private String reason;
+	private int amount; 
 }
