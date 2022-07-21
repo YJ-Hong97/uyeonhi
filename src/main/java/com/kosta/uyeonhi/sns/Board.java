@@ -1,6 +1,7 @@
 package com.kosta.uyeonhi.sns;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -22,8 +23,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kosta.uyeonhi.reply.Reply;
 import com.kosta.uyeonhi.signUp.UserVO;
 
-import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Builder
 @Data
+@Builder
 public class Board {
 	
 	@Id
@@ -50,14 +51,14 @@ public class Board {
 	private String video_path;
 	
 	@CreationTimestamp
-	private Date regdate;
+	private LocalDateTime regdate;
 	
 	@LastModifiedDate
-	private Date updateDate;
+	private LocalDateTime updateDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id")
-	private UserVO userVO;
+	private UserVO writer;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "reply_id")
