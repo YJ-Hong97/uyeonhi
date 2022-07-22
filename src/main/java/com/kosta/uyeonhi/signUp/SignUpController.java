@@ -4,10 +4,18 @@ package com.kosta.uyeonhi.signUp;
 
 
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +32,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.*;
+import com.kosta.uyeonhi.security.MemberService;
 
 import antlr.TokenWithIndex;
 import lombok.extern.java.Log;
@@ -49,7 +58,9 @@ public class SignUpController {
 	MHobbyRepository mhRepo;
 	@Autowired
 	MIdealRepository miRepo;
-	
+	@Autowired
+	MemberService mService;
+	private String uploadPath = "/user";
 	Map<String, String> signUpInfo = new HashMap<>();
 	ArrayList<Long> mfList = new ArrayList<>();
 	ArrayList<Long> mhList = new ArrayList<>();
@@ -228,7 +239,7 @@ public class SignUpController {
 		return mnv;
 	}
 	@PostMapping("/signUpFinal")
-	public void uSignUpFinal(String hogam,String mbti,String gender,MultipartFile[] profile) {
+	public void uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile) throws IllegalStateException, IOException {
 		log.info(hogam);
 		log.info(mbti);
 		log.info(gender);
@@ -240,6 +251,65 @@ public class SignUpController {
 		}
 		signUpInfo.put("mbti", mbti);
 		signUpInfo.put("gender", gender);
+		UserVO user = UserVO.builder()
+				.birth(birth)
+				.email(signUpInfo.get("email"))
+				.gender(gender.equals("male")? Gender.MALE: Gender.FEMALE)
+				.id(signUpInfo.get("uid"))
+				.machingConfirm(hogam.equals("hogam")? "hogam":"uyeon")
+				.name(signUpInfo.get("uname"))
+				.nickname(signUpInfo.get("unick"))
+				.password(signUpInfo.get("upassword"))
+				.phone(signUpInfo.get("phone"))
+				.build();
+		for(MultipartFile p: profile) {
+		
+	        if(p.getContentType().startsWith("image") == true){//이미지파일 체크
+	        	String originalName = p.getOriginalFilename();//파일명:모든 경로를 포함한 파일이름
+		        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+		       
+		        String folderPath = makeFolder();
+		        //UUID
+		        String uuid = UUID.randomUUID().toString();
+		        //저장할 파일 이름 중간에 "_"를 이용하여 구분
+		        String saveName = uploadPath + File.separator + folderPath +File.separator + uuid + "_" + fileName;
+		        
+		        Path savePath = Paths.get(saveName);
+		        try{
+		        	p.transferTo(savePath);
+		            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+		        } catch (IOException e) {
+		             e.printStackTrace();
+		             //printStackTrace()를 호출하면 로그에 Stack trace가 출력됩니다.
+		        }
+		        
+		       }
+	        }
+		
+		mService.joinUser(user);
 		
 	}
+	 private String makeFolder(){
+	      
+	      	String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+	        //LocalDate를 문자열로 포멧
+	        String folderPath = str.replace("/", File.separator);
+	        //만약 Data 밑에 exam.jpg라는 파일을 원한다고 할때,
+	        //윈도우는 "Data\\"eaxm.jpg", 리눅스는 "Data/exam.jpg"라고 씁니다.
+	        //그러나 자바에서는 "Data" +File.separator + "exam.jpg" 라고 쓰면 됩니다.
+	        
+	        //make folder ==================
+	        File uploadPathFoler = new File(uploadPath, folderPath);
+	        //File newFile= new File(dir,"파일명");
+	        //->부모 디렉토리를 파라미터로 인스턴스 생성
+	        
+	        if(uploadPathFoler.exists() == false){
+		        uploadPathFoler.mkdirs();
+	            //만약 uploadPathFolder가 존재하지않는다면 makeDirectory하라는 의미입니다.
+	            //mkdir(): 디렉토리에 상위 디렉토리가 존재하지 않을경우에는 생성이 불가능한 함수
+				//mkdirs(): 디렉토리의 상위 디렉토리가 존재하지 않을 경우에는 상위 디렉토리까지 모두 생성하는 함수
+	           }
+	           return folderPath;
+	      }
+	      
 }
