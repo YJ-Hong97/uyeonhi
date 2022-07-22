@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// hasRole : 특정권한을 가진 사람만 접근가능하다는 의미
 		// http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
 		http.authorizeRequests() // HttpServletRequest에 따라 접근(access)을 제한
-				.antMatchers("/face/**","/uyeonhi/**", "/login/**", "/index", "/face", "/sns/**","/payment/**").permitAll() // 로그인없이 허용																									
+				.antMatchers("/face/**","/uyeonhi/**", "/auth/**", "/index", "/face", "/sns/**","/payment/**").permitAll() // 로그인없이 허용																									
 				.antMatchers("/admin/**").hasRole("ADMIN") // /admin으로 시작하는 경로는 ADMIN롤을 가진 사용자만 접근 가능(자동으로 ROLE_가 삽입)
 				.antMatchers("/manager/**").hasRole("MANAGER").antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.anyRequest().authenticated().and() // anyRequest() 나머지요청은 authenticated() : 인증된 사용자만 접근가능(반드시 로그인을 해야한다.),
