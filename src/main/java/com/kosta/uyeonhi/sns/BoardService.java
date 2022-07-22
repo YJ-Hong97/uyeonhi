@@ -4,24 +4,32 @@ import com.kosta.uyeonhi.signUp.UserVO;
 
 public interface BoardService {
 	
-	Long register(BoardDTO boardDTO);
-	
-	
-	
-	
-	default Board dtoToEntity(Board board, UserVO userVO, int replyCount) {
+	default Board dtoToEntity(BoardDTO boardDTO) {
 		
+		Board board = Board.builder()
+				.board_id(boardDTO.getBoard_id())
+				.content(boardDTO.getContent())
+				.regdate(boardDTO.getRegdate())
+				.updateDate(boardDTO.getUpdate_date())
+				.board_type(boardDTO.getBoard_type())
+				.build();
+		
+		return board;
+	};
+	
+	default BoardDTO entityToDTO(Board board, UserVO userVO, Long replyCount) {
 		BoardDTO boardDTO = BoardDTO.builder()
 				.board_id(board.getBoard_id())
 				.content(board.getContent())
 				.regdate(board.getRegdate())
 				.update_date(board.getUpdateDate())
-				.writerNickname(userVO.getEmail())
 				.writerEmail(userVO.getEmail())
-				
-				.replyCount(replyCount)
+				.writerNickname(userVO.getNickname())
 				.build();
-		
-		return board;
-	};
+		return boardDTO;
+	}
+	
+	Long saveBoard(BoardDTO boardDTO);
+	
+	void delete(int board_id);
 }
