@@ -95,6 +95,10 @@
     font-size: 1.2em;
 }
 
+.big-container .flex-container .center-container #board_form #btn_board{
+	display:none;
+}
+
 .flex-container .right-container {
     width: 40%;
     display: flex;

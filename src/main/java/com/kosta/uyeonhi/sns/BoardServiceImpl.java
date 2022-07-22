@@ -17,10 +17,20 @@ public class BoardServiceImpl implements BoardService{
 	private final BoardRepository boardRepository;
 
 	@Override
-	public Long register(BoardDTO boardDTO) {
-		// TODO Auto-generated method stub
-		return null;
+	public Long saveBoard(BoardDTO boardDTO) {
+		log.info(boardDTO);
+		Board board = dtoToEntity(boardDTO);
+		boardRepository.save(board);
+		return board.getBoard_id();
 	}
+
+	@Override
+	public void delete(int board_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	
 	
 	
