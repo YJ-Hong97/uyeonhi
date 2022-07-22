@@ -100,6 +100,7 @@
 		function pay(btn) {
 			var cost = $(btn).val();
 			var uCount = cost / 100;
+			var userId="kosta123";
 			if(confirm("우연 "+uCount+"개를 구매하시겠습니까?")){ 
 				
 				BootPay.request({
@@ -124,7 +125,7 @@
 						phone: '010-1234-4567'
 					},
 					order_id: 'kosta_uyeonhi_444', //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
-					params: {callback1: '그대로 콜백받을 변수 1', callback2: '그대로 콜백받을 변수 2', customvar1234: '변수명도 마음대로'},
+					params: {userId: userId, callback2: '그대로 콜백받을 변수 2', customvar1234: '변수명도 마음대로'},
 				}).error(function (data) {
 					//결제 진행시 에러가 발생하면 수행됩니다.
 					alert("관리자에게 문의해주세요!");
@@ -150,16 +151,15 @@
 					//결제가 정상적으로 완료되면 수행됩니다
 					//비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
 					console.log(data);
-					var str = JSON.stringify(data);
-					alert(str);
+					
 					/*JSON.stringify(data)*/
 					$.ajax({
-						url: "/payInsert.go",
-						method: "POST",
+						url: "payInsert.go",
+						method: "post",
 						contentType: "application/json;charset=UTF-8",
 						data: JSON.stringify(data),
-						success: function(){
-							alert("결제가 완료되었습니다!");
+						success: function(responseData){
+							alert(responseData+"결제가 완료되었습니다!");
 							$(".two").trigger("click");
 							$("#select_tab").load("/uyeonhi/payView2.go");
 						}

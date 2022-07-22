@@ -23,12 +23,12 @@ import lombok.ToString;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "promise")
+@Table(name = "payment")
 public class PayVO {
 	
 	@Id
 	@GeneratedValue( strategy =GenerationType.AUTO)
-	private Long  pay_id;
+	private Long  p_id;
 	
 	@Column(length = 255)
 	private String id;
