@@ -20,13 +20,7 @@ public class SecurityController {
 	
 	
 	
-	//필수 
-	@GetMapping("/auth/login")
-	public void login() {
-		
-	}
 	
-
 	@GetMapping("/logout")
 	public void logout() {
 		
@@ -41,14 +35,6 @@ public class SecurityController {
 		System.out.println("/auth/accessDenied");
 		return "/auth/accessDenied";
 	}
-	@GetMapping("/auth/join")
-	public String join() {
-	  return "auth/joinForm";	
-	}
-	@PostMapping("/auth/joinProc")
-	public String register(@ModelAttribute UserVO user) {
-		System.out.println("===회원가입하기====");
-		mservice.joinUser(user);
-	  return "redirect:/auth/login";	
-	}
+	
+	
 }

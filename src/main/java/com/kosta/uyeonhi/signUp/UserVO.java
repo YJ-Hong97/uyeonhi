@@ -48,18 +48,13 @@ public class UserVO {
 	@NonNull//생성시 조건(lombok)
 	@Column(nullable = false)//db notnull(jpa)
 	private String email;
-	@NonNull//생성시 조건(lombok)
-	@Column(nullable = false)//db notnull(jpa)
-	private String address;
+	
 	@NonNull//생성시 조건(lombok)
 	@Column(nullable = false)//db notnull(jpa)
 	private Gender gender;
-	@NonNull//생성시 조건(lombok)
-	@Column(nullable = false)//db notnull(jpa)
+	
 	private String profile;
-	@NonNull//생성시 조건(lombok)
-	@Column(nullable = false, name = "sns_confirm")//db notnull(jpa)
-	private String snsConfirm;
+	
 	@NonNull//생성시 조건(lombok)
 	@Column(nullable = false, name = "maching_confirm")//db notnull(jpa)
 	private String machingConfirm;

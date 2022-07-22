@@ -101,7 +101,7 @@
 }
 .signUpBox select{
 	width: 60%;
-	margin-top:5%;
+	margin-top:2%;
 	font-family: 'Gowun Dodum';
 	font-style: normal;
 	font-weight: 400;
@@ -131,7 +131,6 @@ width:8%;
 cursor:pointer;
 width:8%;
 	margin: 0;
-	margin-top:4%;
 	border: 1px solid #979797;
 	border-radius: 30px;
 	accent-color:#B983FF;
@@ -140,10 +139,18 @@ width:8%;
 cursor:pointer;
 width:8%;
 	margin: 0;
-	margin-top:4%;
 	border: 1px solid #979797;
 	border-radius: 30px;
 	accent-color:#B983FF;
+}
+#images_container{
+	width: 100%;
+	border:0.1rem solid #979797;
+	border-radius: 1rem;
+}
+#images_container img{
+	width:50%;
+	border-radius: 1rem;
 }
 
 </style>
@@ -159,6 +166,7 @@ width:8%;
 			<label>호감 알림 보내기</label><br><br>
 			<label>mbti</label><br><br>
 			<label>성별</label><br><br>
+			<label>생년월일</label><br><br>
 			<label>프로필 사진</label><br><br>
 			</div>
 			<div class ="inputContainer">
@@ -185,7 +193,9 @@ width:8%;
 				</select><br>
 				<label><input type = "radio" name = "gender" id  ="male" value = "male">남자</label>
 				<label><input type = "radio" name= "gender" id = "female" value = "femail">여자</label><br>
-				<input type = "file" name = "profile" id = "profile" multiple="multiple">
+				<input type = "date" name = "birth" id = "birth"><br>
+				<input type = "file" name = "profile" id = "profile" multiple="multiple" onchange = "setDetailImage(this)">
+				<div id ="images_container"></div>
 			</div>
 				
 				<div id="btnBox">
@@ -203,6 +213,24 @@ width:8%;
 				alert('이미지 파일은 3개 이상 업로드해주세요.');
 			}
 		});
+		//썸네일
+		
+		function setDetailImage(event){
+			alert("change");
+			console.log(document.querySelector('#profile').files);
+			for(var image of document.querySelector('#profile').files){
+				var reader = new FileReader();
+				
+				reader.onload = function(event){
+					var img = document.createElement("img");
+					img.setAttribute("src",event.targe.result);
+					document.querySelector("#images_container").appendChild(img);
+				};
+				
+				console.log(image);
+				reader.readAsDataURL(image);
+			}
+		}
 	</script>
 </body>
 </html>

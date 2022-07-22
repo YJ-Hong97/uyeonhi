@@ -2,12 +2,14 @@ package com.kosta.uyeonhi.security;
 
 import javax.servlet.http.HttpSession;
 
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,6 @@ public class MemberService implements UserDetailsService{
 	
 	@Autowired
 	private UserRepository uRepo;
-	
 	@Autowired
 	PasswordEncoder passwordEncoder; // security config에서 Bean생성
 	// 회원가입
