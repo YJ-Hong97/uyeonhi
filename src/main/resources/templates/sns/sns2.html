@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+window.onload=function(){
+	var tabItem = document.querySelectorAll(".tab-title");
+	var tabContent = document.querySelectorAll(".tab-content");
+
+	tabItem.forEach((item) => {
+	  item.addEventListener("click", tabHandler);
+	});
+
+	function tabHandler(item) {
+		var tabTarget = item.currentTarget;
+		var target = tabTarget.dataset.tab;
+	  tabItem.forEach((title) => {
+	    title.classList.remove("active");
+	  });
+	  tabContent.forEach((target) => {
+	    target.classList.remove("target");
+	  });
+	  document.querySelector("#" + target).classList.add("target");
+	  tabTarget.classList.add("active");
+	}
+	
+};
+</script>
+<style>
+#profile{
+position: absolute;
+width: 8.375em;
+height: 7.813em;
+left: 28.375em;
+top: 15.875em;
+
+/* background: url(다운로드); */
+border-radius: 8.438em;
+border: 1px solid lightgray;
+}
+
+#userId{
+position: absolute;
+width: 253px;
+height: 54px;
+left: 612px;
+top: 263px;
+
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 110%;
+/* or 44px */
+
+text-align: center;
+
+color: #000000;
+}
+.totalPeople{
+position: absolute;
+width: 7.5em;
+height: 1.75em;
+
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 2em;
+line-height: 110%;
+/* or 35px */
+
+text-align: center;
+
+color: #000000;
+}
+.follower{
+left: 18.6em;
+top: 10.4em;
+}
+.following{
+left: 775px;
+top: 331px;
+}
+
+/* tab-css 수정해야함  */
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 62.5em;
+  height: 5.438em;
+}
+ul{
+margin-right: 100px;
+}
+.tab-container {
+  position: absolute;
+  top: 509px;
+  left: 60em;
+  transform: translate(-50%, -50%);
+  width: 62.5em;
+  margin: 0 auto;
+}
+.tab-title-list {
+  display: flex;
+}
+.tab-title {
+  cursor: pointer;
+ text-align:center
+}
+.tab-title:hover {
+  /* background-color: lightgray; *//* #369fff; */
+  transition: background-color 0.4s ease-in-out;
+}
+.tab-title:hover .title {
+ /*  color: #fff; */
+  transition: color 0.4s ease-in-out;
+}
+.tab-title.active {
+  border-bottom: 2px solid lightgray;
+}
+.tab-title.active .title {
+  color: black;
+}
+.tab-title.active:hover {
+  /* background-color: white; */
+  transition: background-color 0.4s ease-in-out;
+}
+.tab-title.active:hover .title {
+ /*  color: black; */
+  transition: color 0.4s ease-in-out;
+}
+.title {
+  display: inline-block;
+  /* color: #999; */
+  text-decoration: none;
+  margin: 32px;
+  
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 30px;
+line-height: 110%;
+/* or 33px */
+
+/* display: flex; */
+align-items: center;
+/* text-align: center; */
+}
+.title:visited{
+color: black;
+}
+.tab-content-container {
+  padding: 10px;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.target {
+  display: block;
+}
+/* modal */
+.followerList{
+border: 1px solid lightgray;
+border-top-left-radius:15px;
+border-top-right-radius:15px;
+background: white;
+width: 450px;
+height: 50px;
+ align-items: center;
+ 
+}
+.modalTitle{
+text-align: center;
+font-size: 1em;
+
+}
+#another{
+border: 1px solid lightgray;
+background: white;
+width: 450px;
+height: 50px;
+align-items: center;
+
+}
+.anotherProfile{
+position: absolute;
+width: 2.375em;
+height: 2.375em;
+top:38.7em;
+left:35em;
+
+/* background: url(다운로드); */
+border-radius: 8.438em;
+border: 1px solid black;
+
+}
+.anotherId{
+text-align: center;
+font-size: 1em;
+}
+        #modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+           /* 버튼누르면->display: flex; */
+           	display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background:  rgba(85, 85, 85, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+     #modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;          
+        }
+</style>
+</head>
+<body>
+	<div>
+		<div class="mySns">
+			<span id="profile"></span>
+			<span id="userId">Sungmin99</span>
+			<span class="totalPeople follower">팔로워 100</span>
+			<span class="totalPeople following">팔로잉 100</span>
+		</div>
+		<!-- tab title -->
+		<div class="tab-container">
+			<ul class="tab-title-list">
+				<li class="tab-title active" data-tab="tab1">
+					<a class="title" href="#">게시글</a>
+				</li>
+				<li class="tab-title active" data-tab="tab2">
+					<a class="title" href="#">북마크</a>
+				</li>
+			</ul>
+			
+		<!-- tab content-->
+			<div class="tab-content-container">
+			 <span id="tab1" class="tab-content target">게시글나올곳</span>
+			 <span id="tab2" class="tab-content">북마크게시글나올곳</span>
+			</div>
+			
+		</div>
+	</div>
+	
+	<!-- modal  -->
+	<!-- <span class="anotherProfile"></span>
+	<div id="modal" class="modal-overlay">
+	<div class="content">
+	<table>
+	<tr>
+	<td colspan="2">팔로워</td>
+	</tr>
+	<tr>
+	<td><span class="anotherProfile"></span></td>
+	<td>아이디</td>
+	</tr>
+	</table>
+	</div>
+	</div> -->
+	
+		<!-- modal -->
+	<div id="modal" class="modal-overlay">
+			<div class="content">
+			<div class="followerList">
+			<p class="modalTitle">팔로워</p>
+			
+			</div>
+			<div id="another">
+			<!-- <span class="anotherProfile"></span> -->
+			<p class="anotherId">kkk111</p>
+			</div>				
+			</div>
+	</div>
+</body>
+</html>
