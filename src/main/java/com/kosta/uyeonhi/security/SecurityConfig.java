@@ -1,11 +1,11 @@
 package com.kosta.uyeonhi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,16 +21,22 @@ import lombok.extern.java.Log;
 @Log
 @Configuration
 @EnableWebSecurity // security설정을 담당하는 Bean이다.
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	MemberService memberService;
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(); // Spring Security에서 제공하는 비밀번호 암호화 객체
-	}
 
+    @Bean
+    PasswordEncoder passwordEncoder() {
+    	log.info("mservice");
+        return new BCryptPasswordEncoder(); // Spring Security¿¡¼­ Á¦°øÇÏ´Â ºñ¹Ð¹øÈ£ ¾ÏÈ£È­ °´Ã¼
+    }
 
+public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	log.info("build auth global....");
+	auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
+}
 	@Override // WebSecurity를 통해 HTTP 요청에 대한 웹 기반 보안을 구성
 	public void configure(WebSecurity web) throws Exception {
 		// 파일 기준은 resources/static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
