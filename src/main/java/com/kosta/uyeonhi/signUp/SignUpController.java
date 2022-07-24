@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.*;
+import com.kosta.uyeonhi.email.EmailService;
 import com.kosta.uyeonhi.security.MemberService;
 
 import antlr.TokenWithIndex;
@@ -60,6 +62,8 @@ public class SignUpController {
 	MIdealRepository miRepo;
 	@Autowired
 	MemberService mService;
+	@Autowired
+	EmailService eService;
 	private String uploadPath = "/user";
 	Map<String, String> signUpInfo = new HashMap<>();
 	ArrayList<Long> mfList = new ArrayList<>();
@@ -97,8 +101,10 @@ public class SignUpController {
 		signUpInfo.put("email", email);
 		log.info(signUpInfo.toString());
 	}
-	@GetMapping("/signUp4")
-	public ModelAndView uSignUp4(ModelAndView mnv) {
+	@GetMapping("/signUp4/{signUpInfo}")
+	public ModelAndView uSignUp4(ModelAndView mnv,@PathVariable Map<String, String> signUpInfo) {
+		this.signUpInfo = signUpInfo;
+		log.info(signUpInfo.toString());
 		mnv.setViewName("signUp/signUp4");
 		return mnv;
 	}
@@ -124,8 +130,14 @@ public class SignUpController {
 		}
 	}
 	@PostMapping("/validEmail/{email}")
-	public boolean validEmail(@PathVariable String email) {
+	public boolean validEmail(@PathVariable String email) throws MessagingException {
 		boolean result = uRepo.existsByEmail(email);
+		if(result) {
+			eService.sendMail(email,signUpInfo);
+			return result;
+		}else {
+			eService.sendMail(email,signUpInfo);
+		}
 		return result;
 	}
 	@PostMapping("/signUp4-1")
@@ -238,6 +250,7 @@ public class SignUpController {
 		mnv.setViewName("signUp/signUp8");
 		return mnv;
 	}
+
 	@PostMapping("/signUpFinal")
 	public void uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile) throws IllegalStateException, IOException {
 		log.info(hogam);
