@@ -170,7 +170,8 @@ cursor:pointer;
 				type:"POST",
 				data:{"uid":uid},
 				success: function(response){
-					if(response == 'success'){
+					console.log(response);
+					if(response["result"] == 'success'){
 						
 						validId = 'success';
 					}else{
