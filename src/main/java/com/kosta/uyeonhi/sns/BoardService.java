@@ -1,5 +1,10 @@
 package com.kosta.uyeonhi.sns;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.kosta.uyeonhi.signUp.UserVO;
 
 public interface BoardService {
@@ -29,7 +34,11 @@ public interface BoardService {
 		return boardDTO;
 	}
 	
-	Long saveBoard(BoardDTO boardDTO);
-	
+	Page<Board> pageList(Pageable pageable);
+		
+	void saveBoard(BoardDTO boardDTO);
+		
 	void delete(int board_id);
+
+	
 }

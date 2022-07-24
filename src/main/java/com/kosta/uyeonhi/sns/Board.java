@@ -54,6 +54,7 @@ public class Board {
 	private LocalDateTime regdate;
 	
 	@LastModifiedDate
+	@Column(nullable = true)
 	private LocalDateTime updateDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -67,9 +68,12 @@ public class Board {
 	@Column(nullable = false)
 	private String board_type;
 	
+	@Column(nullable = true)
 	private int total_person;
 	
+	@Column(nullable = true)
 	private int applicant_person;
 	
+	@Column(nullable = true)
 	private Date deadline;
 }

@@ -139,10 +139,11 @@
 
 				if (contents === "") {
 					alert("내용을 입력해주세요.");
+					return;
 				}
 
 				$.ajax({
-					url: "/boardWrite",
+					url: "boardWrite",
 					data: contents,
 					type: "POST",
 					success: function (res) {
