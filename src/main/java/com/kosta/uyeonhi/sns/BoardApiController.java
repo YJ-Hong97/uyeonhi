@@ -26,7 +26,8 @@ public class BoardApiController {
 	private  BoardService boardService;
 	
 	@PostMapping("/boardWrite")
-	public ResponseEntity<?> boardWritePost(@RequestBody BoardRequestDTO boardDTO) {
+	public ResponseEntity<?> boardWritePost(@RequestBody BoardRequestDTO boardDTO, HttpSession session) {
+		session.getAttribute("");
 		System.out.println(boardDTO.toString());
 		return new ResponseEntity<>(boardService.saveBoard(boardDTO), HttpStatus.CREATED);
 	}
