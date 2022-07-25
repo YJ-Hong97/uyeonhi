@@ -1,25 +1,152 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Voice Chat</title>
+<meta charset="utf-8" />
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
+	integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY="
+	crossorigin="anonymous"></script> -->
+<title>Voice Chat</title>
 <style>
-.profile1{
-	width : 10px;
-	height: 10px;
+.profile1 {
+	margin-top: 80px;
+	margin-left: 150px;
+	width: 300px;
+	height: 300px;
 	background-color: purple;
-	
+	border-radius: 50%;
 }
 
+.profile2 {
+	margin-top: 80px;
+	margin-left: 230px;
+	width: 300px;
+	height: 300px;
+	background-color: purple;
+	border-radius: 50%;
+}
+
+.container {
+	height: 600px;
+}
+
+.box1 {
+	position: fixed;
+	bottom: 80px;
+	margin-left: 80px;
+	float: left;
+	margin-top: 60px;
+	margin-left: 30px;
+	width: 430px;
+	height: 500px;
+}
+
+.box2 {
+	position: fixed;
+	bottom: 80px;
+	margin-left: 450px;
+	float: left;
+	margin-top: 60px;
+	width: 430px;
+	height: 500px;
+}
+
+.box3 {
+	position: fixed;
+	bottom: 80px;
+	margin-left: 900px;
+	float: left;
+	margin-top: 60px;
+	margin-right: 30px;
+	width: 430px;
+	height: 500px;
+}
+
+#TARGET {
+	width:300px;
+	margin-left: 360px;
+	margin-top: 180px;
+	text-align: 100px;
+}
+
+
+.end {
+	margin-left: 340px;
+	margin-top: 10px;
+	width: 100px;
+	height: 100px;
+}
 </style>
-    
+
+
+
+
 </head>
 
 <body>
-<h1>dddd</h1>
+	<h1>dddd</h1>
+	<div class="container">
+		<div class="box1">
+			<img class="profile1" src="/images/p1.jpg" alt="">
+		</div>
+		<div class="box2">
+			<div id="TARGET">00:00</div>
+				<img class="end"
+					src="/images/circle-phone-hangup-free-icon-font.png" alt="" onclick="">
+		
 
-<img class="profile1" src="" alt="">
-    
+
+		</div>
+		<div class="box3">
+			<img class="profile2" src="/images/p2.jpg" alt="">
+		</div>
+
+	</div>
+
+	<script>
+		let timerId;
+		let time = 0;
+		const stopwatch = document.getElementById("TARGET");
+		let hour, min, sec;
+
+		startClock();
+
+		function printTime() {
+			time++;
+			stopwatch.innerText = getTimeFormatString();
+		}
+
+		//시계 시작 - 재귀호출로 반복실행
+		function startClock() {
+			printTime();
+			stopClock();
+			timerId = setTimeout(startClock, 1000);
+		}
+
+		//시계 중지
+		function stopClock() {
+			if (timerId != null) {
+				clearTimeout(timerId);
+			}
+		}
+
+		// 시계 초기화
+		function resetClock() {
+			stopClock()
+			stopwatch.innerText = "00:00:00";
+			time = 0;
+		}
+
+		// 시간(int)을 시, 분, 초 문자열로 변환
+		function getTimeFormatString() {
+			hour = parseInt(String(time / (60 * 60)));
+			min = parseInt(String((time - (hour * 60 * 60)) / 60));
+			sec = time % 60;
+
+			return String(hour).padStart(2, '0') + ":"
+					+ String(min).padStart(2, '0') + ":"
+					+ String(sec).padStart(2, '0');
+		}
+	</script>
 </body>
 
 </html>
