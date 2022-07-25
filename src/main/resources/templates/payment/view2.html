@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <title>Insert title here</title>
@@ -31,10 +31,6 @@
 	text-align: right;
 	padding-right: 1%;
 }
-.color {
-	color: #B983FF;
-	font-weight: 800;
-}
 </style>
 <body>
 	<div class="view2">
@@ -46,12 +42,13 @@
 				<td>잔여수량</td>
 				<td class="wid5">금액</td>
 			</tr>
-			<tr class="tdContent">
-				<td>1</td>
-				<td>2022-07-14</td>
-				<td>1개</td>
-				<td>11개</td>
-				<td class="wid5 color">100원</td>
+			<tr class="tdContent" 
+				th:each="pay, rowStat: ${paylist}">
+				<td th:text="${rowStat.count}"></td>
+				<td th:text="${pay.regdate}"></td>
+				<td><span th:text="${pay.unum}"></span>개</td>
+				<td><span th:text="${pay.current_unum}"></span>개</td>
+				<td class="wid5"><span th:text="${pay.amount}"></span>원</td>
 			</tr>
 		</table>
 	</div>
