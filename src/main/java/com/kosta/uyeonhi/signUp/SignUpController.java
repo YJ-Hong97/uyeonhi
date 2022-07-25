@@ -34,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.*;
 import com.kosta.uyeonhi.email.EmailService;
+import com.kosta.uyeonhi.email.EmailTokenService;
 import com.kosta.uyeonhi.security.MemberService;
 
 import antlr.TokenWithIndex;
@@ -64,6 +65,8 @@ public class SignUpController {
 	MemberService mService;
 	@Autowired
 	EmailService eService;
+	@Autowired
+	EmailTokenService tService;
 	private String uploadPath = "/user";
 	Map<String, String> signUpInfo = new HashMap<>();
 	ArrayList<Long> mfList = new ArrayList<>();
@@ -133,10 +136,8 @@ public class SignUpController {
 	public boolean validEmail(@PathVariable String email) throws MessagingException {
 		boolean result = uRepo.existsByEmail(email);
 		if(result) {
-			eService.sendMail(email,signUpInfo);
 			return result;
 		}else {
-			eService.sendMail(email,signUpInfo);
 		}
 		return result;
 	}
