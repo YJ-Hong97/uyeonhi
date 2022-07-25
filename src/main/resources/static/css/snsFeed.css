@@ -1,0 +1,133 @@
+#profile{
+position: absolute;
+width: 8.375em;
+height: 7.813em;
+left: 28.375em;
+top: 15.875em;
+
+/* background: url(다운로드); */
+border-radius: 8.438em;
+border: 1px solid lightgray;
+}
+
+#userId{
+position: absolute;
+width: 253px;
+height: 54px;
+left: 612px;
+top: 263px;
+
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 110%;
+/* or 44px */
+
+text-align: center;
+
+color: #000000;
+}
+.totalPeople{
+position: absolute;
+width: 7.5em;
+height: 1.75em;
+
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 2em;
+line-height: 110%;
+/* or 35px */
+
+text-align: center;
+
+color: #000000;
+}
+.follower{
+left: 18.6em;
+top: 10.4em;
+}
+.following{
+left: 775px;
+top: 331px;
+}
+
+/*tab*/
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 62.5em;
+  height: 5.438em;
+}
+ul{
+margin-right: 100px;
+}
+.tab-container {
+  position: absolute;
+  top: 509px;
+  left: 60em;
+  transform: translate(-50%, -50%);
+  width: 62.5em;
+  margin: 0 auto;
+}
+.tab-title-list {
+  display: flex;
+}
+.tab-title {
+  cursor: pointer;
+ text-align:center
+}
+.tab-title:hover {
+  /* background-color: lightgray; *//* #369fff; */
+  transition: background-color 0.4s ease-in-out;
+}
+.tab-title:hover .title {
+ /*  color: #fff; */
+  transition: color 0.4s ease-in-out;
+}
+.tab-title.active {
+  border-bottom: 2px solid lightgray;
+}
+.tab-title.active .title {
+  color: black;
+}
+.tab-title.active:hover {
+  /* background-color: white; */
+  transition: background-color 0.4s ease-in-out;
+}
+.tab-title.active:hover .title {
+ /*  color: black; */
+  transition: color 0.4s ease-in-out;
+}
+.title {
+  display: inline-block;
+  /* color: #999; */
+  text-decoration: none;
+  margin: 32px;
+  
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 30px;
+line-height: 110%;
+/* or 33px */
+
+/* display: flex; */
+align-items: center;
+/* text-align: center; */
+}
+.title:visited{
+color: black;
+}
+.tab-content-container {
+  padding: 10px;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.target {
+  display: block;
+}
