@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Reply {
+public class Reply{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
