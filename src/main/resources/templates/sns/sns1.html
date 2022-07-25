@@ -48,6 +48,8 @@
 </head>
 
 <body>
+
+
 	<div>
 		<div class="big-container">
 			<div class="flex-container">
@@ -58,8 +60,12 @@
 					<div id="container">
 						<span class="material-symbols-outlined" id="person">
 							account_circle </span>
-						<form id="board_form" action="boardWrite" method="post">
-							<input type="text" class="box" id="toggleBtn">
+						<form id="board_form">
+							<input type="textarea" class="box" id="toggleBtn">
+							<select name="sns_select" id="sns_select" class="select">
+								<option value="normal">게시글</option>
+								<option value="recruit">모집글</option>
+							</select>
 							<button id="btn_board" type="button">등록</button>
 						</form>
 						<div class="section collapsible">
@@ -69,9 +75,13 @@
 						</div>
 					</div>
 					<ul>
-						<li th:each="dto : ${list}">
+						<li th:each="list : ${boardList}">
 							<div class="board-box">
-								<div id="container2">
+								<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
+									<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
+										more_horiz </span>
+								</div>
+								<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
 									<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
 										more_horiz </span>
 								</div>
@@ -80,7 +90,7 @@
 									<span id="regdate">today</span>
 									<span class="material-symbols-outlined" id="heart"> favorite </span>
 									<span class="material-symbols-outlined" id="bookmark"> bookmark </span>
-									<span>[[${dto.contents}]]</span>
+									<span>[[${list.content}]]</span>
 								</div>
 							</div>
 						</li>
@@ -134,21 +144,27 @@
 				$('#btn_board').css("display", "block")
 			});
 
-			$('#btn_board').on('click', function () {
-				const contents = $("#toggleBtn").val().trim();
 
-				if (contents === "") {
-					alert("내용을 입력해주세요.");
-					return;
-				}
+			$('#btn_board').on('click', function () {
+				let data = {
+					content: $("#toggleBtn").val().trim(),
+					board_type: $("#sns_select option:selected").text()
+				};
+
+				console.log(data);
 
 				$.ajax({
-					url: "boardWrite",
-					data: contents,
+					url: "/sns/boardWrite",
+					contentType: 'application/json',
+					data: JSON.stringify(data),
+					dataType: "json",
 					type: "POST",
 					success: function (res) {
 						alert("게시글 등록 완료");
-						location.href = "/";
+						location.href = "/sns/sns1";
+					},
+					error: function (err) {
+						alert(JSON.stringify(err));
 					}
 				})
 			});
