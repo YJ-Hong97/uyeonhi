@@ -62,9 +62,8 @@ public class BoardRequestDTO {
 	
 	public Board toEntity(){
 		return Board.builder()
+				.boardId(board_id)
 				.content(content)
-				.writer(writer)
-				.board_type(board_type)
 				.build();
 	}
 

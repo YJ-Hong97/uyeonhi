@@ -8,8 +8,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 	<link rel="stylesheet" th:href="@{/css/sns.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 	<script>
 
 		window.onload = function () {
@@ -72,11 +74,13 @@
 						<span class="material-symbols-outlined" id="person">
 							account_circle </span>
 						<form id="board_form">
+							<input type="text" th:value="${username}">
 							<input type="textarea" class="box" id="toggleBtn">
 							<select name="sns_select" id="sns_select" class="select">
 								<option value="normal">게시글</option>
 								<option value="recruit">모집글</option>
 							</select>
+							<button id="btn_fileUpload" type="button">사진등록</button>
 							<button id="btn_board" type="button">등록</button>
 						</form>
 						<div class="section collapsible">
@@ -85,9 +89,39 @@
 							<span class="material-symbols-outlined">cloud_upload</span>
 						</div>
 					</div>
+
+
+
+					<script>
+
+					</script>
+
+
 					<ul>
-						<li th:each="list : ${boardList}">
+						<li th:each="list, status: ${boardList}">
 							<div class="board-box">
+								<input type="hidden" class="boardId" th:value="${list.boardId}" />
+								<input type="hidden" class="boardIndex" th:value="${status.index}" />
+								<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
+									class="delete_button">삭제</button>
+
+
+
+								<p><a class="btn" th:href="|#ex${status.count}|"
+										th:onclick="|call(${status.count})|">도달창띄우기2</a></p>
+
+								<div th:id="|ex${status.count}|" class="modal">
+
+									<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳
+									</div>
+									<textarea th:id="|modify_${status.count}|" placeholder="작성하세요.">[[${list.content}]]
+									</textarea>
+
+									<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
+										th:aa=${status.count} class="update_button">수정</button>
+								</div>
+
+
 								<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
 									<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
 										more_horiz </span>
@@ -96,12 +130,12 @@
 									<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
 										more_horiz </span>
 								</div>
-								<div id="container3">이미지넣는곳</div>
-								<div id="container4">
+								<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳</div>
+								<div id="container4" th:value="${list.boardId}" th:class="${list.boardId}">
 									<span id="regdate">today</span>
 									<span class="material-symbols-outlined" id="heart"> favorite </span>
 									<span class="material-symbols-outlined" id="bookmark"> bookmark </span>
-									<span>[[${list.content}]]</span>
+									<span class="board_text">[[${list.content}]]</span>
 								</div>
 							</div>
 						</li>
@@ -147,12 +181,15 @@
 		</div>
 	</div>
 
-	<script th:inline="javascript">
+	<script>
 		$(document).ready(function () {
+
+
+
 			$('#toggleBtn').click(function () {
 				$('#container').css("height", "250px");
 				$('#toggleBtn').css("height", "200px");
-				$('#btn_board').css("display", "block")
+				$('#btn_board').css("display", "block");
 			});
 
 
@@ -165,7 +202,7 @@
 				console.log(data);
 
 				$.ajax({
-					url: "/sns/boardWrite",
+					url: '/api/sns/boardWrite',
 					contentType: 'application/json',
 					data: JSON.stringify(data),
 					dataType: "json",
@@ -179,9 +216,67 @@
 					}
 				})
 			});
+
+			$('.delete_button').on('click', function () {
+				let board_id = $(this).val();
+
+				console.log(board_id);
+
+				$.ajax({
+					url: '/api/sns/boardDelete/' + board_id,
+					contentType: 'application/json',
+					dataType: "json",
+					type: "DELETE",
+					success: function (res) {
+						alert("게시글 삭제 완료");
+						location.href = "/sns/sns1";
+					},
+					error: function (err) {
+						alert(JSON.stringify(err));
+					}
+				})
+			});
+
+
+
+			$('.update_button').on('click', function () {
+
+
+
+				let boardId = $(this).val();
+				let seqence = $(this).attr('aa');
+				let boardContent = $('#modify_' + seqence).val();
+
+				data = {
+					board_id: boardId,
+					seq: seqence,
+					content: boardContent
+				}
+
+				$.ajax({
+					url: '/api/sns/boardUpdate/' + boardId,
+					data:JSON.stringify(data),
+					contentType: 'application/json',
+					dataType: "json",
+					type: "PUT",
+					success: function (res) {
+						alert("게시글 수정 완료");
+						location.href = "/sns/sns1";
+					},
+					error: function (err) {
+						alert(JSON.stringify(err));
+					}
+				})
+			});
 		});
 
+		function call(modalName) {
 
+
+			$("#ex" + modalName).modal({
+				fadeDuration: 250
+			});
+		}
 	</script>
 
 </body>
