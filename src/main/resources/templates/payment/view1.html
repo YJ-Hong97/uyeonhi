@@ -160,8 +160,9 @@
 						data: JSON.stringify(data),
 						success: function(responseData){
 							alert(responseData+"결제가 완료되었습니다!");
+						    $(location).attr('href', '/uyeonhi/uyeonPay');
 							$(".two").trigger("click");
-							$("#select_tab").load("/uyeonhi/payView2.go");
+							//$("#select_tab").load("/uyeonhi/payView2.go");
 							/*결제 취소 로직은 REST API 써야 한다고 함*/
 							/*나중*/
 								
