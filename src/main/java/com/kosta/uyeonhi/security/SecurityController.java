@@ -1,13 +1,16 @@
 package com.kosta.uyeonhi.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.security.Principal;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
 
@@ -19,15 +22,16 @@ public class SecurityController {
 	MemberService mservice;
 	
 	
-	
-	
 	@GetMapping("/logout")
 	public void logout() {
 		
 	}
 	// 
 	@RequestMapping("/auth/loginSuccess")
-	public void loginSuccess() {
+	public void loginSuccess(Principal principal) {
+		String mid = principal.getName();
+		UserDetails userDetails3 = mservice.loadUserByUsername(mid);
+		System.out.println("방법4:" +userDetails3);
 		System.out.println("/auth/loginSuccess");
 	}
 	@RequestMapping("/accessDenied")

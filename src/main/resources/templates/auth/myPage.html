@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link
+	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
+	rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap"
+	rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<style type="text/css">
+	#profile {
+		position: absolute;
+		width: 134px;
+		height: 125px;
+		left: 454px;
+		top: 254px;
+		border: solid black 1px;
+		border-radius: 135px;
+	}
+	#nick {
+		position: absolute;
+		width: 253px;
+		height: 54px;
+		left: 612px;
+		top: 263px;
+		
+		font-family: 'Gowun Dodum';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 40px;
+		line-height: 110%;
+		/* or 44px */
+		
+		text-align: center;
+		
+		color: #000000;
+		
+	}
+	
+	#follow {
+		position: absolute;
+		width: 253px;
+		height: 56px;
+		left: 561px;
+		top: 331px;
+		
+		font-family: 'Gowun Dodum';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 32px;
+		line-height: 110%;
+		/* or 35px */
+		
+		text-align: center;
+		
+		color: #000000;
+		
+	}
+	
+	#following {
+		position: absolute;
+		width: 253px;
+		height: 56px;
+		left: 773px;
+		top: 331px;
+		
+		font-family: 'Gowun Dodum';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 32px;
+		line-height: 110%;
+		/* or 35px */
+		
+		text-align: center;
+		
+		color: #000000;
+		
+	}
+	
+	#llowcount {
+		position: absolute;
+		width: 270px;
+		height: 48px;
+		left: 647px;
+		top: 331px;
+		
+		font-family: 'Gowun Dodum';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 32px;
+		line-height: 110%;
+		/* or 35px */
+		
+		text-align: center;
+		
+		color: #000000;
+	}
+	
+	#llowingcount {
+		position: absolute;
+		width: 270px;
+		height: 48px;
+		left: 859px;
+		top: 331px;
+		
+		font-family: 'Gowun Dodum';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 32px;
+		line-height: 110%;
+		/* or 35px */
+		
+		text-align: center;
+		
+		color: #000000;
+	}
+</style>
+</head>
+<body>
+	[[${session.user}]]
+	<img id="profile" alt="" src="">
+	<p id="nick">[[${session.user.nickname}]] </p>
+	<p id="follow"> 팔로우 </p>
+	<p id="llowcount">100 </p>
+	<p id="following"> 팔로잉 </p>
+	<p id="llowingcount">100 </p>
+	<!-- <img alt="" src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5C2022%5C07%5C27%5Cb7b94785-af14-40bc-8a0f-3495e73facda_1000__3.jfif"> -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
