@@ -93,7 +93,7 @@ $(document).ready(function(){
 	<div class="userArea">
 		<span class="userPhoto"></span> 
 		<span class="userText"> 
-			<span class="userId">asdf99</span>님이 보유 중인 우연 <span class="userCount">10개</span>
+			<span class="userId">asdf99</span>님이 보유 중인 우연 <span th:text="|${coin}개|" class="userCount"></span>
 		</span>
 	</div>
 	<table class= "btnArea">
