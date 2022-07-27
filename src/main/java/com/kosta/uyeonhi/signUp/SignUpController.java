@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +36,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.*;
 import com.kosta.uyeonhi.email.EmailService;
+import com.kosta.uyeonhi.email.EmailToken;
 import com.kosta.uyeonhi.email.EmailTokenService;
+import com.kosta.uyeonhi.fileUpload.EmptyFileException;
+import com.kosta.uyeonhi.fileUpload.FileUploadFailedException;
+import com.kosta.uyeonhi.fileUpload.UploadS3Service;
 import com.kosta.uyeonhi.security.MemberService;
 
 import antlr.TokenWithIndex;
@@ -67,7 +73,11 @@ public class SignUpController {
 	EmailService eService;
 	@Autowired
 	EmailTokenService tService;
-	private String uploadPath = "/user";
+	@Autowired
+	UploadS3Service uploadService;
+	@Autowired
+	ProfileRepository pRepo;
+	
 	Map<String, String> signUpInfo = new HashMap<>();
 	ArrayList<Long> mfList = new ArrayList<>();
 	ArrayList<Long> mhList = new ArrayList<>();
@@ -111,19 +121,22 @@ public class SignUpController {
 		mnv.setViewName("signUp/signUp4");
 		return mnv;
 	}
-	@PostMapping("/validTestId")
-	public String validTestId( String uid) {
+	@PostMapping("/validTestId/{uid}")
+	public String validTestId(@PathVariable String uid) {
+		log.info("아아");
+		log.info(uid);
 		boolean result = true;
 		result = uRepo.existsById(uid);
 		result = mRepo.existsById(uid);
+		
 		if(result) {
 			return "fail";
 		}else {
 			return "success";
 		}
 	}
-	@PostMapping("/validTestNick")
-	public String validTestNick(String unick) {
+	@PostMapping("/validTestNick/{unick}")
+	public String validTestNick(@PathVariable String unick) {
 		boolean result = true;
 		result = uRepo.existsByNickname(unick);
 		if(result) {
@@ -136,38 +149,45 @@ public class SignUpController {
 	public boolean validEmail(@PathVariable String email) throws MessagingException {
 		boolean result = uRepo.existsByEmail(email);
 		if(result) {
+			tService.createEmailToken(email);
 			return result;
 		}else {
+			tService.createEmailToken(email);
 		}
 		return result;
 	}
-	@PostMapping("/signUp4-1")
+	@GetMapping("/validEmail/{token}/{email}")
+	public ModelAndView validEmail(@PathVariable String token,@PathVariable String email,ModelAndView mnv) {
+		eService.verifyEmail(token);
+		mnv.setViewName("signUp/signUp4");
+		signUpInfo.put("email",email);
+		log.info(signUpInfo.toString());
+		return mnv;
+		
+	}
+	@RequestMapping(value = "/signUp4-1", method = RequestMethod.POST)
 	public void uMyinfo(String uname, String uid, String upassword, String unick) {
 		signUpInfo.put("uname", uname);
 		signUpInfo.put("uid", uid);
 		signUpInfo.put("upassword", upassword);
 		signUpInfo.put("unick", unick);
 		log.info(signUpInfo.toString());
+		log.info("4-1post왔다");
 		
 	}
-	@GetMapping("/signUp4-1")
-	public ModelAndView uMyinfo2(ModelAndView mnv) {
-		
-		Map<String, String> infoMap = new HashMap<>();
-		iRepo.findAll().forEach(i->{
-			infoMap.put(i.getIdealId()+"i", i.getIdealValue());
-		});
-		fRepo.findAll().forEach(f->{
-			infoMap.put(f.getFavoriteId()+"f", f.getFavoriteValue());
-		});
-		hRepo.findAll().forEach(h->{
-			infoMap.put(h.getHobbyId()+"h", h.getHobbyValue());
-		});
-		mnv.addObject("infoMap", infoMap);
-		mnv.addObject("nick",signUpInfo.get("unick"));
-		mnv.setViewName("signUp/signUp4-1");
-		return mnv;
-	}
+
+	
+	 @GetMapping("/signUp4-1") public ModelAndView uMyinfo2(ModelAndView mnv) {
+	 
+	 Map<String, String> infoMap = new HashMap<>(); iRepo.findAll().forEach(i->{
+	 infoMap.put(i.getIdealId()+"i", i.getIdealValue()); });
+	 fRepo.findAll().forEach(f->{ infoMap.put(f.getFavoriteId()+"f",
+	 f.getFavoriteValue()); }); hRepo.findAll().forEach(h->{
+	 infoMap.put(h.getHobbyId()+"h", h.getHobbyValue()); });
+	 mnv.addObject("infoMap", infoMap);
+	 mnv.addObject("nick",signUpInfo.get("unick"));
+	 mnv.setViewName("signUp/signUp4-1"); return mnv; }
+	 
 	@PostMapping("/signUp5")
 	public void uSignUp5(String[] mInfo) {
 		for(String m : mInfo) {
@@ -253,7 +273,7 @@ public class SignUpController {
 	}
 
 	@PostMapping("/signUpFinal")
-	public void uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile) throws IllegalStateException, IOException {
+	public void uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile) throws IllegalStateException, IOException, EmptyFileException, FileUploadFailedException {
 		log.info(hogam);
 		log.info(mbti);
 		log.info(gender);
@@ -265,6 +285,7 @@ public class SignUpController {
 		}
 		signUpInfo.put("mbti", mbti);
 		signUpInfo.put("gender", gender);
+		ArrayList<String> files = uploadService.uploadFile(profile);
 		UserVO user = UserVO.builder()
 				.birth(birth)
 				.email(signUpInfo.get("email"))
@@ -276,54 +297,16 @@ public class SignUpController {
 				.password(signUpInfo.get("upassword"))
 				.phone(signUpInfo.get("phone"))
 				.build();
-		for(MultipartFile p: profile) {
-		
-	        if(p.getContentType().startsWith("image") == true){//이미지파일 체크
-	        	String originalName = p.getOriginalFilename();//파일명:모든 경로를 포함한 파일이름
-		        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-		       
-		        String folderPath = makeFolder();
-		        //UUID
-		        String uuid = UUID.randomUUID().toString();
-		        //저장할 파일 이름 중간에 "_"를 이용하여 구분
-		        String saveName = uploadPath + File.separator + folderPath +File.separator + uuid + "_" + fileName;
-		        
-		        Path savePath = Paths.get(saveName);
-		        try{
-		        	p.transferTo(savePath);
-		            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-		        } catch (IOException e) {
-		             e.printStackTrace();
-		             //printStackTrace()를 호출하면 로그에 Stack trace가 출력됩니다.
-		        }
-		        
-		       }
-	        }
-		
 		mService.joinUser(user);
+		for(String fileName:files) {
+			ProfileVO profileVO = ProfileVO.builder()
+					.fileName(fileName)
+					.user(user)
+					.build();
+			pRepo.save(profileVO);
+		}
+		
 		
 	}
-	 private String makeFolder(){
-	      
-	      	String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-	        //LocalDate를 문자열로 포멧
-	        String folderPath = str.replace("/", File.separator);
-	        //만약 Data 밑에 exam.jpg라는 파일을 원한다고 할때,
-	        //윈도우는 "Data\\"eaxm.jpg", 리눅스는 "Data/exam.jpg"라고 씁니다.
-	        //그러나 자바에서는 "Data" +File.separator + "exam.jpg" 라고 쓰면 됩니다.
-	        
-	        //make folder ==================
-	        File uploadPathFoler = new File(uploadPath, folderPath);
-	        //File newFile= new File(dir,"파일명");
-	        //->부모 디렉토리를 파라미터로 인스턴스 생성
-	        
-	        if(uploadPathFoler.exists() == false){
-		        uploadPathFoler.mkdirs();
-	            //만약 uploadPathFolder가 존재하지않는다면 makeDirectory하라는 의미입니다.
-	            //mkdir(): 디렉토리에 상위 디렉토리가 존재하지 않을경우에는 생성이 불가능한 함수
-				//mkdirs(): 디렉토리의 상위 디렉토리가 존재하지 않을 경우에는 상위 디렉토리까지 모두 생성하는 함수
-	           }
-	           return folderPath;
-	      }
-	      
+	
 }
