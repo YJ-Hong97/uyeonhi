@@ -15,19 +15,19 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/sns/")
+@RequestMapping("/api")
 public class LikeApiController {
 	
 	private final LikesRepository likesRepository;
 	
-	@PostMapping("/sns1/{boardId}/likes")
+	@PostMapping("/sns/{boardId}/likes")
 	public ResponseEntity<?> likes(@PathVariable long boardId, @AuthenticationPrincipal SecurityUser user){
 		likesRepository.likes(boardId, user.getUser().getId());
 		return new ResponseEntity<>("좋아요 성공",HttpStatus.OK);
 		
 	}
 	
-	@DeleteMapping("/sns1/{boardId}/likes")
+	@DeleteMapping("/sns/{boardId}/likes")
 	public ResponseEntity<?> notLikes(@PathVariable long boardId, @AuthenticationPrincipal SecurityUser user){
 		likesRepository.notLikes(boardId, user.getUser().getId());
 		return new ResponseEntity<>("좋아요 취소 성공",HttpStatus.OK);
