@@ -19,15 +19,16 @@ public class EmailTokenService {
 	@Autowired
 	EmailTokenRepository eRepo;
 	
-	public String createEmailToken(String userId,String receiverEmail) {
-		EmailToken emailToken = EmailToken.createEmailToken(userId);
+	public String createEmailToken(String receiverEmail) {
+		EmailToken emailToken = EmailToken.createEmailToken(receiverEmail);
 		eRepo.save(emailToken);
 		
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(receiverEmail);
 		mailMessage.setSubject("안녕하세요 우연히입니다.");
-		mailMessage.setText("http://localhost:7777/uyeonhi/signUp4?token="+emailToken.getId());
+		mailMessage.setText("http://localhost:7777/uyeonhi/validEmail/"+emailToken.getId()+"/"+receiverEmail);	
 		
+		emailService.sendMail(mailMessage);
 		return emailToken.getId();
 		
 	}
