@@ -26,9 +26,7 @@ public class EmailService {
 	JavaMailSender javaMailSender;
 	@Autowired
 	EmailTokenService emailTokenService;
-	@Autowired
-	UserRepository uRepo;
-	
+
 	
 	public void sendMail(SimpleMailMessage email) {
 		javaMailSender.send(email);
@@ -36,11 +34,7 @@ public class EmailService {
 	public void verifyEmail(String token) {
 		EmailToken findEmailToken = emailTokenService.findByIdAndExpirationDateAfterAndExpired(token);
 		
-		Optional<UserVO> findUser = uRepo.findById(findEmailToken.getUserId());
 		findEmailToken.setTokenToUsed();//사용완
 		
-		if(findUser.isPresent()) {
-			UserVO user = findUser.get();
-		}
 	}
 }

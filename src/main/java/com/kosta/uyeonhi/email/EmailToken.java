@@ -27,14 +27,14 @@ public class EmailToken {
 	
 	private LocalDateTime expirationDate;
 	private boolean expired;
-	private String userId;
+	private String email;
 	
-	public static EmailToken createEmailToken(String useId) {
+	public static EmailToken createEmailToken(String email) {
 		EmailToken emailToken = new EmailToken();
 		emailToken.expirationDate = LocalDateTime.now().plusMinutes(EMAIL_TOKEN_EXPIRATION_TIME_VALUE);
 		
 		emailToken.expired = false;
-		emailToken.userId = useId;
+		emailToken.email = email;
 		
 		return emailToken;
 	}
