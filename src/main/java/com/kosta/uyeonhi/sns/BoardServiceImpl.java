@@ -22,17 +22,36 @@ public class BoardServiceImpl implements BoardService{
 		log.info(boardDTO);
 		return boardRepository.save(boardDTO.toEntity()).getBoardId();
 	}
-
-	@Override
-	public void delete(int board_id) {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	//@Transactional(readOnly = true)
 	public List<Board> pageList(){//Pageable pageable
 		return (List<Board>) boardRepository.findAll();
 	}
+	
+	@Override
+	@Transactional //삭제
+	public void delete(long board_id) {
+		Board board = boardRepository.findById(board_id).orElseThrow(() -> 
+		new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + board_id));
+
+		boardRepository.deleteById(board_id);
+	}
+	
+	@Override
+	@Transactional
+	public void update(long board_id, BoardRequestDTO boardRequestDTO) {
+		// TODO Auto-generated method stub
+		Board board = boardRepository.findById(board_id).orElseThrow(() -> new
+		IllegalArgumentException("해당 게시물이 존재하지 않습니다. " + board_id));
+		
+		board.setContent(boardRequestDTO.getContent()); 
+	}
+
+	/*
+	 * @Override
+	 * 
+	 * @Transactional //수정 
+	 */
 
 
 
