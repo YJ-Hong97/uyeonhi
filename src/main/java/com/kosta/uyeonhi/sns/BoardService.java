@@ -14,7 +14,9 @@ public interface BoardService {
 		
 	Long saveBoard(BoardRequestDTO boardDTO);
 		
-	void delete(int board_id);
+	void delete(long board_id);
+	
+	void update(long board_id, BoardRequestDTO boardRequestDTO);
 
 
 }
