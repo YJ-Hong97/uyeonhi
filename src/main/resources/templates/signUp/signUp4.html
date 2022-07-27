@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -7,6 +7,8 @@
 	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
 	rel="stylesheet">
 <meta charset="UTF-8">
+<!-- <meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/> -->
 <title>Insert title here</title>
 <style>
 .signUpContainer {
@@ -50,20 +52,18 @@
 }
 
 .signUpBox #ment {
-	margin: 15%;
-}
-
-.signUpBox .labelContainer{
-	display :inline-block;
+	margin: 10%;
 	margin-left: 15%;
 }
-.signUpBox .inputContainer {
-	width:60%;
-	display: inline-block;
+
+.signUpBox table{
+	margin-left: 15%;
+	width:70%;
 }
-.signUpBox input{
+
+.signUpBox input {
 	width: 70%;
-	height:1.5rem;
+	height: 1.5rem;
 	margin-left: 10%;
 	font-family: 'Gowun Dodum';
 	font-style: normal;
@@ -71,42 +71,40 @@
 	font-size: 1.5rem;
 	line-height: 110%;
 	text-align: left;
-	border:0 solid;
-	
+	border: 0 solid;
 }
-.signUpBox hr{
+
+.signUpBox hr {
 	width: 70%;
 	margin-right: 20%;
 }
 
-
-
 #validTestId {
-cursor:pointer;
+	cursor: pointer;
 	margin: 0;
-	width: 15%;
-	height:2rem;
+	width: 5rem;
+	height: 2rem;
 	background: #FFFFFF;
 	border: 1px solid #979797;
 	border-radius: 30px;
 }
 
 #validTestNick {
-cursor:pointer;
+	cursor: pointer;
 	margin: 0;
-	width: 15%;
-	height:2rem;
+	width: 5rem;
+	height: 2rem;
 	background: #FFFFFF;
 	border: 1px solid #979797;
 	border-radius: 30px;
 }
 
 .signUpBox #nextBtn {
-cursor:pointer;
+	cursor: pointer;
 	margin-left: 15%;
 	cursor: pointer;
 	width: 70%;
-	height:50px;
+	height: 50px;
 	background: #B983FF;
 	border: 0 solid;
 	border-radius: 3px;
@@ -127,6 +125,9 @@ cursor:pointer;
 #btnBox input {
 	margin: 1%;
 }
+.tdv{
+	border-bottom: 0.1rem solid #979797;
+}
 </style>
 </head>
 <body>
@@ -134,25 +135,26 @@ cursor:pointer;
 		<div class="logo">uyeonhi</div>
 		<div class="signUpBox">
 			<p id="ment">거의 다 왔습니다!!</p>
-			<div class = "labelContainer">
-			<label>이름</label><br><br>
-			<label>id</label><br><br>
-			<label>비밀번호</label><br><br>
-			<label>닉네임</label><br><br>
-			</div>
-			<div class = "inputContainer"> 
-			<input type="text" name="uname" id="uname">
-			<hr>
-			<input type="text" name="uid" id="uid">
-			<button id="validTestId">중복 확인</button>
-			<hr>
-			<input type="text" name="upassword" id="upassword">
-			<hr>
-			<input type="text" name="unick"
-				id="unick">
-			<button id="validTestNick">중복 확인</button>
-			<hr>
-			</div>
+			<table>
+				<tr>
+					<td>이름</td>
+					<td class ="tdv" ><input type="text" name="uname" id="uname"></td>
+				</tr>
+				<tr>
+					<td>id</td>
+					<td class ="tdv"><input type="text" name="uid" id="uid"></td>
+					<td ><button id="validTestId" type="button">중복 확인</button></td>
+				</tr>
+				<tr>
+					<td>비밀번호</td>
+					<td class ="tdv"><input type="text" name="upassword" id="upassword" placeholder = "알파벳 소문자, 숫자, 특수문자 조합"></td>
+				</tr>
+				<tr>
+					<td>닉네임</td>
+					<td class ="tdv"><input type="text" name="unick" id="unick"></td>
+					<td ><button id="validTestNick" type="button">중복 확인</button></td>
+				</tr>
+			</table>
 			
 			<div id="btnBox">
 				<input type="button" id="nextBtn" value="다음">
@@ -162,25 +164,31 @@ cursor:pointer;
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script>
+	//csrf 토큰
+	/*  var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content"); */
 		//id 중복확인
 		var validId = null;
 		var validIdBtn = document.querySelector('#validTestId');
 		validIdBtn.onclick = function(){
 			let uid = document.querySelector('#uid').value;
 			$.ajax({
-				url:"validTestId",
-				type:"POST",
-				data:{"uid":uid},
+				url:`/uyeonhi/validTestId/${uid}`,
+				type:"post",
+				//data:JSON.stringify(uid), //'{"id":100}'  //100
 				success: function(response){
-					console.log(response);
-					if(response["result"] == 'success'){
+					if(response == 'success'){
 						
 						validId = 'success';
+						validIdBtn.innerText = "사용 가능";
 					}else{
 						alert('사용할 수 없는 아이디입니다.');
 						validId = 'fail';
 					}
-				}	
+				},
+				error:function(e){
+					console.log(e.statusText);
+				}
 			});
 		};
 		//닉네임 중복확인
@@ -189,12 +197,12 @@ cursor:pointer;
 		validNickBtn.onclick = function(){
 			let unick = document.querySelector('#unick').value;
 			$.ajax({
-				url:"validTestNick",
+				url:`/uyeonhi/validTestNick/${unick}`,
 				type:"POST",
-				data:{"unick":unick},
 				success: function(response){
 					if(response == 'success'){
 						validNick = 'success';
+						validNickBtn.innerText = "사용 가능";
 					}else{
 						alert('사용할 수 없는 닉네임입니다.');
 						validNick = 'fail';
@@ -213,16 +221,16 @@ cursor:pointer;
 					let uid = document.querySelector('#uid').value;
 					let upassword = document.querySelector('#upassword').value;
 					let unick = document.querySelector('#unick').value;
-					$.ajax({
-						url:"signUp4-1",
-						type:"POST",
+					$.ajax({type:"post", 
+						url:"/uyeonhi/signUp4-1",
 						data:{"uname":uname,"uid":uid,"upassword":upassword,"unick":unick},
 						success:function(){
-							location.href = "signUp4-1";
+							location.href = "/uyeonhi/signUp4-1";
 						}
 						
 					});
 				}else if(validId == null||validId =='fail'){
+					alert(validId);
 					alert('아이디 중복확인을 완료해주세요.')
 				}
 				else if(validNick == null||validNick =='fail'){

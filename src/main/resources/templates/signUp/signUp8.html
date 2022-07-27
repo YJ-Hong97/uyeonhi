@@ -50,7 +50,8 @@
 }
 
 .signUpBox #ment {
-	margin: 15%;
+	margin: 10%;
+	margin-left:15%;
 }
 
 .signUpBox #nextBtn {
@@ -78,17 +79,14 @@
 #btnBox input {
 	margin: 1%;
 }
-.signUpBox .labelContainer{
-	display :inline-block;
+.signUpBox table{
 	margin-left: 15%;
+	margin-right:15%;
+	width: 69%;
 }
-.signUpBox .inputContainer {
-	width:60%;
-	display: inline-block;
-	vertical-align: top;
-}
+
 .signUpBox input{
-	width: 70%;
+	width: 100%;
 	height:1.5rem;
 	font-family: 'Gowun Dodum';
 	font-style: normal;
@@ -96,16 +94,14 @@
 	font-size: 1rem;
 	line-height: 110%;
 	text-align: left;
-	margin-top:5%;
 	
 }
 .signUpBox select{
-	width: 60%;
-	margin-top:2%;
+	width: 100%;
 	font-family: 'Gowun Dodum';
 	font-style: normal;
 	font-weight: 400;
-	font-size: 1rem;
+	font-size: 1.5rem;
 	line-height: 110%;
 	text-align: left;
 	border:0 solid;
@@ -113,7 +109,7 @@
 
 #hogam{
 cursor:pointer;
-width:8%;
+width:3rem;
 	margin: 0;
 	border: 1px solid #979797;
 	border-radius: 30px;
@@ -121,7 +117,7 @@ width:8%;
 	}
 #uyeon{
 cursor:pointer;
-width:8%;
+width:3rem;
 	margin: 0;
 	border: 1px solid #979797;
 	border-radius: 30px;
@@ -129,7 +125,7 @@ width:8%;
 }
 #male{
 cursor:pointer;
-width:8%;
+width:3rem;
 	margin: 0;
 	border: 1px solid #979797;
 	border-radius: 30px;
@@ -137,7 +133,7 @@ width:8%;
 }
 #female{
 cursor:pointer;
-width:8%;
+width:3rem;
 	margin: 0;
 	border: 1px solid #979797;
 	border-radius: 30px;
@@ -145,12 +141,13 @@ width:8%;
 }
 #images_container{
 	width: 100%;
+	height:20rem;
 	border:0.1rem solid #979797;
-	border-radius: 1rem;
 }
 #images_container img{
 	width:50%;
-	border-radius: 1rem;
+	height:10rem;
+	border-radius: 0.2rem;
 }
 
 </style>
@@ -162,18 +159,16 @@ width:8%;
 			<p id = "ment">
 				마침내 마지막입니다.
 			</p>
-			<div class = "labelContainer">
-			<label>호감 알림 보내기</label><br><br>
-			<label>mbti</label><br><br>
-			<label>성별</label><br><br>
-			<label>생년월일</label><br><br>
-			<label>프로필 사진</label><br><br>
-			</div>
-			<div class ="inputContainer">
 			<form action = "signUpFinal" method ="post" enctype="multipart/form-data">
-			<label><input type = "radio" name = "hogam" id = "hogam" value = "hogam">보낼래요</label>
-			<label><input type = "radio" name = "hogam" id = "uyeon" value = "uyeon">우연히 만날래요</label><br>
-				<select name = "mbti">
+			<table>
+				<tr>
+					<td>호감 알림 보내기  </td>
+					<td><input type = "radio" name = "hogam" id = "hogam" value = "hogam">보낼래요</td>
+					<td><input type = "radio" name = "hogam" id = "uyeon" value = "uyeon">우연히 만날래요</label></td>
+				</tr>
+				<tr>
+					<td>mbti</td>
+					<td colspan = "2"><select name = "mbti">
 					<option value = "istj">istj</option>
 					<option value = "isfj">isfj</option>
 					<option value = "infj">infj</option>
@@ -190,19 +185,28 @@ width:8%;
 					<option value = "esfj">esfj</option>
 					<option value = "enfj">enfj</option>
 					<option value = "entj">entj</option>
-				</select><br>
-				<label><input type = "radio" name = "gender" id  ="male" value = "male">남자</label>
-				<label><input type = "radio" name= "gender" id = "female" value = "femail">여자</label><br>
-				<input type = "date" name = "birth" id = "birth"><br>
-				<input type = "file" name = "profile" id = "profile" multiple="multiple" onchange = "setDetailImage(this)">
-				<div id ="images_container"></div>
-			</div>
-				
+				</select></td>
+				</tr>
+				<tr>
+					<td>성별</td>
+					<td><input type = "radio" name = "gender" id  ="male" value = "male">남자</td>
+					<td><input type = "radio" name= "gender" id = "female" value = "femail">여자</td>
+				</tr>
+				<tr>
+					<td>생년월일</td>
+					<td colspan = "2"><input type = "date" name = "birth" id = "birth"></td>
+				</tr>
+				<tr>
+					<td>프로필 사진</td>
+					<td colspan = "2"><input type = "file" id= "profile" name = "profile" multiple="multiple"><div id ="images_container"></div></td>
+				</tr>
+			</table>
+			</form>
+			
 				<div id="btnBox">
 					<input type="submit" id="nextBtn" value="다음">
 				</div>
-		</form>
-		</div>
+				</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script>
@@ -216,14 +220,13 @@ width:8%;
 		//썸네일
 		
 		function setDetailImage(event){
-			alert("change");
 			console.log(document.querySelector('#profile').files);
 			for(var image of document.querySelector('#profile').files){
 				var reader = new FileReader();
 				
 				reader.onload = function(event){
 					var img = document.createElement("img");
-					img.setAttribute("src",event.targe.result);
+					img.setAttribute("src",event.target.result);
 					document.querySelector("#images_container").appendChild(img);
 				};
 				
