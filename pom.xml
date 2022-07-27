@@ -95,6 +95,7 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.13</version>
 		</dependency>
+
 		<dependency>
 			<groupId>io.awspring.cloud</groupId>
 			<artifactId>spring-cloud-starter-aws</artifactId>
@@ -106,6 +107,17 @@
 			<artifactId>gson</artifactId>
 			<version>LATEST</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-aws</artifactId> 
+			<version>2.2.6.RELEASE</version> </dependency> <dependency> <groupId>org.springframework.cloud</groupId> 
+			<artifactId>spring-cloud-aws-context</artifactId> <version>2.2.6.RELEASE</version> 
+			</dependency> <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-aws-autoconfigure</artifactId> 
+			<version>2.2.6.RELEASE</version> </dependency> -->
 
 		<dependency>
 			<groupId>commons-io</groupId>
