@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+
+</style>
+</head>
+<th:block th:fragment = "setting">
+<body>
+	<div class="settingContainer">
+		<table>
+			<tr>
+				<td><button type="button" id="block">아는 사람 만나지 않기</button></td>
+			</tr>
+			<tr>
+				<td><button type="button" id="push">간편 알림 설정</button></td>
+			</tr>
+			<tr>
+				<td><button type="button" id="notice">공지사항</button></td>
+			</tr>
+			<tr>
+				<td><button type="button" id="inquiry">고객센터</button></td>
+			</tr>
+			<tr>
+				<td><select id="accounting">
+						<option>계정 설정</option>
+						<option value="aboutMe">내 소개 변경</option>
+						<option value="aboutYou">취향 변경</option>
+						<option value="passwordUpdate">비밀번호 변경</option>
+						<option value="secession">회원 탈퇴</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td><button type="button" id="logout">로그아웃</button></td>
+			</tr>
+		</table>
+	</div>
+	
+</body>
+</th:block>
+</html>

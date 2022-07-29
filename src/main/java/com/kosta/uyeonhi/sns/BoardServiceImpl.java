@@ -19,7 +19,6 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Override
 	public Long saveBoard(BoardRequestDTO boardDTO) {
-		log.info(boardDTO);
 		return boardRepository.save(boardDTO.toEntity()).getBoardId();
 	}
 	@Override
