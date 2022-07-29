@@ -26,18 +26,24 @@ socket.onopen = function() {
  };*/
  
  //our username 
+
 var name; 
 var connectedUser;
  
 //connecting to our signaling server 
-var conn = new WebSocket('ws://localhost:9090');
+
+var ws = new WebSocket('ws://localhost:9090');
+
  
-conn.onopen = function () { 
+ws.onopen = function () { 
    console.log("Connected to the signaling server"); 
 };
+ws.send("메세지 받아라라");
+console.log("서버에서 메세지 보냄띠");
+ 
  
 //when we got a message from a signaling server 
-conn.onmessage = function (msg) { 
+ws.onmessage = function (msg) { 
    console.log("Got message", msg.data); 
    var data = JSON.parse(msg.data); 
 	
@@ -64,7 +70,7 @@ conn.onmessage = function (msg) {
    } 
 }; 
 
-conn.onerror = function (err) { 
+ws.onerror = function (err) { 
    console.log("Got error", err); 
 };
  
@@ -75,7 +81,7 @@ function send(message) {
       message.name = connectedUser; 
    } 
 	
-   conn.send(JSON.stringify(message)); 
+   ws.send(JSON.stringify(message)); 
 };
  
 //****** 
