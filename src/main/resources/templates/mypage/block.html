@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<th:block th:fragment = "block">
+<body>
+	<div class = "blockContainer">
+		<div class = "blockList">
+			<table id= "tblBlock">
+			</table>
+		</div>
+		<div class = "block">
+			<table>
+				<tr>
+					<th>차단할 번호 직접 등록하기</th>
+				</tr>
+				<tr><td><input type = "text" id = "bname" placeholder = "이름" name = "bname"></td></tr>
+				<tr><td><input type = "text" id = "bphone" placeholder="전화번호(숫자만 입력)" name = "bphone"></td></tr>
+				<tr><td><input type = "button" id = "bsubmit" value = "등록하기"></td></tr>
+			</table>
+		</div>
+	</div>
+</body>
+</th:block>
+</html>
