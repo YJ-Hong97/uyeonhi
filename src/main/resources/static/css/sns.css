@@ -233,12 +233,12 @@ img{
     border-radius: 135px;
 }
 
-#heart {
+.heartt {
     font-size: 2em;
     color: black;
 }
 
-#heart:hover {
+.heartt:hover {
     color: red;
 }
 

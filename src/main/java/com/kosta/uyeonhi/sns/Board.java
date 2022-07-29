@@ -20,6 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.kosta.uyeonhi.likes.Likes;
 import com.kosta.uyeonhi.reply.Reply;
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -75,4 +76,7 @@ public class Board {
 	
 	@Column(nullable = true)
 	private Date deadline;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<Likes> likes;
 }

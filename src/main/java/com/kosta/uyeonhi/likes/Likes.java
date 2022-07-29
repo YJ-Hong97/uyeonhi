@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.kosta.uyeonhi.signUp.UserVO;
 import com.kosta.uyeonhi.sns.Board;
@@ -29,9 +30,17 @@ public class Likes {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int like_id;
 
-	@ManyToOne
+	
+	@ManyToOne 
 	private UserVO user;
+	 
 	
 	@ManyToOne
 	private Board board;
+	
+	/*
+	 * @Transient private boolean likeStatus;
+	 * @Transient private long likesCount;;
+	 * 
+	 */
 }
