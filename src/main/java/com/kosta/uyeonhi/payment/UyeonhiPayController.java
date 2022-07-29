@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kosta.uyeonhi.payment.request.Cancel;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -37,8 +36,6 @@ public class UyeonhiPayController {
 
 	@Autowired
 	UserRepository userRepo;
-
-	static Bootpay bootpay;
 
 	@RequestMapping("/uyeonPay")
 	public ModelAndView uyeonPay(ModelAndView mv) {
@@ -88,12 +85,12 @@ public class UyeonhiPayController {
 		// int userId =Integer.parseInt(request.getParameter("memberid")) ;
 
 		Map<String, Object> user = (Map<String, Object>) map.get("params");
-		System.out.println(map);
 		String userId = (String) user.get("userId");// 사용자 id
-		String receipt_id = (String) map.get("receipt_id");// 사용자 id
 		int amount = (int) map.get("price");// 구매금액
 		int unum = amount / 100;// 우연 갯수
 
+		System.out.println(map);
+		System.out.println(user);
 		String date = (String) map.get("requested_at");// 구매일자
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date rdate = formatter.parse(date);
@@ -102,7 +99,7 @@ public class UyeonhiPayController {
 
 		UserVO userVO = userRepo.findById(userId).get();
 
-		int cur_unum = unum + userVO.getCoin();
+		int cur_unum = unum + userVO.getCoin();// 현재 코인 갯수
 		userVO.setCoin(cur_unum);
 
 		PayVO vo = new PayVO();
@@ -112,25 +109,13 @@ public class UyeonhiPayController {
 		vo.setRegdate(regdate);
 		vo.setAmount(amount);
 
-		//부트페이 access token 발급 
-		bootpay = new Bootpay("62d7bd76e38c3000235aff69", "PuJRmJpoFbSDv3XhXBosb4WwM6SNhVEwb7o1pkZfb9E=");
-		try {
-			HttpResponse res = bootpay.getAccessToken();
-			String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
-			System.out.println(str);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		PayVO insertPay = new PayVO();
+		PayVO insertPay = null;
 		insertPay = payRepo.save(vo);
-
-		if (insertPay == null) {
-			Cancel cancel = new Cancel();
-			userRepo.save(userVO);
-				return "fail";
-		}
+		
+		if(insertPay == null) 
+			return "fail";
+		
+		userRepo.save(userVO);
 		return "success";
 	}
 }
