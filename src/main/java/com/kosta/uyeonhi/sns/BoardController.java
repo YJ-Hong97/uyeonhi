@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,12 +37,18 @@ public class BoardController {
 	@GetMapping("/sns1")
 	public void boardList(Model model, @PageableDefault(size=24, sort="id",
             direction = Sort.Direction.DESC) Pageable pageable) {
+		
 		int startPage = ((pageable.getPageNumber()-1) / 10) * 10 + 1;
 	    pageable.getPageSize();
 	    int endPage = startPage + 10 - 1  > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
 	    model.addAttribute("startPageNo", startPage);
-	    model.addAttribute("endPageNo", endPage);		
-	    model.addAttribute("boardList", boardService.pageList());
+	    model.addAttribute("endPageNo", endPage);
+	    
+	    System.out.println(boardService.pageList());
+		
+		 model.addAttribute("boardList", boardService.pageList());
+		//boardService.pageList().get(0).getWriter().getId());
+		
 		//return boardRepository.findAll(pageable);
 	}
 	

@@ -6,6 +6,13 @@ ul{
 
 }
 
+img{
+	padding:0;
+    border: none;
+    background: none;
+    display:none;
+}
+
 
 
 .flex-container{
@@ -51,6 +58,10 @@ ul{
     border: 1px solid #DDDDDD;;
     border-radius: 10px;
 
+}
+
+.flex-container .center-container #container .board_write_top #sns_select{
+	display:none;
 }
 
 .flex-container .center-container .board-box{
@@ -335,4 +346,12 @@ td:hover {
 
 .section.collapsed {
     max-height: 0;
+}
+
+.modal_leftCt{
+	display:inline-block;
+}
+
+.modal_rightCt{
+	display:inline-block;
 }

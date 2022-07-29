@@ -4,7 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -41,18 +42,14 @@
 				document.querySelector('.section.collapsible').classList.toggle('collapsed');
 
 			});
-			
-/* 			 $("#heart").click(function(){
-			        $("#heart").css("font-variation-settings","'FILL' 1");
-			        $("#heart").css("color","red");
-			        
-			    }); */
+
 			 
 			 $("#bookmark").click(function(){
 			        $("#bookmark").css("font-variation-settings","'FILL' 1");
 			        $("#bookmark").css("color","yellow");
 			        
 			    });
+
 		};
 
 
@@ -74,14 +71,20 @@
 						<span class="material-symbols-outlined" id="person">
 							account_circle </span>
 						<form id="board_form">
-							<input type="text" th:value="${username}">
+							<div class="board_write_top">
+								<p class="userSession" type="hidden" th:text="${#authentication.name}"></p>
+								<div>
+									<select name="sns_select" id="sns_select" class="select">
+										<option value="normal">게시글</option>
+										<option value="recruit">모집글</option>
+									</select>
+									<button id="btn_fileUpload" type="button"><img src="../images/image-outline.svg" style="width: 3rem;"></button>
+								</div>
+								<button id="btn_board" type="button">등록</button>
+							</div>
+
 							<input type="textarea" class="box" id="toggleBtn">
-							<select name="sns_select" id="sns_select" class="select">
-								<option value="normal">게시글</option>
-								<option value="recruit">모집글</option>
-							</select>
-							<button id="btn_fileUpload" type="button">사진등록</button>
-							<button id="btn_board" type="button">등록</button>
+
 						</form>
 						<div class="section collapsible">
 							<span class="material-symbols-outlined">event_available</span>
@@ -111,20 +114,29 @@
 										th:onclick="|call(${status.count})|">도달창띄우기2</a></p>
 
 								<div th:id="|ex${status.count}|" class="modal">
+									<div class="modal_Ct">
+										<div class="modal_leftCt">
+											<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
+												이미지넣는곳
+											</div>
+										</div>
+										<div class="modal_rightCt">
+											<textarea th:id="|modify_${status.count}|"
+												placeholder="작성하세요.">[[${list.content}]]
+											</textarea>
+										</div>
 
-									<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳
+
+										<button style="width:100px; height:30px;" th:value="${list.boardId}"
+											type="button" th:aa=${status.count} class="update_button">수정</button>
 									</div>
-									<textarea th:id="|modify_${status.count}|" placeholder="작성하세요.">[[${list.content}]]
-									</textarea>
-
-									<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
-										th:aa=${status.count} class="update_button">수정</button>
 								</div>
 
 
 								<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
 									<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
 										more_horiz </span>
+									<span class=board_userInfo>[[${list.writer.id}]]</span>
 								</div>
 								<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
 									<span id="ellipse"></span> <span class="material-symbols-outlined"  id="btnModal">
@@ -182,6 +194,7 @@
 	</div>
 
 	<script>
+
 		$(document).ready(function () {
 
 
@@ -189,14 +202,19 @@
 			$('#toggleBtn').click(function () {
 				$('#container').css("height", "250px");
 				$('#toggleBtn').css("height", "200px");
-				$('#btn_board').css("display", "block");
+				$('#btn_board').css("display", "inline-block");
+				$('.board_write_top').css({"display": "flex", "justify-content": "space-between"});
+				$('#sns_select').css({"display": "inline-block"});
+				$('#btn_fileUpload').css({"display":"inline-block"});
+
 			});
+
 
 
 			$('#btn_board').on('click', function () {
 				let data = {
 					content: $("#toggleBtn").val().trim(),
-					board_type: $("#sns_select option:selected").text()
+					board_type: $("#sns_select option:selected").text(),
 				};
 
 				console.log(data);
@@ -205,14 +223,14 @@
 					url: '/api/sns/boardWrite',
 					contentType: 'application/json',
 					data: JSON.stringify(data),
-					dataType: "json",
+					//dataType: "json",
 					type: "POST",
 					success: function (res) {
 						alert("게시글 등록 완료");
 						location.href = "/sns/sns1";
 					},
 					error: function (err) {
-						alert(JSON.stringify(err));
+						alert(err);
 					}
 				})
 			});
@@ -255,7 +273,7 @@
 
 				$.ajax({
 					url: '/api/sns/boardUpdate/' + boardId,
-					data:JSON.stringify(data),
+					data: JSON.stringify(data),
 					contentType: 'application/json',
 					dataType: "json",
 					type: "PUT",
@@ -276,6 +294,8 @@
 			$("#ex" + modalName).modal({
 				fadeDuration: 250
 			});
+
+			$("#ex" + modalName).modal.css("display", "flex");
 		}
 	</script>
 <script src="/js/likes.js"></script>
