@@ -43,17 +43,13 @@
 
 			});
 
-			$("#heart").click(function () {
-				$("#heart").css("font-variation-settings", "'FILL' 1");
-				$("#heart").css("color", "red");
+			 
+			 $("#bookmark").click(function(){
+			        $("#bookmark").css("font-variation-settings","'FILL' 1");
+			        $("#bookmark").css("color","yellow");
+			        
+			    });
 
-			});
-
-			$("#bookmark").click(function () {
-				$("#bookmark").css("font-variation-settings", "'FILL' 1");
-				$("#bookmark").css("color", "yellow");
-
-			});
 		};
 
 
@@ -143,13 +139,13 @@
 									<span class=board_userInfo>[[${list.writer.id}]]</span>
 								</div>
 								<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
-									<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
+									<span id="ellipse"></span> <span class="material-symbols-outlined"  id="btnModal">
 										more_horiz </span>
 								</div>
 								<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳</div>
 								<div id="container4" th:value="${list.boardId}" th:class="${list.boardId}">
 									<span id="regdate">today</span>
-									<span class="material-symbols-outlined" id="heart"> favorite </span>
+									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|"> favorite  </span>
 									<span class="material-symbols-outlined" id="bookmark"> bookmark </span>
 									<span class="board_text">[[${list.content}]]</span>
 								</div>
@@ -302,7 +298,7 @@
 			$("#ex" + modalName).modal.css("display", "flex");
 		}
 	</script>
-
+<script src="/js/likes.js"></script>
 </body>
 
 </html>
