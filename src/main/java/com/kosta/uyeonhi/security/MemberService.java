@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
@@ -48,6 +49,10 @@ public class MemberService implements UserDetailsService{
 		System.out.println("UserDetails member:" + user);
 		httpSession.setAttribute("user", uRepo.findById(uid).get());
 		return user;
+	}
+	
+	public void getUserProfile(String mid, Model model) {
+		model.addAttribute("profile", uRepo.findById(mid).get());
 	}
 
 	 
