@@ -5,55 +5,65 @@
 <title>Insert title here</title>
 </head>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.3.min.js" type="application/javascript"></script>
+<script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.3.min.js"
+	type="application/javascript"></script>
 <style>
 .view1 {
 	width: 88%;
 	margin-left: 5%;
 }
+
 .uyeonText {
 	padding-left: 1.5%;
-	padding-top:2%;
+	padding-top: 2%;
 	padding-bottom: 2%;
 	border-bottom: 1px solid #e3e3e3;
 	font-size: 0.8rem;
 }
+
 .title {
 	font-weight: bold;
 	margin-right: 2%;
 	font-size: 0.9rem;
 }
+
 .margin {
 	padding-left: 1.5%;
-	width:12%;
+	width: 12%;
 }
+
 .title-detail2 {
 	font-size: 0.7rem;
 	margin-top: 1%;
 	color: #939393;
 	line-height: 150%;
 }
-.viewTD{
+
+.viewTD {
 	margin-top: 3%;
 	border-collapse: collapse;
 	font-size: 0.9rem;
 	width: 100%;
 }
+
 .viewTD td {
-	border:none; 
+	border: none;
 }
+
 .viewTD .border {
 	border-bottom: 1px solid #E3E3E3;
 }
+
 .wid {
 	width: 8%;
 }
-.btnView{
+
+.btnView {
 	font-size: 0.75rem;
 	background: #B983FF;
 	border-radius: 7px;
 	border: none;
-	width:60%;
+	width: 60%;
 	color: #fff;
 	padding: 4% 0;
 	font-weight: bold;
@@ -75,24 +85,32 @@
 			<tr>
 				<td class="title margin">충전하기</td>
 				<td class="border wid">우연 1개</td>
-				<td class="border"><button class="btnView btn1" onclick="pay(this)" value="100">100원</button></td>
+				<td class="border"><button class="btnView btn1"
+						onclick="pay(this)" value="100">100원</button></td>
 				<td class="border wid">우연 10개</td>
-				<td class="border"><button class="btnView btn2" onclick="pay(this)" value="1000">1,000원</button></td>
+				<td class="border"><button class="btnView btn2"
+						onclick="pay(this)" value="1000">1,000원</button></td>
 				<td class="border wid">우연 30개</td>
-				<td class="border"><button class="btnView btn3" onclick="pay(this)" value="3000">3,000원</button></td>
+				<td class="border"><button class="btnView btn3"
+						onclick="pay(this)" value="3000">3,000원</button></td>
 				<td class="border wid">우연 50개</td>
-				<td class="border"><button class="btnView btn4" onclick="pay(this)" value="5000">5,000원</button></td>
+				<td class="border"><button class="btnView btn4"
+						onclick="pay(this)" value="5000">5,000원</button></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td class="wid">우연 100개</td>
-				<td><button class="btnView btn5" onclick="pay(this)" value="10000">10,000원</button></td>
+				<td><button class="btnView btn5" onclick="pay(this)"
+						value="10000">10,000원</button></td>
 				<td class="wid">우연 300개</td>
-				<td><button class="btnView btn6" onclick="pay(this)" value="30000">30,000원</button></td>
+				<td><button class="btnView btn6" onclick="pay(this)"
+						value="30000">30,000원</button></td>
 				<td class="wid">우연 500개</td>
-				<td><button class="btnView btn7" onclick="pay(this)" value="50000">50,000원</button></td>
+				<td><button class="btnView btn7" onclick="pay(this)"
+						value="50000">50,000원</button></td>
 				<td class="wid">우연 1000개</td>
-				<td><button class="btnView btn8" onclick="pay(this)" value="100000">100,000원</button></td>
+				<td><button class="btnView btn8" onclick="pay(this)"
+						value="100000">100,000원</button></td>
 			</tr>
 		</table>
 	</div>
@@ -100,41 +118,43 @@
 		function pay(btn) {
 			var cost = $(btn).val();
 			var uCount = cost / 100;
-			var userId="hyj1077";
-			if(confirm("우연 "+uCount+"개를 구매하시겠습니까?")){ 
-				
+			var userId = "hyj1077";
+			var username = "홍길동";
+			if (confirm("우연 " + uCount + "개를 구매하시겠습니까?")) {
+
 				BootPay.request({
-					price: cost, //실제 결제되는 가격
-					application_id: "62d7bd76e38c3000235aff66",
-					name: '우연 ' + uCount+"개", //결제창에서 보여질 이름
-					pg: '',
-					method: '', //결제수단, 입력하지 않으면 결제수단 선택부터 화면이 시작합니다.
-					show_agree_window: 0, // 부트페이 정보 동의 창 보이기 여부
-					items: [
-						{
-							item_name: '우연', //상품명
-							qty: cost, //수량
-							unique: 'uyeon', //해당 상품을 구분짓는 primary key
-							price: 100, //상품 단가
-						}
-					],
-					user_info: {
-						username: '홍길동',
-						email: 'abc@gmail.com',
-						addr: '제주특별자치도 서귀포시 동홍동 문부로 27-8',
-						phone: '010-1234-4567'
+					price : cost, //실제 결제되는 가격
+					application_id : "62d7bd76e38c3000235aff66",
+					name : '우연 ' + uCount + "개", //결제창에서 보여질 이름
+					pg : '',
+					method : '', //결제수단, 입력하지 않으면 결제수단 선택부터 화면이 시작합니다.
+					show_agree_window : 0, // 부트페이 정보 동의 창 보이기 여부
+					items : [ {
+						item_name : '우연', //상품명
+						qty : cost, //수량
+						unique : 'uyeon', //해당 상품을 구분짓는 primary key
+						price : 100, //상품 단가
+					} ],
+					user_info : {
+						username : username,
+						email : 'abc@gmail.com',
+						addr : '제주특별자치도 서귀포시 동홍동 문부로 27-8',
+						phone : '010-1234-4567'
 					},
-					order_id: 'kosta_uyeonhi_444', //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
-					params: {userId: userId, callback2: '그대로 콜백받을 변수 2', customvar1234: '변수명도 마음대로'},
-				}).error(function (data) {
+					order_id : 'kosta_uyeonhi_444', //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
+					params : {
+						userId : userId,
+						username : username
+					},
+				}).error(function(data) {
 					//결제 진행시 에러가 발생하면 수행됩니다.
 					alert("결제 오류: 관리자에게 문의해주세요.");
 					console.log(data);
-				}).cancel(function (data) {
+				}).cancel(function(data) {
 					//결제가 취소되면 수행됩니다.
 					alert("결제가 취소되었습니다.");
 					console.log(data);
-				}).confirm(function (data) {
+				}).confirm(function(data) {
 					//결제가 실행되기 전에 수행되며, 주로 재고를 확인하는 로직이 들어갑니다.
 					//주의 - 카드 수기결제일 경우 이 부분이 실행되지 않습니다.
 					console.log(data);
@@ -144,34 +164,35 @@
 					} else {
 						BootPay.removePaymentWindow(); // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
 					}
-				}).close(function (data) {
-				    // 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
-				    console.log(data);
-				}).done(function (data) {
+				}).close(function(data) {
+					// 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
+					console.log(data);
+				}).done(function(data) {
 					//결제가 정상적으로 완료되면 수행됩니다
 					//비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
 					console.log(data);
-					
+
 					/*JSON.stringify(data)*/
 					$.ajax({
-						url: "payInsert.go",
-						method: "post",
-						contentType: "application/json;charset=UTF-8",
-						data: JSON.stringify(data),
-						success: function(responseData){
-							alert(responseData+"결제가 완료되었습니다!");
-						    $(location).attr('href', '/uyeonhi/uyeonPay');
-							$(".two").trigger("click");
-							//$("#select_tab").load("/uyeonhi/payView2.go");
-							/*결제 취소 로직은 REST API 써야 한다고 함*/
-							/*나중*/
-								
+						url : "payInsert.go",
+						method : "post",
+						contentType : "application/json;charset=UTF-8",
+						data : JSON.stringify(data),
+						success : function(responseData) {
+							if (responseData == "success") {
+								alert(responseData + "결제가 완료되었습니다!");
+								$(location).attr('href', '/uyeonhi/uyeonPay');
+								$(".two").trigger("click");
+								$("#select_tab").load("/uyeonhi/payView2.go");
+							} else if(responseData == "fail") {
+								alert(responseData + "결제에 실패했습니다.\n관리자에게 문의해주세요.");
+								$(location).attr('href', '/uyeonhi/uyeonPay');
+							}
 						}
 					});
 				});
-			 } 
+			}
 		};
-	
 	</script>
 </body>
 </html>
