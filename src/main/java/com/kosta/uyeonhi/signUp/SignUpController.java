@@ -285,7 +285,7 @@ public class SignUpController {
 		}
 		signUpInfo.put("mbti", mbti);
 		signUpInfo.put("gender", gender);
-		ArrayList<String> files = uploadService.uploadFile(profile);
+		/* ArrayList<String> files = uploadService.uploadFile(profile); */
 		UserVO user = UserVO.builder()
 				.birth(birth)
 				.email(signUpInfo.get("email"))
@@ -298,13 +298,10 @@ public class SignUpController {
 				.phone(signUpInfo.get("phone"))
 				.build();
 		mService.joinUser(user);
-		for(String fileName:files) {
-			ProfileVO profileVO = ProfileVO.builder()
-					.fileName(fileName)
-					.user(user)
-					.build();
-			pRepo.save(profileVO);
-		}
+		/*
+		 * for(String fileName:files) { ProfileVO profileVO = ProfileVO.builder()
+		 * .fileName(fileName) .user(user) .build(); pRepo.save(profileVO); }
+		 */
 		
 		
 	}
