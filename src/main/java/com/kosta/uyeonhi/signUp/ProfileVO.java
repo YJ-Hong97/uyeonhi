@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.signUp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class ProfileVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long profileId;	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private UserVO user;
 	private String fileName;
 }
