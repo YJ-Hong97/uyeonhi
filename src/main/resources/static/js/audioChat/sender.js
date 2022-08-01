@@ -20,7 +20,9 @@ function sendUsername() {
     username = document.getElementById("username-input").value
     sendData({
         type: "store_user"
+        
     })
+    console.log("username");
 }
 
 function sendData(data) {
