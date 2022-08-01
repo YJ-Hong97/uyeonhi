@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <title>Insert title here</title>
 </head>
 <style>
@@ -12,18 +13,20 @@
 
 .view2TD {
 	margin-top: 1.5%;
-	margin-bottom: 6%;
+	margin-bottom: 4%;
 	width: 100%;
 	text-align: center;
 	border-collapse: collapse;
 	font-size: 0.9rem;
 }
+
 .boxDiv {
 	text-align: center;
 	padding: 10% 0;
 	font-size: 1.2rem;
 	color: #b1b1b1;
 }
+
 .view2TD td {
 	border: none;
 }
@@ -42,10 +45,27 @@
 	text-align: right;
 	padding-right: 1%;
 }
+
+.pagination {
+	text-decoration: none;
+	list-style: none;
+	
+}
+
+.pagination ul {
+	width: 50%;
+	margin: auto;
+}
+
+.pagination li {
+	display: inline-block;
+	
+}
 </style>
 <body>
 	<div class="view2">
-		<div th:if="${msg.toString().equals('o')}" class="boxDiv">충전내역이 존재하지 않습니다.</div>
+		<div th:if="${msg.toString().equals('o')}" class="boxDiv">충전내역이
+			존재하지 않습니다.</div>
 		<table class="view2TD" th:if="${msg.toString().equals('x')}">
 			<tr class="tdTitle">
 				<td>번호</td>
@@ -63,5 +83,25 @@
 			</tr>
 		</table>
 	</div>
+	<nav>
+		<ul class="pagination">
+			<li th:each="p:${result.pageList}"><a th:href="${p.pageNumber}"+1>[[${p.pageNumber}+1]]</a>
+			</li>
+		</ul>
+	</nav>
+	<form id="f1" th:action="@{payView2.go}" method="get">
+		<input type="hidden" name="page" th:value="${result.currentPageNum}">
+		<input type="hidden" name="size" th:value="${result.currentPage.pageSize}">
+	</form>
+	<script>
+		//페이징
+		var formObj = $("#f1");
+		$('.pagination a').click(function(e) {
+			e.preventDefault(); 
+			formObj.find("[name='page']").val($(this).attr('href'));
+			formObj.attr("action", "/payView2.go");
+			formObj.submit();
+		});
+	</script>
 </body>
 </html>

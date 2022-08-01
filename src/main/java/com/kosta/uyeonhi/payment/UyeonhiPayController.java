@@ -13,8 +13,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
+import com.kosta.uyeonhi.util.PageMaker;
+import com.kosta.uyeonhi.util.PageVO;
 
 import lombok.extern.java.Log;
 
@@ -39,7 +45,7 @@ public class UyeonhiPayController {
 
 	@RequestMapping("/uyeonPay")
 	public ModelAndView uyeonPay(ModelAndView mv) {
-		String id = "hyj1077";
+		String id = "ijbmsm";
 
 		UserVO user = userRepo.findById(id).get();
 		mv.addObject("coin", user.getCoin());
@@ -54,12 +60,21 @@ public class UyeonhiPayController {
 	}
 
 	@RequestMapping("/payView2.go")
-	public ModelAndView view2(ModelAndView mv) {
-		String id = "hyj1077";
-
-		UserVO user = userRepo.findById(id).get();
+	public ModelAndView view2(ModelAndView mv, PageVO pageVO, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserVO userVO = (UserVO) session.getAttribute("user");
+		
+		UserVO user = userRepo.findById("ijbmsm").get();
 		List<PayVO> list = payRepo.findByUser(user);
 		mv.addObject("paylist", list);
+
+		if (pageVO == null) pageVO = new PageVO();
+		System.out.println("페이지~~: " + pageVO);
+		
+		Pageable page = pageVO.makePageable(0, 1, "regdate");
+		Page<PayVO> result = payRepo.findAll(payRepo.makePredicate(null, null), page);
+
+		mv.addObject("result", new PageMaker<>(result));
 
 		if (list.isEmpty())
 			mv.addObject("msg", "o");
@@ -111,10 +126,10 @@ public class UyeonhiPayController {
 
 		PayVO insertPay = null;
 		insertPay = payRepo.save(vo);
-		
-		if(insertPay == null) 
+
+		if (insertPay == null)
 			return "fail";
-		
+
 		userRepo.save(userVO);
 		return "success";
 	}
