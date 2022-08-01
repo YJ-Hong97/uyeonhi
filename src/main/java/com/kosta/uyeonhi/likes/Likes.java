@@ -35,8 +35,8 @@ public class Likes {
 	private UserVO user;
 	 
 	
-	@ManyToOne
-	private Board board;
+	//@ManyToOne
+	//private Board board;
 	
 	/*
 	 * @Transient private boolean likeStatus;

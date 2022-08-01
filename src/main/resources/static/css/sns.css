@@ -234,21 +234,22 @@ img{
 }
 
 .heartt {
-    font-size: 2em;
+	margin:4px;
+    font-size: 1.6em;
     color: black;
+    
 }
 
 .heartt:hover {
+	font-variation-settings:'FILL' 1;
     color: red;
 }
 
-#bookmark {
-    font-size: 2em;
-    color: black;
-}
 
-#bookmark:hover {
-    color: yellow;
+.notlikes{
+	font-variation-settings:'FILL' 1;
+    color: red;
+	
 }
 
 #regdate {

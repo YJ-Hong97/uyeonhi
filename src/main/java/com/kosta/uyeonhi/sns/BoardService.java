@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.kosta.uyeonhi.likes.Likes;
 import com.kosta.uyeonhi.signUp.UserVO;
 
 public interface BoardService {
@@ -18,6 +19,8 @@ public interface BoardService {
 	void delete(long board_id);
 	
 	void update(long board_id, BoardRequestDTO boardRequestDTO);
+	
+	List<Likes> likeList();
 
 
 }

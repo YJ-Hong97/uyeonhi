@@ -77,6 +77,12 @@ public class Board {
 	@Column(nullable = true)
 	private Date deadline;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@OneToMany(  fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "board_id") 
 	private List<Likes> likes;
 }
+
+
+
+
+

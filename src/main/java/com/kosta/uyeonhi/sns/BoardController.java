@@ -44,9 +44,10 @@ public class BoardController {
 	    model.addAttribute("startPageNo", startPage);
 	    model.addAttribute("endPageNo", endPage);
 	    
-	    System.out.println(boardService.pageList());
-		
-		 model.addAttribute("boardList", boardService.pageList());
+	    List<Board> blist =  boardService.pageList();
+		System.out.println(blist);
+		 model.addAttribute("boardList", blist);
+		// model.addAttribute("likeList", boardService.likeList());
 		//boardService.pageList().get(0).getWriter().getId());
 		
 		//return boardRepository.findAll(pageable);

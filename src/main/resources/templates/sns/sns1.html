@@ -44,11 +44,7 @@
 			});
 
 			 
-			 $("#bookmark").click(function(){
-			        $("#bookmark").css("font-variation-settings","'FILL' 1");
-			        $("#bookmark").css("color","yellow");
-			        
-			    });
+
 
 		};
 
@@ -58,8 +54,7 @@
 </head>
 
 <body>
-
-
+[[${session.user.id}]]
 	<div>
 		<div class="big-container">
 			<div class="flex-container">
@@ -84,6 +79,7 @@
 							</div>
 
 							<input type="textarea" class="box" id="toggleBtn">
+							
 
 						</form>
 						<div class="section collapsible">
@@ -144,9 +140,22 @@
 								</div>
 								<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳</div>
 								<div id="container4" th:value="${list.boardId}" th:class="${list.boardId}">
-									<span id="regdate">today</span>
-									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|"> favorite  </span>
-									<span class="material-symbols-outlined" id="bookmark"> bookmark </span>
+								
+								[[${list.getLikes().size()}]]
+								<div class="like-box" th:if="${list.getLikes().size()==0}"> 
+								!!!!!
+										<span id="regdate">today</span>
+										<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|"> favorite  </span>
+								</div>
+								
+				 			    <div th:each="likeCheck:${list.getLikes()}">
+				 			    @@@@@
+					 				<div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
+											<span id="regdate">today</span>
+											<span class="material-symbols-outlined notlikes heartt" th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|"> favorite  </span>
+									</div>  
+								   
+							 	</div>
 									<span class="board_text">[[${list.content}]]</span>
 								</div>
 							</div>
@@ -206,7 +215,7 @@
 				$('.board_write_top').css({"display": "flex", "justify-content": "space-between"});
 				$('#sns_select').css({"display": "inline-block"});
 				$('#btn_fileUpload').css({"display":"inline-block"});
-
+				
 			});
 
 

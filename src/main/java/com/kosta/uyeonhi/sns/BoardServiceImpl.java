@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.uyeonhi.likes.Likes;
+import com.kosta.uyeonhi.likes.LikesRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -16,6 +19,9 @@ public class BoardServiceImpl implements BoardService{
 
 	@Autowired
 	private final BoardRepository boardRepository;
+	
+	@Autowired
+	private final LikesRepository likesRepository;
 	
 	@Override
 	public Long saveBoard(BoardRequestDTO boardDTO) {
@@ -46,6 +52,11 @@ public class BoardServiceImpl implements BoardService{
 		board.setContent(boardRequestDTO.getContent()); 
 	}
 
+	@Override
+	public List<Likes> likeList(){
+		return (List<Likes>) likesRepository.findAll();
+	}
+	
 	/*
 	 * @Override
 	 * 

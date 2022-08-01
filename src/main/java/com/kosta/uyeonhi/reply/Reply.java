@@ -41,7 +41,6 @@ public class Reply{
 	private UserVO user;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "board_id")
 	private Board board;
 	
 	private int reply_like;
