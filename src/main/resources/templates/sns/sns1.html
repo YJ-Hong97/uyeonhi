@@ -11,7 +11,7 @@
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 	<link rel="stylesheet" th:href="@{/css/sns.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-	<script>
+<!--	<script>
 
 		window.onload = function () {
 			function modalOn() {
@@ -23,7 +23,7 @@
 			};
 
 			var btnModal = document.getElementById("btnModal");
-			btnModal.addEventListener("click", e => {
+				btnModal.addEventListener("click", e => {
 				modalOn();
 			});
 
@@ -51,7 +51,7 @@
 		};
 
 
-	</script>
+	</script> -->
 
 </head>
 
@@ -177,7 +177,6 @@
 													
 													<ul>
 														<li th:each="replyList, status: ${replyList}">
-															[[$replyList]]
 														</li>
 													</ul>
 												</div>
