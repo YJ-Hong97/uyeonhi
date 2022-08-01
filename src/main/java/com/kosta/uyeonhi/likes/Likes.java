@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.likes;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,7 +36,7 @@ public class Likes {
 	private UserVO user;
 	 
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Board board;
 	
 	/*
