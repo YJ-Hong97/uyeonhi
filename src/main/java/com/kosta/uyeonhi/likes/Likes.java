@@ -6,10 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.kosta.uyeonhi.signUp.UserVO;
-import com.kosta.uyeonhi.sns.Board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,8 +33,10 @@ public class Likes {
 	private UserVO user;
 	 
 	
+
 	//@ManyToOne
 	//private Board board;
+
 	
 	/*
 	 * @Transient private boolean likeStatus;

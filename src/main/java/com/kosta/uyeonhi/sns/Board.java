@@ -61,8 +61,7 @@ public class Board {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private UserVO writer;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "reply_id")
+	@OneToMany(mappedBy = "board",  fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Reply> reply;
 	
 	@Column(nullable = false)

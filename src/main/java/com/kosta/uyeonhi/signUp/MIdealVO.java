@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.signUp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,8 +25,7 @@ import lombok.ToString;
 @Table(name = "m_ideal")
 public class MIdealVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idealId;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private UserVO user;
 }

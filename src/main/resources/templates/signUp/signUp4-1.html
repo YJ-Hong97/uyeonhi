@@ -133,12 +133,14 @@
 				$(this).css("background-color","#B983FF");
 				let temp = $(this).val().toString();
 				mInfo.push(temp);
+				
 			}else{
 				event.preventDefault();
 				alert("15개 이하로 선택해주세요!");
 			}
 			
 		});
+		
 		$('.nextBtn').click(function(){
 			$.ajax({
 				url:"signUp5",

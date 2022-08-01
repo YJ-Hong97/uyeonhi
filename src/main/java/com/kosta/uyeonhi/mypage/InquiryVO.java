@@ -2,6 +2,7 @@ package com.kosta.uyeonhi.mypage;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +45,6 @@ public class InquiryVO {
 	@UpdateTimestamp
 	@Column(name = "updatedate")
 	private Timestamp updateDate;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private UserVO user;
 }

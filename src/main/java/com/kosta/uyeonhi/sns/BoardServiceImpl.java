@@ -3,6 +3,8 @@ package com.kosta.uyeonhi.sns;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +30,8 @@ public class BoardServiceImpl implements BoardService{
 		return boardRepository.save(boardDTO.toEntity()).getBoardId();
 	}
 	@Override
-	//@Transactional(readOnly = true)
-	public List<Board> pageList(){//Pageable pageable
-		return (List<Board>) boardRepository.findAll();
+	public Page<Board> pageList(Pageable pageable){//Pageable pageable
+		return boardRepository.findAll(pageable);
 	}
 	
 	@Override
@@ -50,6 +51,11 @@ public class BoardServiceImpl implements BoardService{
 		IllegalArgumentException("해당 게시물이 존재하지 않습니다. " + board_id));
 		
 		board.setContent(boardRequestDTO.getContent()); 
+	}
+	@Override
+	public Board findByBoardID(long board_id) {
+		
+		return boardRepository.findById(board_id).orElseThrow(()-> new NullPointerException());
 	}
 
 	@Override

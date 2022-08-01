@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+.daccountContainer {
+	display: none;
+	border: 0.05rem solid black;
+	border-radius: 0.2rem;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,100%);
+	
+	width: 32%;
+	background-color: white; 
+	
+	font-family : 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 110%;
+	text-align: left;
+	
+	z-index:5;
+}
+
+.daccountContainer table {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.daccountContainer tr {
+	height: 4rem;
+}
+
+.daccountContainer input {
+	border: 0 solid;
+	background-color: white;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 2rem;
+	line-height: 110%;
+	text-align: left;
+	
+	width: 100%;
+}
+
+.daccountContainer #dsubmit {
+	cursor: pointer;
+	width: 90%;
+	text-align: center;
+	font-size: 1.5rem;
+	background-color: #B983FF;
+	
+	height: 3rem;
+	margin-top: 10%;
+	margin-bottom: 10%;
+	margin-left: 5%;
+}
+	
+</style>
+<body>
+<div class = "daccountContainer">
+			<table>
+				<tr>
+					<th>우연히 그만하기</th>
+					
+				</tr>
+				<tr><td><input type = "password" id = "password" placeholder = "영문 소문자, 숫자, 특수문자 조합" name = "password"></td></tr>
+				<tr><td><input type = "button" id = "dsubmit" value = "등록하기"></td></tr>
+			</table>
+		</div>
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		<script>
+			$('#dsubmit').click(function(){
+				let password = $('#password').val();
+				$.ajax({
+					url:"/daccount",
+					type:"POST",
+					data:{"password":password},
+					success:function(response){
+						if(response==true){
+							location.href = "/auth/login";
+						}else{
+							alert("비밀번호가 일치하지 않습니다.");
+						}
+					}
+				});
+			});
+		</script>
+</body>
+</html>

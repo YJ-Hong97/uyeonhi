@@ -12,7 +12,7 @@ import com.kosta.uyeonhi.signUp.UserVO;
 public interface BoardService {
 	
 	
-	List<Board> pageList(); //Pageable pageable
+	Page<Board> pageList(Pageable pageable); //
 		
 	Long saveBoard(BoardRequestDTO boardDTO);
 		
@@ -22,5 +22,6 @@ public interface BoardService {
 	
 	List<Likes> likeList();
 
+	Board findByBoardID(long board_id);
 
 }

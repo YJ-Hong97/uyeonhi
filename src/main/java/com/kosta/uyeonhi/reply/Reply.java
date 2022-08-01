@@ -3,6 +3,7 @@ package com.kosta.uyeonhi.reply;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,12 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.kosta.uyeonhi.signUp.UserVO;
 import com.kosta.uyeonhi.sns.Board;
 
-import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,7 +39,6 @@ public class Reply{
 	private String reply_content;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
 	private UserVO user;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -45,8 +46,10 @@ public class Reply{
 	
 	private int reply_like;
 	
-	@ManyToOne(fetch = FetchType.LAZY) //49~54 자기참조
-    @JoinColumn(name = "parent_id")
+	private boolean isRemoved= false;
+	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL) //49~54 자기참조
+    @JoinColumn(name = "parent_id", nullable = true)
     private Reply parent;
 
     @OneToMany(mappedBy = "parent", orphanRemoval = true)

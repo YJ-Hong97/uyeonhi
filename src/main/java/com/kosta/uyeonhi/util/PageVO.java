@@ -9,7 +9,7 @@ import groovy.transform.ToString;
 import groovyjarjarantlr4.v4.parse.ANTLRParser.finallyClause_return;
 
 public class PageVO {
-	private static final int default_size = 10;
+	private static final int default_size = 5;
 	private static final int default_max_size = 50;
 	
 	private int page;

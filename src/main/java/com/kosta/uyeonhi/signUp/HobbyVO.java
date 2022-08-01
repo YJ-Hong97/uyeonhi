@@ -32,9 +32,8 @@ import lombok.ToString;
 @Table(name = "hobby")
 public class HobbyVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long hobbyId;
 	@Column(nullable = false)
 	@NonNull
-	private String user_id;
+	private String userId;
 }
