@@ -1,20 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+.insertInquiry {
+	position: absolute;
+	top: 25%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 110%;
+	text-align: center;
+	font-family: 'Gowun Dodum';
+}
+.insertInquiry .wTable{
+	
+	
+	width:90%;
+	margin-top:30%;
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+.wTable td{
+	padding:1.5rem;
+}
+.wTable input{
+font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
+	font-family: 'Gowun Dodum';
+}
+.wTable #title{
+	width:100%;
+	height: 3rem;
+
+}
+.wTable #content{
+	width:100%;
+	height: 20rem;
+}
+.insertInquiry #isubmit{
+	width:10%;
+	height:2rem;
+	border:0;
+	border-radius: 0.2rem;
+	color:white;
+	background-color: #B983FF;
+}
+.insertInquiry .material-symbols-outlined{
+	font-variation-settings:
+  'FILL' 100,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+.insertInquiry .material-symbols-outlined{
+	font-size: 0.5rem;
+	color:#B983FF;
+}
+</style>
 <body>
-<div class = "insertInquiry">
-	<form action = "newInquiry" method = "post">
-	<table>
-		<tr><td>문의 제목</td></tr>
-		<tr><td><input type = "text" name = "title" id = "title" placeholder = "제목"></td></tr>
-		<tr><td>문의 내용</td></tr>
-		<tr><td><input type = "text" name = "content" id = "content" placeholder = "내용을 구체적으로 작성해 주세요."></td></tr>
-	</table>
-	<input type = "submit" value = "등록하기">
-	</form>
-</div>
+	<th:block th:replace="~{/fragment/header :: header}"></th:block>
+	<div class="insertInquiry">
+		<form action="newInquiry" method="post">
+			<table class="wTable">
+				<tr>
+					<td><span class="material-symbols-outlined">circle</span>문의 제목</td>
+				</tr>
+				<tr>
+					<td><input type="text" name="title" id="title"
+						placeholder="제목"></td>
+				</tr>
+				<tr>
+					<td><span class="material-symbols-outlined">circle</span>문의 내용</td>
+				</tr>
+				<tr>
+					<td><input type="text" name="content" id="content"
+						placeholder="내용을 구체적으로 작성해 주세요."></td>
+				</tr>
+			</table>
+			<input type="submit" id = "isubmit"value="등록하기">
+		</form>
+	</div>
 </body>
 </html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+	.youBox{
+	position: absolute;
+	top:60%;
+	left: 50%;
+	transform:translate(-50%,-50%);
+	 
+	border:0.1rem solid #DDDDDD;
+	z-index: 1;
+	
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 2rem;
+	line-height: 110%;
+	/* or 44px */
+	text-align: center;
+}
+.youBox .nextBtn {
+	cursor: pointer;
+	width: 70%;
+	height:50px;
+	background: #B983FF;
+	border: 0 solid;
+	border-radius: 3px;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 25px;
+	line-height: 110%;
+	/* or 44px */
+	text-align: center;
+}
+
+#btnBox {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+#btnBox input{
+	margin : 1%;
+}
+.hobbyBtn{
+cursor:pointer;
+	width: 100%;
+	height:2rem;
+	background-color: rgba(185, 131, 255, 0.3);
+	border-radius: 30px;
+	border:0 solid;
+	
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
+}
+.hobbyBox{
+	display: inline-block;
+	width: 25%;
+	margin:0.2rem;
+}
+.hobbyContainer{
+	width:60%;
+	margin:0 auto;
+}
+</style>
+<body>
+<th:block th:replace="~{/fragment/header :: header}"></th:block>
+<div class="youBox">
+			<p>
+				취미로 소울메이트를 찾아보세요.
+			</p>
+			<div class ="hobbyContainer">
+			<div class = "hobbyBox" th:each = "hobby:${settingMap}">
+				<button class = "hobbyBtn" th:value="${hobby.key}">#<span th:text = "${hobby.value}"></span></button>
+			 </div>
+			 </div>
+			<div id="btnBox">
+				<input type="button" class="nextBtn" value="수정 완료"><br>
+			</div>
+			
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script th:inline = "javascript">
+	 /*<![CDATA[*/
+	var hobbyArr = [];
+	var nextBtn = document.querySelector('.nextBtn');
+	
+	const already = /*[[${myList}]]*/'default';
+	already.forEach((el,i,array)=>{
+		hobbyArr.push(el+"");
+		$(".hobbyBox").children().each(function(i,e){
+			if($(this).val()==el){
+				$(this).css("background-color","#B983FF");
+			}
+		});
+	});
+	
+	$('.hobbyBtn').click(function(){
+		if(hobbyArr.length==5&&hobbyArr.includes($(this).val())){
+			$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+			hobbyArr = hobbyArr.filter(i=>i!=$(this).val());
+			console.log(hobbyArr);
+		}else if(hobbyArr.includes($(this).val())){
+			$(this).css("background-color","rgba(185, 131, 255, 0.3)");
+			hobbyArr = hobbyArr.filter(i=>i!=$(this).val());
+			console.log(hobbyArr);
+		}else if(hobbyArr.length<5){
+			hobbyArr.push($(this).val());
+			$(this).css("background-color","#B983FF");console.log(hobbyArr);
+		}else{
+			alert("5개 이하로 선택해주세요.");
+			console.log(hobbyArr);
+		}
+	});
+	
+	nextBtn.onclick = function(){
+		$.ajax({
+			url :"/aboutYouh",
+			type :"POST",
+			traditional: true,
+			data:{"hobbyArr":hobbyArr},
+			success: function(){
+				location.href = "/setting";
+			}
+		});
+	};
+	/*]]>*/
+	</script>
+</body>
+</html>
