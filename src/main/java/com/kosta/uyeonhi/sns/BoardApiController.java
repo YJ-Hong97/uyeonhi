@@ -32,16 +32,11 @@ public class BoardApiController {
 	private  BoardService boardService;
 	
 	@PostMapping("/api/sns/boardWrite")
-	public long boardWritePost(@RequestBody BoardRequestDTO boardDTO, Model model, HttpSession session) {
-		System.out.println(boardDTO.getContent());
-		System.out.println(boardDTO.getBoard_type());
-		//Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-       // UserDetails userDetails = (UserDetails) principal;
+	public long boardWritePost(@RequestBody BoardRequestDTO boardDTO,HttpSession session) {
         UserVO user = (UserVO)session.getAttribute("user");
         System.out.println(user);
         boardDTO.setWriter(user);
         return boardService.saveBoard(boardDTO);
-		//return new ResponseEntity<>(boardService.saveBoard(boardDTO), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/api/sns/boardDelete/{board_id}")

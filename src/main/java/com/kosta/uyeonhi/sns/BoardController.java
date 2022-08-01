@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kosta.uyeonhi.reply.ReplyService;
+
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 //@Controller  @RestController 
@@ -26,16 +29,17 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 @RequestMapping("/sns/")
 @Log4j2
+@AllArgsConstructor
 public class BoardController {
 	
-	@Autowired
-	private  BoardRepository boardRepository;
+	private final BoardRepository boardRepository;
 	
-	@Autowired
-	private  BoardService boardService;
+	private final BoardService boardService;
+	
+	private final ReplyService replyService;
 	
 	@GetMapping("/sns1")
-	public void boardList(Model model, @PageableDefault(size=24, sort="id",
+	public void boardList(Model model, @PageableDefault(size=10, sort="boardId",
             direction = Sort.Direction.DESC) Pageable pageable) {
 		
 		int startPage = ((pageable.getPageNumber()-1) / 10) * 10 + 1;
@@ -43,10 +47,7 @@ public class BoardController {
 	    int endPage = startPage + 10 - 1  > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
 	    model.addAttribute("startPageNo", startPage);
 	    model.addAttribute("endPageNo", endPage);
-	    
-	    System.out.println(boardService.pageList());
-		
-		 model.addAttribute("boardList", boardService.pageList());
+		 model.addAttribute("boardList", boardService.pageList(pageable));
 		//boardService.pageList().get(0).getWriter().getId());
 		
 		//return boardRepository.findAll(pageable);
