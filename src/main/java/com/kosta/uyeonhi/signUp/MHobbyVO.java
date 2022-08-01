@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.signUp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,8 +27,7 @@ import lombok.ToString;
 @Table(name = "m_hobby")
 public class MHobbyVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long hobbyId;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private UserVO user;
 }

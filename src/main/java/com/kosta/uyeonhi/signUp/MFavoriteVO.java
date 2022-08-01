@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.signUp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,8 +26,7 @@ import lombok.ToString;
 @Entity(name = "m_favorite")
 public class MFavoriteVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long favoriteId;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private UserVO user;
 }

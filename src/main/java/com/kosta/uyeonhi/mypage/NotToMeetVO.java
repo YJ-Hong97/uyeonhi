@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.mypage;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,6 +32,6 @@ public class NotToMeetVO {
 	private long nId;
 	private String name;
 	private String phone;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private UserVO user;
 }

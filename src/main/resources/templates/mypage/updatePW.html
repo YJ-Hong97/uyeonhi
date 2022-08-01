@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<th:block th:fragment = "updatePW">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.updatePWContainer {
+	display: none;
+	border: 0.05rem solid black;
+	border-radius: 0.2rem;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,100%);
+	
+	width: 32%;
+	background-color: white; 
+	
+	font-family : 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 110%;
+	text-align: left;
+	
+	z-index:5;
+}
+
+.updatePWContainer table {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.updatePWContainer tr {
+	height: 4rem;
+}
+
+.updatePWContainer input {
+	border: 0 solid;
+	background-color: white;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 2rem;
+	line-height: 110%;
+	text-align: left;
+	
+	width: 100%;
+}
+
+.updatePWContainer #psubmit {
+	cursor: pointer;
+	width: 90%;
+	text-align: center;
+	font-size: 1.5rem;
+	background-color: #B983FF;
+	
+	height: 3rem;
+	margin-top: 10%;
+	margin-bottom: 10%;
+	margin-left: 5%;
+}
+	
+</style>
+</head>
+<body>
+<div class = "updatePWContainer">
+			<table>
+				<tr>
+					<th>비밀번호 변경</th>
+					
+				</tr>
+				<tr><td><input type = "password" id = "password" placeholder = "영문 소문자, 숫자, 특수문자 조합" name = "password"></td></tr>
+				<tr><td><input type = "button" id = "psubmit" value = "등록하기"></td></tr>
+			</table>
+		</div>
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		<script>
+			$('#psubmit').click(function(){
+				let password = $('#password').val();
+				$.ajax({
+					url:"/updatePW",
+					type:"POST",
+					data:{"password":password},
+					success:function(){
+						location.href = "/setting";
+					}
+				});
+			});
+		</script>
+</body>
+</th:block>
+</html>

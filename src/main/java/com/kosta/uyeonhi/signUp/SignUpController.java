@@ -5,6 +5,7 @@ package com.kosta.uyeonhi.signUp;
 
 
 import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,6 +68,12 @@ public class SignUpController {
 	MHobbyRepository mhRepo;
 	@Autowired
 	MIdealRepository miRepo;
+	@Autowired
+	FavoriteRepository favoriteRepository;
+	@Autowired
+	HobbyRepository hobbyRepository;
+	@Autowired
+	IdealRepository idealRepository;
 	@Autowired
 	MemberService mService;
 	@Autowired
@@ -274,10 +281,7 @@ public class SignUpController {
 
 	@PostMapping("/signUpFinal")
 	public void uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile) throws IllegalStateException, IOException, EmptyFileException, FileUploadFailedException {
-		log.info(hogam);
-		log.info(mbti);
-		log.info(gender);
-		log.info(profile[0].getContentType());
+		
 		if(hogam.equals("hogam")) {
 			signUpInfo.put("hogam", "hogam");
 		}else {
@@ -303,7 +307,50 @@ public class SignUpController {
 		 * .fileName(fileName) .user(user) .build(); pRepo.save(profileVO); }
 		 */
 		
-		
+		//내 소개 저장
+		mfList.forEach(mf->{
+			MFavoriteVO favorite = MFavoriteVO.builder()
+					.user(user)
+					.favoriteId(mf)
+					.build();
+			mfRepo.save(favorite);
+		});
+		mhList.forEach(mh->{
+			MHobbyVO hobby = MHobbyVO.builder()
+					.user(user)
+					.hobbyId(mh)
+					.build();
+			mhRepo.save(hobby);
+		});
+		miList.forEach(mi->{
+			MIdealVO ideal = MIdealVO.builder()
+					.user(user)
+					.idealId(mi)
+					.build();
+			miRepo.save(ideal);
+		});
+		//취향 저장
+		fList.forEach(f->{
+			FavoriteVO favorite= FavoriteVO.builder()
+					.user_id(user.getId())
+					.favoriteId(f)
+					.build();
+			favoriteRepository.save(fovorite);
+		});
+		hList.forEach(h->{
+			HobbyVO hobby= HobbyVO.builder()
+					.user_id(user.getId())
+					.favoriteId(h)
+					.build();
+			hobbyRepository.save(hobby);
+		});
+		iList.forEach(i->{
+			IdealTypeVO ideal= IdealTypeVO.builder()
+					.user_id(user.getId())
+					.idealId(i)
+					.build();
+			idealRepository.save(ideal);
+		});
 	}
 	
 }
