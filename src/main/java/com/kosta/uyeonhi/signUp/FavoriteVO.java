@@ -32,9 +32,8 @@ import lombok.ToString;
 @Table(name = "favorite")
 public class FavoriteVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long favoriteId;
 	@Column(nullable = false)
 	@NonNull
-	private String user_id;
+	private String userId;
 }

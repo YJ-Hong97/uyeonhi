@@ -35,7 +35,15 @@ public class MemberService implements UserDetailsService{
 		System.out.println("암호화된 pass:" + pwd);
 		return uRepo.save(user);
 	}
-
+	@Transactional
+	public boolean daccout(UserVO user,String pw) {
+		if(passwordEncoder.matches(user.getPassword(), pw)) {
+			uRepo.deleteById(user.getId());
+			return true;
+		}else {
+			return false;
+		}
+	}
 	//!!!!반드시 구현해야한다. 
 	@Override
 	@Transactional
