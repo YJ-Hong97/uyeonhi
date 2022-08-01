@@ -11,7 +11,7 @@ import com.kosta.uyeonhi.signUp.UserVO;
 public interface BoardService {
 	
 	
-	List<Board> pageList(); //Pageable pageable
+	Page<Board> pageList(Pageable pageable); //
 		
 	Long saveBoard(BoardRequestDTO boardDTO);
 		
@@ -19,5 +19,6 @@ public interface BoardService {
 	
 	void update(long board_id, BoardRequestDTO boardRequestDTO);
 
+	Board findByBoardID(long board_id);
 
 }

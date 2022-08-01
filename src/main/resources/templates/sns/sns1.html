@@ -9,11 +9,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 	<link rel="stylesheet" th:href="@{/css/sns.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-	<script>
+<!--	<script>
 
 		window.onload = function () {
 			function modalOn() {
@@ -25,7 +23,7 @@
 			};
 
 			var btnModal = document.getElementById("btnModal");
-			btnModal.addEventListener("click", e => {
+				btnModal.addEventListener("click", e => {
 				modalOn();
 			});
 
@@ -43,17 +41,17 @@
 
 			});
 
-			 
-			 $("#bookmark").click(function(){
-			        $("#bookmark").css("font-variation-settings","'FILL' 1");
-			        $("#bookmark").css("color","yellow");
-			        
-			    });
+
+			$("#bookmark").click(function () {
+				$("#bookmark").css("font-variation-settings", "'FILL' 1");
+				$("#bookmark").css("color", "yellow");
+
+			});
 
 		};
 
 
-	</script>
+	</script> -->
 
 </head>
 
@@ -68,37 +66,39 @@
 				</div>
 				<div class="center-container">
 					<div id="container">
-						<span class="material-symbols-outlined" id="person">
-							account_circle </span>
 						<form id="board_form">
+							<span class="material-symbols-outlined" id="person">
+								account_circle </span>
+							<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on></textarea>
+
+
+
 							<div class="board_write_top">
-								<p class="userSession" type="hidden" th:text="${#authentication.name}"></p>
-								<div>
+								<div class="user_info">
+									<p class="userSession" type="hidden" th:text="${#authentication.name}"></p>
+								</div>
+
+								<div class="board_info">
 									<select name="sns_select" id="sns_select" class="select">
 										<option value="normal">게시글</option>
 										<option value="recruit">모집글</option>
 									</select>
-									<button id="btn_fileUpload" type="button"><img src="../images/image-outline.svg" style="width: 3rem;"></button>
+									<button id="btn_fileUpload" type="button"><img class="file_image"
+											src="../images/image-outline.svg" style="width: 3rem;"></button>
 								</div>
+
 								<button id="btn_board" type="button">등록</button>
 							</div>
 
-							<input type="textarea" class="box" id="toggleBtn">
+
 
 						</form>
-						<div class="section collapsible">
+						<!--	<div class="section collapsible">
 							<span class="material-symbols-outlined">event_available</span>
 							<span class="material-symbols-outlined">image</span>
 							<span class="material-symbols-outlined">cloud_upload</span>
-						</div>
+						</div> -->
 					</div>
-
-
-
-					<script>
-
-					</script>
-
 
 					<ul>
 						<li th:each="list, status: ${boardList}">
@@ -108,10 +108,6 @@
 								<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
 									class="delete_button">삭제</button>
 
-
-
-								<p><a class="btn" th:href="|#ex${status.count}|"
-										th:onclick="|call(${status.count})|">도달창띄우기2</a></p>
 
 								<div th:id="|ex${status.count}|" class="modal">
 									<div class="modal_Ct">
@@ -139,16 +135,70 @@
 									<span class=board_userInfo>[[${list.writer.id}]]</span>
 								</div>
 								<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
-									<span id="ellipse"></span> <span class="material-symbols-outlined"  id="btnModal">
+									<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
 										more_horiz </span>
 								</div>
 								<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳</div>
 								<div id="container4" th:value="${list.boardId}" th:class="${list.boardId}">
 									<span id="regdate">today</span>
-									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|"> favorite  </span>
+									<button type="button" class="reply_show">댓글보기</button>
+									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
+										th:onclick="|likes(${list.boardId})|"> favorite </span>
 									<span class="material-symbols-outlined" id="bookmark"> bookmark </span>
-									<span class="board_text">[[${list.content}]]</span>
+									<div class="text_container">
+										<span class="board_text">[[${list.content}]]</span>
+									</div>
 								</div>
+								<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
+									<form class=reply_form>
+										<div class="reply_container">
+											<input type="hidden" th:class="|board${status.index}|"
+												th:value="${list.boardId}" />
+											<span class="material-symbols-outlined" id="person">
+												account_circle </span>
+											<textarea th:class="|reply_content${status.index}|" id="reply_text"
+												wrap=on></textarea>
+											<button th:class="btn_reply" type="button"
+												th:value="${status.index}">등록</button>
+										</div>
+									</form>
+								</div>
+								<button id="show">팝업열기</button>
+								<div class="background">
+									<div class="window">
+										<div class="popup">
+											<button id="close">팝업닫기</button>
+											<div class="modal_picture_box">
+												
+											</div>
+											<div class="modal_reply_box">
+												<div class="modal_writer_info">
+													[[${list.writer.id}]]
+													
+													<ul>
+														<li th:each="replyList, status: ${replyList}">
+														</li>
+													</ul>
+												</div>
+												reply
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<script>
+									function show() {
+										document.querySelector(".background").className = "background show";
+									}
+
+									function close() {
+										document.querySelector(".background").className = "background";
+									}
+
+									document.querySelector("#show").addEventListener("click", show);
+									document.querySelector("#close").addEventListener("click", close);
+								</script>
+
 							</div>
 						</li>
 					</ul>
@@ -193,112 +243,11 @@
 		</div>
 	</div>
 
-	<script>
+	<script src="/js/likes.js"></script>
+	<script src="/js/board/board.js"></script>
+	<script src="/js/board/reply.js"></script>
+	<script src="/js/board/modal.js"></script>
 
-		$(document).ready(function () {
-
-
-
-			$('#toggleBtn').click(function () {
-				$('#container').css("height", "250px");
-				$('#toggleBtn').css("height", "200px");
-				$('#btn_board').css("display", "inline-block");
-				$('.board_write_top').css({"display": "flex", "justify-content": "space-between"});
-				$('#sns_select').css({"display": "inline-block"});
-				$('#btn_fileUpload').css({"display":"inline-block"});
-
-			});
-
-
-
-			$('#btn_board').on('click', function () {
-				let data = {
-					content: $("#toggleBtn").val().trim(),
-					board_type: $("#sns_select option:selected").text(),
-				};
-
-				console.log(data);
-
-				$.ajax({
-					url: '/api/sns/boardWrite',
-					contentType: 'application/json',
-					data: JSON.stringify(data),
-					//dataType: "json",
-					type: "POST",
-					success: function (res) {
-						alert("게시글 등록 완료");
-						location.href = "/sns/sns1";
-					},
-					error: function (err) {
-						alert(err);
-					}
-				})
-			});
-
-			$('.delete_button').on('click', function () {
-				let board_id = $(this).val();
-
-				console.log(board_id);
-
-				$.ajax({
-					url: '/api/sns/boardDelete/' + board_id,
-					contentType: 'application/json',
-					dataType: "json",
-					type: "DELETE",
-					success: function (res) {
-						alert("게시글 삭제 완료");
-						location.href = "/sns/sns1";
-					},
-					error: function (err) {
-						alert(JSON.stringify(err));
-					}
-				})
-			});
-
-
-
-			$('.update_button').on('click', function () {
-
-
-
-				let boardId = $(this).val();
-				let seqence = $(this).attr('aa');
-				let boardContent = $('#modify_' + seqence).val();
-
-				data = {
-					board_id: boardId,
-					seq: seqence,
-					content: boardContent
-				}
-
-				$.ajax({
-					url: '/api/sns/boardUpdate/' + boardId,
-					data: JSON.stringify(data),
-					contentType: 'application/json',
-					dataType: "json",
-					type: "PUT",
-					success: function (res) {
-						alert("게시글 수정 완료");
-						location.href = "/sns/sns1";
-					},
-					error: function (err) {
-						alert(JSON.stringify(err));
-					}
-				})
-			});
-		});
-
-		function call(modalName) {
-
-
-			$("#ex" + modalName).modal({
-				fadeDuration: 250
-			});
-
-			$("#ex" + modalName).modal.css("display", "flex");
-		}
-	</script>
-<script src="/js/likes.js"></script>
 </body>
 
 </html>
