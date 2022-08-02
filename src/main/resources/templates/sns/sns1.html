@@ -41,17 +41,6 @@
 
 			});
 
-<<<<<<< HEAD
-			 
-
-=======
-
-			$("#bookmark").click(function () {
-				$("#bookmark").css("font-variation-settings", "'FILL' 1");
-				$("#bookmark").css("color", "yellow");
-
-			});
->>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 
 		};
 
@@ -61,7 +50,6 @@
 </head>
 
 <body>
-[[${session.user.id}]]
 	<div>
 		<div class="big-container">
 			<div class="flex-container">
@@ -76,8 +64,12 @@
 							<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on></textarea>
 
 
+							<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 해,달)">
+							
+							
 
 							<div class="board_write_top">
+								
 								<div class="user_info">
 									<p class="userSession" type="hidden" th:text="${#authentication.name}"></p>
 								</div>
@@ -94,8 +86,7 @@
 								<button id="btn_board" type="button">등록</button>
 							</div>
 
-							<input type="textarea" class="box" id="toggleBtn">
-							
+
 
 
 						</form>
@@ -147,30 +138,26 @@
 								<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳</div>
 								<div id="container4" th:value="${list.boardId}" th:class="${list.boardId}">
 								
-								[[${list.getLikes().size()}]]
-								<div class="like-box" th:if="${list.getLikes().size()==0}"> 
-								!!!!!
-										<span id="regdate">today</span>
-										<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|"> favorite  </span>
-								</div>
-								
-				 			    <div th:each="likeCheck:${list.getLikes()}">
-				 			    @@@@@
-					 				<div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
-											<span id="regdate">today</span>
-											<span class="material-symbols-outlined notlikes heartt" th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|"> favorite  </span>
-									</div>  
-								   
-							 	</div>
-									<span class="board_text">[[${list.content}]]</span>
-=======
 									<span id="regdate">today</span>
 									<button type="button" class="reply_show">댓글보기</button>
-									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
-										th:onclick="|likes(${list.boardId})|"> favorite </span>
-									<span class="material-symbols-outlined" id="bookmark"> bookmark </span>
+									<div class="like-box" th:if="${list.getLikes().size()==0}">
+										<span class="material-symbols-outlined likes heartt"
+											th:id="|heart_${list.boardId}|"
+											th:onclick="|likes(${list.boardId})|"> favorite </span>
+									</div>
+									<div th:each="likeCheck:${list.getLikes()}" class="like-box2">
+										<div class="like-box"
+											th:if="${session.user.id == likeCheck.user.id}">
+											<span class="material-symbols-outlined notlikes heartt"
+												th:id="|heart_${list.boardId}|"
+												th:onclick="|likes(${list.boardId})|"> favorite </span>
+										</div>
+									</div>
 									<div class="text_container">
 										<span class="board_text">[[${list.content}]]</span>
+										<div th:each="hashtag : ${#strings.arraySplit(list.tag,',')}">
+										 <a class="board_tag" th:text="|#${hashtag}|" th:href="@{/sns/sns1/search(tag=${hashtag})}"></a> 
+										 </div>
 									</div>
 								</div>
 								<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
@@ -233,14 +220,14 @@
 						<div id="search">
 							<div id="searchbox">
 								<span class="material-symbols-outlined" id="searchBtn">search</span>
-								<input type="text" class="box">
+								<input type="text" class="box" id="searchTag">
 							</div>
-							<div class="text">
-								<p>친구찾던지태그검색하던지</p>
+							<div class="text" >
+								<p id="searchBefore">친구찾던지태그검색하던지</p>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>				
 			</div>
 
 

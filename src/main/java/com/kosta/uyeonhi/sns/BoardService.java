@@ -19,8 +19,6 @@ public interface BoardService {
 	void delete(long board_id);
 	
 	void update(long board_id, BoardRequestDTO boardRequestDTO);
-	
-	List<Likes> likeList();
 
 	Board findByBoardID(long board_id);
 

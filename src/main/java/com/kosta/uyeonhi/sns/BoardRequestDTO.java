@@ -58,13 +58,16 @@ public class BoardRequestDTO {
 	private int applicant_person;
 
 	private Date deadline;
+	
+	private String tag;
 
 	@Builder
-	public BoardRequestDTO(Long board_id, String content, UserVO writer, String board_type) {
+	public BoardRequestDTO(Long board_id, String content, UserVO writer, String board_type, String tag) {
 		this.board_id = board_id;
 		this.content = content;
 		this.writer = writer;
 		this.board_type = board_type;
+		this.tag = tag;
 	}
 
 	public Board toEntity() {
@@ -73,6 +76,7 @@ public class BoardRequestDTO {
 				.content(content)
 				.board_type(board_type)
 				.writer(writer)
+				.tag(tag)
 				.build();
 	}
 

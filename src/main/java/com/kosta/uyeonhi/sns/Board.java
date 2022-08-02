@@ -79,6 +79,11 @@ public class Board {
 	@OneToMany(  fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "board_id") 
 	private List<Likes> likes;
+	
+	@Column(nullable = true)
+	private String tag;
+	
+	
 }
 
 

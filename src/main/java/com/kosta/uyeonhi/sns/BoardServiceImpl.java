@@ -22,9 +22,6 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private final BoardRepository boardRepository;
 	
-	@Autowired
-	private final LikesRepository likesRepository;
-	
 	@Override
 	public Long saveBoard(BoardRequestDTO boardDTO) {
 		return boardRepository.save(boardDTO.toEntity()).getBoardId();
@@ -58,10 +55,6 @@ public class BoardServiceImpl implements BoardService{
 		return boardRepository.findById(board_id).orElseThrow(()-> new NullPointerException());
 	}
 
-	@Override
-	public List<Likes> likeList(){
-		return (List<Likes>) likesRepository.findAll();
-	}
 	
 	/*
 	 * @Override

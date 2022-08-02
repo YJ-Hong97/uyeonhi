@@ -13,16 +13,17 @@ window.onscroll = function(e) {
 };
 
 
+
 	$('#toggleBtn').click(function() {
 		$('#toggleBtn').css("height", "180px");
-		$('#container').css("height", "250px");
+		$('#container').css("height", "300px");
 		$('.userSession').css({ "display": "inline" });
 		$('#btn_board').css("display", "inline");
 		$('.board_write_top').css({ "display": "flex", "justify-content": "space-between" });
 		$('#sns_select').css({ "display": "inline" });
 		$('#btn_fileUpload').css({ "display": "inline-block", "width": "3rem" });
 		$('.file_image').css({ "display": "inline" });
-
+		$('.tag').css("display", "inline");
 	});
 
 
@@ -31,6 +32,7 @@ window.onscroll = function(e) {
 		let data = {
 			content: $("#toggleBtn").val().trim(),
 			board_type: $("#sns_select option:selected").text(),
+			tag : $(".tag").val()
 		};
 
 		console.log(data);
