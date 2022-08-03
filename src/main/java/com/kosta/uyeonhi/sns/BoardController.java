@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,11 +49,30 @@ public class BoardController {
 	    int endPage = startPage + 10 - 1  > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
 	    model.addAttribute("startPageNo", startPage);
 	    model.addAttribute("endPageNo", endPage);
+	    
+
+
 		 model.addAttribute("boardList", boardService.pageList(pageable));
 		//boardService.pageList().get(0).getWriter().getId());
 		
 		//return boardRepository.findAll(pageable);
 	}
+	
+	@GetMapping("/sns1/search")
+	@ResponseBody
+	public List<Board> search(@RequestParam(value="keyword") String keyword, Model model) {
+		System.out.println("controller : "+keyword);
+		
+		
+		List<Board> searchList = boardService.tagSearch(keyword);
+		//model.addAttribute("searchList",searchList);
+		System.out.println(searchList.size());
+	 
+		return searchList;
+	}
+	
+	
+	
 	
 	/*@GetMapping("/boardWrite")
 	public String boardWirteGet() {
