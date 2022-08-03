@@ -31,7 +31,7 @@ public class ProfileVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long profileId;	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private UserVO user;
 	private String fileName;
 }

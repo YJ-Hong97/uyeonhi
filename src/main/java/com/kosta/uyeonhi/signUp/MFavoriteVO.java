@@ -27,6 +27,6 @@ import lombok.ToString;
 public class MFavoriteVO {
 	@Id
 	private Long favoriteId;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private UserVO user;
 }
