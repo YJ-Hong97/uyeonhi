@@ -11,21 +11,21 @@ ws.on('listening', function () {
 
 ws.on('connection', function (connection) {
 
-	console.log("username is connected");
+	console.log("user is connected");
 	connection.send("Hello from server");
 
-	/* Action to do when username send messages 
+	/* Action to do when user send messages 
 	connection.on('message', function (message) {
 	
 
-		console.log("Message from username....."+message);
+		console.log("Message from user....."+message);
 	    
 	});
 
 
-	/* Action to do When username try to close the connection 
+	/* Action to do When user try to close the connection 
 	connection.on('close', function () {
-		console.log("Disconnecting username"); 
+		console.log("Disconnecting user"); 
 	});  
 
 
@@ -39,15 +39,15 @@ Object.assign(global, { WebSocket: require('ws') });
 //creating a websocket server at port 9090 
 var wss = new WebSocketServer({port: 9090}); 
 
-//all connected to the server usernames 
-var usernames = {};
+//all connected to the server users 
+var users = {};
 
-//when a username connects to our sever 
+//when a user connects to our sever 
 wss.on('connection', function(connection) {
   
-   console.log("username connected 연결연결");
+   console.log("user connected 연결연결");
 	
-   //when server gets a message from a connected username 
+   //when server gets a message from a connected user 
    connection.on('message', function(message) { 
 	
 	  var data;
@@ -60,21 +60,21 @@ wss.on('connection', function(connection) {
 		 data = {}; 
 	  }
 		
-	  //switching type of the username message 
+	  //switching type of the user message 
 	  switch (data.type) { 
-		 //when a username tries to login 
+		 //when a user tries to login 
 		 case "login": 
-			console.log("username logged", data.name); 
+			console.log("user logged", data.name); 
 				
-			//if anyone is logged in with this username then refuse 
-			if(usernames[data.name]) { 
+			//if anyone is logged in with this user then refuse 
+			if(users[data.name]) { 
 			   sendTo(connection, { 
 				  type: "login", 
 				  success: false 
 			   }); 
 			} else { 
-			   //save username connection on the server 
-			   usernames[data.name] = connection; 
+			   //save user connection on the server 
+			   users[data.name] = connection; 
 			   connection.name = data.name;
 					
 			   sendTo(connection, { 
@@ -86,14 +86,14 @@ wss.on('connection', function(connection) {
 			break;
 				
 		 case "offer": 
-			//for ex. usernameA wants to call usernameB 
+			//for ex. userA wants to call userB 
 			console.log("Sending offer to: ", data.name); 
 				
-			//if usernameB exists then send him offer details 
-			var conn = usernames[data.name]; 
+			//if userB exists then send him offer details 
+			var conn = users[data.name]; 
 				
 			if(conn != null) { 
-			   //setting that usernameA connected with usernameB 
+			   //setting that userA connected with userB 
 			   connection.otherName = data.name; 
 					
 			   sendTo(conn, { 
@@ -107,8 +107,8 @@ wss.on('connection', function(connection) {
 				
 		 case "answer": 
 			console.log("Sending answer to: ", data.name); 
-			//for ex. usernameB answers usernameA 
-			var conn = usernames[data.name]; 
+			//for ex. userB answers userA 
+			var conn = users[data.name]; 
 				
 			if(conn != null) { 
 			   connection.otherName = data.name; 
@@ -122,7 +122,7 @@ wss.on('connection', function(connection) {
 				
 		 case "candidate": 
 			console.log("Sending candidate to:",data.name); 
-			var conn = usernames[data.name];  
+			var conn = users[data.name];  
 				
 			if(conn != null) { 
 			   sendTo(conn, { 
@@ -135,10 +135,10 @@ wss.on('connection', function(connection) {
 				
 		 case "leave": 
 			console.log("Disconnecting from", data.name); 
-			var conn = usernames[data.name]; 
+			var conn = users[data.name]; 
 			conn.otherName = null; 
 				
-			//notify the other username so he can disconnect his peer connection 
+			//notify the other user so he can disconnect his peer connection 
 			if(conn != null) { 
 			   sendTo(conn, { 
 				  type: "leave" 
@@ -157,16 +157,16 @@ wss.on('connection', function(connection) {
 	  }  
    });
 	
-   //when username exits, for example closes a browser window 
+   //when user exits, for example closes a browser window 
    //this may help if we are still in "offer","answer" or "candidate" state 
    connection.on("close", function() { 
 	
 	  if(connection.name) { 
-		 delete usernames[connection.name]; 
+		 delete users[connection.name]; 
 			
 		 if(connection.otherName) { 
 			console.log("Disconnecting from ", connection.otherName); 
-			var conn = usernames[connection.otherName]; 
+			var conn = users[connection.otherName]; 
 			conn.otherName = null;  
 				
 			if(conn != null) { 
@@ -188,122 +188,112 @@ function sendTo(connection, message) {
 const Socket = require("websocket").server
 const http = require("http")
 
-const server = http.createServer((req, res) => { })
+const server = http.createServer((req, res) => {})
 
 server.listen(3000, () => {
-	console.log("Listening on port 3000...")
-
+    console.log("Listening on port 3000...")
 })
 
 const webSocket = new Socket({ httpServer: server })
 
-let usernames = []
+let users = []
 
 webSocket.on('request', (req) => {
-	const connection = req.accept()
+    const connection = req.accept()
 
-console.log("connection" , connection);
+    connection.on('message', (message) => {
+        const data = JSON.parse(message.utf8Data)
 
-	connection.on('message', (message) => {
-		const data = JSON.parse(message.utf8Data)
+        const user = findUser(data.username)
 
-console.log("data" , data);
+        switch(data.type) {
+            case "store_user":
 
-		switch (data.type) {
-			case "store_username":
+                if (user != null) {
+                    return
+                }
 
-				if (username != null) {
-					return
-				}
+                const newUser = {
+                     conn: connection,
+                     username: data.username
+                }
 
-				const newusername = {
-					conn: connection,
-					username: data.username
-				}
+                users.push(newUser)
+                console.log(newUser.username)
+                break
+            case "store_offer":
+                if (user == null)
+                    return
+                user.offer = data.offer
+                break
+            
+            case "store_candidate":
+                if (user == null) {
+                    return
+                }
+                if (user.candidates == null)
+                    user.candidates = []
+                
+                user.candidates.push(data.candidate)
+                break
+            case "send_answer":
+                if (user == null) {
+                    return
+                }
 
-				usernames.push(newusername)
-				console.log(newusername.username)
-				break
+                sendData({
+                    type: "answer",
+                    answer: data.answer
+                }, user.conn)
+                break
+            case "send_candidate":
+                if (user == null) {
+                    return
+                }
 
-			case "store_offer":
-				if (username == null)
-					return
-				username.offer = data.offer
-				break
+                sendData({
+                    type: "candidate",
+                    candidate: data.candidate
+                }, user.conn)
+                break
+            case "join_call":
+                if (user == null) {
+                    return
+                }
 
-			case "store_candidate":
-				if (username == null) {
-					return
-				}
-				if (username.candidates == null)
-					username.candidates = []
+                sendData({
+                    type: "offer",
+                    offer: user.offer
+                }, connection)
+                
+                user.candidates.forEach(candidate => {
+                    sendData({
+                        type: "candidate",
+                        candidate: candidate
+                    }, connection)
+                })
 
-				username.candidates.push(data.candidate)
-				break
-			case "send_answer":
-				if (username == null) {
-					return
-				}
+                break
+        }
+    })
 
-				sendData({
-					type: "answer",
-					answer: data.answer
-				}, username.conn)
-				break
-			case "send_candidate":
-				if (username == null) {
-					return
-				}
-
-				sendData({
-					type: "candidate",
-					candidate: data.candidate
-				}, username.conn)
-				break
-			case "join_call":
-				if (username == null) {
-					return
-				}
-
-				sendData({
-					type: "offer",
-					offer: username.offer
-				}, connection)
-
-				username.candidates.forEach(candidate => {
-					sendData({
-						type: "candidate",
-						candidate: candidate
-					}, connection)
-
-				})
-
-				break
-		}
-
-	})
-	
-	connection.on('close' , (reason , description) =>{
-		usernames.forEach(username =>{
-			if(username.conn == connection){
-				usernames.splice(usernames.indexOf(username),1)
-				return
-			}
-		})
-	})
-	
+    connection.on('close', (reason, description) => {
+        users.forEach(user => {
+            if (user.conn == connection) {
+                users.splice(users.indexOf(user), 1)
+                return
+            }
+        })
+    })
 })
 
 function sendData(data, conn) {
-	conn.send(JSON.stringify(data))
-
+    conn.send(JSON.stringify(data))
 }
 
-function findusername(username) {
-
-	for (let i = 0; i < usernames.length; i++) {
-		if (username[i].username == username)
-			return usernames[i]
-
-	}
+function findUser(username) {
+    for (let i = 0;i < users.length;i++) {
+        if (users[i].username == username)
+            return users[i]
+    }
 }
