@@ -62,12 +62,13 @@ public class BoardRequestDTO {
 	private String tag;
 
 	@Builder
-	public BoardRequestDTO(Long board_id, String content, UserVO writer, String board_type, String tag) {
+	public BoardRequestDTO(Long board_id, String content, UserVO writer, String board_type, String tag, int total_person) {
 		this.board_id = board_id;
 		this.content = content;
 		this.writer = writer;
 		this.board_type = board_type;
 		this.tag = tag;
+		this.total_person = total_person;
 	}
 
 	public Board toEntity() {
@@ -77,6 +78,7 @@ public class BoardRequestDTO {
 				.board_type(board_type)
 				.writer(writer)
 				.tag(tag)
+				.total_person(total_person)
 				.build();
 	}
 

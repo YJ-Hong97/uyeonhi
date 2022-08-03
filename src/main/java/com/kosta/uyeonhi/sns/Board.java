@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.sns;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kosta.uyeonhi.likes.Likes;
 import com.kosta.uyeonhi.reply.Reply;
@@ -37,7 +39,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name="Board")
 public class Board {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long boardId;
@@ -58,9 +60,11 @@ public class Board {
 	@Column(nullable = true)
 	private LocalDateTime updateDate;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private UserVO writer;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "board",  fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Reply> reply;
 	
@@ -76,6 +80,7 @@ public class Board {
 	@Column(nullable = true)
 	private Date deadline;
 	
+	@JsonIgnore
 	@OneToMany(  fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "board_id") 
 	private List<Likes> likes;

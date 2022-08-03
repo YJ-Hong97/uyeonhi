@@ -54,6 +54,13 @@ public class BoardServiceImpl implements BoardService{
 		
 		return boardRepository.findById(board_id).orElseThrow(()-> new NullPointerException());
 	}
+	
+	@Override
+	@Transactional
+	public List<Board> tagSearch(String keyword){
+		 System.out.println("BoardServiceImpl : "+keyword);
+		return boardRepository.findByTagContaining(keyword);
+	}
 
 	
 	/*

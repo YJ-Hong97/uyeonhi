@@ -64,7 +64,7 @@
 							<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on></textarea>
 
 
-							<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 해,달)">
+							<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
 							
 							
 
@@ -81,6 +81,7 @@
 									</select>
 									<button id="btn_fileUpload" type="button"><img class="file_image"
 											src="../images/image-outline.svg" style="width: 3rem;"></button>
+									<input type="number" max="10" class="total_person" style="display: none;">
 								</div>
 
 								<button id="btn_board" type="button">등록</button>
@@ -140,6 +141,7 @@
 								
 									<span id="regdate">today</span>
 									<button type="button" class="reply_show">댓글보기</button>
+									<span th:text="${list.likes.size()}"></span>
 									<div class="like-box" th:if="${list.getLikes().size()==0}">
 										<span class="material-symbols-outlined likes heartt"
 											th:id="|heart_${list.boardId}|"
@@ -155,8 +157,11 @@
 									</div>
 									<div class="text_container">
 										<span class="board_text">[[${list.content}]]</span>
+										<div th:if="${list.board_type == '모집글'}">
+										<span class="board_text">[[${list.applicant_person}]]/[[${list.total_person}]]</span>
+										</div>
 										<div th:each="hashtag : ${#strings.arraySplit(list.tag,',')}">
-										 <a class="board_tag" th:text="|#${hashtag}|" th:href="@{/sns/sns1/search(tag=${hashtag})}"></a> 
+										 <a class="board_tag searchBtn" th:text="|#${hashtag}|" th:value="${hashtag}"></a> 
 										 </div>
 									</div>
 								</div>
@@ -219,10 +224,12 @@
 					<div id="search-container">
 						<div id="search">
 							<div id="searchbox">
-								<span class="material-symbols-outlined" id="searchBtn">search</span>
-								<input type="text" class="box" id="searchTag">
+							<form id="search-form">
+								<span class="material-symbols-outlined searchBtn" id="searchBtn2">search</span>
+								<input type="text" class="box" id="searchTag" name="keyword">
+							</form>
 							</div>
-							<div class="text" >
+							<div class="text" id="searchContent">							
 								<p id="searchBefore">친구찾던지태그검색하던지</p>
 							</div>
 						</div>

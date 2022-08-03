@@ -25,14 +25,65 @@ window.onscroll = function(e) {
 		$('.file_image').css({ "display": "inline" });
 		$('.tag').css("display", "inline");
 	});
+		
+		$('#sns_select').change(function(){
+			
+			var result = $('#sns_select option:selected').val();
+			if(result == 'recruit'){
+				$(".total_person").css("display", "inline");
+			}else{
+				$(".total_person").css("display", "none" );
+			}
+		});
 
+$('.searchBtn').on('click', function() {
+		$.ajax({
+			url: '/sns/sns1/search',
+			type: "GET",
+			data: $("#search-form").serialize(),
+			success: function(res) {
+				$('#searchBefore').remove();
+				alert("성공");
+			    //화면에 출력한다.
+			 var output = `
+			         <p>검색결과 입니다</p>
+			    `;
+			    $.each(res, function(index, item){
+			
+				    output += `
+				    <p>${item.tag}</p>
+				   <p>${item.content}</p>
+				   <p>${item.board_type}</p>
+				   <p>${item.boardId}</p>
+				   <hr>
+				    `;
+				});
+				$("#searchContent").html(output);
+			  
+			   
+								//<div th:each="tag : ${searchList}">
+								//<p>[[${tag.boardId}]]</p>
+								//<p>[[${tag.tag}]]</p>
+								//<p>[[${tag.content}]]</p>
+								//<p>[[${tag.board_type}]]</p>
+								//</div>
+								
+			},
+			error: function(error) {
+				console.log("오류",error)
+			}
+		})
+		
+	});
 
 
 	$('#btn_board').on('click', function() {
+		
 		let data = {
 			content: $("#toggleBtn").val().trim(),
 			board_type: $("#sns_select option:selected").text(),
-			tag : $(".tag").val()
+			tag : $(".tag").val(),
+			total_person : $(".total_person").val()
 		};
 
 		console.log(data);

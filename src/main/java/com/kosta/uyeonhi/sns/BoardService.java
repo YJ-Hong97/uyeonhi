@@ -21,5 +21,7 @@ public interface BoardService {
 	void update(long board_id, BoardRequestDTO boardRequestDTO);
 
 	Board findByBoardID(long board_id);
+	
+	List<Board> tagSearch(String keyword);
 
 }

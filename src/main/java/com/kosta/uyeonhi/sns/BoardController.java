@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -55,6 +57,22 @@ public class BoardController {
 		
 		//return boardRepository.findAll(pageable);
 	}
+	
+	@GetMapping("/sns1/search")
+	@ResponseBody
+	public List<Board> search(@RequestParam(value="keyword") String keyword, Model model) {
+		System.out.println("controller : "+keyword);
+		
+		
+		List<Board> searchList = boardService.tagSearch(keyword);
+		//model.addAttribute("searchList",searchList);
+		System.out.println(searchList.size());
+	 
+		return searchList;
+	}
+	
+	
+	
 	
 	/*@GetMapping("/boardWrite")
 	public String boardWirteGet() {
