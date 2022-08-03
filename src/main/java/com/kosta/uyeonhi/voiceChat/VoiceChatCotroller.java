@@ -12,7 +12,14 @@ import lombok.extern.log4j.Log4j2;
 public class VoiceChatCotroller {
 
 	@GetMapping(value = "/rtc")
-	public void rtc() {
+	public String sender() {
 		log.info("왓냐");
+		return "face/sender";
+	}
+	
+	@GetMapping(value = "/rtcrc")
+	public String receiver() {
+		log.info("왓냐");
+		return "face/receiver";
 	}
 }

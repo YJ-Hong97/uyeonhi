@@ -1,4 +1,4 @@
-const webSocket = new WebSocket("ws://192.168.0.14:3000")
+const webSocket = new WebSocket("ws://localhost:3000")
 
 webSocket.onmessage = (event) => {
     handleSignallingData(JSON.parse(event.data))
@@ -17,17 +17,16 @@ function handleSignallingData(data) {
 let username
 function sendUsername() {
 
-    username = document.getElementById("username-input").value
+    username = document.getElementById("username-input").value;
     sendData({
         type: "store_user"
-        
-    })
+    });
     console.log("username");
 }
 
 function sendData(data) {
-    data.username = username
-    webSocket.send(JSON.stringify(data))
+    data.username = username;
+    webSocket.send(JSON.stringify(data));
 }
 
 
@@ -38,13 +37,13 @@ function startCall() {
     .style.display = "inline"
 
     navigator.getUserMedia({
-        video: {
+        video: false,/*{
             frameRate: 24,
             width: {
                 min: 480, ideal: 720, max: 1280
             },
             aspectRatio: 1.33333
-        },
+        },*/
         audio: true
     }, (stream) => {
         localStream = stream
@@ -60,13 +59,13 @@ function startCall() {
             ]
         }
 
-        peerConn = new RTCPeerConnection(configuration)
-        peerConn.addStream(localStream)
+      peerConn = new RTCPeerConnection(configuration)
+       peerConn.addStream(localStream)
 
-        peerConn.onaddstream = (e) => {
-            document.getElementById("remote-video")
+      peerConn.onaddstream = (e) => {
+           document.getElementById("remote-video")
             .srcObject = e.stream
-        }
+       }
 
         peerConn.onicecandidate = ((e) => {
             if (e.candidate == null)
@@ -104,6 +103,6 @@ function muteAudio() {
 
 let isVideo = true
 function muteVideo() {
-    isVideo = !isVideo
+   isVideo = !isVideo
     localStream.getVideoTracks()[0].enabled = isVideo
 }

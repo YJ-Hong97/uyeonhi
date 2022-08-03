@@ -1,4 +1,4 @@
-const webSocket = new WebSocket("ws://192.168.0.14:3000")
+const webSocket = new WebSocket("ws://172.20.10.12:3000")
 
 webSocket.onmessage = (event) => {
     handleSignallingData(JSON.parse(event.data))
@@ -45,13 +45,13 @@ function joinCall() {
     .style.display = "inline"
 
     navigator.getUserMedia({
-        video: {
+        video: false, /*{
             frameRate: 24,
             width: {
                 min: 480, ideal: 720, max: 1280
             },
             aspectRatio: 1.33333
-        },
+        },*/
         audio: true
     }, (stream) => {
         localStream = stream
@@ -104,4 +104,4 @@ let isVideo = true
 function muteVideo() {
     isVideo = !isVideo
     localStream.getVideoTracks()[0].enabled = isVideo
-}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }
