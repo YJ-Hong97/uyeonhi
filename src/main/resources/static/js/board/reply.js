@@ -2,46 +2,49 @@ $('.show').on('click', function() {
 	let sequence = $(this).val();
 	let boardId = $(".board" + sequence).val();
 	console.log(sequence + "," + boardId);
-	
+
 	$.ajax({
 		url: `/api/reply/${boardId}`,
 		type: "get",
 		success: function(res) {
 			console.log(res);
 			let output = "";
-			
-			$.each(res, function(index, item){
-				output+= `<div th:if="${item.depth==0}" class="replyText1">`
-				output+= `<div>${item.reply_content}</div>`
-				output+= `<li >${item.reply_id}<div>`
-				output+= `<div class="button_box">`
-				output+= `<button class="delete_reply_button" value="${item.reply_id} type="button">삭제</button>`
-				output+= `<button class="update_reply_button" value="${item.reply_id}" type="button">수정</button>`
-				output+= `</div>`
-				output+= `<div class="reReply_box">`
-				output+= `<textarea class="input_reReply"></textarea>`
-				output+= `<input type="hidden" class="hidden_boardId" value="${item.boardId}"></input>`
-				output+= `<button value="${item.reply_id}" class="btn_reReply" type="button">대댓글</button>`
-				output+= `</div>`
-				output+= `</li>`
-				output+= `</div>`
-				
-				output+= `<div th:unless="${item.depth==0}" class="replyText2" style="margin-left:30px">`
-				output+= `<div>${item.reply_content}</div>`
-				output+= `<li >${item.reply_id}<div>`
-				output+= `<div class="button_box">`
-				output+= `<button class="delete_reply_button" value="${item.reply_id} type="button">삭제</button>`
-				output+= `<button class="update_reply_button" value="${item.reply_id}" type="button">수정</button>`
-				output+= `</div>`
-				output+= `<div class="reReply_box">`
-				output+= `<textarea class="input_reReply"></textarea>`
-				output+= `<input type="hidden" class="hidden_boardId" value="${item.boardId}"></input>`
-				output+= `<button value="${item.reply_id}" class="btn_reReply" type="button">대댓글</button>`
-				output+= `</div>`
-				output+= `</li>`
-				output+= `</div>`
+
+			$.each(res, function(index, item) {
+				output += `<div th:if="${item.depth == 0}" class="replyText1">`
+				output += 	`<div>${item.reply_content}</div>`
+				output += 	`<div>${item.depth}</div>`
+				output += 	`<li>`
+				output += 		`<div class="button_box">`
+				output += 			`<button class="delete_reply_button" value="${item.reply_id} type="button">삭제</button>`
+				output += 			`<button class="update_reply_button" value="${item.reply_id}" type="button">수정</button>`
+				output +=	 	`</div>`
+				output += 		`<div class="reReply_box">`
+				output += 			`<textarea class="input_reReply"></textarea>`
+				output += 			`<input type="hidden" class="hidden_boardId" value="${item.boardId}"></input>`
+				output += 			`<button value="${item.reply_id}" class="btn_reReply" type="button">대댓글</button>`
+				output += 		`</div>`
+				output += 	`</li>`
+				output += `</div>`
+
+			/*	output += `<div th:unless="${item.depth == 0}" class="replyText2">`
+				output += 	`<div>${item.reply_content}</div>`
+				output += 	`<div>${item.depth}</div>`
+				output += 	`<li>`
+				output += 		`<div class="button_box">`
+				output += 			`<button class="delete_reply_button" value="${item.reply_id} type="button">삭제</button>`
+				output += 			`<button class="update_reply_button" value="${item.reply_id}" type="button">수정</button>`
+				output +=	 	`</div>`
+				output += 		`<div class="reReply_box">`
+				output += 			`<textarea class="input_reReply"></textarea>`
+				output += 			`<input type="hidden" class="hidden_boardId" value="${item.boardId}"></input>`
+				output += 			`<button value="${item.reply_id}" class="btn_reReply" type="button">대댓글</button>`
+				output += 		`</div>`
+				output += 	`</li>`
+				output += `</div>`*/
+
 			});
-			
+
 			$('#here').html(output);
 		},
 		error: function(err) {
