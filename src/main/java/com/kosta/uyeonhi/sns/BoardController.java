@@ -49,9 +49,6 @@ public class BoardController {
 	    int endPage = startPage + 10 - 1  > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
 	    model.addAttribute("startPageNo", startPage);
 	    model.addAttribute("endPageNo", endPage);
-	    
-
-
 		 model.addAttribute("boardList", boardService.pageList(pageable));
 		//boardService.pageList().get(0).getWriter().getId());
 		

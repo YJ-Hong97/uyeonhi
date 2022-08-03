@@ -12,14 +12,16 @@ import lombok.ToString;
 public class ReplyRequestDTO {
 	
 	private String content;
-	private Board board;
+	private Long boardId;
 	private UserVO user;
+	private Long parentId;
+	private String depth;
 	
 	public Reply toEntity() {
 		return Reply.builder()
 				.reply_content(content)
-				.board(board)
-				.user(user)
+				.depth(depth)
 				.build();
 	}
+	
 }

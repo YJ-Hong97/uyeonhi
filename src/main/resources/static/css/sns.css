@@ -125,9 +125,9 @@ ul{
 }
 .flex-container .center-container .board-box #container4{
     width:85%;
-    height:20vh;
+    height:15vh;
     box-sizing: border-box;
-   
+   	font-size: 0.8vw;
     background: #FFFFFF;
     border:solid #DDDDDD;
     border-width: 0 1px;
@@ -319,7 +319,7 @@ ul{
     top: 283px; */
 
     width: 85%;
-    height: 50vh;
+    height: 30vh;
     left: 40.938em;
     top: 17.688em;
 
@@ -521,6 +521,11 @@ td:hover {
         transform: translate(-50%, -50%);
         transition: all 0.5s;
       }
+      .show .popup #close{
+		
+		width:3vw;
+		height:5vh;
+	  }
       
     .show .popup .modal_picture_box{
 		flex-grow: 1;
@@ -532,4 +537,20 @@ td:hover {
 		flex-grow: 1;
 		flex-shrink: 1;
 		width:45%;
+	}
+	
+	.reReply{
+		margin-left:30px;
+	}
+	
+	.reply_list{
+		display:inline;
+	}
+	
+	.button_box{
+		float:right;
+	}
+	
+	.reReply{
+		margin-left: 30px;
 	}

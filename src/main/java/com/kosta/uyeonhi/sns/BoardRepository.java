@@ -10,6 +10,8 @@ import com.querydsl.core.types.Predicate;
 
 public interface BoardRepository extends PagingAndSortingRepository<Board, Long>{
 	
+	@Query(value = "SELECT b FROM board b where b.board_id = ?1", nativeQuery = true)
+	Board findByBoardId(Long boardId);
 	
 	List<Board> findByTagContaining(String keyword);
 	

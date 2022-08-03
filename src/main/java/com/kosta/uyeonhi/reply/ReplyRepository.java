@@ -9,9 +9,11 @@ import org.springframework.data.repository.query.Param;
 
 import com.kosta.uyeonhi.sns.Board;
 
-public interface ReplyRepository extends JpaRepository<Reply, String>{
+public interface ReplyRepository extends JpaRepository<Reply, Long>{
 		
-	@Query(value ="SELECT r FROM reply r where r.board_board_id =: ?1", nativeQuery = true)
-	List<Reply> getRepliesByBoardId(Long boardId);
+	List<ReplyResponseDTO> findByBoard(Board board);
+
+	@Query(value = "SELECT * FROM reply r where reply_id = ?1", nativeQuery = true)
+	Reply findByReplyId(Long boardId);
 
 }
