@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.kosta.uyeonhi.likes.Likes;
 import com.kosta.uyeonhi.signUp.UserVO;
 
 public interface BoardService {
@@ -20,5 +21,7 @@ public interface BoardService {
 	void update(long board_id, BoardRequestDTO boardRequestDTO);
 
 	Board findByBoardID(long board_id);
+	
+	List<Board> tagSearch(String keyword);
 
 }

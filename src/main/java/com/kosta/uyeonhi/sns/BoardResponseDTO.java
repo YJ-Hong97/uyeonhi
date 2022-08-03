@@ -43,6 +43,8 @@ public class BoardResponseDTO {
 	 
 	private int replyCount;
 	
+	private String tag;
+	
 	//repository를 통해 조회한 entity를 dto로 변환하는 용도.
 	public BoardResponseDTO(Board board){
 		this.boardId = board.getBoardId();
@@ -57,5 +59,6 @@ public class BoardResponseDTO {
 		this.update_date = board.getUpdateDate();
 		this.writerNickname = board.getWriter().getNickname();
 		this.writerEmail = board.getWriter().getEmail();
+		this.tag = board.getTag();
 	}
 }
