@@ -1,16 +1,13 @@
 package com.kosta.uyeonhi.likes;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.kosta.uyeonhi.signUp.UserVO;
-import com.kosta.uyeonhi.sns.Board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +33,10 @@ public class Likes {
 	private UserVO user;
 	 
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Board board;
+
+	//@ManyToOne
+	//private Board board;
+
 	
 	/*
 	 * @Transient private boolean likeStatus;
