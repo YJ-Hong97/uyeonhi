@@ -28,6 +28,6 @@ import lombok.ToString;
 public class MHobbyVO {
 	@Id
 	private Long hobbyId;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private UserVO user;
 }
