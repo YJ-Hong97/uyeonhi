@@ -45,6 +45,6 @@ public class InquiryVO {
 	@UpdateTimestamp
 	@Column(name = "updatedate")
 	private Timestamp updateDate;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private UserVO user;
 }

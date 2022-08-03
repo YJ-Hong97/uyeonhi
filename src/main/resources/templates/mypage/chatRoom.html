@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<meta charset="UTF-8">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.chatContainer{
+		position: absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%,-50%);
+		
+		width:90%;
+	}
+	.chatContainer table{
+		
+	}
+	.chatTitle{
+		cursor: pointer;
+	}
+</style>
+</head>
+<body>
+<th:block th:replace="~{/fragment/header :: header}"></th:block>
+<div class = "chatContainer">
+	<table>
+		<tr th:each="chat:${chatMap}">
+			<td th:text= "${chat.value.nickname}" width="20%"></td>
+			<td th:text = "${chat.key.title}" width="80%" class = "chatTitle" th:type= "${chat.key.type}"></td>
+		</tr>
+	</table>
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		$('.chatTitle').click(function(){
+			let type = $(this).attr('type');
+			if(type=="video"){
+				window.open('http://localhost:7777/video/socket', '_blank'); 
+			}
+		});
+	</script>
+</body>
+</html>
