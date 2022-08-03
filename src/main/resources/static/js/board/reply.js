@@ -26,7 +26,7 @@ $('.show').on('click', function() {
 				output+= `</li>`
 				output+= `</div>`
 				
-				output+= `<div th:else="${item.depth==1}" class="replyText2" style="margin-left:30px">`
+				output+= `<div th:unless="${item.depth==0}" class="replyText2" style="margin-left:30px">`
 				output+= `<div>${item.reply_content}</div>`
 				output+= `<li >${item.reply_id}<div>`
 				output+= `<div class="button_box">`

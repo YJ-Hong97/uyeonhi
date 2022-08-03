@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.uyeonhi.likes.Likes;
+import com.kosta.uyeonhi.likes.LikesRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -51,7 +54,15 @@ public class BoardServiceImpl implements BoardService{
 		
 		return boardRepository.findById(board_id).orElseThrow(()-> new NullPointerException());
 	}
+	
+	@Override
+	@Transactional
+	public List<Board> tagSearch(String keyword){
+		 System.out.println("BoardServiceImpl : "+keyword);
+		return boardRepository.findByTagContaining(keyword);
+	}
 
+	
 	/*
 	 * @Override
 	 * 
