@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.signUp;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 
@@ -29,7 +30,7 @@ import lombok.ToString;
 @RequiredArgsConstructor //nonnull인것만 가지고 생성
 @Entity
 @Table(name = "tbl_user")
-public class UserVO {
+public class UserVO  implements Serializable{
 	
 	@Id
 	private String id;//기본형 타입은 안됨
