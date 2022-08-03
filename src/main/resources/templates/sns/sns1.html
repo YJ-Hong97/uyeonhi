@@ -11,7 +11,7 @@
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 	<link rel="stylesheet" th:href="@{/css/sns.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-<!--	<script>
+	<!--	<script>
 
 		window.onload = function () {
 			function modalOn() {
@@ -163,41 +163,10 @@
 										</div>
 									</form>
 								</div>
-								<button id="show">팝업열기</button>
-								<div class="background">
-									<div class="window">
-										<div class="popup">
-											<button id="close">팝업닫기</button>
-											<div class="modal_picture_box">
-												
-											</div>
-											<div class="modal_reply_box">
-												<div class="modal_writer_info">
-													[[${list.writer.id}]]
-													
-													<ul>
-														<li th:each="replyList, status: ${replyList}">
-														</li>
-													</ul>
-												</div>
-												reply
-											</div>
-										</div>
-									</div>
-								</div>
+								<button class="show" onclick="show()" th:value="${status.index}"
+									th:boardId="${list.boardId}">팝업열기</button>
 
-								<script>
-									function show() {
-										document.querySelector(".background").className = "background show";
-									}
 
-									function close() {
-										document.querySelector(".background").className = "background";
-									}
-
-									document.querySelector("#show").addEventListener("click", show);
-									document.querySelector("#close").addEventListener("click", close);
-								</script>
 
 							</div>
 						</li>
@@ -226,6 +195,26 @@
 
 	</div>
 
+	<div class="background">
+		<div class="window">
+			<div class="popup">
+				<div class="modal_picture_box">
+
+				</div>
+				<div class="modal_reply_box">
+					<div class="modal_writer_info">
+						<div id="there">
+						</div>
+						<div id="here">
+						</div>
+					</div>
+				</div>
+				<button id="close">팝업닫기</button>
+
+			</div>
+		</div>
+	</div>
+
 	<!-- modal -->
 	<div id="modal" class="modal-overlay">
 		<div class="content">
@@ -246,7 +235,6 @@
 	<script src="/js/likes.js"></script>
 	<script src="/js/board/board.js"></script>
 	<script src="/js/board/reply.js"></script>
-	<script src="/js/board/modal.js"></script>
 
 </body>
 

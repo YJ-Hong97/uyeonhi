@@ -32,7 +32,7 @@ public class BoardServiceImpl implements BoardService{
 	@Transactional //삭제
 	public void delete(long board_id) {
 		Board board = boardRepository.findById(board_id).orElseThrow(() -> 
-		new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + board_id));
+		new IllegalArgumentException("해당 게시글이 존재하지 않습니다. " + board_id));
 
 		boardRepository.deleteById(board_id);
 	}

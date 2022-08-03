@@ -22,27 +22,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-aws</artifactId>
-			<version>2.2.6.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-aws-context</artifactId>
-			<version>2.2.6.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-aws-autoconfigure</artifactId>
-			<version>2.2.6.RELEASE</version>
-		</dependency> -->
-		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-aws</artifactId> 
-			<version>2.2.6.RELEASE</version> </dependency> -->
-		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-aws-context</artifactId> 
-			<version>2.2.6.RELEASE</version> </dependency> <dependency> <groupId>org.springframework.cloud</groupId> 
-			<artifactId>spring-cloud-aws-autoconfigure</artifactId> <version>2.2.6.RELEASE</version> 
-			</dependency> -->
+
+		
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -114,11 +96,8 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.13</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>io.awspring.cloud</groupId>
-			<artifactId>spring-cloud-starter-aws</artifactId>
-			<version>2.3.1</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>io.awspring.cloud</groupId> <artifactId>spring-cloud-starter-aws</artifactId> 
+			<version>2.3.1</version> </dependency> -->
 		<!-- <dependency> <groupId>io.awspring.cloud</groupId> <artifactId>spring-cloud-starter-aws</artifactId> 
 			<version>2.3.1</version> </dependency> -->
 
@@ -156,7 +135,11 @@
 			<artifactId>spring-websocket</artifactId>
 			<version>5.3.21</version>
 		</dependency>
+
+
 	</dependencies>
+
+
 
 	<build>
 		<plugins>

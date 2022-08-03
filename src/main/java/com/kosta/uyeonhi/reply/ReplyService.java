@@ -6,8 +6,10 @@ import com.kosta.uyeonhi.sns.Board;
 
 public interface ReplyService {
 		
-	Long writeReply(Long boardId, ReplyRequestDTO replyRequestDTO);
+	void writeReply(Long boardId, ReplyRequestDTO replyRequestDTO);
 	
-	List<Reply> getReplyList(Long boardId);
+	List<ReplyResponseDTO> getReplyList(Board board);
+	
+	Long deleteReply(Long replyId);
 
 }

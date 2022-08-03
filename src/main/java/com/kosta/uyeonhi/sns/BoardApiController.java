@@ -32,9 +32,8 @@ public class BoardApiController {
 	private  BoardService boardService;
 	
 	@PostMapping("/api/sns/boardWrite")
-	public long boardWritePost(@RequestBody BoardRequestDTO boardDTO,HttpSession session) {
+	public long boardWritePost(@RequestBody BoardRequestDTO boardDTO, HttpSession session) {
         UserVO user = (UserVO)session.getAttribute("user");
-        System.out.println(user);
         boardDTO.setWriter(user);
         return boardService.saveBoard(boardDTO);
 	}
