@@ -1,9 +1,11 @@
 package com.kosta.uyeonhi.reply;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.sns.Board;
 import com.kosta.uyeonhi.sns.BoardRepository;
 
@@ -17,17 +19,39 @@ public class ReplyServiceImpl implements ReplyService{
 	private final ReplyRepository replyRepository;
 	
 	private final BoardRepository boardRepository;
+	
+	private final UserRepository userRepository;
+	
 	@Override
-	public Long writeReply(Long boardId, ReplyRequestDTO replyRequestDTO) {
-		Reply reply = replyRequestDTO.toEntity();
-		reply.setBoard(boardRepository.findById(boardId).orElseThrow(() -> new NullPointerException()));
-		System.out.println(reply.toString());
-		return replyRepository.save(reply).getReply_id();
+	public void writeReply(Long boardId, ReplyRequestDTO replyRequestDTO) {
+		
+		Reply parent = replyRepository.findByReplyId(replyRequestDTO.getParentId());
+		Board board = boardRepository.findById(boardId).orElseThrow(() -> new NullPointerException());
+		
+		Reply reply = Reply.builder()
+				.reply_content(replyRequestDTO.getContent())
+				.user(replyRequestDTO.getUser())
+				.board(board)
+				.depth(replyRequestDTO.getDepth())
+				.parent(parent)
+				.build();
+				
+		replyRepository.save(reply);
 	}
 	@Override
-	public List<Reply> getReplyList(Long boardId) {
-		List<Reply> replyList = replyRepository.getRepliesByBoardId(boardId);
+	public List<ReplyResponseDTO> getReplyList(Board board) {
+		List<ReplyResponseDTO> replyList = replyRepository.findByBoard(board);
 		return replyList;
+	}
+	
+	@Override
+	public Long deleteReply(Long replyId) {
+		Reply reply = replyRepository.findById(replyId).orElseThrow(() -> 
+		new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + replyId));
+
+		replyRepository.deleteById(replyId);
+
+		return replyId;
 	}
 
 }
