@@ -26,6 +26,6 @@ import lombok.ToString;
 public class MIdealVO {
 	@Id
 	private Long idealId;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private UserVO user;
 }

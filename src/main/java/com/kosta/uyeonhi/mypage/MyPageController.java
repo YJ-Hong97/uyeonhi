@@ -71,6 +71,8 @@ public class MyPageController {
 	IdealRepository idealRepo;
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	ChattingRoomRepository chatRoomRepo;
 	
 	
 	@GetMapping("/setting")
@@ -379,5 +381,19 @@ public class MyPageController {
 		UserVO user = (UserVO)session.getAttribute("user");
 		boolean result = memberService.daccout(user, password);
 		return result;
+	}
+	@GetMapping("/loadChat")
+	public ModelAndView loadChat(ModelAndView mnv,HttpSession session) {
+		UserVO user = (UserVO)session.getAttribute("user");
+		List<ChattingRoomVO> rooms = chatRoomRepo.findByUser(user);
+		Map<ChattingRoomVO, UserVO> chatMap = new HashMap<>();
+		for(ChattingRoomVO room: rooms) {
+			chatMap.put(room, user);
+		}
+		log.info(chatMap.toString());
+		mnv.addObject("chatMap",chatMap);
+		mnv.setViewName("/mypage/chatRoom");
+		mnv.addObject("user",user);
+		return mnv;
 	}
 }
