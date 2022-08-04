@@ -65,11 +65,11 @@
 
 
 							<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
-							
-							
+
+
 
 							<div class="board_write_top">
-								
+
 								<div class="user_info">
 									<p class="userSession" type="hidden" th:text="${#authentication.name}"></p>
 								</div>
@@ -138,31 +138,32 @@
 								</div>
 								<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳</div>
 								<div id="container4" th:value="${list.boardId}" th:class="${list.boardId}">
-								
+
 									<span id="regdate">today</span>
 									<button type="button" class="reply_show">댓글보기</button>
 									<span th:text="${list.likes.size()}"></span>
 									<div class="like-box" th:if="${list.getLikes().size()==0}">
 										<span class="material-symbols-outlined likes heartt"
-											th:id="|heart_${list.boardId}|"
-											th:onclick="|likes(${list.boardId})|"> favorite </span>
+											th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
+											favorite </span>
 									</div>
 									<div th:each="likeCheck:${list.getLikes()}" class="like-box2">
-										<div class="like-box"
-											th:if="${session.user.id == likeCheck.user.id}">
+										<div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
 											<span class="material-symbols-outlined notlikes heartt"
-												th:id="|heart_${list.boardId}|"
-												th:onclick="|likes(${list.boardId})|"> favorite </span>
+												th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
+												favorite </span>
 										</div>
 									</div>
 									<div class="text_container">
 										<span class="board_text">[[${list.content}]]</span>
 										<div th:if="${list.board_type == '모집글'}">
-										<span class="board_text">[[${list.applicant_person}]]/[[${list.total_person}]]</span>
+											<span
+												class="board_text">[[${list.applicant_person}]]/[[${list.total_person}]]</span>
 										</div>
 										<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
 										 <span class="board_tag" th:id="|tag_(${status.count})|" th:onclick="|tagClickFind(${status.count})|" th:text="|#${hashtag}|" th:value="${hashtag}"></span> 
 										 </div>
+
 									</div>
 								</div>
 								<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
@@ -224,17 +225,18 @@
 					<div id="search-container">
 						<div id="search">
 							<div id="searchbox">
-							<form id="search-form">
-								<span class="material-symbols-outlined searchBtn" id="searchBtn">search</span>
-								<input type="text" class="box" id="searchTag" name="keyword">
-							</form>
+
+								<form id="search-form">
+									<span class="material-symbols-outlined searchBtn" id="searchBtn2">search</span>
+									<input type="text" class="box" id="searchTag" name="keyword">
+								</form>
 							</div>
-							<div class="text" id="searchContent">							
+							<div class="text" id="searchContent">
 								<p id="searchBefore">친구찾던지태그검색하던지</p>
 							</div>
 						</div>
 					</div>
-				</div>				
+				</div>
 			</div>
 
 
@@ -242,6 +244,25 @@
 
 
 
+	</div>
+
+	<div class="background">
+		<div class="window">
+			<div class="popup">
+				<div class="modal_picture_box">
+
+				</div>
+				<div class="modal_reply_box">
+					<div class="modal_writer_info">
+						<div id="here">
+							
+						</div>
+					</div>
+				</div>
+				<button id="close">팝업닫기</button>
+
+			</div>
+		</div>
 	</div>
 
 	<!-- modal -->
