@@ -76,10 +76,11 @@ public class WebRTCController {
 		
 	}
 	@MessageMapping("/video/caller-info/{roomNo}")
-	public void caller(String ob,@PathVariable("roomNo")String roomNo) {
+	public void caller(SignalEntity ob) {
 		log.info("caller 송신");
-		log.info(ob);
-		String destination = "/sub/video/caller-info/"+Long.parseLong(roomNo);
+		log.info(ob.toString());
+		String roomNo = ob.getSignalId();
+		String destination = "/sub/video/caller-info/"+roomNo;
 	
 		template.convertAndSend(destination,ob);
 	}

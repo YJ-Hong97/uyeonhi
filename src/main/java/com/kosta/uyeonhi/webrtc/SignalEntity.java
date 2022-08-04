@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SignalEntity {
 	@Id
-	private Long signalId;
+	private String signalId;
 	private String type;
 	private String sdp;
 }
