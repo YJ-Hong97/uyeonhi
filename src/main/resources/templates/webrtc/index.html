@@ -218,9 +218,16 @@ body div {
 		peer.on('signal',function(data){
 			console.log(data);
 			let edata = JSON.stringify(data);
-			edata =edata.replaceAll("\\r\\n","");
+			edata =edata.replaceAll("\\r\\n","**");
 			
- 			stomp.send(`/pub/video/caller-info/${roomNo}`,{},edata);
+			signalData = {
+					signalId:roomNo,
+					type:data["type"],
+					sdp:data["sdp"]
+			};
+			
+			
+ 			stomp.send(`/pub/video/caller-info/${roomNo}`,{},JSON.stringify(signalData));
 		});
 		peer.on("stream",function(stream){
 			remoteVideo.srcObject = stream;
@@ -231,7 +238,11 @@ body div {
 			localVideo.srcObject = stream;
 		})
 		stomp.subscribe(`/sub/video/caller-info/${roomNo}`,function(data){
-			var edata = JSON.parse(data.body); 
+			var edata = JSON.parse(data.body);
+			signalData = {
+					type:edata["type"],
+					sdp:edata["sdp"]
+			}
 			peer.signal(edata);
 		});
 	}
