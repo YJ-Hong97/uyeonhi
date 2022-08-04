@@ -40,13 +40,11 @@ public class ReplyResponseDTO {
 
 	private String reply_content;
 
-	private String userId;
+	private UserVO user;
 
 	private Long boardId;
 
-	private LocalDateTime regdate;
-
-	private LocalDateTime updateDate;
+	private LocalDateTime date;
 
 	private String depth;
 
@@ -59,10 +57,13 @@ public class ReplyResponseDTO {
 	public ReplyResponseDTO(Reply reply) {
 		this.reply_id = reply.getReply_id();
 		this.reply_content = reply.getReply_content();
-		this.userId = reply.getUser().getId();
+		this.user = reply.getUser();
 		this.boardId = reply.getBoard().getBoardId();
-		this.regdate = reply.getRegdate();
-		this.updateDate = reply.getUpdateDate();
+		if(reply.getUpdateDate() == null) {
+			this.date = reply.getRegdate();
+		} else {
+			this.date = reply.getUpdateDate();
+		}
 		this.depth = reply.getDepth();
 		this.reply_like = reply.getReply_like();
 		this.isRemoved = reply.isRemoved();

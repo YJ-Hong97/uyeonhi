@@ -11,5 +11,7 @@ public interface ReplyService {
 	List<ReplyResponseDTO> getReplyList(Board board);
 	
 	Long deleteReply(Long replyId);
+	
+	void updateReply(Long replyId, String updateCon);
 
 }

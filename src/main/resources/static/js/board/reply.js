@@ -4,48 +4,39 @@ $('.show').on('click', function() {
 	console.log(sequence + "," + boardId);
 
 	$.ajax({
-		url: `/api/reply/${boardId}`,
+		url: `/reply/${boardId}`,
 		type: "get",
 		success: function(res) {
 			console.log(res);
-			let output = "";
+			$('#here').html(res);
 
+
+			/*let output = "";
 			$.each(res, function(index, item) {
-				output += `<div th:if="${item.depth == 0}" class="replyText1">`
-				output += 	`<div>${item.reply_content}</div>`
-				output += 	`<div>${item.depth}</div>`
-				output += 	`<li>`
-				output += 		`<div class="button_box">`
-				output += 			`<button class="delete_reply_button" value="${item.reply_id} type="button">삭제</button>`
-				output += 			`<button class="update_reply_button" value="${item.reply_id}" type="button">수정</button>`
-				output +=	 	`</div>`
-				output += 		`<div class="reReply_box">`
-				output += 			`<textarea class="input_reReply"></textarea>`
-				output += 			`<input type="hidden" class="hidden_boardId" value="${item.boardId}"></input>`
-				output += 			`<button value="${item.reply_id}" class="btn_reReply" type="button">대댓글</button>`
-				output += 		`</div>`
-				output += 	`</li>`
-				output += `</div>`
-
-			/*	output += `<div th:unless="${item.depth == 0}" class="replyText2">`
-				output += 	`<div>${item.reply_content}</div>`
-				output += 	`<div>${item.depth}</div>`
-				output += 	`<li>`
-				output += 		`<div class="button_box">`
-				output += 			`<button class="delete_reply_button" value="${item.reply_id} type="button">삭제</button>`
-				output += 			`<button class="update_reply_button" value="${item.reply_id}" type="button">수정</button>`
-				output +=	 	`</div>`
-				output += 		`<div class="reReply_box">`
-				output += 			`<textarea class="input_reReply"></textarea>`
-				output += 			`<input type="hidden" class="hidden_boardId" value="${item.boardId}"></input>`
-				output += 			`<button value="${item.reply_id}" class="btn_reReply" type="button">대댓글</button>`
-				output += 		`</div>`
-				output += 	`</li>`
-				output += `</div>`*/
-
+				if (item.depth == "0") {
+					output += `<li>`
+					output += `<div class="replyText1">`
+					output += `<div>${item.reply_content}</div>`
+					output += `<div>${item.depth}</div>`
+					output += `<div class="button_box">`
+					output += `<button class="delete_reply_button" value="${item.reply_id}" type="button">삭제</button>`
+					output += `<button class="update_reply_button" value="${item.reply_id}" type="button">수정</button>`
+					output += `</div>`
+					output += `<div class="reReply_box">`
+					output += `<textarea class="input_reReply"></textarea>`
+					output += `<input type="hidden" class="hidden_boardId" value="${item.boardId}"></input>`
+					output += `<button value="${item.reply_id}" class="btn_reReply" type="button">대댓글</button>`
+					output += `</div>`
+					output += `<div th:class="there${item.reply_id}">`
+					output += `</div>`
+					output += `</li>`
+				}
 			});
 
-			$('#here').html(output);
+			$('#here').html(output); */
+
+
+
 		},
 		error: function(err) {
 			alert(err);
@@ -88,7 +79,7 @@ $('.btn_reply').on('click', function() {
 $(document).on("click", ".btn_reReply", function() {
 	let parentId = $(this).val();
 	let boardId = $(".hidden_boardId").val();
-	let content = $(".input_reReply").val();
+	let content = $(".input_reReply" + parentId).val();
 
 	let data = {
 		boardId: boardId,
@@ -127,7 +118,6 @@ $(document).on("click", ".btn_reReply", function() {
 $(document).on("click", ".delete_reply_button", function() {
 	let replyId = $(this).val();
 
-	console.log(replyId);
 
 	$.ajax({
 		url: `/api/reply/replyDelete/${replyId}`,
@@ -144,11 +134,65 @@ $(document).on("click", ".delete_reply_button", function() {
 	})
 });
 
+$(document).on("click", ".update_reply_button", function() {
+	let replyId = $(this).val();
+	
+	
+	$("#reply_origin_box" + replyId).css("display", "none");
+	$("#reply_update_box" + replyId).css("display", "block");
+	$(".reply_update_cancel").on('click', function() {
+		$("#reply_origin_box" + replyId).css("display", "flex");
+		$("#reply_update_box" + replyId).css("display", "none");
+		
+	});
+
+
+	$(".reply_update_ok" + replyId).on('click', function() {
+
+		let updateCon = $("#reply_update_textarea" + replyId).val();
+
+		$.ajax({
+			url: `/api/reply/replyUpdate/${replyId}`,
+			data: { updateCon: updateCon },
+			dataType: "json",
+			type: "PUT",
+			success: function(res) {
+				alert("댓글 수정 완료");
+				location.href = "/sns/sns1";
+			},
+			error: function(err) {
+				alert(JSON.stringify(err));
+			}
+		});
+	});
+});
 
 
 
 
 
+function timeForToday(value) {
+        const today = new Date();
+        const timeValue = new Date(value);
+
+        const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        if (betweenTime < 1) return '방금전';
+        if (betweenTime < 60) {
+            return `${betweenTime}분전`;
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        if (betweenTimeHour < 24) {
+            return `${betweenTimeHour}시간전`;
+        }
+
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return `${betweenTimeDay}일전`;
+        }
+
+        return `${Math.floor(betweenTimeDay / 365)}년전`;
+ }
 
 
 //document.querySelector(".show").addEventListener("click", show);
