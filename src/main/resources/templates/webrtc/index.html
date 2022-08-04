@@ -202,13 +202,8 @@ body div {
 			var users = JSON.parse(data.body);
 			var topIdx = users.length-1;
 			var joinedId = users[topIdx];
-<<<<<<< HEAD
 			if(topIdx>=1) return secondPeer();
 			 initPeer(joinedId);
-=======
-			if(topIdx>=0) return secondPeer();
-			else return initPeer(joinedId);
->>>>>>> refs/remotes/origin/master
 		})
 		//접속 알리기
 		stomp.send("/pub/video/joined-room-info/"+roomNo,{},{
