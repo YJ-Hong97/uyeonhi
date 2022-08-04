@@ -23,7 +23,7 @@ $('#sns_select').change(function() {
 });
 
 
-$('.searchBtn').on('click', function() {
+$('#searchBtn').on('click', function() {
 	$.ajax({
 		url: '/sns/sns1/search',
 		type: "GET",
@@ -32,6 +32,11 @@ $('.searchBtn').on('click', function() {
 			$('#searchBefore').remove();
 			alert("성공");
 			//화면에 출력한다.
+			console.log(res.length);
+			if(res.length == 0){
+				var notFindTag = `<p>검색 결과가 없습니다</p>`
+				$("#searchContent").html(notFindTag);
+			}else {
 			var output = `
 			         <p>검색결과 입니다</p>
 			    `;
@@ -45,15 +50,7 @@ $('.searchBtn').on('click', function() {
 				   <hr>
 				    `;
 			});
-			$("#searchContent").html(output);
-
-
-			//<div th:each="tag : ${searchList}">
-			//<p>[[${tag.boardId}]]</p>
-			//<p>[[${tag.tag}]]</p>
-			//<p>[[${tag.content}]]</p>
-			//<p>[[${tag.board_type}]]</p>
-			//</div>
+			$("#searchContent").html(output);}
 
 		},
 		error: function(error) {
@@ -62,7 +59,6 @@ $('.searchBtn').on('click', function() {
 	})
 
 });
-
 
 $('#btn_board').on('click', function() {
 
