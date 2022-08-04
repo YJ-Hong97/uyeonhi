@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<script src="https://code.jquery.com/jquery-3.5.1.js"
+		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" th:href="@{/css/sns.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		.delete_reply_button {}
+
+		.update_reply_button {}
+
+		.writer_info_box {
+			display: flex;
+			height: 2.5vw;
+			width: 100%;
+			margin-top: 0px;
+			border: solid #dddddd;
+			border-width: 0 0 1px 0;
+		}
+
+		.writer_info_box #person {
+			margin: 0;
+		}
+
+		.writer_info_box .writer_nickname {
+			justify-content: center;
+			align-items: center;
+			margin: auto 14px;
+		}
+
+		ul li .replyText1 .button_box {
+			display: inline;
+		}
+
+		ul li .reReply_info_box {
+			height: 2.5vw;
+			width: 100%;
+			margin-top: 0px;
+			border: solid #dddddd;
+			border-width: 0 0 1px 0;
+			align-items: center;
+		}
+
+		.reply_update_box {
+			display: none;
+		}
+
+		.reply_origin_box {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+
+		.reply_button_box {
+			position: relative;
+			right: 0;
+		}
+
+		.delete_reply_button,
+		.update_reply_button {
+			width: 1.5vw;
+			border: none;
+			background-color: transparent;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="writer_info_box">
+		<span class="material-symbols-outlined" id="person">
+			account_circle </span>
+		<div class="writer_nickname">[[${board.writer.nickname}]]</div>
+	</div>
+
+	<ul>
+		<li th:if="${reply.depth}=='0'" th:each="reply, status: ${replyList}">
+			<div class="replyText1">
+
+				<div class="reply_content">
+					<div th:class="reply_origin_box" th:id="|reply_origin_box${reply.reply_id}|">
+						<div th:class="replyer_info">
+							<div class="user_profile">
+								<p>[[${reply.user.profile}]]</p>
+							</div>
+							<p style="margin-right: 10px;">[[${reply.user.nickname}]]</p>
+						</div>
+						<p th:class="|reply_content${reply.reply_id}|">[[${reply.reply_content}]]</p>
+						<div class="reply_button_box">
+							<button class="delete_reply_button" th:value="${reply.reply_id}" type="button">
+								<img src="../images/trash-outline.svg">
+							</button>
+							<button class="update_reply_button" th:value="${reply.reply_id}" type="button">
+								<img src="../images/create-outline.svg">
+							</button>
+							<div th:class="time" th:value="${reply.date}">[[${reply.date}]]</div>
+						</div>
+					</div>
+
+					<div th:class="reply_update_box" th:id="|reply_update_box${reply.reply_id}|">
+						<textarea th:class="reply_update_textarea"
+							th:id="|reply_update_textarea${reply.reply_id}|"></textarea>
+						<button type="button" th:value="${reply.reply_id}"
+							th:class="|reply_update_ok${reply.reply_id}|">수정하기</button>
+						<button type="button" class="reply_update_cancel">취소하기</button>
+					</div>
+				</div>
+				<div class="reReply_box">
+					<textarea th:class="|input_reReply${reply.reply_id}|"></textarea>
+					<input type="hidden" class="hidden_boardId" th:value="${reply.boardId}"></input>
+					<button th:value="${reply.reply_id}" class="btn_reReply" type="button">대댓글</button>
+				</div>
+
+				<ul style="margin-left:30px">
+					<li th:if="${reReply.parentId} == ${reply.reply_id}" class="reReply_info_box"
+						th:each="reReply, status: ${replyList}">
+						<div class="reply_content">
+							<div th:class="reply_origin_box" th:id="|reply_origin_box${reReply.reply_id}|">
+								<div th:class="replyer_info">
+									<div class="user_profile">
+										<p>[[${reReply.user.profile}]]</p>
+									</div>
+									<p style="margin-right: 10px;">[[${reReply.user.nickname}]]</p>
+								</div>
+								<p th:class="|reply_content${reReply.reply_id}|">[[${reReply.reply_content}]]</p>
+								<div class="reply_button_box">
+									<button class="delete_reply_button" th:value="${reReply.reply_id}" type="button">
+										<img src="../images/trash-outline.svg">
+									</button>
+									<button class="update_reply_button" th:value="${reReply.reply_id}" type="button">
+										<img src="../images/create-outline.svg">
+									</button>
+								</div>
+							</div>
+
+							<div th:class="reply_update_box" th:id="|reply_update_box${reReply.reply_id}|">
+								<textarea th:class="reply_update_textarea"
+									th:id="|reply_update_textarea${reReply.reply_id}|"></textarea>
+								<button type="button" th:value="${reReply.reply_id}"
+									th:class="|reply_update_ok${reReply.reply_id}|">수정하기</button>
+								<button type="button" class="reply_update_cancel">취소하기</button>
+							</div>
+						</div>
+
+
+					</li>
+				</ul>
+				<div>
+		</li>
+	</ul>
+
+
+</body>
+
+</html>

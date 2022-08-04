@@ -53,5 +53,16 @@ public class ReplyServiceImpl implements ReplyService{
 
 		return replyId;
 	}
+	@Override
+	public void updateReply(Long replyId, String updateCon) {
+		Reply reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> {
+                    return new IllegalArgumentException("댓글 찾기 실패");
+                }); //영속화 완료
+		reply.setReply_content(updateCon);
+		replyRepository.save(reply);
+	}
+	
+	
 
 }
