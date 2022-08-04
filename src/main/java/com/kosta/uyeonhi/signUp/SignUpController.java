@@ -329,37 +329,28 @@ public class SignUpController {
 					.build();
 			miRepo.save(ideal);
 		});
-		//취향 저장
+//		//취향 저장
 //		fList.forEach(f->{
 //			FavoriteVO favorite= FavoriteVO.builder()
-//					.user_id(user.getId())
+//					.userId(user.getId())
 //					.favoriteId(f)
 //					.build();
 //			favoriteRepository.save(fovorite);
 //		});
 //		hList.forEach(h->{
 //			HobbyVO hobby= HobbyVO.builder()
-//					.user_id(user.getId())
+//					.userId(user.getId())
 //					.favoriteId(h)
 //					.build();
 //			hobbyRepository.save(hobby);
 //		});
 //		iList.forEach(i->{
 //			IdealTypeVO ideal= IdealTypeVO.builder()
-//					.user_id(user.getId())
+//					.userId(user.getId())
 //					.idealId(i)
 //					.build();
 //			idealRepository.save(ideal);
 //		});
-		/*
-		 * //취향 저장 fList.forEach(f->{ FavoriteVO favorite= FavoriteVO.builder()
-		 * .userId(user.getId()) .favoriteId(f) .build();
-		 * favoriteRepository.save(fovorite); }); hList.forEach(h->{ HobbyVO hobby=
-		 * HobbyVO.builder() .userId(user.getId()) .favoriteId(h) .build();
-		 * hobbyRepository.save(hobby); }); iList.forEach(i->{ IdealTypeVO ideal=
-		 * IdealTypeVO.builder() .user_id(user.getId()) .idealId(i) .build();
-		 * idealRepository.save(ideal); });
-		 */
 	}
 	
 }
