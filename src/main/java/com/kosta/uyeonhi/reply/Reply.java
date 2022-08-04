@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.reply;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +60,11 @@ public class Reply{
 	private Board board;
 	
 	@CreationTimestamp
-	private LocalDateTime regdate;
+	private Date regdate;
 	
 	@LastModifiedDate
 	@Column(nullable = true)
-	private LocalDateTime updateDate;
+	private Date updateDate;
 
 	@ColumnDefault("0")	
 	private String depth;
@@ -72,7 +73,7 @@ public class Reply{
 	
 	private boolean isRemoved= false;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL) //49~54 자기참조
+	@OneToOne(fetch = FetchType.EAGER) //49~54 자기참조
     @JoinColumn(name = "parent_id", nullable = true)
     private Reply parent;
 
