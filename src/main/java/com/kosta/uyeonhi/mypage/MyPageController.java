@@ -73,6 +73,8 @@ public class MyPageController {
 	MemberService memberService;
 	@Autowired
 	ChattingRoomRepository chatRoomRepo;
+	@Autowired
+	ChattingUsersRepository chatUserRepo;
 	
 	
 	@GetMapping("/setting")
@@ -385,13 +387,13 @@ public class MyPageController {
 	@GetMapping("/loadChat")
 	public ModelAndView loadChat(ModelAndView mnv,HttpSession session) {
 		UserVO user = (UserVO)session.getAttribute("user");
+		Map<ChattingRoomVO,List<ChattingUsersVO>> roomMap = new HashMap<>();
 		List<ChattingRoomVO> rooms = chatRoomRepo.findByUser(user);
-		Map<ChattingRoomVO, UserVO> chatMap = new HashMap<>();
 		for(ChattingRoomVO room: rooms) {
-			chatMap.put(room, user);
+			List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
+			roomMap.put(room, users);
 		}
-		log.info(chatMap.toString());
-		mnv.addObject("chatMap",chatMap);
+		mnv.addObject("roomMap",roomMap);
 		mnv.setViewName("/mypage/chatRoom");
 		mnv.addObject("user",user);
 		return mnv;
