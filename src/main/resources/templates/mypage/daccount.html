@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.tymeleaf.org">
+<th:block th:fragment = "daccount">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -13,7 +14,7 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%,100%);
+	transform: translate(-50%,50%);
 	
 	width: 32%;
 	background-color: white; 
@@ -25,7 +26,7 @@
 	line-height: 110%;
 	text-align: left;
 	
-	z-index:5;
+	z-index:6;
 }
 
 .daccountContainer table {
@@ -44,7 +45,7 @@
 	font-family: 'Gowun Dodum';
 	font-style: normal;
 	font-weight: 400;
-	font-size: 2rem;
+	font-size: 1rem;
 	line-height: 110%;
 	text-align: left;
 	
@@ -95,4 +96,5 @@
 			});
 		</script>
 </body>
+</th:block>
 </html>

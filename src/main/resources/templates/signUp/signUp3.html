@@ -224,8 +224,10 @@ margin: 0;
 				success:function(result){
 					if(result){
 						document.querySelector('#validCfrm').value = "fail";
+						location.href = "/uyeonhi/mailing";
 					}else{
 						document.querySelector('#validCfrm').value = "success";
+						location.href = "/uyeonhi/mailing";
 					}
 				}
 			});

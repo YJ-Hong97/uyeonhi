@@ -1,6 +1,7 @@
 package com.kosta.uyeonhi.mypage;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,5 +35,21 @@ public class ChattingRoomVO {
 	private ChatType type;
 	@ManyToOne
 	private UserVO user;
+	@Override
+	public int hashCode() {
+		return Objects.hash(roomNo);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChattingRoomVO other = (ChattingRoomVO) obj;
+		return Objects.equals(roomNo, other.roomNo);
+	}
+	
 	
 }

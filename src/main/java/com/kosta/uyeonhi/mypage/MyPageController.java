@@ -12,10 +12,12 @@ import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kosta.uyeonhi.follow.Follow;
+import com.kosta.uyeonhi.follow.FollowRepository;
 import com.kosta.uyeonhi.security.MemberService;
 import com.kosta.uyeonhi.signUp.FavoriteMenuRepository;
 import com.kosta.uyeonhi.signUp.FavoriteRepository;
@@ -39,10 +43,14 @@ import com.kosta.uyeonhi.signUp.MHobbyRepository;
 import com.kosta.uyeonhi.signUp.MHobbyVO;
 import com.kosta.uyeonhi.signUp.MIdealRepository;
 import com.kosta.uyeonhi.signUp.MIdealVO;
+import com.kosta.uyeonhi.signUp.ProfileRepository;
+import com.kosta.uyeonhi.signUp.ProfileType;
+import com.kosta.uyeonhi.signUp.ProfileVO;
 import com.kosta.uyeonhi.signUp.UserVO;
 import com.kosta.uyeonhi.util.PageMaker;
 import com.kosta.uyeonhi.util.PageVO;
 
+import groovyjarjarantlr4.v4.parse.ANTLRParser.prequelConstruct_return;
 import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
@@ -75,12 +83,31 @@ public class MyPageController {
 	ChattingRoomRepository chatRoomRepo;
 	@Autowired
 	ChattingUsersRepository chatUserRepo;
+	@Autowired
+	ProfileRepository profileRepo;
+	@Autowired
+	FollowRepository followRepo;
 	
+	@GetMapping("/myPage")
+	public ModelAndView myPage(ModelAndView mnv, HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		
+		mnv.addObject("follower", followRepo.countFollower(user.getId()));
+		mnv.addObject("following", followRepo.countFollowing(user.getId()));
+		mnv.addObject("user",user);
+		mnv.addObject("profile",profile);
+		mnv.setViewName("/auth/myPage");
+		return mnv;
+	}
 	
 	@GetMapping("/setting")
-	public ModelAndView settingModal(ModelAndView mnv) {
+	public ModelAndView settingModal(ModelAndView mnv,HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		ProfileVO mainPro = profileRepo.findByUserAndType(user, ProfileType.MAIN);
 		
-		
+		mnv.addObject("user",user);
+		mnv.addObject("profile",mainPro);
 		mnv.setViewName("/mypage/main");
 		return mnv;
 	}
@@ -125,6 +152,9 @@ public class MyPageController {
 		mnv.addObject("user",user);
 		mnv.setViewName("/mypage/inquiry");
 		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
+		
 		Pageable page = pageVO.makePageable(0,0,"inquiryId");
 		Page<InquiryVO> result = iRepo.findAll(iRepo.makePredicate(null, null), page);
 		
@@ -139,6 +169,9 @@ public class MyPageController {
 		mnv.addObject("user",user);
 		mnv.setViewName("/mypage/inquiry");
 		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
+		
 		Pageable page = pageVO.makePageable(0,pagenum,"inquiryId");
 		Page<InquiryVO> result = iRepo.findAll(iRepo.makePredicate(null, null), page);
 		
@@ -151,6 +184,9 @@ public class MyPageController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mnv.addObject("user",user);
 		mnv.setViewName("/mypage/newInquiry");
+		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
 		return mnv;
 		
 	}
@@ -172,7 +208,7 @@ public class MyPageController {
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO) session.getAttribute("user");
 		InquiryVO inquiry = iRepo.findById(inquiryId).get();
-		if(inquiry.getUser().equals(user)) {
+		if(inquiry.getUser().getId().equals(user.getId())) {
 			
 			return inquiry;
 		}else {
@@ -222,6 +258,9 @@ public class MyPageController {
 		miRepo.findByUser(user).forEach(mi->{
 			myList.add(mi.getIdealId()+"i");
 		});
+		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
 		
 		mnv.addObject("settingMap",settingMap);
 		mnv.addObject("myList",myList);
@@ -280,6 +319,9 @@ public class MyPageController {
 			myList.add(i.getIdealId());
 		});
 		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
+		
 		mnv.addObject("settingMap",settingMap);
 		mnv.addObject("myList",myList);
 		mnv.addObject("user",user);
@@ -314,6 +356,9 @@ public class MyPageController {
 		fRepo.findByuserId(user.getId()).forEach(f->{
 			myList.add(f.getFavoriteId());
 		});
+		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
 		
 		mnv.addObject("settingMap",settingMap);
 		mnv.addObject("myList",myList);
@@ -350,6 +395,8 @@ public class MyPageController {
 			myList.add(h.getHobbyId());
 		});
 		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
 		mnv.addObject("settingMap",settingMap);
 		mnv.addObject("myList",myList);
 		mnv.addObject("user",user);
@@ -371,7 +418,7 @@ public class MyPageController {
 		}
 	}
 	@PostMapping("/updatePW")
-	public void updatePW(HttpServletRequest request, String password, HttpSession session) {
+	public void updatePW(String password, HttpSession session) {
 		 
 		UserVO user = (UserVO) session.getAttribute("user");
 		user.setPassword(password);
@@ -389,10 +436,20 @@ public class MyPageController {
 		UserVO user = (UserVO)session.getAttribute("user");
 		Map<ChattingRoomVO,List<ChattingUsersVO>> roomMap = new HashMap<>();
 		List<ChattingRoomVO> rooms = chatRoomRepo.findByUser(user);
+		List<ChattingUsersVO> cusers = chatUserRepo.findByUser(user);
+		for(ChattingUsersVO c: cusers) {
+			ChattingRoomVO room = chatRoomRepo.findById(c.getRoom().getRoomNo()).get();
+			List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
+			roomMap.put(room, cusers);
+		}
 		for(ChattingRoomVO room: rooms) {
 			List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
 			roomMap.put(room, users);
+			
 		}
+		
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("profile",profile);
 		mnv.addObject("roomMap",roomMap);
 		mnv.setViewName("/mypage/chatRoom");
 		mnv.addObject("user",user);

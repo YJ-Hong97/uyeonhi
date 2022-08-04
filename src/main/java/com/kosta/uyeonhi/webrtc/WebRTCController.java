@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.webrtc;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,20 +45,12 @@ public class WebRTCController {
 	SimpMessagingTemplate template;
 	@Autowired
 	UserRepository uRepo;
-	
-	Map<ChattingRoomVO,List<ChattingUsersVO>> roomMap = new HashMap<>();
-	ArrayList<String> dataArrayList = new ArrayList<>();
+	Map<String, List<String>> chatMap = new HashMap<>();
 	@RequestMapping("/video/socket/{roomNo}")
 	public ModelAndView test(ModelAndView mnv, HttpSession session,@PathVariable("roomNo")long roomNo) {
 		ChattingRoomVO room = chatRoomRepo.findById(roomNo).get();
-		List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
 		UserVO user = (UserVO) session.getAttribute("user");
-		for(ChattingUsersVO cuser:users) {
-			if(cuser.getUser().equals(user)) {
-				cuser.setState(ChatUserState.connect);
-			}
-		}
-		roomMap.put(room, users);
+		
 		mnv.addObject("room",room);
 		mnv.addObject("user",user);
 		mnv.setViewName("webrtc/index");
@@ -68,29 +61,31 @@ public class WebRTCController {
 		UserVO user = uRepo.findById(ob.get("from").toString()).get();
 		Long roomNo = Long.parseLong(ob.get("at").toString());
 		ChattingRoomVO room = chatRoomRepo.findById(roomNo).get();
-		List<String> nickList = new ArrayList<>();
-		List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
-		for(ChattingUsersVO cuser: users) {
-			if(cuser.getUser().equals(user)) {
-				cuser.setState(ChatUserState.connect);
-				nickList.add(user.getNickname());
-			}
+		
+		if(chatMap.keySet().contains(room+"")) {
+			chatMap.get(room).add(user.getNickname());
+		}else {
+			List<String> users = new ArrayList<>();
+			users.add(user.getNickname());
+			chatMap.put(room.getRoomNo()+"",users);
 		}
+		
 		String destination = "/sub/video/joined-room-info/"+roomNo;
 		log.info(destination);
-		template.convertAndSend(destination,nickList);
+		template.convertAndSend(destination,chatMap);
 		
 	}
 	@MessageMapping("/video/caller-info/{roomNo}")
-	public void caller(@PathVariable("roomNo")Long roomNo,JSONObject ob) {
-		
-		template.convertAndSend("/sub/video/caller-info/"+roomNo, ob);
+	public void caller(String ob,@PathVariable("roomNo")String roomNo) {
+		log.info("caller 송신");
+		log.info(ob);
+		String destination = "/sub/video/caller-info/"+Long.parseLong(roomNo);
+	
+		template.convertAndSend(destination,ob);
 	}
 	@MessageMapping("/video/callee-info/{roomNo}")
-	public void answerCall(JSONObject ob) {
-		String roomNo = ob.get("at").toString();
-		JSONObject signal = (JSONObject) ob.get("signal");
-		template.convertAndSend("/sub/video/caller-info/"+roomNo, signal);
+	public void answerCall(JSONObject ob,@PathVariable("roomNo")String roomNo) {
+		template.convertAndSend("/sub/video/caller-info/"+roomNo, ob);
 	}
 	
 }
