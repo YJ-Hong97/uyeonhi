@@ -47,18 +47,22 @@
 }
 
 .pagination {
-	text-decoration: none;
-	list-style: none;
-	
-}
-
-.pagination ul {
-	width: 50%;
+	width: 10%;
 	margin: auto;
+	list-style: none;
+	padding: 0;
+	margin-bottom: 2%;
 }
-
+.pagination a {
+	text-decoration: none;
+	color: #000;
+}
+.pagination ul {
+}
 .pagination li {
-	display: inline-block;
+	display: inline-block;	
+	padding: 0.3rem;
+	font-size: 0.9rem;
 	
 }
 </style>
@@ -67,6 +71,7 @@
 		<div th:if="${msg.toString().equals('o')}" class="boxDiv">충전내역이
 			존재하지 않습니다.</div>
 		<table class="view2TD" th:if="${msg.toString().equals('x')}">
+		<thead>
 			<tr class="tdTitle">
 				<td>번호</td>
 				<td>충전일자</td>
@@ -74,24 +79,31 @@
 				<td>잔여수량</td>
 				<td class="wid5">금액</td>
 			</tr>
-			<tr class="tdContent" th:each="pay, rowStat: ${paylist}">
-				<td th:text="${rowStat.count}"></td>
-				<td th:text="${pay.regdate}"></td>
-				<td><span th:text="${pay.unum}"></span>개</td>
-				<td><span th:text="${pay.current_unum}"></span>개</td>
-				<td class="wid5"><span th:text="${pay.amount}"></span>원</td>
-			</tr>
+		 </thead>
+		 <tbody  id="here">
+				<tr class="tdContent" th:each="pay, rowStat: ${result.result}">
+					<td th:text="${rowStat.count}"></td>
+					<td th:text="${pay.regdate}"></td>
+					<td><span th:text="${pay.unum}"></span>개</td>
+					<td><span th:text="${pay.current_unum}"></span>개</td>
+					<td class="wid5"><span th:text="${pay.amount}"></span>원</td>
+				</tr>
+		 </tbody>
+			 
 		</table>
 	</div>
 	<nav>
 		<ul class="pagination">
-			<li th:each="p:${result.pageList}"><a th:href="${p.pageNumber}"+1>[[${p.pageNumber}+1]]</a>
+			<li th:each="p:${result.pageList}"
+				th:classappend="${p.pageNumber==result.currentPageNum-1}?active:''">
+				<a th:href="${p.pageNumber}+1">[[${p.pageNumber}+1]]</a>
 			</li>
 		</ul>
 	</nav>
-	<form id="f1" th:action="@{payView2.go}" method="get">
+	<form id="f1" th:action="@{payView2.go}" method="post">
 		<input type="hidden" name="page" th:value="${result.currentPageNum}">
-		<input type="hidden" name="size" th:value="${result.currentPage.pageSize}">
+		<input type="hidden" name="size"
+			th:value="${result.currentPage.pageSize}">
 	</form>
 	<script>
 		//페이징
@@ -99,8 +111,36 @@
 		$('.pagination a').click(function(e) {
 			e.preventDefault(); 
 			formObj.find("[name='page']").val($(this).attr('href'));
-			formObj.attr("action", "/payView2.go");
-			formObj.submit();
+			var page =$(this).attr('href');
+			var param = "page=" + page;
+			
+			$.ajax({
+				url:"/uyeonhi/payView22.go?"+param,
+				success:function(responseData){
+					var pay = responseData;
+					 
+					var output = "";
+					page = (page - 1) * 5 + 1; 
+					$.each(pay, function(idx, item){
+						/* output+="<tr class='tdContent'>"
+						output+="<td>" + (page+idx) +"</td>";
+						output+= "<td>" + item.regdate + "</td>";
+						output+="<td>" + item.unum + "개</td>";
+						output+="<td>" + item.current_unum + "개</td>";
+						output+="<td class='wid5'>" +item.amount + "원</td>";
+						output+="</tr>"; */
+						
+						output += `<tr class='tdContent'>
+								<td>${page+idx}</td>	
+								<td>${item.regdate}</td>
+								<td>${item.unum}개</td>
+								<td>${item.current_unum}개</td>
+								<td class='wid5'>${item.amount}원</td>
+								</tr>`;
+					}); 
+					$("#here").html(output);
+				}
+			});
 		});
 	</script>
 </body>

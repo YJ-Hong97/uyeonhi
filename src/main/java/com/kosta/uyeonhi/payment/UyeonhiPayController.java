@@ -44,11 +44,13 @@ public class UyeonhiPayController {
 	UserRepository userRepo;
 
 	@RequestMapping("/uyeonPay")
-	public ModelAndView uyeonPay(ModelAndView mv) {
-		String id = "ijbmsm";
-
-		UserVO user = userRepo.findById(id).get();
+	public ModelAndView uyeonPay(ModelAndView mv, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserVO user = (UserVO) session.getAttribute("user");
+		String id = user.getId();
+		
 		mv.addObject("coin", user.getCoin());
+		mv.addObject("id", id);
 		mv.setViewName("payment/pay");
 		return mv;
 	}
@@ -62,19 +64,13 @@ public class UyeonhiPayController {
 	@RequestMapping("/payView2.go")
 	public ModelAndView view2(ModelAndView mv, PageVO pageVO, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		UserVO userVO = (UserVO) session.getAttribute("user");
-		
-		UserVO user = userRepo.findById("ijbmsm").get();
-		List<PayVO> list = payRepo.findByUser(user);
-		mv.addObject("paylist", list);
-
+		UserVO user = (UserVO) session.getAttribute("user");
 		if (pageVO == null) pageVO = new PageVO();
-		System.out.println("페이지~~: " + pageVO);
 		
-		Pageable page = pageVO.makePageable(0, 1, "regdate");
-		Page<PayVO> result = payRepo.findAll(payRepo.makePredicate(null, null), page);
+		Pageable page = pageVO.makePageable(0, "regdate");
+		Page<PayVO> list = payRepo.findByUser(user,page );
 
-		mv.addObject("result", new PageMaker<>(result));
+		mv.addObject("result", new PageMaker<>(list));
 
 		if (list.isEmpty())
 			mv.addObject("msg", "o");
@@ -85,6 +81,19 @@ public class UyeonhiPayController {
 		return mv;
 	}
 
+	@RequestMapping("/payView22.go")
+	@ResponseBody
+	public List<PayVO>  view22(ModelAndView mv, PageVO pageVO, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserVO user = (UserVO) session.getAttribute("user");
+		if (pageVO == null) pageVO = new PageVO();
+		
+		Pageable page = pageVO.makePageable(0, "regdate");
+		Page<PayVO> list = payRepo.findByUser(user,page );
+		 
+	    return list.getContent();
+	}
+	
 	@RequestMapping("/payView3.go")
 	public ModelAndView view3(ModelAndView mv) {
 		mv.setViewName("payment/view3");
