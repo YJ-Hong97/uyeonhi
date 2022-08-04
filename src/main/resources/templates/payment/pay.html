@@ -93,7 +93,7 @@ $(document).ready(function(){
 	<div class="userArea">
 		<span class="userPhoto"></span> 
 		<span class="userText"> 
-			<span class="userId">asdf99</span>님이 보유 중인 우연 <span th:text="|${coin}개|" class="userCount"></span>
+			<span class="userId" th:text="${id}"></span>님이 보유 중인 우연 <span th:text="|${coin}개|" class="userCount"></span>
 		</span>
 	</div>
 	<table class= "btnArea">
@@ -128,12 +128,6 @@ $(document).ready(function(){
 			$(".tab3Btn").css("color", "#000");
 			
 			$("#select_tab").load("/uyeonhi/payView1.go");
-/* 			$.ajax({
-				url : "payView.go", 
-				type : "post", 
-				success : function(data) { 
-				}
-			}); */
 		});
 		
 		$(".two").click(function(){

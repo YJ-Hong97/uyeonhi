@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>우연히 UYEONHI | 약속 리스트</title>
+</head>
+<link
+	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
+	rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap"
+	rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<style>
+* {
+	margin: 0;
+	font-family: Gowun Dodum;
+}
+html{
+	font-size: 20px;
+}
+#header {
+	height: 5%;
+	padding: 1.5%;
+	border-bottom: 1px solid #eee;
+}
+.userArea {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-top: 3%;
+	padding-bottom: 3%;
+	font-size: 20px;
+	margin-bottom: 2%;
+}
+.userCount {
+	color: #B983FF;
+	font-weight: bold;
+}
+.userPhoto {
+	display: inline-block;
+	width: 70px;
+	height: 70px;
+	background-color: blue;
+	border: 1px solid #000000;
+	border-radius: 135px;
+	margin-left: 5%;
+}
+.userText {
+	margin-left: 1.5%;
+	font-size: 1rem;
+}
+#calendar {
+	width: 90%;
+	margin: auto;
+	margin-bottom: 5%;
+}
+</style>
+<script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+        	headerToolbar: {
+				start: 'prev,next', 
+				center: 'title',
+				end: 'today'
+			},
+			titleFormat: function (date) {
+		      year = date.date.year;
+		      month = date.date.month + 1;
+
+		      return year + "년 " + month + "월";
+		    },
+			initialView: 'dayGridMonth',
+			contentHeight: 900,//캘린더 칸 길이
+			selectable: true,
+			events: [
+			{
+			  title: '회의',
+			  start: '2022-08-01',
+			  backgroundColor: '#8B0000',
+			  borderColor:'#8B0000'
+			},
+			{
+			  title: '휴가',
+			  start: '2022-08-07',
+			  end: '2022-08-10',
+			  backgroundColor: '#008404',
+			  borderColor:'#008404'         
+			}],
+			dateClick: function(info) { 
+			//날짜 클릭 시 발생할 이벤트
+			//info에서 console 찍어보면 편함
+			},
+			eventClick: function(info) {
+			// 일정 클릭 시 발생할 이벤트
+			//클릭한 일정 Id
+			}
+        });
+        calendar.render();
+      });
+
+    </script>
+<body>
+<div id="header">header</div>
+	<div class="userArea">
+		<span class="userPhoto"></span> 
+		<span class="userText"> 
+			이번 주 <span class="userId" th:text="${id}"></span>님은 <span th:text="3번" class="userCount"></span>의 약속이 있습니다.			
+		</span>
+	</div>
+	<div id='calendar'></div>
+</body>
+</html>
