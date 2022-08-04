@@ -396,4 +396,5 @@ public class MyPageController {
 		mnv.addObject("user",user);
 		return mnv;
 	}
+	
 }

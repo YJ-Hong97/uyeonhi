@@ -51,6 +51,13 @@ public class WebRTCController {
 		return dataArrayList;
 		
 	}
+	@MessageMapping("/video/sendSignal")
+	@SendTo("/sub/video/joined-room-info")
+	public JSONObject sendSignal(JSONObject ob){
+		System.out.println(ob);
+		return ob;
+		
+	}
 	@MessageMapping("/video/caller-info")
 	@SendTo("/sub/video/caller-info")
 	public JSONObject caller(JSONObject ob) {
