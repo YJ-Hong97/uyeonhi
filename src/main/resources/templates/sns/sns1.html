@@ -161,7 +161,7 @@
 												class="board_text">[[${list.applicant_person}]]/[[${list.total_person}]]</span>
 										</div>
 										<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-										 <span class="board_tag" th:id="|tag_(${status.count})|" th:onclick="|tagClickFind(${status.count})|" th:text="|#${hashtag}|" th:value="${hashtag}"></span> 
+										 <a class="board_tag" th:id="|tag_${status.count}|" th:onclick="|tag(${status.count})|" th:text="|#${hashtag}|"></a> 
 										 </div>
 
 									</div>
@@ -227,8 +227,8 @@
 							<div id="searchbox">
 
 								<form id="search-form">
-									<span class="material-symbols-outlined searchBtn" id="searchBtn2">search</span>
-									<input type="text" class="box" id="searchTag" name="keyword">
+									<span class="material-symbols-outlined" id="searchBtn">search</span>
+									<input type="text" class="box" id="searchTag" name="tag">
 								</form>
 							</div>
 							<div class="text" id="searchContent">
@@ -282,10 +282,11 @@
 		</div>
 	</div>
 
-	<script src="/js/likes.js"></script>
+	<script src="/js/board/likes.js"></script>
 	<script src="/js/board/board.js"></script>
 	<script src="/js/board/reply.js"></script>
 	<script src="/js/board/modal.js"></script>
+	<script src="/js/board/tag.js"></script>
 
 
 </body>

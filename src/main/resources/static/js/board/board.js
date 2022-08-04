@@ -22,44 +22,6 @@ $('#sns_select').change(function() {
 	}
 });
 
-
-$('#searchBtn').on('click', function() {
-	$.ajax({
-		url: '/sns/sns1/search',
-		type: "GET",
-		data: $("#search-form").serialize(),
-		success: function(res) {
-			$('#searchBefore').remove();
-			alert("성공");
-			//화면에 출력한다.
-			console.log(res.length);
-			if(res.length == 0){
-				var notFindTag = `<p>검색 결과가 없습니다</p>`
-				$("#searchContent").html(notFindTag);
-			}else {
-			var output = `
-			         <p>검색결과 입니다</p>
-			    `;
-			$.each(res, function(index, item) {
-
-				output += `
-				    <p>${item.tag}</p>
-				   <p>${item.content}</p>
-				   <p>${item.board_type}</p>
-				   <p>${item.boardId}</p>
-				   <hr>
-				    `;
-			});
-			$("#searchContent").html(output);}
-
-		},
-		error: function(error) {
-			console.log("오류", error)
-		}
-	})
-
-});
-
 $('#btn_board').on('click', function() {
 
 	let data = {

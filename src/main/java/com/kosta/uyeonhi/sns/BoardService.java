@@ -22,6 +22,6 @@ public interface BoardService {
 
 	Board findByBoardID(long board_id);
 	
-	List<Board> tagSearch(String keyword);
+	List<Board> tagSearch(String tag);
 
 }

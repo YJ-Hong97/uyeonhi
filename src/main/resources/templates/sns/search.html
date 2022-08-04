@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.board{
+font-size: 0.5em;
+}
+</style>
+</head>
+<body>
+<div th:each="list : ${searchList}">
+<span th:text="${list.boardId}" class="board"></span>
+<span th:text="${list.tag}" class="board"></span>
+</div>
+</body>
+</html>

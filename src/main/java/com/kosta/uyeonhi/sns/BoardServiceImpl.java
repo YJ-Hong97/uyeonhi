@@ -57,9 +57,9 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Override
 	@Transactional
-	public List<Board> tagSearch(String keyword){
-		 System.out.println("BoardServiceImpl : "+keyword);
-		return boardRepository.findByTagContaining(keyword);
+	public List<Board> tagSearch(String tag){
+		 System.out.println("BoardServiceImpl : "+tag);
+		return boardRepository.findByTagContaining(tag);
 	}
 
 	
