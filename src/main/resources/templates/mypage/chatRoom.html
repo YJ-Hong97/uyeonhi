@@ -32,9 +32,9 @@
 <th:block th:replace="~{/fragment/header :: header}"></th:block>
 <div class = "chatContainer">
 	<table>
-		<tr th:each="chat:${chatMap}">
-			<td th:text= "${chat.value.nickname}" width="20%"></td>
-			<td th:text = "${chat.key.title}" width="80%" class = "chatTitle" th:type= "${chat.key.type}"></td>
+		<tr th:each="room:${roomMap}">
+			<td th:text= "${room.key.title}" width="80%" class = "chatTitle" th:type="${room.key.type}"th:value = "${room.key.roomNo}"></td>
+			
 		</tr>
 	</table>
 	</div>
@@ -42,8 +42,11 @@
 	<script>
 		$('.chatTitle').click(function(){
 			let type = $(this).attr('type');
+			let roomNo = $(this).attr('value');
+			console.log(type);
+			console.log(roomNo);
 			if(type=="video"){
-				window.open('http://localhost:7777/video/socket', '_blank'); 
+				window.open('http://localhost:7777/video/socket/'+roomNo, '_blank'); 
 			}
 		});
 	</script>
