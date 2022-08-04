@@ -184,7 +184,7 @@ body div {
 	var localVideo = document.querySelector('#localVideo');
 
 	var mid = /*[[${user.id}]]*/'default';
-	var roomNo = /*[[${room.roomNo}]]*/'default';
+	var roomNo = /*[[${room.roomNo}]]*/+"";
 	var sendData = {
 			"mid":mid
 	}
@@ -194,18 +194,18 @@ body div {
 	stomp.connect({},function(){
 		//접속자 받아오기
 		stomp.subscribe(`/sub/video/joined-room-info/${roomNo}`,function(data) {
-			console.log(data);
 			var users = JSON.parse(data.body);
+			users = users[roomNo];
 			var topIdx = users.length-1;
 			var joinedId = users[topIdx];
-			if(topIdx>=1) return secondPeer();
-			 initPeer(joinedId);
+			if(topIdx>0) return secondPeer();
+			else return initPeer(joinedId);
 		})
 		//접속 알리기
-		stomp.send("/pub/video/joined-room-info/"+roomNo,{},{
+		stomp.send("/pub/video/joined-room-info/"+roomNo,{},JSON.stringify({
 			from:sendData["mid"],
 			at:roomNo
-		});
+		}));
 	});
 	
 	//신입에게 인사하기
@@ -216,10 +216,10 @@ body div {
 			trickle:false,
 		});
 		peer.on('signal',function(data){
+			console.log(data);
 			let edata = JSON.stringify(data);
-			//console.log(1,edata)
-			edata =edata.replaceAll("\\","**");
-			//console.log(2,edata)
+			edata =edata.replaceAll("\\r\\n","");
+			
  			stomp.send(`/pub/video/caller-info/${roomNo}`,{},edata);
 		});
 		peer.on("stream",function(stream){
@@ -230,12 +230,9 @@ body div {
 		}).then((stream)=>{
 			localVideo.srcObject = stream;
 		})
-		stomp.subscribe(`/sub/video/callee-info/${roomNo}`,function(data){
-			var edata = JSON.stringify(data.body); 
-			edata =edata.replaceAll("**","\\");
-			obj = JSON.parse(edata);
-			console.log(obj);
-			peer.signal(obj);
+		stomp.subscribe(`/sub/video/caller-info/${roomNo}`,function(data){
+			var edata = JSON.parse(data.body); 
+			peer.signal(edata);
 		});
 	}
 
@@ -251,7 +248,7 @@ body div {
 		peer.on("signal",function(data){
 			let edata = JSON.stringify(data);
 			//console.log(1,edata)
-			edata =edata.replaceAll("\\","**");
+			edata =edata.replaceAll("\\r\\n","");
 			//console.log(2,edata)
 			stomp.send(`/pub/video/callee-info/${roomNo}`,{},JSON.stringify({
 				at:roomNo,
@@ -267,9 +264,8 @@ body div {
 		}).then((stream)=>{
 			localVideo.srcObject = stream;
 		})
-		stomp.subscribe(`/sub/video/caller-info/${roomNO}`,{},function(data){
+		stomp.subscribe(`/sub/video/caller-info/${roomNo}`,{},function(data){
 			var edata = JSON.stringify(data.body); 
-			edata =edata.replaceAll("**","\\");
 			obj = JSON.parse(edata);
 			console.log(obj);
 			peer.signal(obj);
