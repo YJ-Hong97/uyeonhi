@@ -1,10 +1,6 @@
 package com.kosta.uyeonhi.mypage;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,13 +22,12 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table
-public class ChattingRoomVO {
+public class ChattingUsersVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long roomNo;
-	private String title;
-	private ChatType type;
+	private Long chatUserId;
+	@ManyToOne
+	private ChattingRoomVO room;
 	@ManyToOne
 	private UserVO user;
-	
+	private ChatUserState state;
 }

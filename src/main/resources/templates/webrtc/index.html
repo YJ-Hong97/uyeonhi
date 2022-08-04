@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th = "http://www.tymeleaf.org">
+<html xmlns:th="http://www.tymeleaf.org">
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,6 @@ body {
 	background-color: black;
 	text-align: center;
 	box-sizing: border-box;
-	
 	font-family: 'Gowun Dodum';
 	font-style: normal;
 	font-weight: 400;
@@ -41,33 +40,33 @@ body div {
 	top: 0;
 	left: 50%;
 	transform: translate(-50%, 0);
-	
 	width: 40%;
 	overflow: hidden;
-	z-index:1;
+	z-index: 1;
 }
 
 .videoContainer #remoteVideo {
-	position:relative;
+	position: relative;
 	width: auto;
 	height: 100vh;
 	z-index: 1;
-	overflow:hidden;
-	z-index:2;
+	overflow: hidden;
+	z-index: 2;
 }
-.videoContainer #localVideo{
-	position:absolute;
-	top:90%;
-	left:20%;
-	transform:translate(-50%,-50%);
-	
-	width:auto;
-	height:30vh;
+
+.videoContainer #localVideo {
+	position: absolute;
+	top: 90%;
+	left: 20%;
+	transform: translate(-50%, -50%);
+	width: auto;
+	height: 30vh;
 	z-index: 5;
 }
+
 .chatContainer {
 	width: 30%;
-	height:100vh;
+	height: 100vh;
 	float: left;
 }
 
@@ -80,26 +79,31 @@ body div {
 	border-radius: 1rem;
 	background-color: rgba(255, 255, 255, 0.4);
 }
-.chatBox #message{
-	width:70%;
-	border:0;
+
+.chatBox #message {
+	width: 70%;
+	border: 0;
 	border-radius: 0.5rem;
 	background-color: white;
 }
-.chatBox #sendBtn{
-	width:20%;
-	border:0;
+
+.chatBox #sendBtn {
+	width: 20%;
+	border: 0;
 	border-radius: 0.5rem;
 	background-color: #B983FF;
-	color:white;
+	color: white;
 }
-.chatBox .messageBox{
+
+.chatBox .messageBox {
 	height: 27rem;
 }
-.chatBox .inputBox{
-	width:100%;
-	float:bottom;
+
+.chatBox .inputBox {
+	width: 100%;
+	float: bottom;
 }
+
 .chatContainer span {
 	display: block;
 	color: white;
@@ -108,30 +112,33 @@ body div {
 	margin-left: 10%;
 	text-align: left;
 }
-.timeContainer{
-	
-	position:absolute;
-	top:0;
-	left:85%;
-	transform:translate(-50%,0);
-	width:28%;
-	height:100vh;
-	
-	color:white;
+
+.timeContainer {
+	position: absolute;
+	top: 0;
+	left: 85%;
+	transform: translate(-50%, 0);
+	width: 28%;
+	height: 100vh;
+	color: white;
 }
-.timeContainer span{
-	margin-top:10%;
-	color :#B983FF;
+
+.timeContainer span {
+	margin-top: 10%;
+	color: #B983FF;
 	font-size: 6rem;
 }
-.timeContainer .timeBox{
-	margin-top:50%;
+
+.timeContainer .timeBox {
+	margin-top: 50%;
 }
-.messageBox{
-	width:90%;
+
+.messageBox {
+	width: 90%;
 	height: 90%
 }
-#connect{
+
+#connect {
 	cursor: pointer;
 }
 </style>
@@ -139,33 +146,35 @@ body div {
 	<div class="chatContainer">
 		<span class="material-symbols-outlined"> send </span>
 		<div class="chatBox">
-		<div class = "messageBox">
-		
-		</div>
-		<div class= "inputBox"> 
-		<input text id = "message"><button type = "button" id = "sendBtn">전송</button>
-		</div>
+			<div class="messageBox"></div>
+			<div class="inputBox">
+				<input text id="message">
+				<button type="button" id="sendBtn">전송</button>
+			</div>
 		</div>
 	</div>
 	<div class="videoContainer">
-		<video id = "remoteVideo"autoplay playsinline></video>
-		<video id = "localVideo"autoplay playsinline></video>
-		
-		
+		<video id="remoteVideo" autoplay playsinline></video>
+		<video id="localVideo" autoplay playsinline></video>
+
+
 	</div>
 	<div class="timeContainer">
-		<div class = "timeBox">
-		<p id= "time"></p>
-		<p>ooo님과 이만큼 통화 중!</p>
-		<span class="material-symbols-rounded" id  = "connect"> phone_in_talk </span>
+		<div class="timeBox">
+			<p id="time"></p>
+			<p>ooo님과 이만큼 통화 중!</p>
+			<span class="material-symbols-rounded" id="connect">
+				phone_in_talk </span>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-	 <script src = "https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"></script>
 	<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-	<script th:inline = "javascript">
+		src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script th:inline="javascript">
 	/*<![CDATA[*/
 	var sock = new SockJS('/video');
 	var inputData = "";
@@ -175,6 +184,7 @@ body div {
 	var localVideo = document.querySelector('#localVideo');
 
 	var mid = /*[[${user.id}]]*/'default';
+	var roomNo = /*[[${room.roomNo}]]*/'default';
 	var sendData = {
 			"mid":mid
 	}
@@ -183,31 +193,35 @@ body div {
 	console.log(stomp);
 	stomp.connect({},function(){
 		//접속자 받아오기
-		stomp.subscribe("/sub/video/joined-room-info",function(data) {
+		stomp.subscribe(`/sub/video/joined-room-info/${roomNo}`,function(data) {
 			console.log(data);
 			var users = JSON.parse(data.body);
 			var topIdx = users.length-1;
 			var joinedId = users[topIdx];
-			if(topIdx>=1) return secondPeer();
-			initPeer(joinedId);
+			if(topIdx>=0) return secondPeer();
+			else return initPeer(joinedId);
 		})
 		//접속 알리기
-		stomp.send("/pub/video/joined-room-info",{},JSON.stringify({from:sendData["mid"]}));
+		stomp.send("/pub/video/joined-room-info/"+roomNo,{},{
+			from:sendData["mid"],
+			at:roomNo
+		});
 	});
 	
 	//신입에게 인사하기
 	function initPeer(joinedId){
 		console.log("초기자");
-		let signalData = null;
 		const peer = new SimplePeer({
 			initiator:true,
 			trickle:false,
 		});
 		peer.on('signal',function(data){
-			signalData = data;
-			
+			let edata = JSON.stringify(data);
+			//console.log(1,edata)
+			edata =edata.replaceAll("\\","**");
+			//console.log(2,edata)
+ 			stomp.send(`/pub/video/caller-info/${roomNo}`,{},edata);
 		});
-		console.log(signalData);
 		peer.on("stream",function(stream){
 			remoteVideo.srcObject = stream;
 		});
@@ -216,17 +230,17 @@ body div {
 		}).then((stream)=>{
 			localVideo.srcObject = stream;
 		})
-		stomp.subscribe("/sub/video/callee-info",{},function(data){
-			peer.signal(data.signal);
-			stomp.send("/pub/video/caller-info",JSON.stringify({
-				from:mid,
-				signal:signalData
-			}));
+		stomp.subscribe(`/sub/video/callee-info/${roomNo}`,function(data){
+			var edata = JSON.stringify(data.body); 
+			edata =edata.replaceAll("**","\\");
+			obj = JSON.parse(edata);
+			console.log(obj);
+			peer.signal(obj);
 		});
 	}
 
 	
-	function secondPeer(callerSignal){
+	function secondPeer(){
 		
 		const peer = new SimplePeer({
 			initiator:false,
@@ -235,10 +249,13 @@ body div {
 		console.log("두번째");
 		console.log(peer);
 		peer.on("signal",function(data){
-			console.log(data);
-			stomp.send("/pub/video/callee-info",JSON.stringify({
-				from:mid,
-				signal:data
+			let edata = JSON.stringify(data);
+			//console.log(1,edata)
+			edata =edata.replaceAll("\\","**");
+			//console.log(2,edata)
+			stomp.send(`/pub/video/callee-info/${roomNo}`,{},JSON.stringify({
+				at:roomNo,
+				signal:edata
 			}));
 		});
 		
@@ -250,8 +267,12 @@ body div {
 		}).then((stream)=>{
 			localVideo.srcObject = stream;
 		})
-		stomp.subscribe("/sub/video/caller-info",{},function(data){
-			peer.signal(data.signal);
+		stomp.subscribe(`/sub/video/caller-info/${roomNO}`,{},function(data){
+			var edata = JSON.stringify(data.body); 
+			edata =edata.replaceAll("**","\\");
+			obj = JSON.parse(edata);
+			console.log(obj);
+			peer.signal(obj);
 		});
 	};
 	
