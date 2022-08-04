@@ -57,11 +57,11 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-
-.iTable th {
+#thead{
 	border-bottom: 0.3rem solid #E3E3E3;
 	height: 3rem;
 }
+
 
 .iTable td {
 	border-bottom: 0.1rem solid #E3E3E3;
@@ -128,23 +128,26 @@
 }
 
 .inquiryProfile #profile {
-	font-size: 18rem;
-	color: #B983FF;
+	width: 8rem;
+	height:8rem;
+	border-radius: 50%;
+	border:0.5rem solid #B983FF;
+	overflow: hidden;
 }
 
 .inquiryProfile #nick {
-	font-size: 2.5rem;
-	vertical-align: 9rem;
+	font-size: 2rem;
+	vertical-align: 4rem;
 }
 
 .inquiryProfile #writeI {
 	cursor: pointer;
-	vertical-align: 9rem;
+	vertical-align: 4rem;
 	border: 0;
 	border-radius: 0.2rem;
 	background-color: #B983FF;
 	color: white;
-	font-size: 1.5rem;
+	font-size: 1rem;
 }
 </style>
 </head>
@@ -153,18 +156,19 @@
 		<th:block th:replace="~{/fragment/header :: header}"></th:block>
 		<div class="inquiryContainer">
 			<div class="inquiryProfile">
-				<span class="material-symbols-outlined" id="profile">account_circle</span><span
-					id="nick">[[${user.nickname}]]</span>
+				<img id = "profile"th:src = "${profile.fileName}">
+				<span id="nick">[[${user.nickname}]]</span>
 				<button type="button" id="writeI">문의 작성하기</button>
 			</div>
 			<div class="iTable">
 				<table>
 					<thead>
+						<tr id = "thead">
 						<th>번호</th>
 						<th>게시 일자</th>
 						<th>문의 제목</th>
-						<th>작성자</th>
-						<th></th>
+						<th >작성자</th>
+						</tr>
 					</thead>
 					<tr th:each="inquiry:${result.result}">
 						<td th:text="${inquiry.inquiryId}"></td>
@@ -175,8 +179,8 @@
 						<td th:text="${inquiry.user.nickname}"></td>
 						<td><span
 							th:if="${inquiry.user.nickname.equals(user.nickname)}"
-							class="material-symbols-outlined">lock_open</span></td>
-						<td><span
+							class="material-symbols-outlined">lock_open</span>
+							<span
 							th:unless="${inquiry.user.nickname.equals(user.nickname)}"
 							class="material-symbols-outlined">lock</span></td>
 					</tr>
@@ -223,7 +227,6 @@
 			//문의 제목 클릭하면 자세히 보기
 			$('.iTable #title').click(function() {
 				inquiryId = $(this).attr('value');
-
 				$.ajax({
 					url : "/detailInquiry",
 					type : "post",
