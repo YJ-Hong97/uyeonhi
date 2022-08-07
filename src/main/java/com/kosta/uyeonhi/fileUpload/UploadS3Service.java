@@ -2,12 +2,11 @@ package com.kosta.uyeonhi.fileUpload;
 
 import java.io.File;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -21,10 +20,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.kosta.uyeonhi.signUp.ProfileRepository;
-import com.kosta.uyeonhi.signUp.ProfileVO;
 
-import groovyjarjarantlr4.v4.parse.ANTLRParser.finallyClause_return;
-import groovyjarjarantlr4.v4.parse.ANTLRParser.throwsSpec_return;
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
@@ -62,8 +58,13 @@ public class UploadS3Service {
 							.withCannedAcl(CannedAccessControlList.PublicRead));
 	 
 				} catch (IOException e) { 
+					
 					throw new FileUploadFailedException(); }
-				result.add(amazonS3Client.getUrl(bucketName, saveName).toString()); }
+				String url = amazonS3Client.getUrl(bucketName, saveName).toString();
+				url =url.replace("%2F%2F", "/");
+				result.add(url); 
+				
+				}
 			 }
 		 return result; 
 	}

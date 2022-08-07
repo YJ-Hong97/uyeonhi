@@ -25,7 +25,7 @@ import lombok.ToString;
 @Table(name = "hobby_menu")
 public class HobbyMenuVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long hobbyId;
 	private String hobbyValue;
 }
