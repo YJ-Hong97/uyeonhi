@@ -25,4 +25,10 @@ public class PromiseController {
 		mv.setViewName("promise/promise");
 		return mv;
 	}
+	
+	@RequestMapping("/modal")
+	public ModelAndView modal(ModelAndView mv) {
+		mv.setViewName("promise/modal");
+		return mv;
+	}
 }

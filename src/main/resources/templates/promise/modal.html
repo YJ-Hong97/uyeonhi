@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<link
+	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
+	rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<style>
+/*모달창*/
+#modal {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	top: 0;
+	left: 0;
+	/* display: none; */
+}
+
+.modal_content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 30%;
+	height: 25%;
+	padding: 2% 2% 3% 3%;
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.close {
+	float: right;
+	cursor: pointer;
+}
+
+.tbl {
+	margin-top: 6%;
+}
+
+.tbl td {
+	padding: 2% 0;
+}
+
+.tbl-title {
+	width: 30%;
+	color: #656565;
+	font-size: 0.9rem;
+}
+
+.cancel {
+	font-size: 0.75rem;
+	color: #b1b1b1;
+	cursor: pointer;
+	margin-top: 9%;
+	float: right;
+}
+</style>
+<script type="text/javascript">
+	$(function() {
+		$('.close').click(function() {
+			$('#modal').css('display', 'none');
+		});
+		$('.cancel').click(function(){
+			var result = confirm("정말 약속을 취소하시겠습니까?");
+			alert(result);
+		});
+	});
+</script>
+<body>
+	<div id="modal">
+		<div class="modal_content">
+			<div class="close">
+				<i class="fa-solid fa-xmark"></i>
+			</div>
+			<table class="tbl">
+				<tr>
+					<td class="tbl-title"><i class="fa-solid fa-calendar-check"></i>
+						일자</td>
+					<td>2022년 8월 5일 15시 50분</td>
+				</tr>
+				<tr>
+					<td class="tbl-title"><i class="fa-solid fa-location-dot"></i>
+						장소</td>
+					<td>서울특별시 중구 세종대로 110</td>
+				</tr>
+				<tr>
+					<td class="tbl-title"><i class="fa-solid fa-user"></i> 대상</td>
+					<td>qwer78님</td>
+				</tr>
+			</table>
+			<div class="cancel">약속 취소</div>
+		</div>
+	</div>
+
+</body>
+</html>
