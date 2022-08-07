@@ -25,7 +25,7 @@ import lombok.ToString;
 @Table(name = "ideal_menu")
 public class IdealMenuVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idealId;
 	private String idealValue;
 	

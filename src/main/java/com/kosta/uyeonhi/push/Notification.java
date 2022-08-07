@@ -37,13 +37,10 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int notification_id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-	private UserVO senderId;
+	private String senderId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private UserVO receiverId;
 	

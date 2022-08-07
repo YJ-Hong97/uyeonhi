@@ -1,4 +1,3 @@
-var memberId = ${login.memberId};
 
 //알람목록
 function alramList(){
