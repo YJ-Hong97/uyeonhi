@@ -1,4 +1,4 @@
-const webSocket = new WebSocket("ws://172.20.10.12:3000")
+const webSocket = new WebSocket("ws://localhost:3000")
 
 webSocket.onmessage = (event) => {
     handleSignallingData(JSON.parse(event.data))
@@ -45,7 +45,7 @@ function joinCall() {
     .style.display = "inline"
 
     navigator.getUserMedia({
-        video: false, /*{
+        video: false,/*{
             frameRate: 24,
             width: {
                 min: 480, ideal: 720, max: 1280
