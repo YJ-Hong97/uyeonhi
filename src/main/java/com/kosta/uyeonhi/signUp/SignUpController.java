@@ -280,7 +280,9 @@ public class SignUpController {
 	}
 
 	@PostMapping("/signUpFinal")
-	public void uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile) throws IllegalStateException, IOException, EmptyFileException, FileUploadFailedException {
+	public void uSignUpFinal(Date birth, String hogam, String mbti,
+			String gender/* ,MultipartFile[] profile */)
+			throws IllegalStateException, IOException, EmptyFileException/* , FileUploadFailedException */ {
 		
 		if(hogam.equals("hogam")) {
 			signUpInfo.put("hogam", "hogam");
