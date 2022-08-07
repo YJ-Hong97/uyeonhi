@@ -10,8 +10,9 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap"
 	rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.css" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+<link href="main.css" rel="stylesheet"/>
+<script src="main.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <style>
 * {
@@ -57,6 +58,50 @@ html{
 	margin: auto;
 	margin-bottom: 5%;
 }
+
+/*모달창*/
+#modal {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0,0, 0.5);
+	top: 0;
+	left: 0;
+}
+.modal_content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  height: 25%;
+  padding: 2% 2% 3% 3%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  transform: translateX(-50%) translateY(-50%);
+}
+.close {
+	float: right;
+	cursor: pointer;
+}
+.tbl {
+	margin-top: 6%;
+}
+.tbl td {
+	padding: 2% 0;
+}
+.tbl-title{
+	width: 30%;
+	color: #656565;
+	font-size: 0.9rem;
+}
+.cancel {
+ 	font-size: 0.75rem;
+ 	color: #b1b1b1;
+ 	cursor: pointer;
+ 	margin-top: 4%;
+ 	float: right;
+}
 </style>
 <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -97,6 +142,7 @@ html{
 			eventClick: function(info) {
 			// 일정 클릭 시 발생할 이벤트
 			//클릭한 일정 Id
+				location.href = "/uyeonhi/modal";
 			}
         });
         calendar.render();
@@ -112,5 +158,7 @@ html{
 		</span>
 	</div>
 	<div id='calendar'></div>
+	
+	
 </body>
 </html>

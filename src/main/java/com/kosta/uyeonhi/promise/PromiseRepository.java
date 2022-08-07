@@ -1,5 +1,7 @@
 package com.kosta.uyeonhi.promise;
 
-public interface PromiseRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface PromiseRepository extends CrudRepository<PromiseVO, Long>{
 
 }
