@@ -159,6 +159,7 @@ width:3rem;
 			<p id = "ment">
 				마침내 마지막입니다.
 			</p>
+
 			<form action = "/uyeonhi/signUpFinal" method ="post" enctype="multipart/form-data">
 			<table>
 				<tr>
@@ -197,27 +198,31 @@ width:3rem;
 					<td colspan = "2"><input type = "date" name = "birth" id = "birth"></td>
 				</tr>
 				<tr>
+
 					<td>프로필 사진</td>
 					<td colspan = "2"><input type = "file" id= "profile" name = "profile" multiple="multiple" onchange = "setDetailImage(event)"><div id ="images_container"></div></td>
 				</tr>
 			</table>
+
 			
 			
 				<div id="btnBox">
 					<input type="submit" id="nextBtn" value="다음">
 				</div>
-				</div>
-				</form>
+			</form>
+			
+			
+				
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script>
-		var min_file_num = 3;
+/* 		var min_file_num = 3;
 		$('#nextBtn').click(function(){
 			if(min_file_num>$('#profile')[0].files.length){
 				event.preventDefault();
 				alert('이미지 파일은 3개 이상 업로드해주세요.');
 			}
-		});
+		}); */
 		//썸네일
 		function setDetailImage(event){
 			console.log(document.querySelector('#profile').files);

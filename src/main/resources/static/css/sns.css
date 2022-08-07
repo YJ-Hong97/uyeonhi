@@ -96,6 +96,7 @@ ul{
 	color: blue;
 	cursor: pointer;
 	text-decoration: none;
+	float: left;
 }
 .flex-container .center-container #container .board_write_top #sns_select {
 	display:none;
@@ -380,7 +381,7 @@ ul{
     background: #FFFFFF;
 }
 
-#searchBtn2 {
+#searchBtn{
     font-size: 2.3em;
     color: black;
     margin-top: 16px;
