@@ -177,109 +177,99 @@ body div {
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 	var sock = new SockJS('/video');
-	var inputData = "";
-	var message = "";
 	var stomp;
 	var remoteVideo = document.querySelector('#remoteVideo');
 	var localVideo = document.querySelector('#localVideo');
-
+	var nickname = /*[[${user.nickname}]]*/'default';
 	var mid = /*[[${user.id}]]*/'default';
-	var roomNo = /*[[${room.roomNo}]]*/'default';
-	var sendData = {
-			"mid":mid
-	}
-	
+	var roomNo = /*[[${room.roomNo}]]*/+"";
+	var initiator=false;
+	var mystream;
+	var mysignalData;
+	var parti = [];
 	stomp = Stomp.over(sock);
-	console.log(stomp);
-	stomp.connect({},function(){
-		//접속자 받아오기
-		stomp.subscribe(`/sub/video/joined-room-info/${roomNo}`,function(data) {
-			console.log(data);
-			var users = JSON.parse(data.body);
-			var topIdx = users.length-1;
-			var joinedId = users[topIdx];
-			if(topIdx>=0) return secondPeer();
-			else return initPeer(joinedId);
-		})
-		//접속 알리기
-		stomp.send("/pub/video/joined-room-info/"+roomNo,{},{
-			from:sendData["mid"],
-			at:roomNo
-		});
-	});
 	
-	//신입에게 인사하기
-	function initPeer(joinedId){
+	stomp.connect({},function(){
+		
+	});
+	$('#connect').click(function(){
+		
+		stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
+			parti = JSON.parse(data.body);
+			parti = parti[roomNo];
+			if(parti.length==1){
+				initiator = true;
+			}else if(initiator==true){
+					initPeer();
+			}else{
+				secondPeer();
+			}
+		});
+		navigator.mediaDevices.getUserMedia({
+			video:true
+		}).then((stream)=>{
+			mystream=stream;
+			localVideo.srcObject = stream;
+		});
+		stomp.send(`/pub/video/joined-info/${roomNo}`,{},JSON.stringify({
+			roomNo:roomNo,
+			mid:mid
+			}));
+	});
+	function initPeer(){
 		console.log("초기자");
-		const peer = new SimplePeer({
+		peer = new SimplePeer({
 			initiator:true,
 			trickle:false,
+			stream:mystream
 		});
-		peer.on('signal',function(data){
-			let edata = JSON.stringify(data);
-			//console.log(1,edata)
-			edata =edata.replaceAll("\\","**");
-			//console.log(2,edata)
- 			stomp.send(`/pub/video/caller-info/${roomNo}`,{},edata);
-		});
-		peer.on("stream",function(stream){
-			remoteVideo.srcObject = stream;
-		});
-		navigator.mediaDevices.getUserMedia({
-			video:true
-		}).then((stream)=>{
-			localVideo.srcObject = stream;
-		})
-		stomp.subscribe(`/sub/video/callee-info/${roomNo}`,function(data){
-			var edata = JSON.stringify(data.body); 
-			edata =edata.replaceAll("**","\\");
-			obj = JSON.parse(edata);
-			console.log(obj);
-			peer.signal(obj);
-		});
-	}
-
-	
-	function secondPeer(){
-		
-		const peer = new SimplePeer({
-			initiator:false,
-			trickle:false,
-		});
-		console.log("두번째");
-		console.log(peer);
 		peer.on("signal",function(data){
-			let edata = JSON.stringify(data);
-			//console.log(1,edata)
-			edata =edata.replaceAll("\\","**");
-			//console.log(2,edata)
-			stomp.send(`/pub/video/callee-info/${roomNo}`,{},JSON.stringify({
-				at:roomNo,
-				signal:edata
-			}));
+			signalData = {
+					signalId:roomNo,
+					type:data["type"],
+					sdp:data["sdp"]
+			};
+			stomp.send(`/pub/video/caller-info/${roomNo}`,{},JSON.stringify(signalData));
 		});
-		
 		peer.on("stream",function(stream){
 			remoteVideo.srcObject = stream;
 		});
-		navigator.mediaDevices.getUserMedia({
-			video:true
-		}).then((stream)=>{
-			localVideo.srcObject = stream;
-		})
-		stomp.subscribe(`/sub/video/caller-info/${roomNO}`,{},function(data){
-			var edata = JSON.stringify(data.body); 
-			edata =edata.replaceAll("**","\\");
-			obj = JSON.parse(edata);
-			console.log(obj);
-			peer.signal(obj);
+		stomp.subscribe(`/sub/video/callee-info/${roomNo}`,function(data){
+			edata = JSON.parse(data.body);
+			signalData = {
+					type:edata["type"],
+					sdp:edata["sdp"]
+			}
+			peer.signal(signalData);
 		});
 	};
-	
-	
-	
-	
-	
+	function secondPeer(){
+		console.log("두번째");
+		peer = new SimplePeer({
+			initiator:false,
+			trickle:false,
+			stream:mystream
+		});
+		peer.on("signal",function(data){
+			signalData = {
+					signalId:roomNo,
+					type:data["type"],
+					sdp:data["sdp"]
+			};
+			stomp.send(`/pub/video/callee-info/${roomNo}`,{},JSON.stringify(signalData));
+		});
+		peer.on("stream",function(stream){
+			remoteVideo.srcObject = stream;
+		});
+		stomp.subscribe(`/sub/video/caller-info/${roomNo}`,function(data){
+			edata = JSON.parse(data.body);
+			signalData = {
+					type:edata["type"],
+					sdp:edata["sdp"]
+			}
+			peer.signal(signalData);
+		});
+	};
 //시간 체크
 var hour = 0;
 var min = 0;

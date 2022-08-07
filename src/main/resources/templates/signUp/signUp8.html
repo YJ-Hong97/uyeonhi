@@ -33,7 +33,7 @@
 
 .signUpContainer .signUpBox {
 	display: inline-block;
-	width: 50%;
+	width: 60%;
 	height: 50%;
 	background: #FFFFFF;
 	border: 1px solid #E4E2E2;
@@ -159,13 +159,13 @@ width:3rem;
 			<p id = "ment">
 				마침내 마지막입니다.
 			</p>
-			<!-- <form action = "signUpFinal" method ="post" enctype="multipart/form-data"> -->
-			<form action = "signUpFinal" method ="post">
+
+			<form action = "/uyeonhi/signUpFinal" method ="post" enctype="multipart/form-data">
 			<table>
 				<tr>
 					<td>호감 알림 보내기  </td>
 					<td><input type = "radio" name = "hogam" id = "hogam" value = "hogam">보낼래요</td>
-					<td><input type = "radio" name = "hogam" id = "uyeon" value = "uyeon">우연히 만날래요</label></td>
+					<td><input type = "radio" name = "hogam" id = "uyeon" value = "uyeon">우연히 만날래요</td>
 				</tr>
 				<tr>
 					<td>mbti</td>
@@ -198,17 +198,21 @@ width:3rem;
 					<td colspan = "2"><input type = "date" name = "birth" id = "birth"></td>
 				</tr>
 				<tr>
-					<!-- <td>프로필 사진</td>
-					<td colspan = "2"><input type = "file" id= "profile" name = "profile" multiple="multiple"><div id ="images_container"></div></td> -->
+
+					<td>프로필 사진</td>
+					<td colspan = "2"><input type = "file" id= "profile" name = "profile" multiple="multiple" onchange = "setDetailImage(event)"><div id ="images_container"></div></td>
 				</tr>
 			</table>
+
+			
+			
 				<div id="btnBox">
 					<input type="submit" id="nextBtn" value="다음">
 				</div>
 			</form>
 			
 			
-				</div>
+				
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script>
@@ -220,7 +224,6 @@ width:3rem;
 			}
 		}); */
 		//썸네일
-		
 		function setDetailImage(event){
 			console.log(document.querySelector('#profile').files);
 			for(var image of document.querySelector('#profile').files){
