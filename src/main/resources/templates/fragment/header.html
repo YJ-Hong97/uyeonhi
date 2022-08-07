@@ -21,7 +21,7 @@
 
 .headerContainer td {
 	border-bottom: 0.1rem solid #AEAEAE;
-	height: 6rem;
+	height: 4rem;
 	font-family: 'Gowun Dodum';
 	font-style: normal;
 	font-weight: 400;
@@ -33,14 +33,18 @@
 	font-family: 'Libre Barcode 39 Text';
 	font-style: normal;
 	font-weight: 400;
-	font-size: 4rem;
+	font-size: 3rem;
 	line-height: 110%;
 	color: #B983FF;
 }
 .headerContainer #profile{
-	font-size:3rem;
-	color: #B983FF;
+	border-radius: 50%;
+	width:auto;
+	height:5vh;
+	border:0.2rem solid #B983FF;	
+	overflow: hidden;
 }
+
 
 </style>
 	</head>
@@ -49,8 +53,8 @@
 			<table>
 				<tr>
 					<td id="logo">uyeonhi</td>
-					<td width="70%"></td>
-					<td id="profile"><span class="material-symbols-outlined" id = "profile">account_circle</span></td>
+					<td width="65%"></td>
+					<td id = "imgTd" width="5%"><img  id="profile"th:src = "${profile.fileName}"></td>
 					<td id="nick">[[${user.nickname}]]</td>
 				</tr>
 			</table>

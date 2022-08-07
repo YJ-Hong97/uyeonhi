@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "follow")
 public class Follow {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long fId;
 
 	@ManyToOne

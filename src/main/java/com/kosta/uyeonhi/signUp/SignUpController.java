@@ -4,47 +4,35 @@ package com.kosta.uyeonhi.signUp;
 
 
 
-import java.io.File;
+
+
+
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kosta.uyeonhi.*;
 import com.kosta.uyeonhi.email.EmailService;
-import com.kosta.uyeonhi.email.EmailToken;
 import com.kosta.uyeonhi.email.EmailTokenService;
 import com.kosta.uyeonhi.fileUpload.EmptyFileException;
 import com.kosta.uyeonhi.fileUpload.FileUploadFailedException;
 import com.kosta.uyeonhi.fileUpload.UploadS3Service;
 import com.kosta.uyeonhi.security.MemberService;
 
-import antlr.TokenWithIndex;
 import lombok.extern.java.Log;
 //http://aaaaaaaaa/hello.do/100
 //http://aaaaaaaaa/hello.do?id=100
@@ -163,6 +151,11 @@ public class SignUpController {
 		}
 		return result;
 	}
+	@GetMapping("/mailing")
+	public ModelAndView mailing(ModelAndView mnv) {
+		mnv.setViewName("signUp/signUpMail");
+		return mnv;
+	}
 	@GetMapping("/validEmail/{token}/{email}")
 	public ModelAndView validEmail(@PathVariable String token,@PathVariable String email,ModelAndView mnv) {
 		eService.verifyEmail(token);
@@ -280,7 +273,7 @@ public class SignUpController {
 	}
 
 	@PostMapping("/signUpFinal")
-	public void uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile) throws IllegalStateException, IOException, EmptyFileException, FileUploadFailedException {
+	public ModelAndView uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile,ModelAndView mnv) throws IllegalStateException, IOException, EmptyFileException, FileUploadFailedException{
 		
 		if(hogam.equals("hogam")) {
 			signUpInfo.put("hogam", "hogam");
@@ -289,7 +282,8 @@ public class SignUpController {
 		}
 		signUpInfo.put("mbti", mbti);
 		signUpInfo.put("gender", gender);
-		/* ArrayList<String> files = uploadService.uploadFile(profile); */
+		ArrayList<String> files = uploadService.uploadFile(profile);
+		
 		UserVO user = UserVO.builder()
 				.birth(birth)
 				.email(signUpInfo.get("email"))
@@ -302,10 +296,25 @@ public class SignUpController {
 				.phone(signUpInfo.get("phone"))
 				.build();
 		mService.joinUser(user);
-		/*
-		 * for(String fileName:files) { ProfileVO profileVO = ProfileVO.builder()
-		 * .fileName(fileName) .user(user) .build(); pRepo.save(profileVO); }
-		 */
+		
+		 for(int i = 0; i<files.size(); i++) {
+			 if(i==0) {
+				 ProfileVO profileVO = ProfileVO.builder()
+						 .fileName(files.get(i))
+						 .user(user)
+						 .type(ProfileType.MAIN)
+						 .build();
+				 pRepo.save(profileVO);
+			 }else {
+				 ProfileVO profileVO = ProfileVO.builder()
+						  .fileName(files.get(i)) 
+						  .user(user) 
+						  .build(); 
+				  pRepo.save(profileVO); 
+			 }
+			
+					 
+		 }
 		
 		//내 소개 저장
 		mfList.forEach(mf->{
@@ -329,28 +338,30 @@ public class SignUpController {
 					.build();
 			miRepo.save(ideal);
 		});
-//		//취향 저장
-//		fList.forEach(f->{
-//			FavoriteVO favorite= FavoriteVO.builder()
-//					.userId(user.getId())
-//					.favoriteId(f)
-//					.build();
-//			favoriteRepository.save(fovorite);
-//		});
-//		hList.forEach(h->{
-//			HobbyVO hobby= HobbyVO.builder()
-//					.userId(user.getId())
-//					.favoriteId(h)
-//					.build();
-//			hobbyRepository.save(hobby);
-//		});
-//		iList.forEach(i->{
-//			IdealTypeVO ideal= IdealTypeVO.builder()
-//					.userId(user.getId())
-//					.idealId(i)
-//					.build();
-//			idealRepository.save(ideal);
-//		});
+		//취향 저장
+		fList.forEach(f->{
+			FavoriteVO favorite= FavoriteVO.builder()
+					.userId(user.getId())
+					.favoriteId(f)
+					.build();
+			favoriteRepository.save(favorite);
+		});
+		hList.forEach(h->{
+			HobbyVO hobby= HobbyVO.builder()
+					.userId(user.getId())
+					.hobbyId(h)
+					.build();
+		hobbyRepository.save(hobby);
+		});
+		iList.forEach(i->{
+			IdealTypeVO ideal= IdealTypeVO.builder()
+					.userId(user.getId())
+					.idealId(i)
+					.build();
+			idealRepository.save(ideal);
+		});
+		mnv.setViewName("/auth/login");
+		return mnv;
 	}
 	
 }

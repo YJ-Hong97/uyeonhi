@@ -41,7 +41,7 @@ import lombok.NoArgsConstructor;
 public class Board {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long boardId;
 
 	@Column(nullable = false, length = 255)
