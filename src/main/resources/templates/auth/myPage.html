@@ -22,8 +22,10 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
 	integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
 	crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
-	 crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+	integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <style type="text/css">
 .flex-shrink-0 #profile {
@@ -52,27 +54,33 @@
 	font-family: 'Gowun Dodum';
 	font-size: 40px;
 }
+
 .default-txt {
 	font-family: 'Gowun Dodum';
 }
+
 .top-container {
 	width: 1000px;
 	margin: auto;
 }
+
 .second-box {
 	margin-top: -10px;
 }
+
 .nav-link {
 	width: 250px;
 	text-align: center;
 	color: black;
 }
+
 .nav-link:hover {
 	color: black;
 	border-bottom: 0px;
 	/* background-color: #B983FF;
 	color: white; */
 }
+
 .active {
 	background-color: #B983FF;
 	color: white;
@@ -88,6 +96,7 @@
 	background-color: #B983FF;
 	color: white;
 }
+
 body {
 	position: relative;
 	margin: 0 auto;
@@ -95,15 +104,16 @@ body {
 	height: 100%;
 	text-align: center;
 }
-.top-container{
-	position:absolute;
-	top:50%;
-	left:50%;
-	transform:translate(-50%,5%);
-	
+
+.top-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, 5%);
 }
+
 .settingContainer {
-	display:none;
+	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -118,7 +128,8 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: white; border : 0.05rem solid black;
+	background-color: white;
+	border: 0.05rem solid black;
 	border-radius: 0.5rem;
 	text-align: center;
 	border: 0.05rem solid black;
@@ -164,14 +175,15 @@ body {
 	left: 50%;
 	transform: translate(-50%, 10%);
 	width: 32%;
-	background-color: white; font-family : 'Gowun Dodum';
+	background-color: white;
+	font-family: 'Gowun Dodum';
 	font-style: normal;
 	font-weight: 400;
 	font-size: 1.5rem;
 	line-height: 110%;
 	text-align: left;
 	font-family: 'Gowun Dodum';
-	z-index:6;
+	z-index: 6;
 }
 
 .blockContainer table {
@@ -221,13 +233,16 @@ body {
 	background-color: white;
 	color: #B983FF;
 }
-#close{
+
+#close {
 	cursor: pointer;
 }
+
 .material-symbols-outlined {
 	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48
 }
-i{
+
+i {
 	cursor: pointer;
 }
 </style>
@@ -238,70 +253,93 @@ i{
 	<div class="top-container">
 		<div class="d-flex">
 			<div class="flex-shrink-0">
-				<img id="profile" th:src="${profile.fileName}" alt="...">
+
+				<img id="profile"
+					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg"
+					alt="...">
+
 			</div>
 			<div class="d-flex flex-column mb-2">
 				<div class="d-flex flex-row mb-3">
-					<div class="p-2 nick">
-						[[${user.nickname}]]
-					</div>
-					<div class="p-2" th:unless="${user.id} == ${session.user.id}">
+
+					<div class="p-2 nick">[[${profile.nickname}]]</div>
+					<div class="p-2" th:unless="${profile.id} == ${session.user.id}">
+
 						<div th:if="${isFollow == 1}">
-							<button type="button" id="follows" class="btn btn-light doFollow is-check">
-								팔로우 취소
-							</button>
+							<button type="button" id="follows"
+								class="btn btn-light doFollow is-check">팔로우 취소</button>
 						</div>
 						<div th:unless="${isFollow == 1}">
 							<button type="button" id="follows" class="btn btn-light doFollow">
-								팔로우
-							</button>
+								팔로우</button>
 						</div>
 					</div>
-					<div class="p-2" th:unless="${user.id} == ${session.user.id}">
-						<button type="button" class="btn btn-light doMatch">
-							매칭신청
+
+					<div class="p-2" th:unless="${profile.id} == ${session.user.id}">
+						<button type="button" class="btn btn-light doMatch">매칭신청
+
 						</button>
 					</div>
 				</div>
 				<div class="d-flex flex-row mb-5 second-box">
-					<div class="p-2 default-txt">
-						팔로워
-					</div>
-					<div class="p-2 default-txt">
-						[[${follower}]]
-					</div>
-					<div class="p-2 default-txt">
-						팔로잉
-					</div>
-					<div class="p-2 default-txt">
-						[[${following}]]
-					</div>
-					<div class="p-2 default-txt" th:if="${user.id} == ${session.user.id}">
+
+					<div class="p-2 default-txt">팔로워</div>
+					<div class="p-2 default-txt">[[${follower}]]</div>
+					<div class="p-2 default-txt">팔로잉</div>
+					<div class="p-2 default-txt">[[${following}]]</div>
+					<div class="p-2 default-txt"
+						th:if="${profile.id} == ${session.user.id}">
+
 						<i class="fa-solid fa-gear"></i>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="d-flex justify-content-evenly mb-3 nav nav-tabs">
-			<div class="p-2 type-btn nav-item"><a class="nav-link active" aria-current="page" href="#">게시글</a></div>
-			<div class="p-2 type-btn nav-item"><a class="nav-link" href="#">모집글</a></div>
-			<div class="p-2 type-btn nav-item" th:if="${user.id} == ${session.user.id}"><a class="nav-link" href="#">내 매칭 상대</a></div>
+
+			<div class="p-2 type-btn nav-item">
+				<a class="nav-link active" aria-current="page" href="#">게시글</a>
+			</div>
+			<div class="p-2 type-btn nav-item">
+				<a class="nav-link" href="#">모집글</a>
+			</div>
+			<div class="p-2 type-btn nav-item"
+				th:if="${profile.id} == ${session.user.id}">
+				<a class="nav-link" href="#">내 매칭 상대</a>
+			</div>
+
 		</div>
 		<div class="d-flex justify-content-evenly flex-wrap">
 			<div class="p-2 contain">
-				<img class="postimg" alt="" src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
+				<img class="postimg" alt=""
+					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
 			</div>
-			<div class="p-2 contain"> <img class="postimg" alt="" src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg"> </div>
-			<div class="p-2 contain"> <img class="postimg" alt="" src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg"> </div>
-			<div class="p-2 contain"> <img class="postimg" alt="" src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg"> </div>
-			<div class="p-2 contain"> <img class="postimg" alt="" src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg"> </div>
-			<div class="p-2 contain"> <img class="postimg" alt="" src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg"> </div>
+			<div class="p-2 contain">
+				<img class="postimg" alt=""
+					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
+			</div>
+			<div class="p-2 contain">
+				<img class="postimg" alt=""
+					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
+			</div>
+			<div class="p-2 contain">
+				<img class="postimg" alt=""
+					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
+			</div>
+			<div class="p-2 contain">
+				<img class="postimg" alt=""
+					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
+			</div>
+			<div class="p-2 contain">
+				<img class="postimg" alt=""
+					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
+			</div>
 		</div>
 	</div>
 	<th:block th:replace="~{/fragment/header::header}"></th:block>
 	<th:block th:replace="~{/mypage/setting :: setting}"></th:block>
 	<th:block th:replace="~{/mypage/block :: block}"></th:block>
-	<th:block th:replace = "~{/mypage/updatePW::updatePW}"></th:block>
+	<th:block th:replace="~{/mypage/updatePW::updatePW}"></th:block>
 	<th:block th:replace="~{/mypage/daccount::daccount}"></th:block>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script th:inline="javascript">
