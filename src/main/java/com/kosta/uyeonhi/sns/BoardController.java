@@ -71,20 +71,43 @@ public class BoardController {
 		// return boardRepository.findAll(pageable);
 	}
 
-	@GetMapping("/sns1/search")
-	@ResponseBody
-	public List<Board> search(@RequestParam(value = "keyword") String keyword, Model model) {
-		System.out.println("controller : " + keyword);
-
-		List<Board> searchList = boardService.tagSearch(keyword);
-		// model.addAttribute("searchList",searchList);
+	//검색으로
+		@GetMapping("/search")
+		public String search(String tag, Model model) {
+			System.out.println("controller : "+tag);		
+			List<Board> searchList = boardService.tagSearch(tag);
+			
+			if(searchList.size()==0) {
+				String message = "검색 결과가 없습니다";
+				model.addAttribute("msg",message);
+			}
+			model.addAttribute("searchList",searchList);
+			System.out.println(searchList.size());
+		 
+			return "sns/search";
+		}
+	
+	//태그눌러서
+	@PostMapping("/clickTag")
+	public String clickTag(String tag, Model model) {
+		System.out.println("controller : "+tag);
+		List<Board> searchList = boardService.tagSearch(tag);
+		model.addAttribute("searchList",searchList);
 		System.out.println(searchList.size());
-
-		return searchList;
+	 
+		return "sns/search";
 	}
-
-	/*
-	 * @GetMapping("/boardWrite") public String boardWirteGet() { return "sns1"; }
-	 */
+	
+	
+	
+	
+	
+	
+	/*@GetMapping("/boardWrite")
+	public String boardWirteGet() {
+		return "sns1";
+	}*/
+	
+	
 
 }
