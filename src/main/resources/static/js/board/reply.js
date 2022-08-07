@@ -1,3 +1,7 @@
+
+
+
+
 $('.show').on('click', function() {
 	let sequence = $(this).val();
 	let boardId = $(".board" + sequence).val();
@@ -7,7 +11,6 @@ $('.show').on('click', function() {
 		url: `/reply/${boardId}`,
 		type: "get",
 		success: function(res) {
-			console.log(res);
 			$('#here').html(res);
 
 
@@ -46,8 +49,17 @@ $('.show').on('click', function() {
 
 
 $('.btn_reply').on('click', function() {
+	
+	console.debug("reply.socket", websocket)
+	
 	let sequence = $(this).val();
 	let boardId = $(".board" + sequence).val();
+	let writer = $(".userSession").text();
+	let readWriter = $(".boardWriter"+boardId).text();
+
+	console.log("나 :" + writer);
+	console.log("나 :" + readWriter);
+	
 	let data = {
 		boardId: boardId,
 		content: $(".reply_content" + sequence).val().trim(),
@@ -68,6 +80,14 @@ $('.btn_reply').on('click', function() {
 		success: function(res) {
 			alert("댓글 등록 완료");
 			location.href = "/sns/sns1";
+			
+			if(readWriter != writer){
+           		if(websocket){
+        			let socketMsg = "reply,"+readWriter+","+writer+","+boardId;
+        			console.log(socketMsg);
+        			websocket.send(socketMsg);
+           		}
+           	}
 		},
 		error: function(err) {
 			alert(err);
@@ -76,11 +96,18 @@ $('.btn_reply').on('click', function() {
 
 });
 
+
+
 $(document).on("click", ".btn_reReply", function() {
+	
+	console.debug("reply.socket", websocket)
+	
 	let parentId = $(this).val();
 	let boardId = $(".hidden_boardId").val();
 	let content = $(".input_reReply" + parentId).val();
-
+	let replyWriter = $(".hidden_Writer" + parentId).val();
+	let reReplyWriter = $(".userSession").text();
+;
 	let data = {
 		boardId: boardId,
 		parentId: parentId,
@@ -89,6 +116,8 @@ $(document).on("click", ".btn_reReply", function() {
 	};
 
 	console.log(data);
+	console.log("작성자 이름"+replyWriter);
+	console.log("내 이름"+reReplyWriter);
 
 	if (data.content == "") {
 		alert("댓글을 입력해 주세요");
@@ -104,6 +133,15 @@ $(document).on("click", ".btn_reReply", function() {
 		success: function(res) {
 			alert("댓글 등록 완료");
 			location.href = "/sns/sns1";
+			
+			if(replyWriter != reReplyWriter){
+           		if(websocket){
+        			let socketMsg = "reReply,"+replyWriter+","+reReplyWriter+","+parentId;
+        			console.log(socketMsg);
+        			websocket.send(socketMsg)
+           		}
+           	}
+			
 		},
 		error: function(err) {
 			alert(err);

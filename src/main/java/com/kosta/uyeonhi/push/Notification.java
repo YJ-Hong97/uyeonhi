@@ -1,0 +1,56 @@
+package com.kosta.uyeonhi.push;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kosta.uyeonhi.reply.Reply;
+import com.kosta.uyeonhi.signUp.UserVO;
+import com.kosta.uyeonhi.sns.Board;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Notification {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int notification_id;
+	
+	private String senderId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+	private UserVO receiverId;
+	
+	@Embedded
+	private NotificationType notificationType;
+	
+	@Column(nullable = false)
+	private Boolean isRead;
+	
+	private int boardId;
+	
+	private int replyId;
+}

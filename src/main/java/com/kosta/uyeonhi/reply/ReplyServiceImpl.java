@@ -22,6 +22,7 @@ public class ReplyServiceImpl implements ReplyService{
 	
 	private final UserRepository userRepository;
 	
+	
 	@Override
 	public void writeReply(Long boardId, ReplyRequestDTO replyRequestDTO) {
 		
@@ -35,7 +36,6 @@ public class ReplyServiceImpl implements ReplyService{
 				.depth(replyRequestDTO.getDepth())
 				.parent(parent)
 				.build();
-				
 		replyRepository.save(reply);
 	}
 	@Override

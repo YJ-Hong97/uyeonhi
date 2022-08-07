@@ -45,7 +45,7 @@ public class ReplyResponseDTO {
 	private Long boardId;
 
 	private String date;
-
+	
 	private String depth;
 
 	private int reply_like;
@@ -59,10 +59,12 @@ public class ReplyResponseDTO {
 		this.reply_content = reply.getReply_content();
 		this.user = reply.getUser();
 		this.boardId = reply.getBoard().getBoardId();
-		if(reply.getUpdateDate() == null) {
-			this.date = Time.txtDate(reply.getRegdate());
+		if(reply.getUpdateDate() ==null) {
+			this.date = Time.convertLocaldatetimeToTime(reply.getRegdate());
+
 		} else {
-			this.date = Time.txtDate(reply.getUpdateDate());
+			this.date = Time.convertLocaldatetimeToTime(reply.getUpdateDate());
+
 		}
 		this.depth = reply.getDepth();
 		this.reply_like = reply.getReply_like();
