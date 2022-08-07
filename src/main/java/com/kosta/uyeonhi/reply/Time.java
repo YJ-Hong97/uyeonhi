@@ -8,48 +8,44 @@ import java.time.temporal.ChronoUnit;
 
 
 public class Time {
-	 
 	public static final int SEC = 60;
 	public static final int MIN = 60;
 	public static final int HOUR = 24;
 	public static final int DAY = 30;
 	public static final int MONTH = 12;
+	 
+	public static String convertLocaldatetimeToTime(LocalDateTime localDateTime) {
+		
+		
+        LocalDateTime now = LocalDateTime.now();
 
-	/**
-	 * x초전, x분전, x시간 전m, x일 전, x개월전, x년전
-	 * @param 날짜
-	 * @return 분 표시
-	 *
-	 */
-	public static String txtDate(Date tempDate) {
-		long curTime = System.currentTimeMillis();
+        long diffTime = localDateTime.until(now, ChronoUnit.SECONDS); // now보다 이후면 +, 전이면 -
 
-		long regTime = tempDate.getTime();
+        String msg = null;
+        if (diffTime < SEC){
+            return diffTime + "초전";
+        }
+        diffTime = diffTime / SEC;
+        if (diffTime < MIN) {
+            return diffTime + "분전";
+        }
+        diffTime = diffTime / MIN;
+        if (diffTime < HOUR) {
+            return diffTime + "시간전";
+        }
+        diffTime = diffTime / HOUR;
+        if (diffTime < DAY) {
+            return diffTime + "일전";
+        }
+        diffTime = diffTime / DAY;
+        if (diffTime < MONTH) {
+            return diffTime + "개월전";
+        }
 
-		long diffTime = (curTime - regTime) / 1000;
+        diffTime = diffTime / MONTH;
+        return diffTime + "년전";
+    }
 
-		String msg = null;
 
-       if (diffTime < SEC){
-            msg = diffTime + "초전";
-        } else if ((diffTime /= SEC) < MIN) {
-			msg = diffTime + "분 전";
-		} else if ((diffTime /= MIN) < HOUR) {
-			msg = (diffTime) + "시간 전";
-		} else if ((diffTime /= HOUR) < DAY) {
-			msg = (diffTime) + "일 전";
-		} else if ((diffTime /= DAY) < MONTH) {
-			msg = (diffTime) + "개월 전";
-		} else {
-			SimpleDateFormat sdf = new SimpleDateFormat( "yyyy");
-			String curYear = sdf.format(curTime);
-			String passYear = sdf.format(tempDate);
-			int diffYear = Integer.parseInt(curYear) - Integer.parseInt(passYear);
-			msg = diffYear + "년 전";
-		}
-
-		return msg;
-
-	}
 	 
 }

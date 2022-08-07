@@ -91,6 +91,9 @@
 								<p>[[${reply.user.profile}]]</p>
 							</div>
 							<p style="margin-right: 10px;">[[${reply.user.nickname}]]</p>
+							<input type="hidden" th:class="|hidden_Writer${reply.reply_id}|"
+								th:value="${reply.user.id}"></input>
+
 						</div>
 						<p th:class="|reply_content${reply.reply_id}|">[[${reply.reply_content}]]</p>
 						<div class="reply_button_box">
@@ -115,6 +118,7 @@
 				<div class="reReply_box">
 					<textarea th:class="|input_reReply${reply.reply_id}|"></textarea>
 					<input type="hidden" class="hidden_boardId" th:value="${reply.boardId}"></input>
+					
 					<button th:value="${reply.reply_id}" class="btn_reReply" type="button">대댓글</button>
 				</div>
 
@@ -137,6 +141,7 @@
 									<button class="update_reply_button" th:value="${reReply.reply_id}" type="button">
 										<img src="../images/create-outline.svg">
 									</button>
+									<div th:class="time" th:value="${reReply.date}">[[${reReply.date}]]</div>
 								</div>
 							</div>
 
@@ -155,6 +160,8 @@
 				<div>
 		</li>
 	</ul>
+	
+	
 
 
 </body>

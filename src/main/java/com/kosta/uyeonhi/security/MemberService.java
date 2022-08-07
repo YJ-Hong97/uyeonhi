@@ -17,6 +17,9 @@ import org.springframework.ui.Model;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class MemberService implements UserDetailsService{
 	@Autowired
