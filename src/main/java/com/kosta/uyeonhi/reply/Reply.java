@@ -1,6 +1,7 @@
 package com.kosta.uyeonhi.reply;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,11 +61,11 @@ public class Reply{
 	private Board board;
 	
 	@CreationTimestamp
-	private Date regdate;
+	private LocalDateTime regdate;
 	
 	@LastModifiedDate
 	@Column(nullable = true)
-	private Date updateDate;
+	private LocalDateTime updateDate;
 
 	@ColumnDefault("0")	
 	private String depth;
