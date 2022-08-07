@@ -17,7 +17,10 @@ $('#sns_select').change(function() {
 	var result = $('#sns_select option:selected').val();
 	if (result == 'recruit') {
 		$(".total_person").css("display", "inline");
+		$(".deadline").css("display", "inline");
+		$('#container').css("height", "330px");
 	} else {
+		$(".deadline").css("display", "none");
 		$(".total_person").css("display", "none");
 	}
 });
@@ -28,7 +31,8 @@ $('#btn_board').on('click', function() {
 		content: $("#toggleBtn").val().trim(),
 		board_type: $("#sns_select option:selected").text(),
 		tag: $(".tag").val(),
-		total_person: $(".total_person").val()
+		total_person: $(".total_person").val(),
+		deadline: $(".deadline").val()
 	};
 
 	console.log(data);

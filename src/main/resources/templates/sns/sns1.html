@@ -10,6 +10,7 @@
 	<script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 	<link rel="stylesheet" th:href="@{/css/sns.css}">
+	<link rel="stylesheet" th:href="@{/css/recruit.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <!--	<script>
 
@@ -81,7 +82,8 @@
 									</select>
 									<button id="btn_fileUpload" type="button"><img class="file_image"
 											src="../images/image-outline.svg" style="width: 3rem;"></button>
-									<input type="number" max="10" class="total_person" style="display: none;">
+									<input type="number" max="10" class="total_person">
+									<input type="date" class="deadline">
 								</div>
 
 								<button id="btn_board" type="button">등록</button>
@@ -157,11 +159,13 @@
 									<div class="text_container">
 										<span class="board_text">[[${list.content}]]</span>
 										<div th:if="${list.board_type == '모집글'}">
-											<span
-												class="board_text">[[${list.applicant_person}]]/[[${list.total_person}]]</span>
+											<span class="board_text" th:text="${list.applicant_person}" th:id="|applicant_person_${list.boardId}|"></span>
+											<span class="board_text" th:text="${list.total_person}" th:id="|total_person_${list.boardId}|"></span>
+											<button th:id="|applyBtn_${list.boardId}|" th:onclick="|apply(${list.boardId})|">신청하기</button>
+											<span th:text="${list.deadline}" th:id="|deadline_${list.boardId}|"></span>
 										</div>
 										<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-										 <a class="board_tag" th:id="|tag_${status.count}|" th:onclick="|tag(${status.count})|" th:text="|#${hashtag}|"></a> 
+										 <a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|" th:onclick="|tag(${list.boardId},${status.count},${status.index})|" th:text="|#${hashtag}|"></a> 
 										 </div>
 
 									</div>
@@ -232,7 +236,7 @@
 								</form>
 							</div>
 							<div class="text" id="searchContent">
-								<p id="searchBefore">친구찾던지태그검색하던지</p>
+								<p id="searchBefore">태그를 검색해 주세요</p>
 							</div>
 						</div>
 					</div>

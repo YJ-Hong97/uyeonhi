@@ -60,6 +60,11 @@ public class BoardController {
 	public String search(String tag, Model model) {
 		System.out.println("controller : "+tag);		
 		List<Board> searchList = boardService.tagSearch(tag);
+		
+		if(searchList.size()==0) {
+			String message = "검색 결과가 없습니다";
+			model.addAttribute("msg",message);
+		}
 		model.addAttribute("searchList",searchList);
 		System.out.println(searchList.size());
 	 
@@ -67,15 +72,14 @@ public class BoardController {
 	}
 	
 	//태그눌러서
-	@GetMapping("/clickTag")
+	@PostMapping("/clickTag")
 	public String clickTag(String tag, Model model) {
 		System.out.println("controller : "+tag);
-		
-		List<Board> searchList2 = boardService.tagSearch(tag);
-		model.addAttribute("searchList2",searchList2);
-		System.out.println(searchList2.size());
+		List<Board> searchList = boardService.tagSearch(tag);
+		model.addAttribute("searchList",searchList);
+		System.out.println(searchList.size());
 	 
-		return "sns/clickTag";
+		return "sns/search";
 	}
 	
 	

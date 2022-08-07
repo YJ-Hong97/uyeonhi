@@ -23,5 +23,7 @@ public interface BoardService {
 	Board findByBoardID(long board_id);
 	
 	List<Board> tagSearch(String tag);
+	
+	void recruitApply(long board_id,BoardRequestDTO boardRequestDTO);
 
 }
