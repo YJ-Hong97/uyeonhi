@@ -37,7 +37,7 @@ function startCall() {
     .style.display = "inline"
 
     navigator.getUserMedia({
-        video: false,/*{
+        video: false ,/*{
             frameRate: 24,
             width: {
                 min: 480, ideal: 720, max: 1280
