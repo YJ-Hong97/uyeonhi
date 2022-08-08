@@ -25,7 +25,7 @@ import lombok.Setter;
 public class Likes {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int like_id;
 
 	
