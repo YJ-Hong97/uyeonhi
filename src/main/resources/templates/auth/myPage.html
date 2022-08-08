@@ -246,6 +246,7 @@ i {
 	cursor: pointer;
 }
 </style>
+
 </head>
 <body>
 	[[${user.id}]]
@@ -276,7 +277,9 @@ i {
 					</div>
 
 					<div class="p-2" th:unless="${profile.id} == ${session.user.id}">
-						<button type="button" class="btn btn-light doMatch">매칭신청
+						<button type="button" class="btn btn-light doMatch" onclick ="matching()">매칭신청
+						
+					
 
 						</button>
 					</div>
@@ -492,7 +495,21 @@ i {
 			    });
 			}
 		});
-		
+		//매칭신청
+		function matching(){
+			alert("aaa");
+			$.ajax({
+				url:"/matching",
+				data:{target:"ijbmsm"},
+				success:function(responseData){
+					alert(responseData);
+				},
+				fail:function(){
+					
+				}
+			});
+		}
+
 	</script>
 </body>
 </html>
