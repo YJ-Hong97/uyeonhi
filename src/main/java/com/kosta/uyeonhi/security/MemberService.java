@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
@@ -62,8 +63,12 @@ public class MemberService implements UserDetailsService{
 		return user;
 	}
 	
-	public void getUserProfile(String mid, Model model) {
-		model.addAttribute("profile", uRepo.findById(mid).get());
+	public void getUserProfile(String mid, ModelAndView model) {
+		model.addObject("profileOther", uRepo.findById(mid).get());
+	}
+	
+	public UserVO getOther(String mid) {
+		return uRepo.findById(mid).get();
 	}
 
 	 
