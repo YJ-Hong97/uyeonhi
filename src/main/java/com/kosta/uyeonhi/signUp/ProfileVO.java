@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +24,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "user")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -32,6 +34,8 @@ public class ProfileVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long profileId;	
+	
+	@JsonIgnore
 	@ManyToOne
 	private UserVO user;
 	private String fileName;
