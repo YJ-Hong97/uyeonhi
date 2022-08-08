@@ -57,11 +57,20 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Override
 	@Transactional
-	public List<Board> tagSearch(String keyword){
-		 System.out.println("BoardServiceImpl : "+keyword);
-		return boardRepository.findByTagContaining(keyword);
+	public List<Board> tagSearch(String tag){
+		 System.out.println("BoardServiceImpl : "+tag);
+		return boardRepository.findByTagContaining(tag);
 	}
 
+	@Override
+	@Transactional
+	public void recruitApply(long board_id,BoardRequestDTO boardRequestDTO) {
+		// TODO Auto-generated method stub
+		Board board = boardRepository.findById(board_id).orElseThrow(() -> new
+		IllegalArgumentException("해당 게시물이 존재하지 않습니다. " + board_id));
+		board.setApplicant_person(boardRequestDTO.getApplicant_person()); 
+		
+	}
 	
 	/*
 	 * @Override

@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kosta.uyeonhi.reply.ReplyService;
+import com.kosta.uyeonhi.signUp.ProfileRepository;
+import com.kosta.uyeonhi.signUp.ProfileType;
+import com.kosta.uyeonhi.signUp.ProfileVO;
 import com.kosta.uyeonhi.signUp.UserVO;
 
 import lombok.AllArgsConstructor;
@@ -52,6 +55,8 @@ public class BoardController {
 	private final BoardService boardService;
 
 	private final ReplyService replyService;
+	
+	private final ProfileRepository profileRepository;
 
 	@GetMapping("/sns1")
 	public void boardList(Model model,
@@ -60,31 +65,56 @@ public class BoardController {
 		int startPage = ((pageable.getPageNumber() - 1) / 10) * 10 + 1;
 		pageable.getPageSize();
 		int endPage = startPage + 10 - 1 > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
-		model.addAttribute("startPageNo", startPage);
-		model.addAttribute("endPageNo", endPage);
-		model.addAttribute("boardList", boardService.pageList(pageable));
+		
 		UserVO user = (UserVO) session.getAttribute("user");
-		model.addAttribute("currentUser", user);
+		ProfileVO profile =profileRepository.findByUserAndType(user, ProfileType.MAIN);
+		model.addAttribute("user", user);
+		model.addAttribute("boardList", boardService.pageList(pageable));
+		model.addAttribute("profile", profile);
+
 
 		// boardService.pageList().get(0).getWriter().getId());
 
 		// return boardRepository.findAll(pageable);
 	}
 
-	@GetMapping("/sns1/search")
-	@ResponseBody
-	public List<Board> search(@RequestParam(value = "keyword") String keyword, Model model) {
-		System.out.println("controller : " + keyword);
-
-		List<Board> searchList = boardService.tagSearch(keyword);
-		// model.addAttribute("searchList",searchList);
+	//검색으로
+		@GetMapping("/search")
+		public String search(String tag, Model model) {
+			System.out.println("controller : "+tag);		
+			List<Board> searchList = boardService.tagSearch(tag);
+			
+			if(searchList.size()==0) {
+				String message = "검색 결과가 없습니다";
+				model.addAttribute("msg",message);
+			}
+			model.addAttribute("searchList",searchList);
+			System.out.println(searchList.size());
+		 
+			return "sns/search";
+		}
+	
+	//태그눌러서
+	@PostMapping("/clickTag")
+	public String clickTag(String tag, Model model) {
+		System.out.println("controller : "+tag);
+		List<Board> searchList = boardService.tagSearch(tag);
+		model.addAttribute("searchList",searchList);
 		System.out.println(searchList.size());
-
-		return searchList;
+	 
+		return "sns/search";
 	}
-
-	/*
-	 * @GetMapping("/boardWrite") public String boardWirteGet() { return "sns1"; }
-	 */
+	
+	
+	
+	
+	
+	
+	/*@GetMapping("/boardWrite")
+	public String boardWirteGet() {
+		return "sns1";
+	}*/
+	
+	
 
 }
