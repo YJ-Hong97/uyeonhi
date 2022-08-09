@@ -88,7 +88,6 @@
 					<div th:class="reply_origin_box" th:id="|reply_origin_box${reply.reply_id}|">
 						<div th:class="replyer_info">
 							<div class="user_profile">
-								<p>[[${reply.user.profile}]]</p>
 							</div>
 							<p style="margin-right: 10px;">[[${reply.user.nickname}]]</p>
 							<input type="hidden" th:class="|hidden_Writer${reply.reply_id}|"
@@ -129,7 +128,6 @@
 							<div th:class="reply_origin_box" th:id="|reply_origin_box${reReply.reply_id}|">
 								<div th:class="replyer_info">
 									<div class="user_profile">
-										<p>[[${reReply.user.profile}]]</p>
 									</div>
 									<p style="margin-right: 10px;">[[${reReply.user.nickname}]]</p>
 								</div>

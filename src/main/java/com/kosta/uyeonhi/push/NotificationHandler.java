@@ -19,22 +19,22 @@ import lombok.extern.log4j.Log4j2;
 
 @Component
 @Log4j2
-public class NotificationHandler extends TextWebSocketHandler{
+public class NotificationHandler extends TextWebSocketHandler {
 
 	private List<WebSocketSession> sessions = new ArrayList<>();
 	private Map<String, WebSocketSession> userSessionsMap = new ConcurrentHashMap<String, WebSocketSession>();
-	
+
 	@Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 
 		log.info("Socket 연결");
 		sessions.add(session);
-		log.info(currentUserName(session));//현재 접속한 사람
+		log.info(currentUserName(session));// 현재 접속한 사람
 		String senderId = currentUserName(session);
 		log.info("보낸사람 아이디" + senderId);
-		userSessionsMap.put(senderId,session);
-    }
-	
+		userSessionsMap.put(senderId, session);
+	}
+
 	@Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         log.info("session"+currentUserName(session));
@@ -58,35 +58,56 @@ public class NotificationHandler extends TextWebSocketHandler{
 				//댓글
 				if ("reply".equals(cmd) && boardWriterSession != null) {
 					log.info("onmessage되나?");
-					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
-							+ "<a href='/sns/sns1"+ bno +"'  style=\"color: black\">"
-							+" 에 댓글을 달았습니다!</a>");
+					TextMessage tmpMsg = new TextMessage("<div>"
+				     + "<div class='toast-container p-3' id='toastPlacement'>"
+				     +  " <div class='toast fade show'>"
+				     +    " <div class='toast-header'>"
+				     +      " <svg class='bd-placeholder-img rounded me-2' width='20' height='20' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' preserveAspectRatio='xMidYMid slice' focusable='false'><rect width='100%' height='100%' fill='#007aff'></rect></svg>"
+				     +     "  <strong class='me-auto'>댓글알림</strong>"
+				      +   "   <small>11 mins ago</small>"
+				      +  "  </div>"
+				      +   " <div class='toast-body'>"
+				      + replyWriter +"님이 게시글에 댓글을 작성했습니다."
+				      +  "  </div>"
+				      + " </div>"
+				    +  "</div>"
+				   + "</div>");
 					boardWriterSession.sendMessage(tmpMsg);
 				} else if ("reReply".equals(cmd) && boardWriterSession != null) {
 					log.info("onmessage되나?");
-					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 "
-							+ "<a href='/sns/sns1"+ bno +"'  style=\"color: black\">"
-							+" 에 대댓글을 달았습니다!</a>");
+					TextMessage tmpMsg = new TextMessage("<div>"
+						     + "<div class='toast-container p-3' id='toastPlacement'>"
+						     +  " <div class='toast fade show'>"
+						     +    " <div class='toast-header'>"
+						     +      " <svg class='bd-placeholder-img rounded me-2' width='20' height='20' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' preserveAspectRatio='xMidYMid slice' focusable='false'><rect width='100%' height='100%' fill='#007aff'></rect></svg>"
+						     +     "  <strong class='me-auto'>댓글알림</strong>"
+						      +   "   <small>11 mins ago</small>"
+						      +  "  </div>"
+						      +   " <div class='toast-body'>"
+						      + replyWriter +"님이 "+boardWriter +"님의 댓글에 대댓글을 작성했습니다."
+						      +  "  </div>"
+						      + " </div>"
+						    +  "</div>"
+						   + "</div>");
 					boardWriterSession.sendMessage(tmpMsg);
 				}
         }
         }
     }
-	
+
 	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {//연결 해제
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {// 연결 해제
 		// TODO Auto-generated method stub
 		log.info("Socket 끊음");
 		sessions.remove(session);
-		userSessionsMap.remove(currentUserName(session),session);
+		userSessionsMap.remove(currentUserName(session), session);
 	}
-	
+
 	private String currentUserName(WebSocketSession session) {
-		
+
 		String mid = session.getPrincipal().getName();
 		return mid;
-		
+
 	}
-	
-	
+
 }
