@@ -117,16 +117,16 @@ html {
 				console.log(info);
 				
 				$.ajax({
-					url:"uyeonhi/detail",
+					url:"detail",
 					method:"post",
 					contentType : "application/json;charset=UTF-8",
 					data:JSON.stringify(info),
 					success: function(responseData) {
+						$(".modal").load("detail");
 						
 					}
 				});
 				
-				$(".modal").load("detail");
 
 			}
 		});
