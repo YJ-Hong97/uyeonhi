@@ -13,8 +13,8 @@ function likes(boardId){
 			url:"/api/sns/likes/" + boardId
 		}).done(res=>{
 			alert(res);
-			//heart.css("font-variation-settings","'FILL' 1");
-			//heart.css("color","red");
+			heart.css("font-variation-settings","'FILL' 1");
+			heart.css("color","red");
 			heart.addClass("notlikes")
 			heart.removeClass('likes');
 		}).fail(error=>{

@@ -14,6 +14,12 @@
 	<link rel="stylesheet" th:href="@{/css/sns.css}">
 	<link rel="stylesheet" th:href="@{/css/recruit.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <!--	<script>
 
 		window.onload = function () {
@@ -54,7 +60,7 @@
 
 <body>
 <!--headerFragment 선언-->
-<th:block th:replace="~{/fragment/header :: header}"></th:block>
+<!-- <th:block th:replace="~{/fragment/header :: header}"></th:block> -->
  <div>
 	<div class="big-container">
 		<div class="flex-container">
@@ -142,13 +148,14 @@
 							<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
 								<span id="ellipse"></span> <span class="material-symbols-outlined" id="btnModal">
 									more_horiz </span>
+								<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}" th:class="|boardWriter${list.boardId}|" style="color: white;">[[${list.writer.id}]]</span>
 							</div>
 							<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">이미지넣는곳</div>
 							<div id="container4" th:value="${list.boardId}" th:class="${list.boardId}">
 
 								<span id="regdate">today</span>
 								<button type="button" class="reply_show">댓글보기</button>
-								<span th:text="${list.likes.size()}"></span>
+								<span th:text="|좋아요 ${list.likes.size()}개|"></span>
 								<div class="like-box" th:if="${list.getLikes().size()==0 || @likeSearch.findUsingIterator(session.user.id,list.getLikes()) }">
 									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
 										th:onclick="|likes(${list.boardId})|">
@@ -165,12 +172,16 @@
 								<div class="text_container">
 									<span class="board_text">[[${list.content}]]</span>
 									<div th:if="${list.board_type == '모집글'}">
-										<span class="board_text" th:text="${list.applicant_person}" th:id="|applicant_person_${list.boardId}|"></span>
-										<span class="board_text" th:text="${list.total_person}" th:id="|total_person_${list.boardId}|"></span>
-										<button th:id="|applyBtn_${list.boardId}|" th:onclick="|apply(${list.boardId})|">신청하기</button>
-										<span th:text="${list.deadline}" th:id="|deadline_${list.boardId}|"></span>
+										<span th:text="|마감일 : ${list.deadline}|" th:id="|deadline_${list.boardId}|"></span><br>
+										<span class="recruit_person" th:text="|신청 현황 : ${list.applicant.size()}| " th:id="|applicant_person_${list.boardId}|"></span>
+										<span class="recruit_person" th:text="|/ ${list.total_person}|" th:id="|total_person_${list.boardId}|"></span>
+										<button th:if="${list.writer.id != session.user.id && @applicantSearch.findUsingIterator(session.user.id,list.getApplicant())}" th:id="|applyBtn_${list.boardId}|" class="apply" th:onclick="|apply(${list.boardId})|">신청</button>
+										<div th:each="apply:${list.getApplicant()}" th:id="|cancleApply2_${list.boardId}|">
+										<button th:if="${session.user.id == apply.user.id}" th:id="|applyBtn_${list.boardId}|" class="cancleApply" th:onclick="|apply(${list.boardId})|">취소</button>
+										</div>
+										<span class="recurit_status" th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }" >모집마감</span>
 									</div>
-										<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
+										<br><div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
 										 <a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|" th:onclick="|tag(${list.boardId},${status.count},${status.index})|" th:text="|#${hashtag}|"></a> 
 										 </div>
 
@@ -313,7 +324,7 @@
 	<script src="/js/board/modal.js"></script>
 	<script src="/js/board/tag.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-
+	<script src="/js/board/applicant.js"></script>
 
 
 	

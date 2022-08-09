@@ -7,3 +7,30 @@
 .deadline{
 	display: none;
 }
+
+.board_text{
+	
+	word-break:break-all; 
+ 	display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top; 
+	
+}
+.recruit_person{
+	float: left;
+}
+.apply, .cancleApply{
+	background-color:  #B983FF;
+	border : none;
+	border-radius : 10px;
+	color: white;
+	cursor: pointer;
+	width: 10%;
+	margin-left: 10px;
+	
+	
+	
+}
