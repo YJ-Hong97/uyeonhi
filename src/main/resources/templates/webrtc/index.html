@@ -10,7 +10,7 @@
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -126,7 +126,7 @@ body div {
 .timeContainer span {
 	margin-top: 10%;
 	color: #B983FF;
-	font-size: 6rem;
+	font-size: 5rem;
 }
 
 .timeContainer .timeBox {
@@ -141,6 +141,39 @@ body div {
 #connect {
 	cursor: pointer;
 }
+#disconnect{
+	display:none;
+	cursor:pointer;
+}
+#reconnect{
+	display:none;
+	cursor:pointer;
+}
+.messageBox{
+	overflow: auto;
+}
+.messageBox table{
+	width:100%;
+	font-size:1rem;
+	
+}
+.mymessage{
+	text-align: right;
+}
+.yourmessage{
+	text-align: left;
+}
+.messageBox::-webkit-scrollbar{
+	width: 1vw;
+	height: 1vh;
+}
+.messageBox::-webkit-scrollbar-thumb{
+	background-color: #B983FF;
+	border-radius: 1rem;
+}
+.messageBox::-webkit-scrollbar-track{
+	background-color: rgba(255,255,255,0.2);
+}
 </style>
 <body>
 	<div class="chatContainer">
@@ -148,7 +181,7 @@ body div {
 		<div class="chatBox">
 			<div class="messageBox"></div>
 			<div class="inputBox">
-				<input text id="message">
+				<input type="text" id="message">
 				<button type="button" id="sendBtn">전송</button>
 			</div>
 		</div>
@@ -163,8 +196,9 @@ body div {
 		<div class="timeBox">
 			<p id="time"></p>
 			<p>ooo님과 이만큼 통화 중!</p>
-			<span class="material-symbols-rounded" id="connect">
-				phone_in_talk </span>
+			<span class="material-symbols-rounded" id="connect">phone_in_talk </span>
+			<span class="material-symbols-rounded" id="disconnect">phone_disabled</span>
+			<span class="material-symbols-rounded" id="reconnect">phone_in_talk</span>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -176,24 +210,60 @@ body div {
 		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
+
 	var sock = new SockJS('/video');
+	var inputData = "";
+	var message = "";
+
 	var stomp;
 	var remoteVideo = document.querySelector('#remoteVideo');
 	var localVideo = document.querySelector('#localVideo');
 	var nickname = /*[[${user.nickname}]]*/'default';
+	var yournick;
+	var initiator=false;
 	var mid = /*[[${user.id}]]*/'default';
 	var roomNo = /*[[${room.roomNo}]]*/+"";
-	var initiator=false;
 	var mystream;
-	var mysignalData;
 	var parti = [];
+	var inputData="";
 	stomp = Stomp.over(sock);
-	
+	//채팅 인풋
+	function chat(data){
+		messagelist = data.body;
+		 messagelist = messagelist.replace("[","");
+		 messagelist = messagelist.replace("]","");
+		 arr = messagelist.split(",");
+		 console.log(arr);
+		 
+		 inputData = "<table>"
+		 for(let i = 0; i<arr.length;i++){
+			 let input = JSON.parse(arr[i]);
+			 let key = Object.keys(input);
+			 if(key==nickname){
+				 inputData+=`<tr><td class= "mymessage">${input[key]}:${nickname}</td></tr>`;
+			 }else{
+				 inputData+=`<tr><td class = "yourmessage">${key}:${input[key]}</td></tr>`
+			 }
+		 }
+		 inputData+="</table>"
+		 $(".messageBox").html(inputData);
+		 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+	}
 	stomp.connect({},function(){
-		
+		 stomp.subscribe(`/sub/video/message/${roomNo}`,chat(data));
+		//채팅
+		  $('#sendBtn').click(function(){
+			  message = $('#message').val();
+			  stomp.send(`/pub/video/message/${roomNo}`,{},JSON.stringify({
+				  roomNo:roomNo,
+				  message:message,
+				  nickname:nickname
+			  }));
+		  });
 	});
 	$('#connect').click(function(){
-		
+		$(this).css("display","none");
+		$('#disconnect').css("display","block");			
 		stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
 			parti = JSON.parse(data.body);
 			parti = parti[roomNo];
@@ -205,79 +275,194 @@ body div {
 				secondPeer();
 			}
 		});
+		
+		stomp.send(`/pub/video/joined-info/${roomNo}`,{},JSON.stringify({
+			roomNo:roomNo,
+			mid:mid,
+			}));
+		
+	});
+	function initPeer(){
+		
+		console.log("초기자");
 		navigator.mediaDevices.getUserMedia({
 			video:true
 		}).then((stream)=>{
-			mystream=stream;
-			localVideo.srcObject = stream;
+			localVideo.srcObject =stream;
+			peer = new SimplePeer({
+				initiator:true,
+				trickle:false,
+				stream:stream
+			});
+			peer.on("signal",function(data){
+				signalData = {
+						signalId:roomNo,
+						type:data["type"],
+						sdp:data["sdp"]
+				};
+				stomp.send(`/pub/video/caller-info/${roomNo}`,{},JSON.stringify(signalData));
+			});
+			peer.on("stream",function(stream){
+				remoteVideo.srcObject = stream;
+			});
+			stomp.subscribe(`/sub/video/callee-info/${roomNo}`,function(data){
+				edata = JSON.parse(data.body);
+				signalData = {
+						type:edata["type"],
+						sdp:edata["sdp"]
+				}
+				peer.signal(signalData);
+				
+			});
+			stomp.subscribe(`/sub/video/second-out/${roomNo}`,function(data){
+				for (const sub in this.stomp.subscriptions) {
+					  if (this.stomp.subscriptions.hasOwnProperty(sub)) {
+					    this.stomp.unsubscribe(sub);
+					  }
+					}
+				 stomp.subscribe(`/sub/video/message/${roomNo}`,chat(data));
+				 stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
+						parti = JSON.parse(data.body);
+						parti = parti[roomNo];
+						if(parti.length==1){
+							initiator = true;
+						}else if(initiator==true){
+								initPeer();
+						}else{
+							secondPeer();
+						}
+					});
+			});
 		});
-		stomp.send(`/pub/video/joined-info/${roomNo}`,{},JSON.stringify({
-			roomNo:roomNo,
-			mid:mid
-			}));
-	});
-	function initPeer(){
-		console.log("초기자");
-		peer = new SimplePeer({
-			initiator:true,
-			trickle:false,
-			stream:mystream
+		stomp.subscribe(`/sub/video/callee-pause/${roomNo}`,function(data){
+			$('#remoteVideo')[0].pause();
 		});
-		peer.on("signal",function(data){
-			signalData = {
-					signalId:roomNo,
-					type:data["type"],
-					sdp:data["sdp"]
-			};
-			stomp.send(`/pub/video/caller-info/${roomNo}`,{},JSON.stringify(signalData));
+		stomp.subscribe(`/sub/video/callee-play/${roomNo}`,function(data){
+			$('#remoteVideo')[0].play();
 		});
-		peer.on("stream",function(stream){
-			remoteVideo.srcObject = stream;
+		
+		$('#disconnect').click(function(){
+			$(this).css("display","none");
+			$('#reconnect').css("display","block");
+			$('#localVideo')[0].pause();
+			stomp.send(`/pub/video/caller-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
 		});
-		stomp.subscribe(`/sub/video/callee-info/${roomNo}`,function(data){
-			edata = JSON.parse(data.body);
-			signalData = {
-					type:edata["type"],
-					sdp:edata["sdp"]
-			}
-			peer.signal(signalData);
+		$('#reconnect').click(function(event){
+			$(this).css("display","none");
+			$('#disconnect').css("display","block");
+			$('#localVideo')[0].play();
+			stomp.send(`/pub/video/caller-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			
 		});
+		clock();
 	};
 	function secondPeer(){
 		console.log("두번째");
-		peer = new SimplePeer({
-			initiator:false,
-			trickle:false,
-			stream:mystream
+		navigator.mediaDevices.getUserMedia({
+			video:true
+		}).then((stream)=>{
+			localVideo.srcObject =stream;
+			peer = new SimplePeer({
+				initiator:false,
+				trickle:false,
+				stream:stream
+			});
+			peer.on("signal",function(data){
+				 mysignalData = {
+						signalId:roomNo,
+						type:data["type"],
+						sdp:data["sdp"]
+				};
+				 
+				
+				 stomp.send(`/pub/video/callee-info/${roomNo}`,{},JSON.stringify(mysignalData));
+				
+			});
+			peer.on("stream",function(stream){
+				remoteVideo.srcObject = stream;
+			});
+			 stomp.subscribe(`/sub/video/caller-info/${roomNo}`,function(data){
+					edata = JSON.parse(data.body);
+					signalData = {
+							type:edata["type"],
+							sdp:edata["sdp"]
+					}
+					peer.signal(signalData);
+					
+				});
+			 
+		
 		});
-		peer.on("signal",function(data){
-			signalData = {
-					signalId:roomNo,
-					type:data["type"],
-					sdp:data["sdp"]
-			};
-			stomp.send(`/pub/video/callee-info/${roomNo}`,{},JSON.stringify(signalData));
+		stomp.subscribe(`/sub/video/caller-pause/${roomNo}`,function(data){
+			$('#remoteVideo')[0].pause();
 		});
-		peer.on("stream",function(stream){
-			remoteVideo.srcObject = stream;
+	 	stomp.subscribe(`/sub/video/caller-play/${roomNo}`,function(data){
+			 $('#remoteVideo')[0].play();
+		 });
+	 	stomp.subscribe(`/sub/video/initiator-out/${roomNo}`,function(data){
+	 		initiator = true;
+	 		for (const sub in this.stomp.subscriptions) {
+				  if (this.stomp.subscriptions.hasOwnProperty(sub)) {
+				    this.stomp.unsubscribe(sub);
+				  }
+				}
+			 stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
+				 messagelist = data.body;
+				 messagelist = messagelist.replace("[","");
+				 messagelist = messagelist.replace("]","");
+				 arr = messagelist.split(",");
+				 console.log(arr);
+				 
+				 inputData = "<table>"
+				 for(let i = 0; i<arr.length;i++){
+					 let input = JSON.parse(arr[i]);
+					 let key = Object.keys(input);
+					 if(key==nickname){
+						 inputData+=`<tr><td class= "mymessage">${input[key]}:${nickname}</td></tr>`;
+					 }else{
+						 inputData+=`<tr><td class = "yourmessage">${key}:${input[key]}</td></tr>`
+					 }
+				 }
+				 inputData+="</table>"
+				 $(".messageBox").html(inputData);
+				 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+			  });
+			 stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
+					parti = JSON.parse(data.body);
+					parti = parti[roomNo];
+					if(parti.length==1){
+						initiator = true;
+					}else if(initiator==true){
+							initPeer();
+					}else{
+						secondPeer();
+					}
+				});
+	 		
+	 	});
+		$('#disconnect').click(function(){
+			$(this).css("display","none");
+			$('#reconnect').css("display","block");
+			$('#localVideo')[0].pause();
+			stomp.send(`/pub/video/callee-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
 		});
-		stomp.subscribe(`/sub/video/caller-info/${roomNo}`,function(data){
-			edata = JSON.parse(data.body);
-			signalData = {
-					type:edata["type"],
-					sdp:edata["sdp"]
-			}
-			peer.signal(signalData);
+		$('#reconnect').click(function(event){
+			$(this).css("display","none");
+			$('#disconnect').css("display","block");
+			$('#localVideo')[0].play();
+			stomp.send(`/pub/video/callee-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			
 		});
+		clock();
 	};
+
 //시간 체크
 var hour = 0;
 var min = 0;
 var sec = 0;
- 
-  window.onload = function(){
-	 
-	 setInterval(function(){
+
+function clock(){
+	setInterval(function(){
 		if(sec == 60 && min!=60){
 			sec = 0;
 			min +=1;
@@ -288,12 +473,28 @@ var sec = 0;
 		}else {
 			sec +=1;
 		}
-	$('#time').html(`<span>${hour}:</span>
-	<span>${min}:</span>
-	<span>${sec}</span>`);
+	inputTime = String(hour).padStart(2, '0') + ":"
+		+ String(min).padStart(2, '0') + ":"
+		+ String(sec).padStart(2, '0');
+	$('#time').html(`<span>${inputTime}</span>`);
 		
 	 },1000);
-  }
+}
+	window.addEventListener("beforeunload",function(event){
+		event.preventDefault();
+		if(initiator==true){
+			$.ajax({
+				url:`/video/initiator-disconnect/${mid}/${roomNo}`
+			});
+		}else{
+			$.ajax({
+				url:`/video/second-disconnect/${mid}/${roomNo}`
+			});
+		}
+		
+		event.returnValue = "";
+	});
+ 
   /*]]>*/
 </script>
 </body>

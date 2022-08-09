@@ -6,6 +6,7 @@ package com.kosta.uyeonhi.signUp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -24,13 +25,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@RequiredArgsConstructor //nonnull인것만 가지고 생성
 @Entity
 @Table(name = "ideal_type")
 public class IdealTypeVO {
 	@Id
 	private Long idealId;
-	@Column(nullable = false)
-	@NonNull
-	private String userId;
+	
+	@ManyToOne
+	private UserVO user;
 }

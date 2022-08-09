@@ -343,21 +343,21 @@ public class SignUpController {
 		//취향 저장
 		fList.forEach(f->{
 			FavoriteVO favorite= FavoriteVO.builder()
-					.userId(user.getId())
+					.user(user)
 					.favoriteId(f)
 					.build();
 			favoriteRepository.save(favorite);
 		});
 		hList.forEach(h->{
 			HobbyVO hobby= HobbyVO.builder()
-					.userId(user.getId())
+					.user(user)
 					.hobbyId(h)
 					.build();
 		hobbyRepository.save(hobby);
 		});
 		iList.forEach(i->{
 			IdealTypeVO ideal= IdealTypeVO.builder()
-					.userId(user.getId())
+					.user(user)
 					.idealId(i)
 					.build();
 			idealRepository.save(ideal);
