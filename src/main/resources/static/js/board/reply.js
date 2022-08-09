@@ -121,6 +121,13 @@ $(document).on("click", ".btn_reReply", function() {
 		content: content,
 		depth: 1
 	};
+	
+	let alarmData = {
+		senderId : reReplyWriter,
+		receiverId : replyWriter,
+		boardId : parentId,
+		notificationType : "Reply"
+	}
 
 	console.log(data);
 	console.log("작성자 이름"+replyWriter);
@@ -140,6 +147,9 @@ $(document).on("click", ".btn_reReply", function() {
 		success: function(res) {
 			alert("댓글 등록 완료");
 			location.href = "/sns/sns1";
+			
+			alarmSave(alramData);
+
 			
 			if(replyWriter != reReplyWriter){
            		if(websocket){
