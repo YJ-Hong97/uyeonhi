@@ -52,9 +52,9 @@ public class BoardApiController {
 		return board_id;
 	}
 
-	@PutMapping("/api/sns/recruitApply/{board_id}")
-	public Long recruitApply(@PathVariable Long board_id,@RequestBody BoardRequestDTO boardDTO) {
-		boardService.recruitApply(board_id, boardDTO);
-		return board_id;
-	}
+	/*
+	 * @PutMapping("/api/sns/recruitApply/{board_id}") public Long
+	 * recruitApply(@PathVariable Long board_id,@RequestBody BoardRequestDTO
+	 * boardDTO) { boardService.recruitApply(board_id, boardDTO); return board_id; }
+	 */
 }
