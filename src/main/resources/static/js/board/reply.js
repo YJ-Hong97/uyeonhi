@@ -114,7 +114,9 @@ $(document).on("click", ".btn_reReply", function() {
 	let content = $(".input_reReply" + parentId).val();
 	let replyWriter = $(".hidden_Writer" + parentId).val();
 	let reReplyWriter = $(".userSession").text();
-;
+
+	
+
 	let data = {
 		boardId: boardId,
 		parentId: parentId,
@@ -126,7 +128,7 @@ $(document).on("click", ".btn_reReply", function() {
 		senderId : reReplyWriter,
 		receiverId : replyWriter,
 		boardId : parentId,
-		notificationType : "Reply"
+		notificationType : "reReply"
 	}
 
 	console.log(data);
@@ -147,8 +149,7 @@ $(document).on("click", ".btn_reReply", function() {
 		success: function(res) {
 			alert("댓글 등록 완료");
 			location.href = "/sns/sns1";
-			
-			alarmSave(alramData);
+			alarmSave(alarmData);
 
 			
 			if(replyWriter != reReplyWriter){
