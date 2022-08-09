@@ -179,7 +179,11 @@ body div {
 	<div class="chatContainer">
 		<span class="material-symbols-outlined"> send </span>
 		<div class="chatBox">
-			<div class="messageBox"></div>
+			<div class="messageBox">
+				<table class="messageBox2">
+				
+				</table>
+			</div>
 			<div class="inputBox">
 				<input text id="message">
 				<button type="button" id="sendBtn">전송</button>
@@ -230,36 +234,51 @@ body div {
 	stomp = Stomp.over(sock);
 	//채팅 인풋
 	function chat(data){
-		messagelist = data.body;
-		 messagelist = messagelist.replace("[","");
-		 messagelist = messagelist.replace("]","");
-		 arr = messagelist.split(",");
-		 console.log(arr);
-		 
-		 inputData = "<table>"
-		 for(let i = 0; i<arr.length;i++){
-			 let input = JSON.parse(arr[i]);
-			 let key = Object.keys(input);
-			 if(key==nickname){
-				 inputData+=`<tr><td class= "mymessage">${input[key]}:${nickname}</td></tr>`;
-			 }else{
-				 inputData+=`<tr><td class = "yourmessage">${key}:${input[key]}</td></tr>`
-			 }
+		var inputData = "";
+		var content = JSON.parse(data.body);
+		 console.log('is that you? ' + content.message);
+		 if(content.mid == mid) {
+			inputData+=`<tr><td class= "mymessage">${content.message}:${content.nickname}</td></tr>`
+		 } else {
+			inputData+=`<tr><td class= "yourmessage">${content.nickname}:${content.message}</td></tr>`
 		 }
-		 inputData+="</table>"
-		 $(".messageBox").html(inputData);
+		 
+		 $(".messageBox2").append(inputData);
 		 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+		 $("#message").val("");
 	}
 	stomp.connect({},function(){
-		 stomp.subscribe(`/sub/video/message/${roomNo}`,chat(data));
+		stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
+			 chat(data);
+		 });
 		//채팅
 		  $('#sendBtn').click(function(){
 			  message = $('#message').val();
+			  if(message == "") {
+				  alert("채팅 내용을 입력하세요.");
+				  return;
+			  }
 			  stomp.send(`/pub/video/message/${roomNo}`,{},JSON.stringify({
 				  roomNo:roomNo,
 				  message:message,
+				  mid:mid,
 				  nickname:nickname
 			  }));
+		  });
+		  $(document).keypress(function(e) {
+			  if(event.keyCode == 13 || event.witch == 13) {
+				  message = $('#message').val();
+				  if(message == "") {
+					  alert("채팅 내용을 입력하세요.");
+					  return;
+				  }
+				  stomp.send(`/pub/video/message/${roomNo}`,{},JSON.stringify({
+					  roomNo:roomNo,
+					  message:message,
+					  mid:mid,
+					  nickname:nickname
+				  }));
+			  }
 		  });
 	});
 	$('#connect').click(function(){
@@ -408,25 +427,18 @@ body div {
 				  }
 				}
 			 stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
-				 messagelist = data.body;
-				 messagelist = messagelist.replace("[","");
-				 messagelist = messagelist.replace("]","");
-				 arr = messagelist.split(",");
-				 console.log(arr);
-				 
-				 inputData = "<table>"
-				 for(let i = 0; i<arr.length;i++){
-					 let input = JSON.parse(arr[i]);
-					 let key = Object.keys(input);
-					 if(key==nickname){
-						 inputData+=`<tr><td class= "mymessage">${input[key]}:${nickname}</td></tr>`;
-					 }else{
-						 inputData+=`<tr><td class = "yourmessage">${key}:${input[key]}</td></tr>`
+				 var inputData = "";
+					var content = JSON.parse(data.body);
+					 console.log('is that you? ' + content.message);
+					 if(content.mid == mid) {
+						inputData+=`<tr><td class= "mymessage">${content.message}:${content.nickname}</td></tr>`
+					 } else {
+						inputData+=`<tr><td class= "yourmessage">${content.nickname}:${content.message}</td></tr>`
 					 }
-				 }
-				 inputData+="</table>"
-				 $(".messageBox").html(inputData);
-				 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+					 
+					 $(".messageBox2").append(inputData);
+					 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+					 $("#message").val("");
 			  });
 			 stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
 					parti = JSON.parse(data.body);

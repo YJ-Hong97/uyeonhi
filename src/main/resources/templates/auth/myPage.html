@@ -307,10 +307,26 @@ i {
 
 
 					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
-						<button type="button" id = "sendMat" class="btn btn-light doMatch check" onclick ="matching()">매칭신청
-						<!--  -->
-
-						</button>
+						<div th:if="${mcheck} == -1">
+							<button type="button" id = "sendMat" class="btn btn-light doMatch" onclick ="matching()">매칭신청
+							</button>
+						</div>
+						<div th:if="${mcheck} == 0">
+							<button type="button" id = "sendMat" class="btn btn-light doMatch is-check">매칭신청중..
+							</button>
+						</div>
+						<div th:if="${mcheck} == 1">
+							<button type="button" id = "sendMat" class="btn btn-light doMatch is-check dropdown-toggle" 
+							data-bs-toggle="dropdown" aria-expanded="false">매칭성공
+							</button>
+							<ul class="dropdown-menu">
+							    <li><button class="dropdown-item" type="button">음성 통화</button></li>
+							    <li><button class="dropdown-item" type="button">화상 통화</button></li>
+							    <li><a class="dropdown-item" type="button" th:href="@{/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
+							    <li><hr class="dropdown-divider"></li>
+   								<li><button class="dropdown-item" onclick ="cancelmatching()"> 매칭 취소 </button></li>
+						  	</ul>
+						</div>
 					</div>
 				</div>
 				<div class="d-flex flex-row mb-5 second-box">
@@ -396,6 +412,28 @@ i {
 	<script th:inline="javascript">
 	//setting창 켜기
 	//setting창 끄기
+	/* $("#doChatt").click(function() {
+		$.ajax({
+			url : "/doChatt",
+			type : "get",
+			data: {"tid" : [[${profileOther.id}]],
+					"mid" : [[${session.user.id}]]},
+			success : function(responseData) {
+				for(data of responseData) {
+					console.log(data.user.profile[0].fileName);
+					str += `<a class="d-flex justify-content-around" href='/myPage/${data.user.id}' >`;
+					str += `<img class='profile' src=${data.user.profile[0].fileName} />`;
+					str += `<p id='nickts'> ${data.user.nickname} </p>`;
+					str += `</a>`;
+					str += `<hr>`;
+				}
+				$("#followBox").html(str);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		}); 
+	}); */
 	$(".listfollow").click(function () {
 		var str ="";
 		$(".modal-title").html("팔로워 목록");
@@ -618,11 +656,16 @@ i {
 				data:{target:[[${profileOther.id}]]},
 				success:function(responseData){
 					alert(responseData);
+					$("#sendMat").addClass("is-check");
+					location.reload();
 				},
 				fail:function(){
 					alert("매칭 신청을 실패하셨습니다.")
 				}
 			});
+		} 
+		function cancelmatching(){
+			alert("매칭을 취소하겠습니까?");
 		} 
 			
 			
