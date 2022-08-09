@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
+	xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
 	<meta charset="UTF-8">
@@ -27,6 +27,11 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <!--	<script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!--	<script>
 
 		window.onload = function () {
 			function modalOn() {
@@ -66,8 +71,9 @@
 
 <body>
 
-<!--headerFragment 선언-->
-<!-- <th:block th:replace="~{/fragment/header :: header}"></th:block> -->
+
+<!--headerFragment 선언
+<th:block th:replace="~{/fragment/header :: header}"></th:block>-->
  <div>
 
 	<div class="big-container">
@@ -77,24 +83,31 @@
 					.
 				</div>
 			</div>
-			<div class="center-container">
-				<div id="container">
-				
-					<form id="board_form">
-						<span class="material-symbols-outlined" id="person">
-							account_circle </span>
-						<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on></textarea>
+			<div class="flex-container">
+				<div class="disable-box">
+
+				</div>
+				<div class="center-container">
+					<div>
+						<button type="button" onclick=alramList() class="notificationList">알람리스트</button>
+						<div th:id="alarmList"></div>
+					</div>
+					<div id="container">
+
+						<form id="board_form">
+							<span class="material-symbols-outlined" id="person">
+								account_circle </span>
+							<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on></textarea>
 
 
-						<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
+							<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
 
 
 
-						<div class="board_write_top">
-
+							<div class="board_write_top">
 								<div class="user_info">
-								<p class="userSession" th:text="${#authentication.name}"></p>
-							</div>
+									<p class="userSession" th:text="${#authentication.name}"></p>
+								</div>
 
 								<div class="board_info">
 									<select name="sns_select" id="sns_select" class="select">
@@ -107,45 +120,51 @@
 									<input type="date" class="deadline">
 								</div><!--  board_info-->
 
-					
-
-
-							<button id="btn_board" type="button">등록</button>
-						</div><!-- board_write_top -->
 
 
 
-
-					</form><!--board_form  -->
-				</div><!--container  -->
-
-				<ul>
-					<li th:each="list, status: ${boardList}">
-						<div class="board-box">
-							<input type="hidden" class="boardId" th:value="${list.boardId}" />
-							<input type="hidden" class="boardIndex" th:value="${status.index}" />
-							<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
-								class="delete_button">삭제</button>
+								<button id="btn_board" type="button">등록</button>
+							</div><!-- board_write_top -->
 
 
-							<div th:id="|ex${status.count}|" class="modal">
-								<div class="modal_Ct">
-									<div class="modal_leftCt">
-										<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
-											이미지넣는곳
+
+
+						</form>
+						<!--board_form  -->
+					</div>
+					<!--container  -->
+
+					<ul>
+						<li th:each="list, status: ${boardList}">
+							<div class="board-box">
+								<input type="hidden" class="boardId" th:value="${list.boardId}" />
+								<input type="hidden" class="boardIndex" th:value="${status.index}" />
+								<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
+									class="delete_button">삭제</button>
+									
+
+
+								<div th:id="|ex${status.count}|" class="modal">
+									<div class="modal_Ct">
+										<div class="modal_leftCt">
+											<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
+												이미지넣는곳
+											</div>
 										</div>
-									</div>
-									<div class="modal_rightCt">
-										<textarea th:id="|modify_${status.count}|"
-											placeholder="작성하세요.">[[${list.content}]]
-										</textarea>
-									</div>
+										<div class="modal_rightCt">
+											<textarea th:id="|modify_${status.count}|"
+												placeholder="작성하세요.">[[${list.content}]]
+											</textarea>
+										</div>
 
 
-									<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
-										th:aa=${status.count} class="update_button">수정</button>
-								</div>
-							</div><!--  modal-->
+										<button style="width:100px; height:30px;" th:value="${list.boardId}"
+											type="button" th:aa=${status.count} class="update_button">수정</button>
+									</div>
+								</div><!--  modal-->
+
+
+		
 
 
 							<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
@@ -168,14 +187,12 @@
 									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
 										th:onclick="|likes(${list.boardId})|">
 										favorite </span>
+
+
 								</div>
-								<div th:each="likeCheck:${list.getLikes()}" class="like-box2">
-									<div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
-										<span class="material-symbols-outlined notlikes heartt"
-											th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
-											favorite </span>
-									</div>
-								</div>
+
+					
+								
 								
 								<div class="text_container">
 									<span class="board_text">[[${list.content}]]</span>
@@ -189,13 +206,15 @@
 										</div>
 										<span class="recurit_status" th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }" >모집마감</span>
 									</div>
-										<br><div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
+										<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
 										 <a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|" th:onclick="|tag(${list.boardId},${status.count},${status.index})|" th:text="|#${hashtag}|"></a> 
 										 </div>
 
+
 									</div><!-- text_container -->
 								</div><!-- container4 -->
-								<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
+								
+									<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
 									<form class=reply_form>
 										<div class="reply_container">
 											<input type="hidden" th:class="|board${status.index}|"
@@ -209,8 +228,9 @@
 										</div>
 									</form>
 								</div><!-- container5 -->
+								
 								<button class="show" onclick="show()" th:value="${status.index}"
-								th:boardId="${list.boardId}">팝업열기</button>
+									th:boardId="${list.boardId}">팝업열기</button>
 
 								<!-- <script>
 									function show() {
@@ -249,9 +269,11 @@
 
 
 
-			</div><!--flex-container  -->
-	</div><!--big-container -->
-</div><!--  -->
+			</div>
+			<!--flex-container  -->
+		</div>
+		<!--big-container -->
+	</div><!--  -->
 	<div class="background">
 		<div class="window">
 			<div class="popup">
@@ -287,15 +309,15 @@
 			</table>
 		</div>
 	</div>
-	
+
 	<script th:inline="javascript">
-		var websocket  = null;
+		var websocket = null;
 
 		$(document).ready(function () {
-				var user = [[${session.user}]];
-				websocket = new WebSocket("ws://localhost:7777/ws/noti");
+			var user = [[${session.user}]];
+			websocket = new WebSocket("ws://localhost:7777/ws/noti");
 
-				console.log(user);
+			console.log(user);
 			if (user != null) {
 				connectWs();
 			}
@@ -303,7 +325,7 @@
 
 
 		function connectWs() {
-			
+
 			websocket.onopen = function () {
 				console.log('open');
 			};
@@ -329,13 +351,13 @@
 	<script src="/js/board/likes.js"></script>
 	<script src="/js/board/board.js"></script>
 	<script src="/js/board/reply.js"></script>
-	<script src="/js/board/modal.js"></script>
 	<script src="/js/board/tag.js"></script>
+	<script src="/js/board/notification.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 	<script src="/js/board/applicant.js"></script>
 
 
-	
+
 
 
 </body>
