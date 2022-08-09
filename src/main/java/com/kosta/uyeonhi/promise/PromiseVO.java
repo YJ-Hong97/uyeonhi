@@ -1,13 +1,18 @@
 package com.kosta.uyeonhi.promise;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.kosta.uyeonhi.signUp.UserVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +34,16 @@ public class PromiseVO {
 	
 	String location;
 
-	Date time;
+	String title;
+	
+	@UpdateTimestamp
+	Timestamp time;
+	
+	@ManyToOne
+	UserVO me;
+	
+	@ManyToOne
+	UserVO you;
 	
 	String reason;
 	
