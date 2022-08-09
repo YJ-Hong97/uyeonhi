@@ -68,5 +68,6 @@ public class UserVO  implements Serializable{
 	private Date birth;
 	private int coin;
 	private int push;
+	private String kakao;
 	
 }

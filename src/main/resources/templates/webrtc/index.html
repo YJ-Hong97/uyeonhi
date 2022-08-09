@@ -251,7 +251,9 @@ body div {
 		 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
 	}
 	stomp.connect({},function(){
-		 stomp.subscribe(`/sub/video/message/${roomNo}`,chat(data));
+		 stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
+			 chat(data);
+		 });
 		//채팅
 		  $('#sendBtn').click(function(){
 			  message = $('#message').val();
