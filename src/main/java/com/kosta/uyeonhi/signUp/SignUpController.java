@@ -310,7 +310,7 @@ public class SignUpController {
 				 ProfileVO profileVO = ProfileVO.builder()
 						  .fileName(files.get(i)) 
 						  .user(user) 
-						  .build();
+						  .build(); 
 				 profiless.add(profileVO);
 			 }
 			

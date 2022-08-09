@@ -1,5 +1,12 @@
 package com.kosta.uyeonhi.push;
 
-public class NotificationService {
+import java.util.List;
 
+public interface NotificationService {
+	
+	void notificationSave(NotificationRequestDTO notificationRequestDTO);
+	
+	int notificationCount(String receiverId);
+	
+	List<Notification> getNotiList(String receiverId);
 }

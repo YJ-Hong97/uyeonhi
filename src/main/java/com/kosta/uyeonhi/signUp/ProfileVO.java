@@ -34,7 +34,7 @@ public class ProfileVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long profileId;	
-	
+
 	@JsonIgnore
 	@ManyToOne
 	private UserVO user;

@@ -33,7 +33,6 @@ ul{
     vertical-align: baseline;
     width: 100%;
     justify-content: center;
-
 }
 
 .flex-container .disable-box{
@@ -139,6 +138,10 @@ ul{
 	margin:15px 15px 30px 15px;
 	box-sizing: border-box;
 
+}
+
+.flex-container .center-container .board-box #container4 .text_container .board_text{
+	word-break:break-all;
 }
 
 .flex-container .center-container .board-box #container5{
@@ -538,6 +541,11 @@ ul{
 		flex-grow: 1;
 		flex-shrink: 1;
 		width:45%;
+		overflow:scroll;
+	}
+	
+	.show .popup .modal_reply_box::-webkit-scrollbar {
+		display: none;
 	}
 	
 	.reReply{

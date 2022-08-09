@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kosta.uyeonhi.push.NotificationService;
 import com.kosta.uyeonhi.reply.ReplyService;
 import com.kosta.uyeonhi.signUp.ProfileRepository;
 import com.kosta.uyeonhi.signUp.ProfileType;
@@ -44,11 +45,7 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 public class BoardController {
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		log.info("mservice");
-		return new BCryptPasswordEncoder();
-	}
+	private final PasswordEncoder passwordEncoder;
 
 	private final BoardRepository boardRepository;
 
@@ -57,6 +54,8 @@ public class BoardController {
 	private final ReplyService replyService;
 	
 	private final ProfileRepository profileRepository;
+	
+	private final NotificationService notificationService;
 
 	@GetMapping("/sns1")
 	public void boardList(Model model,
@@ -65,13 +64,11 @@ public class BoardController {
 		int startPage = ((pageable.getPageNumber() - 1) / 10) * 10 + 1;
 		pageable.getPageSize();
 		int endPage = startPage + 10 - 1 > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
-		
 		UserVO user = (UserVO) session.getAttribute("user");
 		ProfileVO profile =profileRepository.findByUserAndType(user, ProfileType.MAIN);
 		model.addAttribute("user", user);
 		model.addAttribute("boardList", boardService.pageList(pageable));
 		model.addAttribute("profile", profile);
-
 
 		// boardService.pageList().get(0).getWriter().getId());
 
