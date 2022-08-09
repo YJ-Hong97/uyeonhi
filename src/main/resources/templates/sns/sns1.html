@@ -54,6 +54,10 @@
 
 <body>
 
+<!--headerFragment 선언-->
+<th:block th:replace="~{/fragment/header :: header}"></th:block>
+ <div>
+
 	<div class="big-container">
 		<div class="flex-container">
 			<div class="disable-box">
@@ -77,8 +81,8 @@
 						<div class="board_write_top">
 
 								<div class="user_info">
-									<p class="userSession" type="hidden" th:text="${#authentication.name}"></p>
-								</div>
+								<p class="userSession" th:text="${#authentication.name}"></p>
+							</div>
 
 								<div class="board_info">
 									<select name="sns_select" id="sns_select" class="select">
@@ -89,25 +93,20 @@
 											src="../images/image-outline.svg" style="width: 3rem;"></button>
 									<input type="number" max="10" class="total_person">
 									<input type="date" class="deadline">
-								</div>
+								</div><!--  board_info-->
 
 					
 
 
 							<button id="btn_board" type="button">등록</button>
-						</div>
+						</div><!-- board_write_top -->
 
 
 
 
-					</form>
-					<!--	<div class="section collapsible">
-							<span class="material-symbols-outlined">event_available</span>
-							<span class="material-symbols-outlined">image</span>
-							<span class="material-symbols-outlined">cloud_upload</span>
-						</div> -->
-				</div>
-</div>
+					</form><!--board_form  -->
+				</div><!--container  -->
+
 				<ul>
 					<li th:each="list, status: ${boardList}">
 						<div class="board-box">
@@ -115,7 +114,7 @@
 							<input type="hidden" class="boardIndex" th:value="${status.index}" />
 							<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
 								class="delete_button">삭제</button>
-</div>
+
 
 							<div th:id="|ex${status.count}|" class="modal">
 								<div class="modal_Ct">
@@ -134,7 +133,7 @@
 									<button style="width:100px; height:30px;" th:value="${list.boardId}" type="button"
 										th:aa=${status.count} class="update_button">수정</button>
 								</div>
-							</div>
+							</div><!--  modal-->
 
 
 							<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
@@ -152,9 +151,9 @@
 								<span id="regdate">today</span>
 								<button type="button" class="reply_show">댓글보기</button>
 								<span th:text="${list.likes.size()}"></span>
-								<div class="like-box" th:if="${list.getLikes().size()==0}">
+								<div class="like-box" th:if="${list.getLikes().size()==0 }">
 									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
-										th:onclick="|likes(${list.boardId}|">
+										th:onclick="|likes(${list.boardId})|">
 										favorite </span>
 								</div>
 								<div th:each="likeCheck:${list.getLikes()}" class="like-box2">
@@ -164,27 +163,21 @@
 											favorite </span>
 									</div>
 								</div>
-								</div>
+								
 								<div class="text_container">
 									<span class="board_text">[[${list.content}]]</span>
 									<div th:if="${list.board_type == '모집글'}">
-										<span
-											class="board_text">[[${list.applicant_person}]]/[[${list.total_person}]]</span>
+										<span class="board_text" th:text="${list.applicant_person}" th:id="|applicant_person_${list.boardId}|"></span>
+										<span class="board_text" th:text="${list.total_person}" th:id="|total_person_${list.boardId}|"></span>
+										<button th:id="|applyBtn_${list.boardId}|" th:onclick="|apply(${list.boardId})|">신청하기</button>
+										<span th:text="${list.deadline}" th:id="|deadline_${list.boardId}|"></span>
 									</div>
-									<div class="text_container">
-										<span class="board_text">[[${list.content}]]</span>
-										<div th:if="${list.board_type == '모집글'}">
-											<span class="board_text" th:text="${list.applicant_person}" th:id="|applicant_person_${list.boardId}|"></span>
-											<span class="board_text" th:text="${list.total_person}" th:id="|total_person_${list.boardId}|"></span>
-											<button th:id="|applyBtn_${list.boardId}|" th:onclick="|apply(${list.boardId})|">신청하기</button>
-											<span th:text="${list.deadline}" th:id="|deadline_${list.boardId}|"></span>
-										</div>
 										<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
 										 <a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|" th:onclick="|tag(${list.boardId},${status.count},${status.index})|" th:text="|#${hashtag}|"></a> 
 										 </div>
 
-
-								</div>
+									</div><!-- text_container -->
+								</div><!-- container4 -->
 								<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
 									<form class=reply_form>
 										<div class="reply_container">
@@ -198,31 +191,11 @@
 												th:value="${status.index}">등록</button>
 										</div>
 									</form>
-								</div>
-								<button id="show">팝업열기</button>
-								<div class="background">
-									<div class="window">
-										<div class="popup">
-											<button id="close">팝업닫기</button>
-											<div class="modal_picture_box">
-												
-											</div>
-											<div class="modal_reply_box">
-												<div class="modal_writer_info">
-													[[${list.writer.id}]]
-													
-													<ul>
-														<li th:each="replyList, status: ${replyList}">
-														</li>
-													</ul>
-												</div>
-												reply
-											</div>
-										</div>
-									</div>
-								</div>
+								</div><!-- container5 -->
+								<button class="show" onclick="show()" th:value="${status.index}"
+								th:boardId="${list.boardId}">팝업열기</button>
 
-								<script>
+								<!-- <script>
 									function show() {
 										document.querySelector(".background").className = "background show";
 									}
@@ -233,13 +206,13 @@
 
 									document.querySelector("#show").addEventListener("click", show);
 									document.querySelector("#close").addEventListener("click", close);
-								</script>
+								</script> -->
 
-							</div>
+							</div><!-- board-box -->
 						</li>
 					</ul>
 
-				</div>
+				</div><!--  center-container-->
 				<div class="right-container">
 					<div id="search-container">
 						<div id="search">
@@ -248,43 +221,20 @@
 								<form id="search-form">
 									<span class="material-symbols-outlined" id="searchBtn">search</span>
 									<input type="text" class="box" id="searchTag" name="tag">
-							</form>
-							<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
+								</form>
 							</div>
 							<div class="text" id="searchContent">
 								<p id="searchBefore">태그를 검색해 주세요</p>
 							</div>
-					
-
-
-
-						</div>
-
-			</div>
-			<div class="right-container">
-				<div id="search-container">
-					<div id="search">
-						<div id="searchbox">
-							<form id="search-form">
-								<span class="material-symbols-outlined searchBtn" id="searchBtn2">search</span>
-								<input type="text" class="box" id="searchTag" name="keyword">
-							</form>
-						</div>
-						<div class="text" id="searchContent">
-							<p id="searchBefore">친구찾던지태그검색하던지</p>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-
-
-	</div>
 
 
 
-	</div>
-
+			</div><!--flex-container  -->
+	</div><!--big-container -->
+</div><!--  -->
 	<div class="background">
 		<div class="window">
 			<div class="popup">

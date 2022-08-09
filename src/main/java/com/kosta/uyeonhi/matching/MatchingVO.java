@@ -21,12 +21,12 @@ public class MatchingVO {
 
 	@Id
 	@GeneratedValue( strategy =GenerationType.AUTO)
-	private Long m_id; //key값
+	private Long mId; //key값
 	
 	private String id; //신청 한 아이디 //신청인 여기다 넣고
 	
 	private String target; //요청받은 아이디 //요청인 아이디에 넣기
-	private long m_confirm; //확인 컬
+	private int mconfirm; //확인 컬
 	private String type;
 	
 }
