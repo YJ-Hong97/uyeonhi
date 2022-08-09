@@ -248,22 +248,20 @@ i {
 </style>
 </head>
 <body>
-	[[${user.id}]]
-	<br> [[${session.user.id}]]
 	<div class="top-container">
 		<div class="d-flex">
 			<div class="flex-shrink-0">
 
 				<img id="profile"
-					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg"
+					th:src="${profile.fileName}"
 					alt="...">
 
 			</div>
 			<div class="d-flex flex-column mb-2">
 				<div class="d-flex flex-row mb-3">
 
-					<div class="p-2 nick">[[${profile.nickname}]]</div>
-					<div class="p-2" th:unless="${profile.id} == ${session.user.id}">
+					<div class="p-2 nick">[[${profileOther.nickname}]]</div>
+					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
 
 						<div th:if="${isFollow == 1}">
 							<button type="button" id="follows"
@@ -275,7 +273,7 @@ i {
 						</div>
 					</div>
 
-					<div class="p-2" th:unless="${profile.id} == ${session.user.id}">
+					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
 						<button type="button" class="btn btn-light doMatch">매칭신청
 
 						</button>
@@ -288,7 +286,7 @@ i {
 					<div class="p-2 default-txt">팔로잉</div>
 					<div class="p-2 default-txt">[[${following}]]</div>
 					<div class="p-2 default-txt"
-						th:if="${profile.id} == ${session.user.id}">
+						th:if="${profileOther.id} == ${session.user.id}">
 
 						<i class="fa-solid fa-gear"></i>
 					</div>
@@ -304,7 +302,7 @@ i {
 				<a class="nav-link" href="#">모집글</a>
 			</div>
 			<div class="p-2 type-btn nav-item"
-				th:if="${profile.id} == ${session.user.id}">
+				th:if="${profileOther.id} == ${session.user.id}">
 				<a class="nav-link" href="#">내 매칭 상대</a>
 			</div>
 
@@ -347,7 +345,7 @@ i {
 	//setting창 끄기
 	window.addEventListener("click",function(event){
 		if($('.settingContainer').css("display")=="block"){
-			if(event.target==document.querySelector('.settingContainer table')||event.target('.settingContainer select')){
+			if(event.target==document.querySelector('.settingContainer table')||event.target==document.querySelector('.settingContainer select')){
 			}else{
 				$('.settingContainer').css("display","none");
 			}
@@ -357,12 +355,16 @@ i {
 			}
 		}
 	});
+	//로그아웃
+	$('#logout').click(function(){
+		location.href = "/logout";
+	});
 		//아는 사람 만나지 않기
 		var setting = document.querySelector(".settingContainer table");
 		var block = document.querySelector(".blockContainer");
 		$('#block').click(function(event) {
 			$.ajax({
-				url : "notToMeet",
+				url : "/notToMeet",
 				type : "post",
 				success : function(responseData) {
 					var output = "<tr><th>차단된 번호</th><th></th><th><span class='material-symbols-outlined' id = 'close'>close</span></th></tr>";
@@ -461,16 +463,16 @@ i {
 			if($("#follows").hasClass("is-check") === false) {
 				$.ajax({
 			        url: "/auth/dofollow",
-			        data: {"id" : [[${user.id}]]},
+			        data: {"id" : [[${profileOther.id}]]},
 			        type:"POST",
 			        success: function onData (data) {
 			        	$("#follows").html("팔로우 취소");
 			        	$("#follows").addClass("is-check");
-			            alert([[${user.nickname}]] + "님을 팔로우 했습니다.");
+			            alert([[${profileOther.nickname}]] + "님을 팔로우 했습니다.");
 			            location.reload();
 			        },
 			        error: function onError (error) {
-			        	alert([[${user.nickname}]] + "팔로우 실패했습니다.");
+			        	alert([[${profileOther.nickname}]] + "팔로우 실패했습니다.");
 			        }
 			    });
 			}
@@ -478,16 +480,16 @@ i {
 			else {
 				$.ajax({
 			        url: "/auth/dofollow",
-			        data: {"id" : [[${user.id}]]},
+			        data: {"id" : [[${profileOther.id}]]},
 			        type:"DELETE",
 			        success: function onData (data) {
 			        	$("#follows").html("팔로우");
 			        	$("#follows").removeClass("is-check");
-			            alert([[${user.nickname}]] + "님을 팔로우 취소 했습니다.");
+			            alert([[${profileOther.nickname}]] + "님을 팔로우 취소 했습니다.");
 			            location.reload();
 			        },
 			        error: function onError (error) {
-			        	alert([[${user.nickname}]] + "팔로우 실패했습니다.");
+			        	alert([[${profileOther.nickname}]] + "팔로우 실패했습니다.");
 			        }
 			    });
 			}
