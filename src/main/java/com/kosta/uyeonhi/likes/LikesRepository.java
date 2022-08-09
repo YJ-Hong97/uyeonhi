@@ -17,9 +17,6 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
 	@Modifying
 	@Query(value = "DELETE FROM likes WHERE board_id = ?1 and user_id =?2", nativeQuery = true)
 	void notLikes(Long board_id , String userId );
-	
-	@Query(value = "select b.* from likes l, board b  where (l.board_id =b.board_id) and  l.user_id = ?1", nativeQuery = true)
-	List<Board> likeList(String userId);
 
 	
 	/*

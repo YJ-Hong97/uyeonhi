@@ -60,10 +60,11 @@ font-size: 0.65em;
  word-break:break-all; 
  float: left;
 }
-#tag{
+.board_tag{
 font-size: 0.65em;
 color: blue;
- float: left;
+float: left;
+ 
 }
 .material-symbols-outlined{
 font-size: 1.2em;
@@ -93,9 +94,13 @@ border-top: 1px gray solid;
 <div id="contnet-box">
 <span id="content" th:text="${list.content}"></span><br>
 <div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-<span id="tag" th:text="|#${hashtag}|">#태그</span>
+<span class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|" th:onclick="|tag(${list.boardId},${status.count},${status.index})|" th:text="|#${hashtag}|"></span>
 </div>
+
+
+
 </div>
 </div> 
+<script src="/js/board/tag.js"></script>
 </body>
 </html>

@@ -22,6 +22,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.kosta.uyeonhi.applicant.Applicant;
 import com.kosta.uyeonhi.likes.Likes;
 import com.kosta.uyeonhi.reply.Reply;
 import com.kosta.uyeonhi.signUp.UserVO;
@@ -87,6 +88,9 @@ public class Board {
 	
 	@Column(nullable = true)
 	private String tag;
+	
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	private List<Applicant> applicant;
 	
 	
 }
