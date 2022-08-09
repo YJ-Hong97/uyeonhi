@@ -1,32 +1,47 @@
 
+function alarmSave(alarmData){
+	console.log(alarmData);
+
+	$.ajax({
+		url : '/api/notification/save',
+		contentType: 'application/json',
+		type : 'post',
+		data : JSON.stringify(alarmData),
+		dataType : "json",
+		success : function(res){
+			console.log("여기까진 왔다 ㅋㅋ")
+		}
+	});
+	
+}
+
+
+
 //알람목록
 function alramList(){
 	console.log("alramList")
-	var memberId = "${login.memberId}";
+	
+	let memberId = $(".userSession").text();
 	 $.ajax({
-	        url : '/board/alramList',
+	        url : `/notification/list`,
 	        type : 'get',
-	        data : {'memberId' : memberId },
+	        data : {'userId' : memberId },
 	        dataType : "json", 
 	        success : function(data){
 	         	var a='';
-	         	 $.each(data, function(key, value){ 
-	         		var categori = value.categori ;
-	         		a += '<div>';
-					a += '<div class="small text-gray-500">'+value.alramDate+'</div>';
-					if(categori == "reply"){
-					a += '<span class="font-weight-bold"><a href="#"  onclick="alramClick('+value.bgno+','+value.bno+',\''+value.fromId+'\');">'+value.toId+'님이 '+value.title+' 에 댓글을 달았습니다</a></span>';
-					}else if(categori == "questionCheck"){
-					a += '<span class="font-weight-bold"><a href="#" onclick="alramClick('+value.bgno+','+value.bno+',\''+value.fromId+'\');">'+value.toId+'님이 '+value.title+' 에 답변을 채택했습니다</a></span>';
-
+	         	 $.each(data, function(index, value){ 
+	         		var categori = value.notificationType ;
+	         		a += `<div>`
+	         		a += `<div class="small text-gray-500">${value.regdate}</div>`;
+	         		if(categori == "Reply"){
+					a += `<span class="font-weight-bold"><a href="#"  onclick="alramClick();">${value.senderId}님이 회원님의 게시물에 댓글을 달았습니다</a></span>`;
+	         		a += `</div>`
 					}
-					a += '</div><hr/>';	
-					
 	         		 
 	         		 
 	         	 });
 	         	 
-	         	 $("#alramList").html(a);
+	         	 $("#alarmList").html(a);
 	         	 
 	        }
 	        
@@ -52,6 +67,8 @@ function alramClick(bgno,bno,formId){
 	location.href="/board/readView?bno="+bno+"&bgno="+bgno;
 	
 }
+
+
 
 
 

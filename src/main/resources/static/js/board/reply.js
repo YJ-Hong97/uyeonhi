@@ -56,9 +56,13 @@ $('.btn_reply').on('click', function() {
 	let boardId = $(".board" + sequence).val();
 	let writer = $(".userSession").text();
 	let readWriter = $(".boardWriter"+boardId).text();
-
-	console.log("나 :" + writer);
-	console.log("나 :" + readWriter);
+	
+	let alramData = {
+		senderId : writer,
+		receiverId : readWriter,
+		boardId : boardId,
+		notificationType : "Reply"
+	}
 	
 	let data = {
 		boardId: boardId,
@@ -82,6 +86,9 @@ $('.btn_reply').on('click', function() {
 			location.href = "/sns/sns1";
 			
 			if(readWriter != writer){
+				
+				alarmSave(alramData);
+				
            		if(websocket){
         			let socketMsg = "reply,"+readWriter+","+writer+","+boardId;
         			console.log(socketMsg);
@@ -204,6 +211,8 @@ $(document).on("click", ".update_reply_button", function() {
 		});
 	});
 });
+
+
 
 
 
