@@ -15,6 +15,8 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <style>
 /*모달창*/
+body {
+}
 #modal {
 	position: absolute;
 	width: 100%;
@@ -22,16 +24,15 @@
 	background: rgba(0, 0, 0, 0.5);
 	top: 0;
 	left: 0;
-	/* display: none; */
 }
 
 .modal_content {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 30%;
-	height: 25%;
-	padding: 2% 2% 3% 3%;
+	width: 33%;
+	height: 30%;
+	padding: 2% 3% 3% 3%;
 	background-color: #fff;
 	border-radius: 10px;
 	box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
@@ -44,13 +45,11 @@
 }
 
 .tbl {
-	margin-top: 6%;
 }
 
 .tbl td {
 	padding: 2% 0;
 }
-
 .tbl-title {
 	width: 30%;
 	color: #656565;
@@ -61,8 +60,12 @@
 	font-size: 0.75rem;
 	color: #b1b1b1;
 	cursor: pointer;
-	margin-top: 9%;
+	margin-top: 2%;
 	float: right;
+}
+.title {
+	margin-top:2%;
+	margin-bottom: 5%;
 }
 </style>
 <script type="text/javascript">
@@ -82,6 +85,7 @@
 			<div class="close">
 				<i class="fa-solid fa-xmark"></i>
 			</div>
+		<h3 class="title">사람1과 약속</h3>
 			<table class="tbl">
 				<tr>
 					<td class="tbl-title"><i class="fa-solid fa-calendar-check"></i>
