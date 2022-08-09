@@ -181,7 +181,7 @@ body div {
 		<div class="chatBox">
 			<div class="messageBox"></div>
 			<div class="inputBox">
-				<input text id="message">
+				<input type="text" id="message">
 				<button type="button" id="sendBtn">전송</button>
 			</div>
 		</div>
@@ -210,15 +210,19 @@ body div {
 		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
+
 	var sock = new SockJS('/video');
+	var inputData = "";
+	var message = "";
+
 	var stomp;
 	var remoteVideo = document.querySelector('#remoteVideo');
 	var localVideo = document.querySelector('#localVideo');
 	var nickname = /*[[${user.nickname}]]*/'default';
 	var yournick;
+	var initiator=false;
 	var mid = /*[[${user.id}]]*/'default';
 	var roomNo = /*[[${room.roomNo}]]*/+"";
-	var initiator=false;
 	var mystream;
 	var parti = [];
 	var inputData="";
@@ -451,6 +455,7 @@ body div {
 		});
 		clock();
 	};
+
 //시간 체크
 var hour = 0;
 var min = 0;

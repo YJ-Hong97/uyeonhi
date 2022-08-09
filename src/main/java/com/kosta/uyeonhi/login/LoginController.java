@@ -29,16 +29,16 @@ public class LoginController {
 		return "/auth/login";
 	}
 	
-	@GetMapping(value = "/myPage")
-	public String myPage(String mid, Model model, HttpSession session) {
-		UserVO user = (UserVO) session.getAttribute("user");
-		mservice.getUserProfile(mid, model);
-		Follow follow = fRepo.checkFollow(mid, user.getId());
-		
-		model.addAttribute("isFollow", follow != null ? 1 : 0);
-		model.addAttribute("follower", fRepo.countFollower(mid));
-		model.addAttribute("following", fRepo.countFollowing(mid));
-		
-		return "/auth/myPage";
-	}
+//	@GetMapping(value = "/myPage")
+//	public String myPage(String mid, Model model, HttpSession session) {
+//		UserVO user = (UserVO) session.getAttribute("user");
+//		mservice.getUserProfile(mid, model);
+//		Follow follow = fRepo.checkFollow(mid, user.getId());
+//		
+//		model.addAttribute("isFollow", follow != null ? 1 : 0);
+//		model.addAttribute("follower", fRepo.countFollower(mid));
+//		model.addAttribute("following", fRepo.countFollowing(mid));
+//		
+//		return "/auth/myPage";
+//	}
 }
