@@ -105,12 +105,19 @@
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f3294ba44da20810c9c68fbb7bfc24b"></script>
+	<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script>
 		var signUpBtn = document.querySelector('#signUpBtn');
-		var kakaoBtn = document.querySelector('#kakaoBtn');
 		signUpBtn.onclick = function(){
 			location.href = "signUp2";
 		}
+		$('#kakaoBtn').click(function(){
+			Kakao.Auth.authorize({
+				  redirectUri: '${REDIRECT_URI}'
+				});
+		});
 		
 	</script>
 </body>
