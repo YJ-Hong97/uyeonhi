@@ -67,7 +67,7 @@ function tag(boardId,count,index){
 		dataType:"text",
 		success : function(res){
 			$("#searchContent").html(res);
-			$(".board_tag").css("font-size","20px");
+			$(".board_tag").css("font-size","14.3893px");
 		},
 		error : function(error){
 			console.log(error);
