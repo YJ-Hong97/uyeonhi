@@ -20,7 +20,7 @@
 }
 
 .headerContainer td {
-	border-bottom: 0.1rem solid #AEAEAE;
+	border-bottom: 0.08rem solid #AEAEAE;
 	height: 4rem;
 	font-family: 'Gowun Dodum';
 	font-style: normal;
@@ -45,6 +45,10 @@
 	overflow: hidden;
 }
 
+#nick a {
+	color: black;
+	text-decoration: none;
+}
 
 </style>
 	</head>
@@ -54,8 +58,8 @@
 				<tr>
 					<td id="logo">uyeonhi</td>
 					<td width="65%"></td>
-					<td id = "imgTd" width="5%"><img  id="profile"th:src = "${profile.fileName}"></td>
-					<td id="nick">[[${user.nickname}]]</td>
+					<td id = "imgTd" width="5%"><a th:href="@{/myPage/{mid}(mid = ${session.user.id})}"> <img  id="profile"th:src = "${profile.fileName}"></a></td>
+					<td id="nick"><a th:href="@{/myPage/{mid}(mid = ${session.user.id})}">[[${session.user.nickname}]]</a></td>
 				</tr>
 			</table>
 		</body>

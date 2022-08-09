@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -87,18 +88,25 @@ public class MyPageController {
 	ProfileRepository profileRepo;
 	@Autowired
 	FollowRepository followRepo;
+	@Autowired
+	MemberService mservice;
+	@Autowired
+	FollowRepository fRepos;
 	
-	@GetMapping("/myPage")
-	public ModelAndView myPage(ModelAndView mnv, HttpSession session) {
+	@GetMapping("/myPage/{mid}")
+	public ModelAndView myPage(@PathVariable String mid, ModelAndView model, HttpSession session) {
+		System.out.println(mid);
 		UserVO user = (UserVO) session.getAttribute("user");
-		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mservice.getUserProfile(mid, model);
+		Follow follow = fRepos.checkFollow(mid, user.getId());
+		ProfileVO profile = profileRepo.findByUserAndType(mservice.getOther(mid), ProfileType.MAIN);
 		
-		mnv.addObject("follower", followRepo.countFollower(user.getId()));
-		mnv.addObject("following", followRepo.countFollowing(user.getId()));
-		mnv.addObject("user",user);
-		mnv.addObject("profile",profile);
-		mnv.setViewName("/auth/myPage");
-		return mnv;
+		model.addObject("isFollow", follow != null ? 1 : 0);
+		model.addObject("follower", followRepo.countFollower(mid));
+		model.addObject("following", followRepo.countFollowing(mid));
+		model.addObject("profile",profile);
+		model.setViewName("/auth/myPage");
+		return model;
 	}
 	
 	@GetMapping("/setting")
@@ -336,7 +344,7 @@ public class MyPageController {
 		idealRepo.deleteByuserId(user.getId());
 		for(int i = 0 ; i<idealArr.length; i++) {
 			IdealTypeVO ideal = IdealTypeVO.builder()
-					.userId(user.getId())
+					.user(user)
 					.idealId(idealArr[i])
 					.build();
 			idealRepo.save(ideal);
@@ -374,7 +382,7 @@ public class MyPageController {
 		fRepo.deleteByUserId(user.getId());
 		for(int i = 0 ; i<favoriteArr.length; i++) {
 			FavoriteVO favorite = FavoriteVO.builder()
-					.userId(user.getId())
+					.user(user)
 					.favoriteId(favoriteArr[i])
 					.build();
 			fRepo.save(favorite);
@@ -411,7 +419,7 @@ public class MyPageController {
 		hRepo.deleteByUserId(user.getId());
 		for(int i = 0 ; i<hobbyArr.length; i++) {
 			HobbyVO hobby = HobbyVO.builder()
-					.userId(user.getId())
+					.user(user)
 					.hobbyId(hobbyArr[i])
 					.build();
 			hRepo.save(hobby);
@@ -434,19 +442,20 @@ public class MyPageController {
 	@GetMapping("/loadChat")
 	public ModelAndView loadChat(ModelAndView mnv,HttpSession session) {
 		UserVO user = (UserVO)session.getAttribute("user");
-		Map<ChattingRoomVO,List<ChattingUsersVO>> roomMap = new HashMap<>();
+		Map<ChattingRoomVO,List<ProfileVO>> roomMap = new HashMap<>();
 		List<ChattingRoomVO> rooms = chatRoomRepo.findByUser(user);
 		List<ChattingUsersVO> cusers = chatUserRepo.findByUser(user);
 		for(ChattingUsersVO c: cusers) {
 			ChattingRoomVO room = chatRoomRepo.findById(c.getRoom().getRoomNo()).get();
 			List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
-			roomMap.put(room, cusers);
+			List<ProfileVO> profiles = new ArrayList<>();
+			for(int i= 0; i<users.size(); i++) {
+				ProfileVO p = profileRepo.findByUserAndType(users.get(i).getUser(), ProfileType.MAIN);
+				profiles.add(p);
+			}
+			roomMap.put(room, profiles);
 		}
-		for(ChattingRoomVO room: rooms) {
-			List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
-			roomMap.put(room, users);
-			
-		}
+		
 		
 		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
 		mnv.addObject("profile",profile);
@@ -455,4 +464,5 @@ public class MyPageController {
 		mnv.addObject("user",user);
 		return mnv;
 	}
+	
 }
