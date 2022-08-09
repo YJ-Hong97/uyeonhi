@@ -8,6 +8,7 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <meta charset="UTF-8">
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -18,21 +19,63 @@
 		left:50%;
 		transform:translate(-50%,-50%);
 		
+		font-family: 'Gowun Dodum';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 2rem;
+		line-height: 110%;
+	
 		width:90%;
 	}
 	.chatContainer table{
+		text-align: left;
+		width:90%;
+		border-collapse: collapse;
 		
+		margin-left:auto;
+		margin-right:auto;
+	}
+	th{
+		height: 5rem;
+	}
+	td{
+		height: 4rem;
+		font-size: 1rem;
+	}
+	.chatContainer tr:hover{
+		background-color: rgba(0,0,0,0.1);
 	}
 	.chatTitle{
 		cursor: pointer;
 	}
+	#triangle{
+		transform:rotate(180deg);
+		color:black;
+		font-variation-settings:
+ 		 'FILL' 1,
+  		'wght' 400,
+ 		 'GRAD' 0,
+  		'opsz' 48
+	}
+	.profileImg img{
+		border-radius: 35%;
+		width: 3rem;
+		height: 3rem;
+	}
+	
 </style>
 </head>
 <body>
 <th:block th:replace="~{/fragment/header :: header}"></th:block>
 <div class = "chatContainer">
 	<table>
+		<thead>
+			<th colspan="2">채팅<span class="material-symbols-outlined" id ="triangle">change_history</span></th>
+		</thead>
 		<tr th:each="room:${roomMap}">
+			<td th:each="profile:${room.value}" class = "profileImg" width="3%">
+				<img th:unless="${profile.user.id==user.id}"th:src = "${profile.fileName}">
+			</td>
 			<td th:text= "${room.key.title}" width="80%" class = "chatTitle" th:type="${room.key.type}"th:value = "${room.key.roomNo}"></td>
 			
 		</tr>

@@ -1,24 +1,18 @@
-package com.kosta.uyeonhi.signUp;
+package com.kosta.uyeonhi.webrtc;
 
-import java.sql.Date;
-
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
-import com.kosta.uyeonhi.*;
+import com.kosta.uyeonhi.signUp.MFavoriteVO;
+import com.kosta.uyeonhi.signUp.UserVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -28,11 +22,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "hobby")
-public class HobbyVO {
+@Entity(name = "videoChatMessage")
+public class VideoChatMessageVO {
 	@Id
-	private Long hobbyId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long messageId;
 	@ManyToOne
-	private UserVO user;
+	private VideoChatVO videoChatVO;
+	private String nickname;
+	private String message;
 }
