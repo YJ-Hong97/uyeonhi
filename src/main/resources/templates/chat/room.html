@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+	crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script
+	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<style>
+		#msgArea {
+			width: 600px;
+			height: 500px;
+			overflow: auto;
+			
+		}
+		.chatpro {
+			width: 50px;
+			height: 50px;
+			margin-right: 10px;
+			border-radius: 50%;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="col-6">
+			<h1>[[${room.name}]]</h1>
+		</div>
+		<div>
+			<div id="msgArea">
+				<div th:each="message: ${messages}">
+					<div th:if="${message.writer.id} != ${session.user.id}">
+						<div class="d-flex justify-content-start">
+							 <img class="chatpro" th:src="${message.writer.profile[0].fileName}">
+							 <div class="d-flex flex-column mb-3">
+	                           <b> [[${message.writer.nickname}]] </b> 
+	                           <b>[[${message.message}]] [[${message.regdate}]]</b>
+	                           </div>
+                         </div>
+					</div>
+					<div th:if="${message.writer.id} == ${session.user.id}">
+                          <div class="d-flex justify-content-end">
+	                           <b>[[${message.regdate}]] [[${message.message}]]</b>
+	                           </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="input-group mb-3">
+					<input type="text" id="msg" class="form-control" required="required">
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" type="button"
+							id="button-send">전송</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6">
+		</div>
+	</div>
+	
+	<script th:inline="javascript">
+            $(document).ready(function(){
+            	$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
+                var roomName = [[${room.name}]];
+                var roomId = [[${room.roomId}]];
+                var username = [[${session.user}]];
+
+                console.log(roomName + ", " + roomId + ", " + username);
+
+                var sockJs = new SockJS("/stomp/chat");
+                
+                //1. SockJS를 내부에 들고있는 stomp를 내어줌
+                var stomp = Stomp.over(sockJs);
+
+                //2. connection이 맺어지면 실행
+                stomp.connect({}, function (){
+                   console.log("STOMP Connection");
+                   var now = new Date();
+                   //4. subscribe(path, callback)으로 메세지를 받을 수 있음
+                   stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
+                	   
+                       var content = JSON.parse(chat.body);
+                       
+                       var writer = content.writer.nickname;
+                       var str = '';
+                       
+                       if(writer === username.nickname){
+                           str += " <div class='d-flex justify-content-end'>";
+                           str += "<b>"+ content.regdate + content.message+"</b>";
+                           str += "</div>";
+                           $("#msgArea").append(str);
+                       }
+                       
+                       else{
+                           str = "<div class='d-flex justify-content-start'>";
+                           str += `<img class='chatpro' src=${content.writer.profile[0].fileName}>`;
+                           str += "<div class='d-flex flex-column mb-3'>";
+                           str += "<b>"+ writer +"</b> ";
+                           str += "<b>"+content.message + content.regdate +"</b>";
+                           str += "</div></div>";
+                           $("#msgArea").append(str);
+                       }
+                       $('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
+                   });
+
+                });
+				
+                $("#button-send").on("click", function(e){
+                    sendss();
+                });
+                $(document).keypress(function(e) {
+                	if(event.keyCode == 13 || event.witch == 13) {
+                		sendss();
+                	}
+                })
+                
+                function sendss() {
+                	var msg = document.getElementById("msg");
+            		if(msg.value == "") {
+            			alert("메세지를 입력하세요");
+            			return;
+            		}
+					var now = new Date();
+					var hours = ('0' + now.getHours()).slice(-2); 
+					var minutes = ('0' + now.getMinutes()).slice(-2);
+
+					var timeString = hours + ':' + minutes;
+					console.log(timeString);
+                    console.log(username + ":" + msg.value);
+                    stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: username, regdate: timeString}));
+                    msg.value = '';
+                }
+            });
+        </script>
+        </body>
+</html>
+
+
+
+
+
+
+
+

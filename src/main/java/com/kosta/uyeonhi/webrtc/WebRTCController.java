@@ -15,13 +15,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.mypage.ChattingRoomRepository;
 import com.kosta.uyeonhi.mypage.ChattingRoomVO;
 import com.kosta.uyeonhi.mypage.ChattingUsersRepository;
+import com.kosta.uyeonhi.mypage.ChattingUsersVO;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -45,6 +45,7 @@ public class WebRTCController {
 	@RequestMapping("/video/socket/{roomNo}")
 	public ModelAndView test(ModelAndView mnv, HttpSession session,@PathVariable("roomNo")long roomNo) {
 		ChattingRoomVO room = chatRoomRepo.findById(roomNo).get();
+		List<ChattingUsersVO> chatusers = chatUserRepo.findByRoom(room);
 		UserVO user = (UserVO) session.getAttribute("user");
 		if(videoRepo.existsByRoom(room)) {
 	
@@ -56,6 +57,7 @@ public class WebRTCController {
 		}
 		mnv.addObject("room",room);
 		mnv.addObject("user",user);
+		mnv.addObject("chatusers", chatusers);
 		mnv.setViewName("webrtc/index");
 		return mnv;
 	}
@@ -85,7 +87,6 @@ public class WebRTCController {
 	
 		template.convertAndSend(destination,ob);
 	}
-	
 	@MessageMapping("/video/callee-info/{roomNo}")
 	public void answerCall(SignalEntity ob) {
 		String roomNo = ob.getSignalId();
