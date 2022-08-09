@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -274,7 +275,7 @@ public class SignUpController {
 
 	@PostMapping("/signUpFinal")
 	public ModelAndView uSignUpFinal(Date birth,String hogam,String mbti,String gender,MultipartFile[] profile,ModelAndView mnv) throws IllegalStateException, IOException, EmptyFileException, FileUploadFailedException{
-		
+		List<ProfileVO> profiless = new ArrayList<>();
 		if(hogam.equals("hogam")) {
 			signUpInfo.put("hogam", "hogam");
 		}else {
@@ -295,7 +296,7 @@ public class SignUpController {
 				.password(signUpInfo.get("upassword"))
 				.phone(signUpInfo.get("phone"))
 				.build();
-		mService.joinUser(user);
+		
 		
 		 for(int i = 0; i<files.size(); i++) {
 			 if(i==0) {
@@ -304,18 +305,19 @@ public class SignUpController {
 						 .user(user)
 						 .type(ProfileType.MAIN)
 						 .build();
-				 pRepo.save(profileVO);
+				 profiless.add(profileVO);
 			 }else {
 				 ProfileVO profileVO = ProfileVO.builder()
 						  .fileName(files.get(i)) 
 						  .user(user) 
 						  .build(); 
-				  pRepo.save(profileVO); 
+				 profiless.add(profileVO);
 			 }
 			
 					 
 		 }
-		
+		 user.setProfile(profiless);
+		 mService.joinUser(user);
 		//내 소개 저장
 		mfList.forEach(mf->{
 			MFavoriteVO favorite = MFavoriteVO.builder()
