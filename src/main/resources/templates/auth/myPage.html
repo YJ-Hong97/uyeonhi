@@ -97,6 +97,12 @@
 	color: white;
 }
 
+.check {
+	border: none;
+	background-color: #B983FF;
+	color: white;
+}
+
 body {
 	position: relative;
 	margin: 0 auto;
@@ -271,6 +277,7 @@ i {
 	overflow: auto;
 }
 </style>
+
 </head>
 <body>
 	<div class="top-container">
@@ -298,9 +305,10 @@ i {
 						</div>
 					</div>
 
-					<div class="p-2"
-						th:unless="${profileOther.id} == ${session.user.id}">
-						<button type="button" class="btn btn-light doMatch">매칭신청
+
+					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
+						<button type="button" id = "sendMat" class="btn btn-light doMatch check" onclick ="matching()">매칭신청
+						<!--  -->
 
 						</button>
 					</div>
@@ -331,7 +339,7 @@ i {
 			</div>
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} == ${session.user.id}">
-				<a class="nav-link" href="#">내 매칭 상대</a>
+				<a class="nav-link" ><button class = "btn" onClick="f_matchingSearch()">내 매칭 상대</button></a><!-- href="#/matView" -->
 			</div>
 
 		</div>
@@ -585,8 +593,58 @@ i {
 			    });
 			}
 		});
+		//매칭신청 .
 		
+		/* function matching(){
+				$.ajax({
+			        url: "/matching",
+			        data: {target : [[${profileOther.id}]]},
+			        success: function(responseData) {
+			        	if($("#sendMat").hasClass("check") === false) {
+			        	$("#sendMat").html("매칭취소");
+			        	$("#sendMat").addClass("check");
+			            alert([[${profileOther.nickname}]] + "님께 매칭 신청을 보냈습니다.");
+			            location.reload();
+			        },
+			        error: function onError (error) {
+			        	alert([[${profileOther.nickname}]] + "매칭 신청을 실패하였습니다.");
+			        }
+			    });
+			} */
+		function matching(){
+			/* alert("aaa"); */
+			$.ajax({
+				url:"/matching",
+				data:{target:[[${profileOther.id}]]},
+				success:function(responseData){
+					alert(responseData);
+				},
+				fail:function(){
+					alert("매칭 신청을 실패하셨습니다.")
+				}
+			});
+		} 
+			
+			
+		function f_matchingSearch(){
+			 $.ajax({
+				 url:"matView",
+				 success:function(responseData){
+					 $("#here").html(responseData);
+				 }
+			 
+			 
+			 });
+			 
+		}	
+
+		 
 	</script>
+	<div id="here">
+	    
+	</div>
+	 
+	 
 </body>
 </html>
 
