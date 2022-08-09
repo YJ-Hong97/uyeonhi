@@ -136,9 +136,9 @@ html {
 <body>
 	<div id="header">header</div>
 	<div class="userArea">
-		<span class="userPhoto"></span> <span class="userText"> 이번 주 <span
-			class="userId" th:text="${id}"></span>님은 <span th:text="3번"
-			class="userCount"></span>의 약속이 있습니다.
+		<img id="profile" class="userPhoto" th:src = "${session.user.profile[0].fileName}">
+		<span class="userText"> 
+			이번 주 <span class="userId" th:text="${session.user.nickname}"></span>님은 <span th:text="3번" class="userCount"></span>의 약속이 있습니다.			
 		</span>
 	</div>
 	<div id='calendar'></div>
