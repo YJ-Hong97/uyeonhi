@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kosta.uyeonhi.mypage.ChattingRoomRepository;
 import com.kosta.uyeonhi.mypage.ChattingRoomVO;
 import com.kosta.uyeonhi.mypage.ChattingUsersRepository;
+import com.kosta.uyeonhi.mypage.ChattingUsersVO;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -44,6 +45,7 @@ public class WebRTCController {
 	@RequestMapping("/video/socket/{roomNo}")
 	public ModelAndView test(ModelAndView mnv, HttpSession session,@PathVariable("roomNo")long roomNo) {
 		ChattingRoomVO room = chatRoomRepo.findById(roomNo).get();
+		List<ChattingUsersVO> chatusers = chatUserRepo.findByRoom(room);
 		UserVO user = (UserVO) session.getAttribute("user");
 		if(videoRepo.existsByRoom(room)) {
 	
@@ -55,6 +57,7 @@ public class WebRTCController {
 		}
 		mnv.addObject("room",room);
 		mnv.addObject("user",user);
+		mnv.addObject("chatusers", chatusers);
 		mnv.setViewName("webrtc/index");
 		return mnv;
 	}
