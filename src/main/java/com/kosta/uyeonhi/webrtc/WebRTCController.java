@@ -116,22 +116,9 @@ public class WebRTCController {
 	public void chat(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
 		String nickname = ob.get("nickname").toString();
-		ChattingRoomVO room = chatRoomRepo.findById(Long.parseLong(roomNo)).get();
-		VideoChatVO video = videoRepo.findByRoom(room);
-		VideoChatMessageVO message = VideoChatMessageVO.builder()
-				.videoChatVO(video)
-				.message(ob.get("message").toString())
-				.nickname(nickname)
-				.build();
-		messageRepo.save(message);
-		List<VideoChatMessageVO> messagelist = messageRepo.findByVideoChatVO(video);
-		List<Map<String, String>> messageMaps = new ArrayList<>();
-		for(VideoChatMessageVO m:messagelist) {
-			Map<String,String> map = new HashMap<>();
-			map.put(m.getNickname(), m.getMessage());
-			messageMaps.add(map);
-		}
-		template.convertAndSend("/sub/video/message/"+roomNo, messageMaps);
+		String message = ob.get("message").toString();
+		
+		template.convertAndSend("/sub/video/message/"+roomNo, ob);
 	}
 	@RequestMapping("/video/initiator-disconnect/{mid}/{roomNo}")
 	public void disconnect(@PathVariable("mid")String mid,@PathVariable("roomNo")String roomNo) {
