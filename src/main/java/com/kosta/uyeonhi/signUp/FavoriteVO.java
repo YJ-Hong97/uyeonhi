@@ -3,14 +3,13 @@ package com.kosta.uyeonhi.signUp;
 import java.sql.Date;
 
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.kosta.uyeonhi.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,13 +26,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@RequiredArgsConstructor //nonnull인것만 가지고 생성
 @Entity
 @Table(name = "favorite")
 public class FavoriteVO {
 	@Id
 	private Long favoriteId;
-	@Column(nullable = false)
-	@NonNull
-	private String userId;
+	@ManyToOne
+	private UserVO user;
 }
