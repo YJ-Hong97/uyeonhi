@@ -407,7 +407,7 @@ ul{
     color: #000000;
 }
 
-table {
+.content table {
     border: 1px solid lightgray;
     border-radius: 15px;
     width: 400px;
@@ -415,7 +415,7 @@ table {
     background: white;
 }
 
-td {
+.content td {
     text-align: center;
     border-bottom: 1px solid lightgray;
     color: red;
@@ -427,7 +427,7 @@ td {
     color: black;
 }
 
-td:hover {
+.content td:hover {
     background: rgba(85, 85, 85, 0.2);
 }
 

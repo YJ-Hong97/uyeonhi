@@ -316,8 +316,10 @@ public class SignUpController {
 			
 					 
 		 }
+		 
 		 user.setProfile(profiless);
 		 mService.joinUser(user);
+		
 		//내 소개 저장
 		mfList.forEach(mf->{
 			MFavoriteVO favorite = MFavoriteVO.builder()

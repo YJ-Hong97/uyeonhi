@@ -91,9 +91,9 @@ $(document).ready(function(){
 <body>
 	<div id="header">header</div>
 	<div class="userArea">
-		<span class="userPhoto"></span> 
+		<img id="profile" class="userPhoto" th:src = "${session.user.profile[0].fileName}">
 		<span class="userText"> 
-			<span class="userId" th:text="${id}"></span>님이 보유 중인 우연 <span th:text="|${coin}개|" class="userCount"></span>
+			<span class="userId" th:text="${session.user.nickname}"></span>님이 보유 중인 우연 <span th:text="|${session.user.coin}개|" class="userCount"></span>
 		</span>
 	</div>
 	<table class= "btnArea">

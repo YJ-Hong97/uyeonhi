@@ -1,43 +1,57 @@
-package com.kosta.uyeonhi.signUp;
+package com.kosta.uyeonhi.chat;
 
-import javax.persistence.CascadeType;
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ManyToAny;
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kosta.uyeonhi.signUp.UserVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString(exclude = "user")
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-@Table(name = "profile")
-public class ProfileVO {
+@Entity @Table(name = "tbl_message")
+public class ChatMessageDTO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long profileId;	
-
-	@JsonIgnore
+	private Long chatid;
+	
 	@ManyToOne
-	private UserVO user;
-	private String fileName;
-	private ProfileType type = ProfileType.SUB;
+	private UserVO writer;
+	
+	@Column(length = 1000)
+	private String message;
+	
+	private String regdate;
+	
+	private String roomId;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
