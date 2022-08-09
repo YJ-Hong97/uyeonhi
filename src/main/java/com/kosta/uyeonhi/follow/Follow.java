@@ -25,15 +25,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "follow")
 public class Follow {
+	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long fId;
 
 	@ManyToOne
 	private UserVO user;
 	
+	@ManyToOne
+	private UserVO target;
 	
-	private String target;
 	private boolean fCheck;
 }
 

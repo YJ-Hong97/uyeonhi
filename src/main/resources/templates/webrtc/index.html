@@ -181,7 +181,7 @@ body div {
 		<div class="chatBox">
 			<div class="messageBox"></div>
 			<div class="inputBox">
-				<input type="text" id="message">
+				<input text id="message">
 				<button type="button" id="sendBtn">전송</button>
 			</div>
 		</div>
@@ -195,7 +195,12 @@ body div {
 	<div class="timeContainer">
 		<div class="timeBox">
 			<p id="time"></p>
-			<p>ooo님과 이만큼 통화 중!</p>
+			<div th:if="${chatusers[1].user.id} == ${session.user.id}">
+				<p id="targetnick">[[${chatusers[0].user.nickname}]]님과 이만큼 통화 중!</p>
+			</div>
+			<div th:if="${chatusers[0].user.id} == ${session.user.id}">
+				<p id="targetnick">[[${chatusers[1].user.nickname}]]님과 이만큼 통화 중!</p>
+			</div>
 			<span class="material-symbols-rounded" id="connect">phone_in_talk </span>
 			<span class="material-symbols-rounded" id="disconnect">phone_disabled</span>
 			<span class="material-symbols-rounded" id="reconnect">phone_in_talk</span>
@@ -210,19 +215,15 @@ body div {
 		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
-
 	var sock = new SockJS('/video');
-	var inputData = "";
-	var message = "";
-
 	var stomp;
 	var remoteVideo = document.querySelector('#remoteVideo');
 	var localVideo = document.querySelector('#localVideo');
 	var nickname = /*[[${user.nickname}]]*/'default';
 	var yournick;
-	var initiator=false;
 	var mid = /*[[${user.id}]]*/'default';
 	var roomNo = /*[[${room.roomNo}]]*/+"";
+	var initiator=false;
 	var mystream;
 	var parti = [];
 	var inputData="";

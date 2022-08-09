@@ -251,6 +251,31 @@ body {
 i {
 	cursor: pointer;
 }
+.listfollow, .listfollowing {
+	cursor: pointer;
+}
+
+.profile{
+	border-radius: 50%;
+	width:8vh;
+	height:8vh;
+	overflow: hidden;
+}
+#nickts {
+	margin-bottom: 0px;
+	margin-top: 20px;
+}
+#followBox a {
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 10px;
+	text-decoration: none;
+	color: black;
+}
+.modal-body {
+	height: 500px;
+	overflow: auto;
+}
 </style>
 
 </head>
@@ -259,8 +284,7 @@ i {
 		<div class="d-flex">
 			<div class="flex-shrink-0">
 
-				<img id="profile"
-					th:src="${profile.fileName}"
+				<img id="profile" th:src="${profileOther.profile[0].fileName}"
 					alt="...">
 
 			</div>
@@ -268,7 +292,8 @@ i {
 				<div class="d-flex flex-row mb-3">
 
 					<div class="p-2 nick">[[${profileOther.nickname}]]</div>
-					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
+					<div class="p-2"
+						th:unless="${profileOther.id} == ${session.user.id}">
 
 						<div th:if="${isFollow == 1}">
 							<button type="button" id="follows"
@@ -285,20 +310,21 @@ i {
 						<button type="button" id = "sendMat" class="btn btn-light doMatch check" onclick ="matching()">매칭신청
 						<!--  -->
 
-
 						</button>
 					</div>
 				</div>
 				<div class="d-flex flex-row mb-5 second-box">
 
-					<div class="p-2 default-txt">팔로워</div>
+					<div class="p-2 default-txt listfollow" data-bs-toggle="modal"
+						data-bs-target="#exampleModal">팔로워</div>
 					<div class="p-2 default-txt">[[${follower}]]</div>
-					<div class="p-2 default-txt">팔로잉</div>
+					<div class="p-2 default-txt listfollowing" data-bs-toggle="modal"
+						data-bs-target="#exampleModal">팔로잉</div>
 					<div class="p-2 default-txt">[[${following}]]</div>
 					<div class="p-2 default-txt"
 						th:if="${profileOther.id} == ${session.user.id}">
 
-						<i class="fa-solid fa-gear"></i>
+						<i class="fa-solid fa-gear settingss"></i>
 					</div>
 				</div>
 			</div>
@@ -344,6 +370,23 @@ i {
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">팔로워 목록</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="d-flex justify-content-around flex-column" id="followBox">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<th:block th:replace="~{/fragment/header::header}"></th:block>
 	<th:block th:replace="~{/mypage/setting :: setting}"></th:block>
 	<th:block th:replace="~{/mypage/block :: block}"></th:block>
@@ -353,6 +396,52 @@ i {
 	<script th:inline="javascript">
 	//setting창 켜기
 	//setting창 끄기
+	$(".listfollow").click(function () {
+		var str ="";
+		$(".modal-title").html("팔로워 목록");
+		$.ajax({
+			url : "/listfollow",
+			type : "get",
+			data: {"id" : [[${profileOther.id}]]},
+			success : function(responseData) {
+				for(data of responseData) {
+					console.log(data.user.profile[0].fileName);
+					str += `<a class="d-flex justify-content-around" href='/myPage/${data.user.id}' >`;
+					str += `<img class='profile' src=${data.user.profile[0].fileName} />`;
+					str += `<p id='nickts'> ${data.user.nickname} </p>`;
+					str += `</a>`;
+					str += `<hr>`;
+				}
+				$("#followBox").html(str);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		}); 
+	});
+	$(".listfollowing").click(function () {
+		var str ="";
+		$(".modal-title").html("팔로잉 목록");
+		$.ajax({
+			url : "/listfollowing",
+			type : "get",
+			data: {"id" : [[${profileOther.id}]]},
+			success : function(responseData) {
+				for(data of responseData) {
+					console.log(data.target.profile[0].fileName);
+					str += `<a class="d-flex justify-content-around" href='/myPage/${data.target.id}' >`;
+					str += `<img class='profile' src=${data.target.profile[0].fileName} />`;
+					str += `<p id='nickts'> ${data.target.nickname} </p>`;
+					str += `</a>`;
+					str += `<hr>`;
+				}
+				$("#followBox").html(str);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		}); 
+	});
 	window.addEventListener("click",function(event){
 		if($('.settingContainer').css("display")=="block"){
 			if(event.target==document.querySelector('.settingContainer table')||event.target==document.querySelector('.settingContainer select')){
@@ -360,7 +449,7 @@ i {
 				$('.settingContainer').css("display","none");
 			}
 		}else{
-			if(event.target==document.querySelector('i')){
+			if(event.target==document.querySelector('.settingss')){
 				$('.settingContainer').css("display","block");
 			}
 		}

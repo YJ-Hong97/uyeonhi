@@ -2,11 +2,14 @@ package com.kosta.uyeonhi.signUp;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -54,7 +57,8 @@ public class UserVO  implements Serializable{
 	@Column(nullable = false)//db notnull(jpa)
 	private Gender gender;
 	
-	private String profile;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<ProfileVO> profile;
 	
 	@NonNull//생성시 조건(lombok)
 	@Column(nullable = false, name = "maching_confirm")//db notnull(jpa)
