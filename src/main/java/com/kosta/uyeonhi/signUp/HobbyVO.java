@@ -32,7 +32,10 @@ import lombok.ToString;
 @Table(name = "hobby")
 public class HobbyVO {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long hobbyId;
+	@ManyToOne
+	private HobbyMenuVO hobby;
 	@ManyToOne
 	private UserVO user;
 }

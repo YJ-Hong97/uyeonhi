@@ -12,4 +12,5 @@ public interface MFavoriteRepository extends CrudRepository<MFavoriteVO, Long>{
 	@Transactional
 	@Modifying
 	void deleteByUser(UserVO user);
+	
 }

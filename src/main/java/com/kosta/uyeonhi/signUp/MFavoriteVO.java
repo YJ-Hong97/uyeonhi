@@ -26,7 +26,10 @@ import lombok.ToString;
 @Entity(name = "m_favorite")
 public class MFavoriteVO {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long favoriteId;
+	@ManyToOne
+	private FavoriteMenuVO favorite;
 	@ManyToOne
 	private UserVO user;
 }

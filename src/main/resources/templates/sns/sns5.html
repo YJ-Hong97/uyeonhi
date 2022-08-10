@@ -52,6 +52,11 @@
 
 <body>
 <<<<<<< HEAD
+	<!--headerFragment 선언-->
+	<!-- <th:block th:replace="~{/fragment/header :: header}"></th:block> -->
+	<!-- <th:block th:replace="~{/fragment/header :: header}"></th:block> -->
+	<div>
+		<div class="big-container">
 =======
 
 
@@ -88,13 +93,11 @@
 										<option value="normal">게시글</option>
 										<option value="recruit">모집글</option>
 									</select>
-										<form enctype="multipart/form-data" id="form">
-											<label for="img">파일 업로드</label> <input id="btn_fileUpload"
-												type="file" required multiple>
-											<!--<img class="file_image" src="../images/image-outline.svg" style="width: 3rem;">-->
-											</input>
-										</form>
-										<input type="number" max="10" class="total_person"> <input
+									<button id="btn_fileUpload" type="button">
+										<img class="file_image" src="../images/image-outline.svg"
+											style="width: 3rem;">
+									</button>
+									<input type="number" max="10" class="total_person"> <input
 										type="date" class="deadline">
 								</div>
 								<!--  board_info-->
@@ -106,7 +109,6 @@
 						<!--board_form  -->
 					</div>
 					<!--container  -->
-					
 					<ul>
 						<li th:each="list, status: ${boardList}">
 							<div class="board-box">
@@ -155,9 +157,7 @@
 										th:class="|boardWriter${list.boardId}|" style="color: white;">[[${list.writer.id}]]</span>
 								</div>
 								<div id="container3" th:value="${list.boardId}"
-									th:class="${list.boardId}">
-									<th:block th:replace="/fragment/slider :: sliderFragment"></th:block>
-									</div>
+									th:class="${list.boardId}">이미지넣는곳</div>
 <!-- ----------------------------------------------변경됨----------------------------------------------------------------- -->
 								<div id="container4" th:value="${list.boardId}"
 									th:class="|container4_${list.boardId}|">
@@ -235,6 +235,8 @@
 									</form>
 								</div>
 								<!-- container5 -->
+								<button class="show" onclick="show()" th:value="${status.index}"
+									th:boardId="${list.boardId}">팝업열기</button>
 								<!-- <script>
 									function show() {
 										document.querySelector(".background").className = "background show";
@@ -334,6 +336,7 @@
 	<script src="/js/board/likes.js"></script>
 	<script src="/js/board/board.js"></script>
 	<script src="/js/board/reply.js"></script>
+	<script src="/js/board/modal.js"></script>
 	<script src="/js/board/tag.js"></script>
 	<script src="/js/board/notification.js"></script>
 	<script
