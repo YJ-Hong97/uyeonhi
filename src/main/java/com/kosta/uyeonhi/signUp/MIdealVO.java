@@ -25,7 +25,10 @@ import lombok.ToString;
 @Table(name = "m_ideal")
 public class MIdealVO {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idealId;
+	@ManyToOne
+	private IdealMenuVO ideal;
 	@ManyToOne
 	private UserVO user;
 }

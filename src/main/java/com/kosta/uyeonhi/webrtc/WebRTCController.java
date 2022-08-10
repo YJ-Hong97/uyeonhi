@@ -3,6 +3,7 @@ package com.kosta.uyeonhi.webrtc;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.io.Console;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -205,14 +206,27 @@ public class WebRTCController {
 	@MessageMapping("/video/promise-offer/{roomNo}")
 	public void promise(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
+		Date date = Date.valueOf(ob.get("date").toString());
 		UserVO user = uRepo.findById(ob.get("offer").toString()).get();
 		PromiseVO promise = PromiseVO.builder()
 				.me(user)
-				.time((Date)ob.get("date"))
+				.time(date)
 				.location(ob.get("location").toString())
+				.title(ob.get("title").toString())
 				.build();
 		promiseRepository.save(promise);
 		ob.put("pid", promise.getProId());
 		template.convertAndSend("/sub/video/promise-accept/"+roomNo, ob);
+	}
+	@MessageMapping("/video/promise-accept/{roomNo}")
+	public void promiseSuccess(JSONObject ob) {
+		String roomNo = ob.get("roomNo").toString();
+		UserVO user = uRepo.findById(ob.get("answer").toString()).get();
+		PromiseVO promise = promiseRepository.findById((long)Integer.parseInt(ob.get("pid").toString())).get();
+		promise.setPromise_ox("o");
+		promise.setYou(user);
+		promiseRepository.save(promise);
+		template.convertAndSend("/sub/video/promise-success/"+roomNo, ob);
+		
 	}
 }

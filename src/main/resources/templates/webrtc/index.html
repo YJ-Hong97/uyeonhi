@@ -266,13 +266,21 @@ body div {
 		stomp.subscribe(`/sub/video/promise-accept/${roomNo}`,function(data){
 			pdata = JSON.parse(data.body);
 			if(pdata["offer"]==mid){
-				
+				return;
 			}else{
-				$('#promiseSubmit').val("수락하기");
+				
+				$('#promiseSubmit').css("display","none");
+				$('#acceptBtn').css("display","block");
 				$('#location').val(pdata["location"]);
 				$('#date').val(pdata["date"]);
+				$('#title').val(pdata["title"]);
+				$('.promiseContainer').css("display","block");
 				accept(pdata["pid"]);
 			}
+		});
+		stomp.subscribe(`/sub/video/promise-success/${roomNo}`,function(data){
+			console.log(data);
+			alert("약속이 등록되었습니다.");
 		});
 		//채팅
 		  $('#sendBtn').click(function(){
@@ -534,22 +542,38 @@ function clock(){
 	$('#promiseSubmit').click(function(){
 		let location = $('#location').val();
 		let date = $('#date').val();
+		let title = $('#title').val();
 		stomp.send(`/pub/video/promise-offer/${roomNo}`,{},JSON.stringify({
 			location:location,
 			date:date,
 			roomNo:roomNo,
+			title:title,
 			offer:mid
 		}));
 		$('.promiseContainer').css("display","none");
 	});
  	function accept(pid){
- 		$('#promiseSubmit').click(function(){
+ 		
+ 		$('#acceptBtn').click(function(event){
+ 			event.preventDefault();
  			stomp.send(`/pub/video/promise-accept/${roomNo}`,{},JSON.stringify({
- 				pid:pid
- 			}))
+ 				pid:pid,
+ 				answer:mid,
+ 				roomNo:roomNo
+ 			}));
+ 			$('.promiseContainer').css("display","none");
  		});
- 		$('promiseContainer').css("display","none");
+ 		
+ 		
  	}
+ 	$('#promise').click(function(){
+ 		$('#promiseSubmit').css("display","block");
+ 		$('#acceptBtn').css("display","none");
+		$('#location').val("");
+		$('#date').val("");
+		$('#title').val("");
+ 		$('.promiseContainer').css("display","block");
+ 	});
   /*]]>*/
 </script>
 </body>
