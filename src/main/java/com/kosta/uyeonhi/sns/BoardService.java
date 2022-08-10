@@ -25,5 +25,7 @@ public interface BoardService {
 	List<Board> tagSearch(String tag);
 	
 	void recruitApply(long board_id,BoardRequestDTO boardRequestDTO);
+	
+	List<Board> likeList(String userId);
 
 }

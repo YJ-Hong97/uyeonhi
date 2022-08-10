@@ -51,7 +51,7 @@
 </head>
 
 <body>
-<<<<<<< HEAD
+HEAD
 =======
 
 
@@ -184,7 +184,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------------- 고친 칸 --------------------------- -->
 									<div class="text_container">
 										<div class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</div>
-										<span th:onclick="|textMore(${list.boardId})|" th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</span>
+										<span style="cursor: pointer;" th:onclick="|textMore(${list.boardId})|" th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</span>
 										<div id="recruitInfo" th:if="${list.board_type == '모집글'}" th:class="|recruitInfo_${list.boardId}|">
 											<span th:text="|마감일 : ${list.deadline}|"
 												th:id="|deadline_${list.boardId}|"></span><br> <span

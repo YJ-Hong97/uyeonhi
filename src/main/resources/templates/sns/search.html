@@ -81,7 +81,7 @@ border-top: 1px gray solid;
 <span th:text="${list.tag}" class="board"></span>
 <span th:text="${list.writer.id}" class="board"></span>
 </div> -->
-<div class="not-Find">[[${msg}]]</div>
+<div class="not-Find"><br>[[${msg}]]</div>
 <div id="search-result" th:each="list : ${searchList}">
 <div id="profile">
 	<img id="profile-image" th:src="${list.writer.profile[0].fileName}"
