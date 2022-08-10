@@ -77,6 +77,7 @@ public class BoardRequestDTO {
 				.boardId(board_id)
 				.content(content)
 				.board_type(board_type)
+				.image_path(image_path)
 				.writer(writer)
 				.tag(tag)
 				.total_person(total_person)

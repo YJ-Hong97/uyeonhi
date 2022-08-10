@@ -32,24 +32,29 @@
 			alert(res);
 			applyBtn.removeClass("apply");
 			applyBtn.addClass("cancleApply");
-			location.href = "/sns/sns1";
+			 location.reload();
 
 		}).fail(error=>{
 			console.log("오류",error);
 		});
-	}else if(applyBtn.hasClass("cancleApply") && Datecomparison(deadline, today)){
+	}else if(applyBtn.hasClass("cancleApply")){
 		
-		$.ajax({
+		if(Datecomparison(deadline, today)){
+			$.ajax({
 			type:"DELETE",
 			url:"/api/sns/applicantCancle/" + boardId
 		}).done(res=>{
 			alert(res);
 			applyBtn.removeClass("cancleApply");
 			applyBtn.addClass("apply");
-			location.href = "/sns/sns1";
+			 location.reload();
 		}).fail(error=>{
 			console.log("오류",error);
 		});
+		}else{
+			alert("당일 취소는 불가합니다");
+		}
+
 	}		
 	
 }

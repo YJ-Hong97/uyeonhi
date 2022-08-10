@@ -19,8 +19,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class BoardServiceImpl implements BoardService{
 
-	@Autowired
 	private final BoardRepository boardRepository;
+	
+	private final BoardS3Uploader boardS3Uploader;
 	
 	@Override
 	public Long saveBoard(BoardRequestDTO boardDTO) {
