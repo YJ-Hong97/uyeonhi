@@ -402,7 +402,7 @@ i {
 		var listboard = [[${listboard}]];
 		var boardpost = "";
 		for( board of listboard) {
-			if(board.board_type == "게시글") {
+			if([[${session.user.id}]] == [[${profileOther.id}]]) {
 				if(board.image_path != null) {
 					var image = board.image_path.split(',');
 					boardpost += `<div class="p-2 contain">
@@ -410,11 +410,26 @@ i {
 									src="${image[0]}">
 							</div>`;
 				}
-			}
-			else {
-				boardpost += `<div class="p-2 contain">
-						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
-					</div>`;
+				else {
+					boardpost += `<div class="p-2 contain">
+							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+						</div>`;
+				}
+			} else {
+				if(board.board_type == "게시글") {
+					if(board.image_path != null) {
+						var image = board.image_path.split(',');
+						boardpost += `<div class="p-2 contain">
+									<img class="postimg" alt=""
+										src="${image[0]}">
+								</div>`;
+					}
+					else {
+						boardpost += `<div class="p-2 contain">
+								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+							</div>`;
+					}
+				}
 			}
 		}
 		$("#postmodum").html(boardpost);

@@ -126,13 +126,5 @@ public class BoardController {
 	
 	
 	
-	
-	
-	/*@GetMapping("/boardWrite")
-	public String boardWirteGet() {
-		return "sns1";
-	}*/
-	
-	
 
 }
