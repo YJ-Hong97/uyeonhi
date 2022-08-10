@@ -140,7 +140,7 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.modifyMatching(pickid, user.getId());
 		System.out.println(pickid + "--id:" + user.getId());
-		return "redirect:/myPage/";
+		return "redirect:/myPage/'user.getId()'";
 	}
 
 	@Transactional
@@ -151,7 +151,7 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.deletMatching(pickid, user.getId());
 
-		return "redirect:/myPage/";
+		return "redirect:/myPage/'user.getId()'";
 	}
 
 	/*
