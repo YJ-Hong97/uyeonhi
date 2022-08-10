@@ -17,6 +17,8 @@ function likes(boardId){
 			heart.css("color","red");
 			heart.addClass("notlikes")
 			heart.removeClass('likes');
+			 location.reload();
+			
 		}).fail(error=>{
 			console.log("오류",error);
 		});
