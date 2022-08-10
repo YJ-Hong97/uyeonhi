@@ -175,67 +175,58 @@ public class MatchingController {
 		}
 		
 		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
-		aa:for(UserVO you: allUserVOs) {
-			if(you.getId()==user.getId()) {
-				continue aa;
-			}else {
-				int grade = 0;
-				List<MFavoriteVO> mFavoriteVOs = mfRepo.findByUser(you);
-				List<MHobbyVO>mHobbyVOs = mhRepo.findByUser(you);
-				List<MIdealVO>mIdealVOs = miRepo.findByUser(you);
-				for(MFavoriteVO m: mFavoriteVOs) {
-					for(FavoriteVO f:favoriteVOs) {
-						if(m.getFavorite().getFavoriteId()==f.getFavorite().getFavoriteId()) {
-							grade++;
-						}
+		for(UserVO you: allUserVOs) {
+			int grade = 0;
+			List<MFavoriteVO> mFavoriteVOs = mfRepo.findByUser(you);
+			List<MHobbyVO>mHobbyVOs = mhRepo.findByUser(you);
+			List<MIdealVO>mIdealVOs = miRepo.findByUser(you);
+			for(MFavoriteVO m: mFavoriteVOs) {
+				for(FavoriteVO f:favoriteVOs) {
+					if(m.getFavorite().getFavoriteId()==f.getFavorite().getFavoriteId()) {
+						grade++;
 					}
 				}
-				for(MHobbyVO m: mHobbyVOs) {
-					for(HobbyVO f:hobbyVOs) {
-						if(m.getHobby().getHobbyId()==f.getHobby().getHobbyId()) {
-							grade++;
-						}
-					}
-				}
-				for(MIdealVO m: mIdealVOs) {
-					for(IdealTypeVO f:idealTypeVOs) {
-						if(m.getIdeal().getIdealId()==f.getIdeal().getIdealId()) {
-							grade++;
-						}
-					}
-				}
-				matchingGrade gradeVo = matchingGrade.builder()
-						.user(user)
-						.target(you)
-						.grade(grade)
-						.build();
-				gradeRepo.save(gradeVo);
 			}
+			for(MHobbyVO m: mHobbyVOs) {
+				for(HobbyVO f:hobbyVOs) {
+					if(m.getHobby().getHobbyId()==f.getHobby().getHobbyId()) {
+						grade++;
+					}
+				}
+			}
+			for(MIdealVO m: mIdealVOs) {
+				for(IdealTypeVO f:idealTypeVOs) {
+					if(m.getIdeal().getIdealId()==f.getIdeal().getIdealId()) {
+						grade++;
+					}
+				}
+			}
+			matchingGrade gradeVo = matchingGrade.builder()
+					.user(user)
+					.target(you)
+					.grade(grade)
+					.build();
+			gradeRepo.save(gradeVo);
 		}
 		
 		List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
 		Map<UserVO,List<String>> targets = new HashMap<>();
 		for(int i =0; i<grades.size(); i++) {
-			if(i<2) {
-				UserVO target = grades.get(i).getTarget();
-				List<String> favList = new ArrayList<>();
-				mfRepo.findByUser(target).forEach(mf->{
-					favList.add(mf.getFavorite().getFavoriteValue());
-				});
-				mhRepo.findByUser(target).forEach(mh->{
-					favList.add(mh.getHobby().getHobbyValue());
-				});
-				miRepo.findByUser(target).forEach(mi->{
-					favList.add(mi.getIdeal().getIdealValue());
-				});
-				targets.put(target, favList);
-			}else {
-				break;
-			}
+			UserVO target = grades.get(i).getTarget();
+			List<String> favList = new ArrayList<>();
+			mfRepo.findByUser(target).forEach(mf->{
+				favList.add(mf.getFavorite().getFavoriteValue());
+			});
+			mhRepo.findByUser(target).forEach(mh->{
+				favList.add(mh.getHobby().getHobbyValue());
+			});
+			miRepo.findByUser(target).forEach(mi->{
+				favList.add(mi.getIdeal().getIdealValue());
+			});
+			targets.put(target, favList);
 		}
-		model.addAttribute("user", user);
 		model.addAttribute("targets",targets);
-		return "/matching/main";
+		return "/fragment/userslider";
 		
 		
 	}
