@@ -18,9 +18,12 @@
 	<div id="select_tab">
 	    <ul>
 	      <li th:each="pick : ${pickMeList}">
-	         <span th:text="${pick.id}"></span>
-	         <button th:onclick="location.href ='/matYes?pickid=[[${pick.id}]]'">수락</button>
-	         <button th:onclick="location.href ='/matNo?pickid=[[${pick.id}]]'">거절</button>
+
+	         <span th:text="${pick.id.nickname}"></span>
+	         <button  th:onclick="location.href ='/matYes?pickid=[[${pick.id.id}]]'">매칭수락</button>
+	         <button  th:onclick="location.href ='/matNo?pickid=[[${pick.id.id}]]'">매칭거절</button>
+			 
+
 	      </li>
 	    </ul>
 	</div>
