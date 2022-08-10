@@ -9,4 +9,6 @@ public interface NotificationService {
 	int notificationCount(String receiverId);
 	
 	List<Notification> getNotiList(String receiverId);
+	
+	void notificationDelete(long notificationId);
 }
