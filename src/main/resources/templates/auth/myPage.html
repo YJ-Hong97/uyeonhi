@@ -321,8 +321,8 @@ i {
 							</button>
 							<ul class="dropdown-menu">
 							    <li><button class="dropdown-item" type="button">음성 통화</button></li>
-							    <li><button class="dropdown-item" type="button">화상 통화</button></li>
-							    <li><a class="dropdown-item" type="button" th:href="@{/chat/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
+							    <li><button class="dropdown-item" type="button" id = "videoChat">화상 통화</button></li>
+							    <li><a class="dropdown-item" type="button" th:href="@{/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
 							    <li><hr class="dropdown-divider"></li>
    								<li><button class="dropdown-item" onclick ="cancelmatching()"> 매칭 취소 </button></li>
 						  	</ul>
@@ -408,6 +408,7 @@ i {
 	<th:block th:replace="~{/mypage/block :: block}"></th:block>
 	<th:block th:replace="~{/mypage/updatePW::updatePW}"></th:block>
 	<th:block th:replace="~{/mypage/daccount::daccount}"></th:block>
+	<th:block th:replace="~{/auth/videoRoomModal::makeVideo}"></th:block>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script th:inline="javascript">
 	//setting창 켜기
@@ -680,7 +681,24 @@ i {
 			 });
 			 
 		}	
-
+		//화상통화
+		$('#videoChat').click(function(){
+				let tid = /*[[${profileOther.id}]]*/'default';
+				let mid = /*[[${session.user.id}]]*/'default';
+				$.ajax({
+					url:`/video/existRoom/${mid}/${tid}`,
+					success:function(response){
+						if(response=="false"){
+							$('.videoModalContainer').css("display","block");
+						}else{
+							location.href = `/video/socket/${response}`;
+						}
+					}
+				
+				});
+			
+		});
+		
 		 
 	</script>
 	<div id="here">

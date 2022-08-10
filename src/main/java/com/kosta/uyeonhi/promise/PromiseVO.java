@@ -1,5 +1,6 @@
 package com.kosta.uyeonhi.promise;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -36,8 +37,7 @@ public class PromiseVO {
 
 	String title;
 	
-	@UpdateTimestamp
-	Timestamp time;
+	Date time;
 	
 	@ManyToOne
 	UserVO me;
