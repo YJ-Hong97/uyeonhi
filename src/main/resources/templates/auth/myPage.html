@@ -322,7 +322,7 @@ i {
 							<ul class="dropdown-menu">
 							    <li><button class="dropdown-item" type="button">음성 통화</button></li>
 							    <li><button class="dropdown-item" type="button" id = "videoChat">화상 통화</button></li>
-							    <li><a class="dropdown-item" type="button" th:href="@{/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
+							    <li><a class="dropdown-item" type="button" th:href="@{/chat/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
 							    <li><hr class="dropdown-divider"></li>
    								<li><button class="dropdown-item" onclick ="cancelmatching()"> 매칭 취소 </button></li>
 						  	</ul>
