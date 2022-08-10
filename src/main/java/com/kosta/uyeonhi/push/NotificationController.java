@@ -23,9 +23,10 @@ public class NotificationController {
 	
 	@GetMapping("/list")
 	@ResponseBody
-	public List<Notification> notiList( String userId){
+	public List<Notification> notiList(String userId, Model model){
 		System.out.println("여기까지는 오나?");
 		List<Notification> list = notificationService.getNotiList(userId);
+		model.addAttribute("count", notificationService.notificationCount(userId));
 		return list;
 	}
 }

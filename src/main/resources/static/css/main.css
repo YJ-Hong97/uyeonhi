@@ -1,5 +1,7 @@
+
 #jihyun{
-	width: auto;
+	display:block;
+	width: 100vw;
 	height: 100vh;
 	background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
 }
@@ -23,7 +25,7 @@ line-height: 110.5%;
 
 color: #FFFFFF;
 }
-#text2{
+ #jihyun #textAll #text2{
 	
 position: absolute;
 width: 569px;
@@ -45,7 +47,7 @@ color: #FFFFFF;
 }
 
 
-#image1{
+ #jihyun #image1{
 
 position: absolute;
 /* width: 396px;
@@ -57,7 +59,7 @@ top: 130%;
 
 z-index : 2;
 }
-#image2{
+ #jihyun #image2{
 position: absolute;
 /*  width: 396px;
 height: 567px; */

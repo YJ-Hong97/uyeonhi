@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationResponseDTO {
+	
+	private long notificationId;
 	private String senderId;
 	private UserVO receiverId;
 	private String notificationType;
@@ -27,6 +29,7 @@ public class NotificationResponseDTO {
 	
 	
 	public NotificationResponseDTO(Notification notification) {
+		this.notificationId = notification.getNotification_id();
 		this.senderId = notification.getSenderId();
 		this.receiverId = notification.getReceiverId();
 		this.notificationType = notification.getNotificationType();
