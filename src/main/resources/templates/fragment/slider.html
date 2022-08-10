@@ -18,40 +18,7 @@
 			</div>
 		</div>
 	</body>
-	<script>
-		$(function () {
-			$('.slider-wrap').slick({
-				slide: 'div',        
-				infinite: true,    
-				slidesToShow: 1,       
-				slidesToScroll: 1,        
-				speed: 500,    
-				arrows: true,        
-				autoplay: true,          
-				autoplaySpeed: 10000,       
-				pauseOnHover: true,     
-				vertical: false,     
-				prevArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; z-index:10;' class='slick-prev'>이전</button>",
-				nextArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; right:0 ; z-index:10;' class='slick-next'>다음</button>",
-				draggable: true,     
-				responsive: [ 
-					{
-						breakpoint: 960, //화면 사이즈 960px
-						settings: {
-							slidesToShow: 4
-						}
-					},
-					{
-						breakpoint: 768, //화면 사이즈 768px
-						settings: {
-							slidesToShow: 5
-						}
-					}
-				]
-
-			});
-		})
-	</script>
+	
 </th:block>
 
 </html>
