@@ -360,8 +360,13 @@ i {
 			<div class="p-2 type-btn nav-item">
 				<a class="nav-link active" aria-current="page" href="#">게시글</a>
 			</div>
-			<div class="p-2 type-btn nav-item">
-				<a class="nav-link" href="#">모집글</a>
+			<div class="p-2 type-btn nav-item"
+				th:if="${profileOther.id} != ${session.user.id}">
+				<a class="nav-link active" aria-current="page" href="#">모집글</a>
+			</div>
+			<div class="p-2 type-btn nav-item likeList" 
+				th:if="${profileOther.id} == ${session.user.id}">
+				<a class="nav-link" href="#">좋아요</a>
 			</div>
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} == ${session.user.id}">
@@ -373,6 +378,7 @@ i {
 			</div>
 
 		</div>
+
 		<div id="select_tab"></div>
 		<div id="contentImg" class="d-flex justify-content-evenly flex-wrap">
 			<div class="p-2 contain">
@@ -399,7 +405,10 @@ i {
 				<img class="postimg" alt=""
 					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
 			</div>
-		</div>
+
+		<!-- <div class="d-flex justify-content-evenly flex-wrap listt">
+
+		</div> -->
 	</div>
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -416,6 +425,7 @@ i {
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	<th:block th:replace="~{/fragment/header::header}"></th:block>
 	<th:block th:replace="~{/mypage/setting :: setting}"></th:block>
@@ -727,6 +737,26 @@ i {
 				}
 			});
 		});
+		
+		
+		//좋아요 리스트
+		 $('.likeList').on('click', function() {
+			// $(".listt").text("와우");
+			 
+ 				$.ajax({
+					url: '/sns/likeList',
+					type: "GET",
+					data:{"user_id":[[${session.user.id}]]},
+					dataType:"html",
+					success : function(res){
+						$(".listt").html(res);
+					},
+					error : function(error){
+						console.log(error);
+					}
+				}); 
+
+});
 		
 	</script>
 </body>
