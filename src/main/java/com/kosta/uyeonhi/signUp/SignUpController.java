@@ -89,18 +89,18 @@ public class SignUpController {
 	}
 	@RequestMapping("/signUp2")
 	public ModelAndView uSignUp2(ModelAndView mnv) {
+		mnv.addObject("kakao",false);
 		mnv.setViewName("signUp/signUp2");
 		return mnv;
 	}
 	@PostMapping("/signUp3/{phone}")
 	public String uSignUp3(@PathVariable String phone) {
-		
-		log.info(phone);
 		signUpInfo.put("phone", phone);
 		return "s";
 	}
 	@GetMapping("/signUp3")
 	public ModelAndView uSignUp3(ModelAndView mnv) {
+		mnv.addObject("kakao",false);
 		mnv.setViewName("signUp/signUp3");
 		return mnv;
 	}
@@ -108,19 +108,20 @@ public class SignUpController {
 	public void uSignUp4(@PathVariable("email")String email) {
 		log.info(email);
 		signUpInfo.put("email", email);
+		signUpInfo.put("kakao", "false");
 		log.info(signUpInfo.toString());
 	}
 	@GetMapping("/signUp4/{signUpInfo}")
 	public ModelAndView uSignUp4(ModelAndView mnv,@PathVariable Map<String, String> signUpInfo) {
 		this.signUpInfo = signUpInfo;
-		log.info(signUpInfo.toString());
+		mnv.addObject("signUpInfo",signUpInfo);
 		mnv.setViewName("signUp/signUp4");
 		return mnv;
 	}
+	
 	@PostMapping("/validTestId/{uid}")
 	public String validTestId(@PathVariable String uid) {
-		log.info("아아");
-		log.info(uid);
+		
 		boolean result = true;
 		result = uRepo.existsById(uid);
 		result = mRepo.existsById(uid);
@@ -154,6 +155,7 @@ public class SignUpController {
 	}
 	@GetMapping("/mailing")
 	public ModelAndView mailing(ModelAndView mnv) {
+		mnv.addObject("kakao",false);
 		mnv.setViewName("signUp/signUpMail");
 		return mnv;
 	}
@@ -169,7 +171,9 @@ public class SignUpController {
 	@RequestMapping(value = "/signUp4-1", method = RequestMethod.POST)
 	public void uMyinfo(String uname, String uid, String upassword, String unick) {
 		signUpInfo.put("uname", uname);
-		signUpInfo.put("uid", uid);
+		if(uid != null) {
+			signUpInfo.put("uid", uid);
+		}
 		signUpInfo.put("upassword", upassword);
 		signUpInfo.put("unick", unick);
 		log.info(signUpInfo.toString());
@@ -179,7 +183,6 @@ public class SignUpController {
 
 	
 	 @GetMapping("/signUp4-1") public ModelAndView uMyinfo2(ModelAndView mnv) {
-	 
 	 Map<String, String> infoMap = new HashMap<>(); iRepo.findAll().forEach(i->{
 	 infoMap.put(i.getIdealId()+"i", i.getIdealValue()); });
 	 fRepo.findAll().forEach(f->{ infoMap.put(f.getFavoriteId()+"f",
@@ -268,7 +271,6 @@ public class SignUpController {
 	}
 	@GetMapping("/signUp8")
 	public ModelAndView uSignUp8(ModelAndView mnv) {
-		
 		mnv.setViewName("signUp/signUp8");
 		return mnv;
 	}
@@ -284,7 +286,6 @@ public class SignUpController {
 		signUpInfo.put("mbti", mbti);
 		signUpInfo.put("gender", gender);
 		ArrayList<String> files = uploadService.uploadFile(profile);
-		
 		UserVO user = UserVO.builder()
 				.birth(birth)
 				.email(signUpInfo.get("email"))
@@ -295,6 +296,7 @@ public class SignUpController {
 				.nickname(signUpInfo.get("unick"))
 				.password(signUpInfo.get("upassword"))
 				.phone(signUpInfo.get("phone"))
+				.kakao(signUpInfo.get("kakao"))
 				.build();
 		
 		
@@ -318,6 +320,7 @@ public class SignUpController {
 		 }
 		 
 		 user.setProfile(profiless);
+		 
 		 mService.joinUser(user);
 		
 		//내 소개 저장
@@ -364,8 +367,34 @@ public class SignUpController {
 					.build();
 			idealRepository.save(ideal);
 		});
-		mnv.setViewName("/auth/login");
+		mnv.setViewName("redirect:/auth/login");
 		return mnv;
 	}
+	
+	@RequestMapping("/kakao/signUp2")
+	public ModelAndView kuSignUp2(ModelAndView mnv) {
+		mnv.addObject("kakao",true);
+		mnv.setViewName("signUp/signUp2");
+		return mnv;
+	}
+	@PostMapping("/kakao/signUp3/{phone}")
+	public String kSignUp3(@PathVariable String phone) {
+		
+		signUpInfo.put("phone", phone);
+		return "s";
+	}
+	@GetMapping("/kakao/signUp3/{email}/{kakao}")
+	public ModelAndView kSignUp3(ModelAndView mnv,@PathVariable("email")String email,@PathVariable("kakao")String kakao) {
+		signUpInfo.put("kakao", kakao);
+		signUpInfo.put("email", email);
+		signUpInfo.put("uid", email);
+		mnv.addObject("kakao",true);
+		mnv.addObject("signUpInfo",signUpInfo);
+		mnv.setViewName("signUp/signUp4");
+		return mnv;
+	}
+	
+	
+	
 	
 }

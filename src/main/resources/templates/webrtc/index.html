@@ -104,15 +104,6 @@ body div {
 	float: bottom;
 }
 
-.chatContainer span {
-	display: block;
-	color: white;
-	margin-bottom: 0;
-	margin-top: 5%;
-	margin-left: 10%;
-	text-align: left;
-}
-
 .timeContainer {
 	position: absolute;
 	top: 0;
@@ -174,10 +165,30 @@ body div {
 .messageBox::-webkit-scrollbar-track{
 	background-color: rgba(255,255,255,0.2);
 }
+.chatHeader{
+	width:80%;
+	margin-top:2rem;
+	text-align: left;
+	color:white;
+}
+.chatHeader span{
+	margin-right:1rem;
+}
+#promise{
+	width:5rem;
+	border-radius: 0.5rem;
+	border:0;
+	background-color: #B983FF;
+	vertical-align: 0.5rem;
+	cursor: pointer;
+	
+}
 </style>
 <body>
 	<div class="chatContainer">
-		<span class="material-symbols-outlined"> send </span>
+	<div class = "chatHeader">
+		<span class="material-symbols-outlined"> send </span><span><button type = "button" id = "promise">약속잡기</button></span>
+	</div>
 		<div class="chatBox">
 			<div class="messageBox">
 				<table class="messageBox2">
@@ -189,6 +200,7 @@ body div {
 				<button type="button" id="sendBtn">전송</button>
 			</div>
 		</div>
+		<th:block th:replace = "~{/fragment/promiseModal::promise}">
 	</div>
 	<div class="videoContainer">
 		<video id="remoteVideo" autoplay playsinline></video>
@@ -251,6 +263,17 @@ body div {
 		stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
 			 chat(data);
 		 });
+		stomp.subscribe(`/sub/video/promise-accept/${roomNo}`,function(data){
+			pdata = JSON.parse(data.body);
+			if(pdata["offer"]==mid){
+				
+			}else{
+				$('#promiseSubmit').val("수락하기");
+				$('#location').val(pdata["location"]);
+				$('#date').val(pdata["date"]);
+				accept(pdata["pid"]);
+			}
+		});
 		//채팅
 		  $('#sendBtn').click(function(){
 			  message = $('#message').val();
@@ -507,7 +530,26 @@ function clock(){
 		
 		event.returnValue = "";
 	});
- 
+	//약속잡기
+	$('#promiseSubmit').click(function(){
+		let location = $('#location').val();
+		let date = $('#date').val();
+		stomp.send(`/pub/video/promise-offer/${roomNo}`,{},JSON.stringify({
+			location:location,
+			date:date,
+			roomNo:roomNo,
+			offer:mid
+		}));
+		$('.promiseContainer').css("display","none");
+	});
+ 	function accept(pid){
+ 		$('#promiseSubmit').click(function(){
+ 			stomp.send(`/pub/video/promise-accept/${roomNo}`,{},JSON.stringify({
+ 				pid:pid
+ 			}))
+ 		});
+ 		$('promiseContainer').css("display","none");
+ 	}
   /*]]>*/
 </script>
 </body>
