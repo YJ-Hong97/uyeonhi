@@ -27,6 +27,7 @@
 	integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
 <style type="text/css">
 .flex-shrink-0 #profile {
 	width: 134px;
@@ -305,31 +306,35 @@ i {
 						</div>
 						<div th:unless="${isFollow == 1}">
 							<button type="button" id="follows" class="btn btn-light doFollow">
-								팔로우
-							</button>
+								팔로우</button>
 						</div>
 					</div>
 
-					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
+					<div class="p-2"
+						th:unless="${profileOther.id} == ${session.user.id}">
 						<div th:if="${mcheck} == -1">
-							<button type="button" id = "sendMat" class="btn btn-light doMatch" onclick ="matching()">매칭신청
-							</button>
+							<button type="button" id="sendMat" class="btn btn-light doMatch"
+								onclick="matching()">매칭신청</button>
 						</div>
 						<div th:if="${mcheck} == 0">
-							<button type="button" id = "sendMat" class="btn btn-light doMatch is-check">매칭신청중..
-							</button>
+							<button type="button" id="sendMat"
+								class="btn btn-light doMatch is-check">매칭신청중..</button>
 						</div>
 						<div th:if="${mcheck} == 1">
-							<button type="button" id = "sendMat" class="btn btn-light doMatch is-check dropdown-toggle" 
-							data-bs-toggle="dropdown" aria-expanded="false">매칭성공
-							</button>
+							<button type="button" id="sendMat"
+								class="btn btn-light doMatch is-check dropdown-toggle"
+								data-bs-toggle="dropdown" aria-expanded="false">매칭성공</button>
 							<ul class="dropdown-menu">
-							    <li><button class="dropdown-item" type="button">음성 통화</button></li>
-							    <li><button class="dropdown-item" type="button" id = "videoChat">화상 통화</button></li>
-							    <li><a class="dropdown-item" type="button" th:href="@{/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
-							    <li><hr class="dropdown-divider"></li>
-   								<li><button class="dropdown-item" onclick ="cancelmatching()"> 매칭 취소 </button></li>
-						  	</ul>
+								<li><button class="dropdown-item" type="button">음성
+										통화</button></li>
+								<li><button class="dropdown-item" type="button"
+										id="videoChat">화상 통화</button></li>
+								<li><a class="dropdown-item" type="button"
+									th:href="@{/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><button class="dropdown-item"
+										onclick="cancelmatching()">매칭 취소</button></li>
+							</ul>
 						</div>
 
 					</div>
@@ -361,17 +366,15 @@ i {
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} == ${session.user.id}">
 
-				<a class="nav-link" onClick="f_matchingSearch()" href="#">
-					내 매칭 상대
+				<a class="nav-link" onClick="f_matchingSearch()" href="#"> 
+				내 매칭 상대 
 				</a>
 
 			</div>
 
 		</div>
-		<div id="select_tab">
-	
-		</div>
-		<div class="d-flex justify-content-evenly flex-wrap" id = "contentImg">
+		<div id="select_tab"></div>
+		<div id="contentImg" class="d-flex justify-content-evenly flex-wrap">
 			<div class="p-2 contain">
 				<img class="postimg" alt=""
 					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
@@ -398,7 +401,6 @@ i {
 			</div>
 		</div>
 	</div>
-	
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -679,42 +681,37 @@ i {
 		} 
 		function cancelmatching(){
 			alert("매칭을 취소하겠습니까?");
-		} 
-			
+		} 	
 			
 		function f_matchingSearch(){
+			//$("#contentImg").hide();
+			$("#contentImg").css("display","none");
 			//alert("aaaa");
  			$.ajax({
  				url:"/matView",
 				success:function(responseData){
+					if(responseData == null){
+						alert("매칭 된 상대가 없습니다.");
+					} 
  					console.log(responseData);
- 					var html = '';
- 					html += '<ul>';
- 					for(let i in responseData){
- 						html += '	<li>';
- 						html += '		<span th:text = [[responseData.id]] ></span>';
- 						html += '		<button th:onclick="location.href =\'/matYes?pickid=[[responseData.id]]\'">수락</button>';
- 						html += '		<button th:onclick="location.href =\'/matNo?pickid=[[responseData.id]]\'">거절</button>';
- 						html += '	</li>';
- 					}
- 					html += '</ul>';
-					 
-					//$("#select_tab").load("/matView");
- 					$("#select_tab").html(html); 
- 					$("#contentImg").hide();
- 				}
- 				
- 			 }); 
- 		}
-	 	
-		/* html += '	<li>';
-			html += '		<span th:text=${responseData}></span>';
-			html += '		<button th:onclick="location.href =\'/matYes?pickid=[[${responseData}]]\'">수락</button>';
-			html += '		<button th:onclick="location.href =\'/matNo?pickid=[[${responseData}]]\'">거절</button>';
-			html += '	</li>'; */
-
-			 
+ 					
+					//$("#select_tab").html(html);
+					$("#select_tab").load("/matView");
+  				}	
+			}); 
+ 		}	
 		
+	/* 	var html = '';
+			html += '<ul>';
+			for(let i in responseData){
+				html += '	<li>';
+				html += '		<span th:text = responseData.id ></span>';
+				html += '		<button th:onclick="location.href =\'/matYes?pickid=[[responseData.id]]\'">수락</button>';
+				html += '		<button th:onclick="location.href =\'/matNo?pickid=[[responseData.id]]\'">거절</button>';
+				html += '	</li>';
+			}
+			html += '</ul>'; */
+			
 		//화상통화
 		$('#videoChat').click(function(){
 				let tid = /*[[${profileOther.id}]]*/'default';
@@ -725,19 +722,13 @@ i {
 						if(response=="false"){
 							$('.videoModalContainer').css("display","block");
 						}else{
-							location.href = `/video/socket/${response}`;
-						}
+						location.href = `/video/socket/${response}`;
 					}
-				
-				});
-			
+				}
+			});
 		});
 		
-		 
 	</script>
-	
-
-
 </body>
 </html>
 
