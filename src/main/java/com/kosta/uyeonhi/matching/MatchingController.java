@@ -173,12 +173,10 @@ public class MatchingController {
 		}else {
 			yourGender = Gender.MALE;
 		}
-		
+		gradeRepo.deleteByUser(user);
 		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
-		aa:for(UserVO you: allUserVOs) {
-			if(you.getId()==user.getId()) {
-				continue aa;
-			}else {
+		for(UserVO you: allUserVOs) {
+			
 				int grade = 0;
 				List<MFavoriteVO> mFavoriteVOs = mfRepo.findByUser(you);
 				List<MHobbyVO>mHobbyVOs = mhRepo.findByUser(you);
@@ -210,7 +208,6 @@ public class MatchingController {
 						.grade(grade)
 						.build();
 				gradeRepo.save(gradeVo);
-			}
 		}
 		
 		List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
@@ -233,9 +230,8 @@ public class MatchingController {
 				break;
 			}
 		}
-		model.addAttribute("user", user);
 		model.addAttribute("targets",targets);
-		return "/matching/main";
+		return "/fragment/userslider";
 		
 		
 	}
