@@ -23,4 +23,7 @@ public interface BoardRepository extends PagingAndSortingRepository<Board, Long>
 	@Query(value = "update board set applicant_person = applicant_person + 1 where board_id = ?1", nativeQuery = true)
 	void recruitApply(Long boardId);
 	
+	@Query(value = "select b.* from board b,likes l WHERE b.board_id = l.board_id AND l.user_id = ?", nativeQuery = true)
+	List<Board> likeBoardList(String userId);
+	
 }
