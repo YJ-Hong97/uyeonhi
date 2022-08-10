@@ -2,6 +2,8 @@ package com.kosta.uyeonhi.signUp;
 
 
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,4 +16,5 @@ public interface UserRepository extends CrudRepository<UserVO, String>{
 	@Transactional
 	@Modifying
 	void deleteById(String userId);
+	List<UserVO> findByGender(Gender gender);
 }

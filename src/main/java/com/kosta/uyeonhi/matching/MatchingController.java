@@ -1,16 +1,36 @@
 package com.kosta.uyeonhi.matching;
 
-import java.util.List;
+import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kosta.uyeonhi.signUp.FavoriteRepository;
+import com.kosta.uyeonhi.signUp.FavoriteVO;
+import com.kosta.uyeonhi.signUp.Gender;
+import com.kosta.uyeonhi.signUp.HobbyRepository;
+import com.kosta.uyeonhi.signUp.HobbyVO;
+import com.kosta.uyeonhi.signUp.IdealRepository;
+import com.kosta.uyeonhi.signUp.IdealTypeVO;
+import com.kosta.uyeonhi.signUp.MFavoriteRepository;
+import com.kosta.uyeonhi.signUp.MFavoriteVO;
+import com.kosta.uyeonhi.signUp.MHobbyRepository;
+import com.kosta.uyeonhi.signUp.MHobbyVO;
+import com.kosta.uyeonhi.signUp.MIdealRepository;
+import com.kosta.uyeonhi.signUp.MIdealVO;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -21,6 +41,20 @@ public class MatchingController {
 	MatchingRepository mRepo;
 	@Autowired
 	UserRepository uRepo;
+	@Autowired
+	MFavoriteRepository mfRepo;
+	@Autowired
+	MHobbyRepository mhRepo;
+	@Autowired
+	MIdealRepository miRepo;
+	@Autowired
+	HobbyRepository hRepo;
+	@Autowired
+	FavoriteRepository fRepo;
+	@Autowired
+	IdealRepository iRepo;
+	@Autowired
+	MatchingGradeRepository gradeRepo;
 	
 	@GetMapping(value = "/matching")
 	@ResponseBody
@@ -108,5 +142,84 @@ public class MatchingController {
 	 * 
 	 * return "/matching/NewFile"; }
 	 */
+	@GetMapping("/matchingList")
+	public String matchingList(Model model,HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		List<FavoriteVO> favoriteVOs = fRepo.findByuserId(user.getId());
+		List<HobbyVO> hobbyVOs = hRepo.findByuserId(user.getId());
+		List<IdealTypeVO> idealTypeVOs = iRepo.findByuserId(user.getId());
+		
+		Gender yourGender = null;
+		if(user.getGender()==Gender.MALE) {
+			yourGender = Gender.FEMALE;
+		}else {
+			yourGender = Gender.MALE;
+		}
+		
+		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
+		aa:for(UserVO you: allUserVOs) {
+			if(you.getId()==user.getId()) {
+				continue aa;
+			}else {
+				int grade = 0;
+				List<MFavoriteVO> mFavoriteVOs = mfRepo.findByUser(you);
+				List<MHobbyVO>mHobbyVOs = mhRepo.findByUser(you);
+				List<MIdealVO>mIdealVOs = miRepo.findByUser(you);
+				for(MFavoriteVO m: mFavoriteVOs) {
+					for(FavoriteVO f:favoriteVOs) {
+						if(m.getFavorite().getFavoriteId()==f.getFavorite().getFavoriteId()) {
+							grade++;
+						}
+					}
+				}
+				for(MHobbyVO m: mHobbyVOs) {
+					for(HobbyVO f:hobbyVOs) {
+						if(m.getHobby().getHobbyId()==f.getHobby().getHobbyId()) {
+							grade++;
+						}
+					}
+				}
+				for(MIdealVO m: mIdealVOs) {
+					for(IdealTypeVO f:idealTypeVOs) {
+						if(m.getIdeal().getIdealId()==f.getIdeal().getIdealId()) {
+							grade++;
+						}
+					}
+				}
+				matchingGrade gradeVo = matchingGrade.builder()
+						.user(user)
+						.target(you)
+						.grade(grade)
+						.build();
+				gradeRepo.save(gradeVo);
+			}
+		}
+		
+		List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
+		Map<UserVO,List<String>> targets = new HashMap<>();
+		for(int i =0; i<grades.size(); i++) {
+			if(i<2) {
+				UserVO target = grades.get(i).getTarget();
+				List<String> favList = new ArrayList<>();
+				mfRepo.findByUser(target).forEach(mf->{
+					favList.add(mf.getFavorite().getFavoriteValue());
+				});
+				mhRepo.findByUser(target).forEach(mh->{
+					favList.add(mh.getHobby().getHobbyValue());
+				});
+				miRepo.findByUser(target).forEach(mi->{
+					favList.add(mi.getIdeal().getIdealValue());
+				});
+				targets.put(target, favList);
+			}else {
+				break;
+			}
+		}
+		model.addAttribute("user", user);
+		model.addAttribute("targets",targets);
+		return "/matching/main";
+		
+		
+	}
 		 
 }
