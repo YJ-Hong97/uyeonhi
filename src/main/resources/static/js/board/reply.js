@@ -114,13 +114,22 @@ $(document).on("click", ".btn_reReply", function() {
 	let content = $(".input_reReply" + parentId).val();
 	let replyWriter = $(".hidden_Writer" + parentId).val();
 	let reReplyWriter = $(".userSession").text();
-;
+
+	
+
 	let data = {
 		boardId: boardId,
 		parentId: parentId,
 		content: content,
 		depth: 1
 	};
+	
+	let alarmData = {
+		senderId : reReplyWriter,
+		receiverId : replyWriter,
+		boardId : parentId,
+		notificationType : "reReply"
+	}
 
 	console.log(data);
 	console.log("작성자 이름"+replyWriter);
@@ -140,6 +149,8 @@ $(document).on("click", ".btn_reReply", function() {
 		success: function(res) {
 			alert("댓글 등록 완료");
 			location.href = "/sns/sns1";
+			alarmSave(alarmData);
+
 			
 			if(replyWriter != reReplyWriter){
            		if(websocket){

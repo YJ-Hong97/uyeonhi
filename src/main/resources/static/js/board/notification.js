@@ -36,9 +36,10 @@ function alramList(){
 	         		if(categori == "Reply"){
 					a += `<span class="font-weight-bold"><a href="#"  onclick="alramClick();">${value.senderId}님이 회원님의 게시물에 댓글을 달았습니다</a></span>`;
 	         		a += `</div>`
-					}
-	         		 
-	         		 
+					} else if(categori == "reReply"){
+	         		 a += `<span class="font-weight-bold"><a href="#"  onclick="alramClick();">${value.senderId}님이 회원님의 댓글에 답변을 달았습니다</a></span>`;
+	         		 a += `</div>`
+	         		 }
 	         	 });
 	         	 
 	         	 $("#alarmList").html(a);

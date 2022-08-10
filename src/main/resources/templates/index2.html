@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<head>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+#firstContainer {
+	margin: 0 auto;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 110%;
+	text-align: left;
+}
+
+#yujin {
+	width: auto;
+	height: 100vh;
+	background-color: rgba(185, 131, 255, 0.2);
+}
+
+#yujin table {
+	position: absolute;
+	top: 50%;
+	left: 30%;
+	transform: translate(-50%, -50%);
+	width: 50%;
+	text-align: left;
+	z-index: 1;
+}
+
+#yujin th {
+	height: 5rem;
+	font-size: 3rem;
+}
+
+#yujin td {
+	font-size: 1.5rem;
+	height: 2rem;
+}
+
+#yujinImg {
+	position: absolute;
+	top: 50%;
+	right: 30%;
+	transform: translate(50%, -50%); width : auto; height : 50vh;
+	border-radius : 0.5rem;
+	border-radius: 0.5rem;
+	transform: translate(50%, -50%);
+	width: auto;
+	height: 50vh;
+	border-radius: 0.5rem;
+}
+</style>
+</head>
+<body>
+	<div id="firstContainer">
+		<div id="josungmin"></div>
+		<div id="seeun"></div>
+		<div id="jaehwan"></div>
+		<div id="jihyun">
+			<div id="textAll">
+				<span id="text1"> 우연히에만 <br> 올리고 싶은 이야기들
+				</span> <br> <br> <span id="text2"> 우리끼리 공유하고 싶은 <br>
+					이야기를 자유롭게 나눠요
+				</span>
+			</div>
+			<img id="image1" src="/images/KakaoTalk_20220808_133859376.jpg">
+			<img id="image2" src="/images/KakaoTalk_20220808_133900628.jpg">
+		</div>
+		<div id="yujin">
+			<img id="yujinImg" src="http://localhost:7777/images/우연히 영상통화.png">
+			<table>
+				<thead>
+					<tr>
+						<th>설렘 가득 무제한 통화</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>심심할 때 , 잠 안 올 때</td>
+				</tr>
+				<tr>
+					<td>언제 어디서든 다양한 친구들과</td>
+				</tr>
+				<tr>
+					<td>우연히를 통해 대화를 나눠보세요</td>
+				</tr>
+			</table>
+		</div>
+		<div id="usungmin"></div>
+		<th:block th:replace="~{auth/login::login}"></th:block>
+	</div>
+</body>
+</html>
