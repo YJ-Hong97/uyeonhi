@@ -223,9 +223,22 @@ hr {
 							property_keys: ["kakao_account.email"]
 						},
 						success:function(result){
-							$('#mid').val(result.kakao_account.email);
-							$('#upassword').val(result.id);
-							$('#loginFrm').submit();
+							
+							let mid = result.kakao_account.email;
+							$.ajax({
+								url:`/auth/login/kakao/${mid}`,
+								type:"post",
+								success:function(response){
+									if(response){
+										document.querySelector("#mid").value = result.kakao_account.email;
+										document.querySelector("#upassword").value = result.id;
+										$('#loginFrm').submit();
+									}else{
+										location.href = "/uyeonhi/kakao/signUp2";
+									}
+								}
+							});
+							
 						}
 					});
 				}

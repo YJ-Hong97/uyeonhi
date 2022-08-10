@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<th:block th:fragment="promise">
+	<head>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	</head>
+	<style>
+.promiseContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 30%;
+	height: 100vh;
+	
+}
+
+.promiseModal {
+	width: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: left;
+	background-color: rgba(185, 131, 255, 0.2);
+}
+
+.promiseModal table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.promiseModal input {
+	width: 100%;
+	
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+}
+
+#promiseSubmit {
+	border: 0;
+	background-color: rgba(185, 131, 255, 1);
+	cursor: pointer;
+}
+#closePromise{
+	cursor: pointer;
+}
+</style>
+	<body>
+		<div class="promiseContainer">
+			<div class="promiseModal">
+				<table>
+					<thead>
+						<tr>
+							<th colspan=>약속해요!</th><th id = "closePromise">[닫기]</th>
+						</tr>
+					</thead>
+					<tr>
+						<td>장소</td>
+						<td><input type="text" id="location" name="location"></td>
+					</tr>
+					<tr>
+						<td>날짜</td>
+						<td><input type="date" id="date" name="date"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="button" value="약속 제안하기"
+							id="promiseSubmit"></td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		<script>
+			$('#closePromise').click(function(){
+				$('#promiseContainer').css("display","none");
+			});
+			
+		</script>
+	</body>
+</th:block>
+</html>

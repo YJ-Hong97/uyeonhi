@@ -2,20 +2,21 @@ package com.kosta.uyeonhi.login;
 
 
 
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.kosta.uyeonhi.follow.Follow;
 import com.kosta.uyeonhi.follow.FollowRepository;
 import com.kosta.uyeonhi.security.MemberService;
-import com.kosta.uyeonhi.signUp.UserVO;
+import com.kosta.uyeonhi.signUp.UserRepository;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
 public class LoginController {
 	@Autowired
@@ -23,10 +24,18 @@ public class LoginController {
 	
 	@Autowired
 	FollowRepository fRepo;
+	@Autowired
+	UserRepository uRepo;
+	
+	@PostMapping("/login/kakao/{id}")
+	public boolean checkKakao(@PathVariable("id")String id) {
+		return uRepo.existsById(id);
+	}
 	
 	@RequestMapping("/login")
-	public String loginPage() {
-		return "/index";
+	public ModelAndView loginPage(ModelAndView mnv) {
+		mnv.setViewName("index");
+		return mnv;
 	}
 	
 //	@GetMapping(value = "/myPage")
