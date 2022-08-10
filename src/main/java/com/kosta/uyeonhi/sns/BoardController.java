@@ -71,8 +71,8 @@ public class BoardController {
 		int endPage = startPage + 10 - 1 > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
 		UserVO user = (UserVO) session.getAttribute("user");
 		ProfileVO profile =profileRepository.findByUserAndType(user, ProfileType.MAIN);
-		
-
+				
+		model.addAttribute("notiCount", notificationService.notificationCount(user.getId()));
 		model.addAttribute("list", roomrepo.findByTargetOrId(user.getId()));
 		model.addAttribute("user", user);
 		model.addAttribute("boardList", boardService.pageList(pageable));
