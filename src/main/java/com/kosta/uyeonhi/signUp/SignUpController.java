@@ -84,6 +84,7 @@ public class SignUpController {
 	
 	@GetMapping("/signUp")
 	public ModelAndView uSignUp1(ModelAndView mnv) {
+		signUpInfo.put("kakao", "false");
 		mnv.setViewName("signUp/signUp1");
 		return mnv;
 	}
@@ -108,12 +109,12 @@ public class SignUpController {
 	public void uSignUp4(@PathVariable("email")String email) {
 		log.info(email);
 		signUpInfo.put("email", email);
-		signUpInfo.put("kakao", "false");
+		
 		log.info(signUpInfo.toString());
 	}
-	@GetMapping("/signUp4/{signUpInfo}")
-	public ModelAndView uSignUp4(ModelAndView mnv,@PathVariable Map<String, String> signUpInfo) {
-		this.signUpInfo = signUpInfo;
+	@GetMapping("/signUp4")
+	public ModelAndView uSignUp4(ModelAndView mnv) {
+		log.info(signUpInfo.get("kakao"));
 		mnv.addObject("signUpInfo",signUpInfo);
 		mnv.setViewName("signUp/signUp4");
 		return mnv;
@@ -164,6 +165,9 @@ public class SignUpController {
 		eService.verifyEmail(token);
 		mnv.setViewName("signUp/signUp4");
 		signUpInfo.put("email",email);
+		signUpInfo.put("kakao", "false");
+		signUpInfo.put("uid",null);
+		mnv.addObject("signUpInfo",signUpInfo);
 		log.info(signUpInfo.toString());
 		return mnv;
 		
@@ -190,6 +194,7 @@ public class SignUpController {
 	 infoMap.put(h.getHobbyId()+"h", h.getHobbyValue()); });
 	 mnv.addObject("infoMap", infoMap);
 	 mnv.addObject("nick",signUpInfo.get("unick"));
+	 
 	 mnv.setViewName("signUp/signUp4-1"); return mnv; }
 	 
 	@PostMapping("/signUp5")
@@ -211,7 +216,7 @@ public class SignUpController {
 				
 			}else if(type.equals("h")) {
 				hRepo.findById(Long.parseLong(value)).ifPresent(h->{
-					mfList.add(h.getHobbyId());
+					mhList.add(h.getHobbyId());
 				});
 				
 			}else if(type.equals("i")) {
@@ -266,7 +271,7 @@ public class SignUpController {
 	@PostMapping("/signUp8")
 	public void uSignUp8(String[] favArr) {
 		for(String f:favArr) {
-			hList.add(Long.parseLong(f));
+			fList.add(Long.parseLong(f));
 		}
 	}
 	@GetMapping("/signUp8")
@@ -325,45 +330,51 @@ public class SignUpController {
 		
 		//내 소개 저장
 		mfList.forEach(mf->{
+			FavoriteMenuVO favoritemenu = fRepo.findById(mf).get();
 			MFavoriteVO favorite = MFavoriteVO.builder()
 					.user(user)
-					.favoriteId(mf)
+					.favorite(favoritemenu)
 					.build();
 			mfRepo.save(favorite);
 		});
 		mhList.forEach(mh->{
+			HobbyMenuVO hobbymenu = hRepo.findById(mh).get();
 			MHobbyVO hobby = MHobbyVO.builder()
 					.user(user)
-					.hobbyId(mh)
+					.hobby(hobbymenu)
 					.build();
 			mhRepo.save(hobby);
 		});
 		miList.forEach(mi->{
+			IdealMenuVO idealmenu = iRepo.findById(mi).get();
 			MIdealVO ideal = MIdealVO.builder()
 					.user(user)
-					.idealId(mi)
+					.ideal(idealmenu)
 					.build();
 			miRepo.save(ideal);
 		});
 		//취향 저장
 		fList.forEach(f->{
+			FavoriteMenuVO favoritemenu = fRepo.findById(f).get();
 			FavoriteVO favorite= FavoriteVO.builder()
 					.user(user)
-					.favoriteId(f)
+					.favorite(favoritemenu)
 					.build();
 			favoriteRepository.save(favorite);
 		});
 		hList.forEach(h->{
+			HobbyMenuVO hobbymenu = hRepo.findById(h).get();
 			HobbyVO hobby= HobbyVO.builder()
 					.user(user)
-					.hobbyId(h)
+					.hobby(hobbymenu)
 					.build();
 		hobbyRepository.save(hobby);
 		});
 		iList.forEach(i->{
+			IdealMenuVO idealmenu = iRepo.findById(i).get();
 			IdealTypeVO ideal= IdealTypeVO.builder()
 					.user(user)
-					.idealId(i)
+					.ideal(idealmenu)
 					.build();
 			idealRepository.save(ideal);
 		});

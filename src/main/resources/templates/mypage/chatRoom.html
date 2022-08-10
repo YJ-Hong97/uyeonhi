@@ -42,7 +42,7 @@
 		height: 4rem;
 		font-size: 1rem;
 	}
-	.chatContainer tr:hover{
+	.chatContainer #chatList:hover{
 		background-color: rgba(0,0,0,0.1);
 	}
 	.chatTitle{
@@ -75,9 +75,10 @@
 		<thead>
 			<th colspan="2">채팅<span class="material-symbols-outlined" id ="triangle">change_history</span></th>
 		</thead>
-		<tr th:each="room:${roomMap}">
+		<tr th:each="room:${roomMap}" id = "chatList">
 			<td th:each="profile:${room.value}" class = "profileImg" width="3%">
 				<img th:unless="${profile.user.id==user.id}"th:src = "${profile.fileName}">
+				<span th:if= "${profile.user.id==user.id}" class = "hiddenSpan"></span>
 			</td>
 			<td th:text= "${room.key.title}" width="80%" class = "chatTitle" th:type="${room.key.type}"th:value = "${room.key.roomNo}"></td>
 			<td id = "delRoom" th:type="${room.key.type}" th:value = "${room.key.roomNo}">X</td>
@@ -86,6 +87,7 @@
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script>
+		$('.hiddenSpan').parent().css("display","none");
 		$('.chatTitle').click(function(){
 			let type = $(this).attr('type');
 			let roomNo = $(this).attr('value');
