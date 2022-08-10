@@ -15,8 +15,6 @@
 <title>Insert title here</title>
 <style>
 .headerContainer {
-	position: absolute;
-	display:block;
 	margin-bottom: 4rem;
 }
 
@@ -24,7 +22,7 @@
 	position:fixed;
 	top:0;
 	left:0;
-	height:100px;
+	height:80px;
 	width:100%;
 }
 
@@ -84,8 +82,9 @@
 
 </style>
 	</head>
+	<body>
 	<div class = "headerContainer">
-		<body>
+		
 			<table>
 				<tr>
 					<td id="logo">uyeonhi</td>
@@ -102,7 +101,8 @@
 					<!-- <td id="nick"><a th:href="@{/myPage/{mid}(mid = ${session.user.id})}">[[${session.user.nickname}]]</a></td> -->
 				</tr>
 			</table>
-		</body>
+		
 		</div>
+		</body>
 	</th:block>
 </html>
