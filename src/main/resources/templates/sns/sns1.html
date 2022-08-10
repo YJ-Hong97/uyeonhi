@@ -52,17 +52,11 @@
 
 <body>
 <<<<<<< HEAD
-	<!--headerFragment 선언-->
-	<!-- <th:block th:replace="~{/fragment/header :: header}"></th:block> -->
-	<!-- <th:block th:replace="~{/fragment/header :: header}"></th:block> -->
-	<div>
-		<div class="big-container">
 =======
 
 
 <!--headerFragment 선언 -->
 <th:block th:replace="~{/fragment/header :: header}"></th:block>
-<th:block th:replace="~{/chat/rooms :: chatrooms}"></th:block>
  <div></div>
 	<div class="big-container">
 		<div class="flex-container">
@@ -112,6 +106,7 @@
 						<!--board_form  -->
 					</div>
 					<!--container  -->
+					
 					<ul>
 						<li th:each="list, status: ${boardList}">
 							<div class="board-box">
@@ -240,8 +235,6 @@
 									</form>
 								</div>
 								<!-- container5 -->
-								<button class="show" onclick="show()" th:value="${status.index}"
-									th:boardId="${list.boardId}">팝업열기</button>
 								<!-- <script>
 									function show() {
 										document.querySelector(".background").className = "background show";
@@ -341,7 +334,6 @@
 	<script src="/js/board/likes.js"></script>
 	<script src="/js/board/board.js"></script>
 	<script src="/js/board/reply.js"></script>
-	<script src="/js/board/modal.js"></script>
 	<script src="/js/board/tag.js"></script>
 	<script src="/js/board/notification.js"></script>
 	<script
