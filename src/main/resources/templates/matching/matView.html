@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
@@ -12,24 +12,19 @@
 <body>
 
 
-	<div class="alert alert-primary alert-dismissible fade show">
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    <strong>Primary!</strong> Indicates an important action.
-  </div>
-	
- 	[[${pickMeList}]]
+<div class="alert alert-primary alert-dismissible fade show">
+<!--     <button type="button" class="btn-close" data-bs-dismiss="alert"></button> -->
  
 	<div id="select_tab">
 	    <ul>
 	      <li th:each="pick : ${pickMeList}">
 	         <span th:text="${pick.id}"></span>
-	         <button  th:onclick="location.href ='/matYes?pickid=[[${pick.id}]]'">매칭수락</button>
-	         <button  th:onclick="location.href ='/matNo?pickid=[[${pick.id}]]'">매칭거절</button>
-			 
+	         <button th:onclick="location.href ='/matYes?pickid=[[${pick.id}]]'">수락</button>
+	         <button th:onclick="location.href ='/matNo?pickid=[[${pick.id}]]'">거절</button>
 	      </li>
 	    </ul>
 	</div>
-	 
+</div>
  
 	 
 </body>

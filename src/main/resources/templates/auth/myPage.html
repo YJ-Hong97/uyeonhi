@@ -251,20 +251,23 @@ body {
 i {
 	cursor: pointer;
 }
+
 .listfollow, .listfollowing {
 	cursor: pointer;
 }
 
-.profile{
+.profile {
 	border-radius: 50%;
-	width:8vh;
-	height:8vh;
+	width: 8vh;
+	height: 8vh;
 	overflow: hidden;
 }
+
 #nickts {
 	margin-bottom: 0px;
 	margin-top: 20px;
 }
+
 #followBox a {
 	display: inline-block;
 	width: 100%;
@@ -272,6 +275,7 @@ i {
 	text-decoration: none;
 	color: black;
 }
+
 .modal-body {
 	height: 500px;
 	overflow: auto;
@@ -301,14 +305,18 @@ i {
 						</div>
 						<div th:unless="${isFollow == 1}">
 							<button type="button" id="follows" class="btn btn-light doFollow">
-								팔로우</button>
+								팔로우
+							</button>
 						</div>
 					</div>
 
 
-					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
-						<button type="button" id = "sendMat" class="btn btn-light doMatch check" onclick ="matching()">매칭신청
-						<!--  -->
+					<div class="p-2"
+						th:unless="${profileOther.id} == ${session.user.id}">
+						<button type="button" id="sendMat"
+							class="btn btn-light doMatch check" onclick="matching()">
+							매칭신청
+							<!--  -->
 
 						</button>
 					</div>
@@ -339,11 +347,16 @@ i {
 			</div>
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} == ${session.user.id}">
-				<a class="nav-link" ><button class = "btn" onClick="f_matchingSearch()">내 매칭 상대</button></a><!-- href="#/matView" -->
+				<a class="nav-link" onClick="f_matchingSearch()" href="#">
+					내 매칭 상대
+				</a>
 			</div>
 
 		</div>
-		<div class="d-flex justify-content-evenly flex-wrap">
+		<div id="select_tab">
+	
+		</div>
+		<div class="d-flex justify-content-evenly flex-wrap" id = "contentImg">
 			<div class="p-2 contain">
 				<img class="postimg" alt=""
 					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
@@ -370,6 +383,7 @@ i {
 			</div>
 		</div>
 	</div>
+	
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -380,9 +394,8 @@ i {
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="d-flex justify-content-around flex-column" id="followBox">
-						
-					</div>
+					<div class="d-flex justify-content-around flex-column"
+						id="followBox"></div>
 				</div>
 			</div>
 		</div>
@@ -627,24 +640,40 @@ i {
 			
 			
 		function f_matchingSearch(){
-			 $.ajax({
-				 url:"matView",
-				 success:function(responseData){
-					 $("#here").html(responseData);
-				 }
-			 
-			 
-			 });
-			 
-		}	
-
+			//alert("aaaa");
+ 			$.ajax({
+ 				url:"/matView",
+				success:function(responseData){
+ 					console.log(responseData);
+ 					var html = '';
+ 					html += '<ul>';
+ 					for(let i in responseData){
+ 						html += '	<li>';
+ 						html += '		<span th:text = [[responseData.id]] ></span>';
+ 						html += '		<button th:onclick="location.href =\'/matYes?pickid=[[responseData.id]]\'">수락</button>';
+ 						html += '		<button th:onclick="location.href =\'/matNo?pickid=[[responseData.id]]\'">거절</button>';
+ 						html += '	</li>';
+ 					}
+ 					html += '</ul>';
+					 
+					//$("#select_tab").load("/matView");
+ 					$("#select_tab").html(html); 
+ 					$("#contentImg").hide();
+ 				}
+ 				
+ 			 }); 
+ 		}
+	 	
+		/* html += '	<li>';
+			html += '		<span th:text=${responseData}></span>';
+			html += '		<button th:onclick="location.href =\'/matYes?pickid=[[${responseData}]]\'">수락</button>';
+			html += '		<button th:onclick="location.href =\'/matNo?pickid=[[${responseData}]]\'">거절</button>';
+			html += '	</li>'; */
 		 
 	</script>
-	<div id="here">
-	    
-	</div>
-	 
-	 
+	
+
+
 </body>
 </html>
 

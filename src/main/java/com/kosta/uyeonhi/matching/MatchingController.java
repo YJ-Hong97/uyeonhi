@@ -55,14 +55,35 @@ public class MatchingController {
 	 */
 
 	@GetMapping(value = "/matView")
-	public ModelAndView matchingResponse(HttpSession session, ModelAndView mv) {
+	@ResponseBody
+	public List<MatchingVO> matchingResponse(HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user.getId(), 0);
-		mv.addObject("pickMeList", pickMeList);
-		mv.setViewName("/matching/matView");
 		
-		return mv;
+		System.out.println(pickMeList.size() + "왔냐고오오오오");
+		System.out.println(pickMeList.get(0) + "오라고오오");
+		
+		/*
+		 * mv.addObject("pickMeList", pickMeList); mv.setViewName("/matching/matView");
+		 */
+		
+		return pickMeList;
 	}
+	
+	/*
+	 * @GetMapping(value = "/matView")
+	 * 
+	 * @ResponseBody public ModelAndView matchingResponse(HttpSession session ,
+	 * ModelAndView mv) { UserVO user = (UserVO) session.getAttribute("user");
+	 * List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user.getId(), 0);
+	 * 
+	 * System.out.println(pickMeList.size() + "왔냐고오오오오");
+	 * System.out.println(pickMeList.get(0) + "오라고오오");
+	 * 
+	 * mv.addObject("pickMeList", pickMeList); mv.setViewName("/matching/matView");
+	 * 
+	 * return mv; }
+	 */
 	
 	@Transactional
 	@GetMapping(value = "/matYes")
@@ -73,7 +94,7 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.modifyMatching( pickid, user.getId());
 		System.out.println(pickid + "--id:" + user.getId());
-		return "redirect:/matView";
+		return "redirect:/myPage/"+user.getId();
 	}
 	
 	
@@ -85,13 +106,13 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.deletMatching(pickid ,user.getId());
 		
-		return "redirect:/matView";
+		return "redirect:/myPage/'user.getId'";
 	}
 	
 	
 	/*
 	 * @GetMapping(value = "/matching/response") public String aa() {
-	 * 
+	 *  
 	 * return "/matching/NewFile"; }
 	 */
 		 
