@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.kosta.uyeonhi.signUp.UserVO;
 import com.kosta.uyeonhi.sns.Board;
 
 public interface LikesRepository extends JpaRepository<Likes, Long> {
