@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<th:block th:fragment="chatrooms">
 	<head>
 	<link
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
@@ -10,49 +11,63 @@
 		crossorigin="anonymous">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<style>
-.container {
-	width: 500px;
+	.container {
+		position: fixed;
+		top: 11%;
+	}
+.container, .list-group {
+	width: 400px;
+	height: 500px;
 }
 
 li {
 	border-bottom: solid black 1px;
 }
+.chatlisttitle {
+	height: 54px;
+	font-size: 1.8em;
+}
+.list-group a {
+	text-decoration: none;
+	color: black;
+}
+.chatpro {
+	width: 50px;
+	height: 50px;
+	margin-right: 10px;
+	border-radius: 50%;
+}
 </style>
 </head>
 <body>
-
 	<div class="container">
 		<ul class="list-group">
-			<li th:each="room : ${list}" class="list-group-item"><a
-				th:href="@{/chat/room(roomId=${room.roomId})}">[[${room.name}]]</a>
-				<span class="badge bg-primary rounded-pill">14</span></li>
+			<li class="list-group-item chatlisttitle">채팅방 목록</li>
+			<li th:each="room : ${list}" class="list-group-item">
+				<a th:href="@{/chat/room(roomId=${room.roomId})}">
+					<span th:if="${room.mid.id} == ${session.user.id}">
+						<img class="chatpro" th:src="${room.target.profile[0].fileName}">
+						[[${room.target.nickname}]]
+					</span>
+					<span th:if="${room.mid.id} != ${session.user.id}">
+						<img class="chatpro" th:src="${room.mid.profile[0].fileName}">
+						[[${room.mid.nickname}]]
+					</span>
+				</a>
+			</li>
 		</ul>
 	</div>
-	<form th:action="@{/chat/room}" method="post">
-		<input type="text" name="roomId" class="form-control"> <input
-			type="text" name="name" class="form-control">
-		<button class="btn btn-secondary">개설하기</button>
-	</form>
-	<script th:inline="javascript">
-            $(document).ready(function(){
-
-                var roomName = [[${roomName}]];
-
-                if(roomName != null)
-                    alert(roomName + "방이 개설되었습니다.");
-
-                $(".btn-create").on("click", function (e){
-                    e.preventDefault();
-
-                    var name = $("input[name='name']").val();
-
-                    if(name == "")
-                        alert("Please write the name.")
-                    else
-                        $("form").submit();
-                });
-
-            });
-        </script>
-        </body>
+</body>
+</th:block>
 </html>
+
+
+
+
+
+
+
+
+
+
+
