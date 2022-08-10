@@ -123,20 +123,9 @@ ul{
     width:85%;
     height:8vh;
 }
-/* .flex-container .center-container .board-box #container4{
+.flex-container .center-container .board-box #container4{
     width:85%;
     height:15vh;
-    box-sizing: border-box;
-   	font-size: 0.8vw;
-    background: #FFFFFF;
-    border:solid #DDDDDD;
-    border-width: 0 1px;
-
-} */
-
-#container4{
-    width:85%;
-    height:10vh;
     box-sizing: border-box;
    	font-size: 0.8vw;
     background: #FFFFFF;
@@ -322,14 +311,9 @@ ul{
 }
 
 #person{
-	margin-left : 6px;
-	margin-top : 8px;
-    float: left;
-    color: #B983FF;
-    border-radius : 120px;
-    width: 40px;
-	height: 40px;
-    
+	margin-top: 8px;
+	margin-left: 8px;
+	font-size: 2.4vw;
 }
 
 #container3 {
@@ -346,12 +330,21 @@ ul{
     background: #D9D9D9;
 }
 
+
+
+#person {
+    font-size: 2.4vw;
+    float: left;
+    color: #B983FF;
+}
+
 #ellipse {
     position: absolute;
     width: 46px;
     height: 45px;
     margin: 10px;
 
+    background: #B983FF;
     border-radius: 135px;
 }
 
