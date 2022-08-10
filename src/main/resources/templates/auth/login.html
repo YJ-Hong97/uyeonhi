@@ -187,7 +187,7 @@ hr {
 <body>
 	<div class="loginContainer">
 		<p id="logo">uyeonhi</p>
-		<form action = "login" method ="post" id ="loginFrm">
+		<form action = "login" method ="post" id ="loginFrm" >
 			<div class="inputContainer">
 				<input type="text" placeholder="id"name= "username" id="mid"><br> 
 				<input type="password" placeholder="password"name = "password" id="upassword">
@@ -232,7 +232,7 @@ hr {
 									if(response){
 										document.querySelector("#mid").value = result.kakao_account.email;
 										document.querySelector("#upassword").value = result.id;
-										$('#loginFrm').submit();
+										$('#submit').trigger("click");
 									}else{
 										location.href = "/uyeonhi/kakao/signUp2";
 									}
