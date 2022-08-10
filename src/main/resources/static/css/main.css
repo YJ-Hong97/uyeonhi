@@ -1,20 +1,21 @@
+
 #jihyun{
-	width: auto;
+	display:block;
+	width: 100vw;
 	height: 100vh;
 	background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
 }
 
-#textAll{
+#jihyun #textAll{
 
 position: absolute;
 width: 50vw;
 height: 406px;
 left: 190px;
 top: 324px;
-	
 }
-#text1{
-	
+
+ #jihyun #textAll #text1{
 /* position: absolute; */
 /* width: 831px;
 height: 213px; */
@@ -32,7 +33,7 @@ line-height: 110.5%;
 
 color: #FFFFFF;
 }
-#text2{
+ #jihyun #textAll #text2{
 	
 /* position: absolute; */
 /* width: 569px;
@@ -54,7 +55,7 @@ color: #FFFFFF;
 }
 
 
-#image1{
+ #jihyun #image1{
 
 position: absolute;
 /* width: 396px;
@@ -66,7 +67,7 @@ top: 273px;
 
 z-index : 2;
 }
-#image2{
+ #jihyun #image2{
 position: absolute;
 /* width: 396px;
 height: 567px; */

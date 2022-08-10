@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"
-	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<link rel="stylesheet" th:href="@{/css/sns.css}">
-<link rel="stylesheet" th:href="@{/css/recruit.css}">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
 
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"
+		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/sns.css}">
+	<link rel="stylesheet" th:href="@{/css/recruit.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
-<!--	<script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<!--	<script>
 		window.onload = function () {
 			function modalOn() {
 				modal.style.display = "flex";
@@ -50,35 +45,26 @@
 	</script> -->
 </head>
 
-<body>
-HEAD
-=======
-
-
-<!--headerFragment 선언 -->
-<th:block th:replace="~{/fragment/header :: header}"></th:block>
- <div></div>
-	<div class="big-container">
-		<div class="flex-container">
-			<div class="disable-box">
-				<div id="socketAlert" style="display: none;">
-					.
-				</div>
-			</div>
-				<div class="center-container">
-					<div>
-						<button type="button" onclick=alramList() class="notificationList">알람리스트</button>
-						<div th:id="alarmList"></div>
+<body style="margin-top:80px;">
+		<th:block th:replace="~{/fragment/header :: header}"></th:block>
+		<div></div>
+		<div class="big-container">
+			<div class="flex-container">
+				<div class="disable-box">
+					<div id="socketAlert" style="display: none;">
 					</div>
+				</div>
+				<div class="center-container">
+					
 					<div id="container">
-
+						
 						<form id="board_form">
-<!-- --------------------------------------------person-----textarea------------------------------------------------------------- -->
-							<img id="person" th:src = "${session.user.profile[0].fileName}">
-							<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on style="resize: none;"></textarea>
-<!-- -------------------------------------------------------------------------------------------------------------- -->
-							<input type="text" class="tag"
-								placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
+							<!-- --------------------------------------------person-----textarea------------------------------------------------------------- -->
+							<img id="person" th:src="${session.user.profile[0].fileName}">
+							<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on
+								style="resize: none;"></textarea>
+							<!-- -------------------------------------------------------------------------------------------------------------- -->
+							<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
 							<div class="board_write_top">
 								<div class="user_info">
 									<p class="userSession" th:text="${#authentication.name}"></p>
@@ -88,14 +74,14 @@ HEAD
 										<option value="normal">게시글</option>
 										<option value="recruit">모집글</option>
 									</select>
-										<form enctype="multipart/form-data" id="form">
-											<label for="img">파일 업로드</label> <input id="btn_fileUpload"
-												type="file" required multiple>
-											<!--<img class="file_image" src="../images/image-outline.svg" style="width: 3rem;">-->
-											</input>
-										</form>
-										<input type="number" max="10" class="total_person"> <input
-										type="date" class="deadline">
+									<form enctype="multipart/form-data" id="form">
+										<label for="img"></label> <input id="btn_fileUpload" type="file" required
+											multiple>
+										<!--<img class="file_image" src="../images/image-outline.svg" style="width: 3rem;">-->
+										</input>
+									</form>
+									<input type="number" max="10" class="total_person"> <input type="date"
+										class="deadline">
 								</div>
 								<!--  board_info-->
 
@@ -106,90 +92,82 @@ HEAD
 						<!--board_form  -->
 					</div>
 					<!--container  -->
-					
+
 					<ul>
 						<li th:each="list, status: ${boardList}">
-							<div class="board-box">
+								
+							<div class="board-box" th:id="|board-box${list.boardId}|">
 								<input type="hidden" class="boardId" th:value="${list.boardId}" />
-								<input type="hidden" class="boardIndex"
-									th:value="${status.index}" />
-								<button style="width: 100px; height: 30px;"
-									th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
+								<input type="hidden" class="boardIndex" th:value="${status.index}" />
+								<button style="width: 100px; height: 30px;" th:value="${list.boardId}" type="button"
+									class="delete_button">삭제</button>
 								<div th:id="|ex${status.count}|" class="modal">
 									<div class="modal_Ct">
 										<div class="modal_leftCt">
-											<div id="container3" th:value="${list.boardId}"
-												th:class="${list.boardId}">이미지넣는곳</div>
+											<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
+												이미지넣는곳</div>
 										</div>
 										<div class="modal_rightCt">
 											<textarea th:id="|modify_${status.count}|"
 												placeholder="작성하세요.">[[${list.content}]]
-										</textarea>
+											</textarea>
 										</div>
-										<button style="width: 100px; height: 30px;"
-											th:value="${list.boardId}" type="button"
-											th:aa=${status.count} class="update_button">수정</button>
+										<button style="width: 100px; height: 30px;" th:value="${list.boardId}"
+											type="button" th:aa=${status.count} class="update_button">수정</button>
 									</div>
 								</div>
 								<!--  modal-->
-								<div th:if="${list.board_type == '게시글'}" id="container2"
-									class="normal_board">
-<!-- -----------------------------------------ellipse---------------------------------------------------------------------  -->
-									<img id="ellipse" th:src = "${list.writer.profile[0].fileName}">
-<!-- ---------------------------------------------------------------------------------------------------------------  -->
+								<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
+									<!-- -----------------------------------------ellipse---------------------------------------------------------------------  -->
+									<img id="ellipse" th:src="${list.writer.profile[0].fileName}">
+									<!-- ---------------------------------------------------------------------------------------------------------------  -->
 									<span class="material-symbols-outlined" id="btnModal">
-										more_horiz </span> 
-									<span th:id="|boardWriter${list.boardId}|"
-										th:value="${list.writer.id}"
+										more_horiz </span>
+									<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
 										th:class="|boardWriter${list.boardId}|">[[${list.writer.id}]]</span>
 								</div>
-								<div th:if="${list.board_type == '모집글'}" id="container2"
-									class="recruit_board">
-<!-- -------------------------------------------ellipse-------------------------------------------------------------------  -->									
-									<img id="ellipse" th:src = "${list.writer.profile[0].fileName}">
-<!-- ---------------------------------------------------------------------------------------------------------------  -->																		
-									<span
-										class="material-symbols-outlined" id="btnModal">
+								<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
+									<!-- -------------------------------------------ellipse-------------------------------------------------------------------  -->
+									<img id="ellipse" th:src="${list.writer.profile[0].fileName}">
+									<!-- ---------------------------------------------------------------------------------------------------------------  -->
+									<span class="material-symbols-outlined" id="btnModal">
 										more_horiz </span> <span th:id="|boardWriter${list.boardId}|"
-										th:value="${list.writer.id}"
-										th:class="|boardWriter${list.boardId}|" style="color: white;">[[${list.writer.id}]]</span>
+										th:value="${list.writer.id}" th:class="|boardWriter${list.boardId}|"
+										style="color: white;">[[${list.writer.id}]]</span>
 								</div>
-								<div id="container3" th:value="${list.boardId}"
-									th:class="${list.boardId}">
+								<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
 									<th:block th:replace="/fragment/slider :: sliderFragment"></th:block>
-									</div>
-<!-- ----------------------------------------------변경됨----------------------------------------------------------------- -->
-								<div id="container4" th:value="${list.boardId}"
-									th:class="|container4_${list.boardId}|">
-<!-- --------------------------------------------------------------------------------------------------------------- -->
+								</div>
+								<!-- ----------------------------------------------변경됨----------------------------------------------------------------- -->
+								<div id="container4" th:value="${list.boardId}" th:class="|container4_${list.boardId}|">
+									<!-- --------------------------------------------------------------------------------------------------------------- -->
 									<span id="regdate">today</span>
 									<!-- <button type="button" class="reply_show" >댓글보기</button> -->
 									<button class="show" onclick="show()" th:value="${status.index}"
-									th:boardId="${list.boardId}">팝업열기</button>
+										th:boardId="${list.boardId}">팝업열기</button>
 									<span th:text="|좋아요 ${list.likes.size()}개|"></span>
 									<div class="like-box"
 										th:if="${list.getLikes().size()==0 || @likeSearch.findUsingIterator(session.user.id,list.getLikes()) }">
 										<span class="material-symbols-outlined likes heartt"
-											th:id="|heart_${list.boardId}|"
-											th:onclick="|likes(${list.boardId})|"> favorite </span>
+											th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
+											favorite </span>
 									</div>
 									<div th:each="likeCheck:${list.getLikes()}" class="like-box2">
-										<div class="like-box"
-											th:if="${session.user.id == likeCheck.user.id}">
+										<div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
 											<span class="material-symbols-outlined notlikes heartt"
-												th:id="|heart_${list.boardId}|"
-												th:onclick="|likes(${list.boardId})|"> favorite </span>
+												th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
+												favorite </span>
 										</div>
 									</div>
-<!-- --------------------------------------------------------------------------------------------------------------------- 고친 칸 --------------------------- -->
+									<!-- --------------------------------------------------------------------------------------------------------------------- 고친 칸 --------------------------- -->
 									<div class="text_container">
+
 										<div class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</div>
 										<span style="cursor: pointer;" th:onclick="|textMore(${list.boardId})|" th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</span>
 										<div id="recruitInfo" th:if="${list.board_type == '모집글'}" th:class="|recruitInfo_${list.boardId}|">
 											<span th:text="|마감일 : ${list.deadline}|"
 												th:id="|deadline_${list.boardId}|"></span><br> <span
-												class="recruit_person"
-												th:text="|신청 현황 : ${list.applicant.size()}| "
+												class="recruit_person" th:text="|신청 현황 : ${list.applicant.size()}| "
 												th:id="|applicant_person_${list.boardId}|"></span> <span
 												class="recruit_person" th:text="|/ ${list.total_person}|"
 												th:id="|total_person_${list.boardId}|"></span>
@@ -209,26 +187,24 @@ HEAD
 										<br>
 										<div id="tagList" th:class="|tagList_${list.boardId}|"
 											th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-											<a class="board_tag"
-												th:id="|tag_${list.boardId+status.count+status.index}|"
+											<a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|"
 												th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
 												th:text="|#${hashtag}|"></a>
 										</div>
 
 									</div>
-<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------ -->								
+									<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------ -->
 									<!-- text_container -->
 								</div>
 								<!-- container4 -->
-								<div id="container5" th:value="${list.boardId}"
-									th:class="${list.boardId}">
+								<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
 									<form class=reply_form>
 										<div class="reply_container">
 											<input type="hidden" th:class="|board${status.index}|"
-												th:value="${list.boardId}" /> 
-												<img id="person" th:src = "${session.user.profile[0].fileName}">
-											<textarea th:class="|reply_content${status.index}|"
-												id="reply_text" wrap=on></textarea>
+												th:value="${list.boardId}" />
+											<img id="person" th:src="${session.user.profile[0].fileName}">
+											<textarea th:class="|reply_content${status.index}|" id="reply_text"
+												wrap=on></textarea>
 											<button th:class="btn_reply" type="button"
 												th:value="${status.index}">등록</button>
 										</div>
@@ -270,77 +246,113 @@ HEAD
 			<!--flex-container  -->
 		</div>
 		<!--big-container -->
-	</div>
-	<!--  -->
-	<div class="background">
-		<div class="window">
-			<div class="popup">
-				<div class="modal_picture_box"></div>
-				<div class="modal_reply_box">
-					<div class="modal_writer_info">
-						<div id="here"></div>
+		</div>
+		<!--  -->
+		<div class="background">
+			<div class="window">
+				<div class="popup">
+					<div class="modal_picture_box"></div>
+					<div class="modal_reply_box">
+						<div class="modal_writer_info">
+							<div id="here"></div>
+						</div>
 					</div>
+					<button id="close">팝업닫기</button>
 				</div>
-				<button id="close">팝업닫기</button>
 			</div>
 		</div>
-	</div>
-	<!-- modal -->
-	<div id="modal" class="modal-overlay">
-		<div class="content">
-			<table>
-				<tr>
-					<td>신고</td>
-				</tr>
-				<tr>
-					<td>팔로우 취소</td>
-				</tr>
-				<tr>
-					<td id="closeBtn">취소</td>
-				</tr>
-			</table>
+		<!-- modal -->
+		<div id="modal" class="modal-overlay">
+			<div class="content">
+				<table>
+					<tr>
+						<td>신고</td>
+					</tr>
+					<tr>
+						<td>팔로우 취소</td>
+					</tr>
+					<tr>
+						<td id="closeBtn">취소</td>
+					</tr>
+				</table>
+			</div>
 		</div>
-	</div>
 
-	<script th:inline="javascript">
-		var websocket  = null;
-		$(document).ready(function () {
+		<script th:inline="javascript">
+			var websocket = null;
+			$(document).ready(function () {
 				var user = [[${session.user}]];
 				websocket = new WebSocket("ws://localhost:7777/ws/noti");
 				console.log(user);
-			if (user != null) {
-				connectWs();
-			}
-		})
-		function connectWs() {
-			
-			websocket.onopen = function () {
-				console.log('open');
+				if (user != null) {
+					connectWs();
+				}
+			})
+			function connectWs() {
+
+				websocket.onopen = function () {
+					console.log('open');
+				};
+				websocket.onmessage = function (event) {
+					console.log("onmessage" + event.data);
+					let socketAlert = $('div#socketAlert');
+					socketAlert.html(event.data)
+					socketAlert.css('display', 'block');
+					setTimeout(function () {
+						socketAlert.css('display', 'none');
+					}, 10000);
+				};
+				websocket.onclose = function () {
+					console.log('close');
+				};
 			};
-			websocket.onmessage = function (event) {
-				console.log("onmessage" + event.data);
-				let socketAlert = $('div#socketAlert');
-				socketAlert.html(event.data)
-				socketAlert.css('display', 'block');
-				setTimeout(function () {
-					socketAlert.css('display', 'none');
-				}, 5000);
-			};
-			websocket.onclose = function () {
-				console.log('close');
-			};
-		};
-	</script>
-	<script src="/js/board/likes.js"></script>
-	<script src="/js/board/board.js"></script>
-	<script src="/js/board/reply.js"></script>
-	<script src="/js/board/tag.js"></script>
-	<script src="/js/board/notification.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-	<script src="/js/board/applicant.js"></script>
+		</script>
+		<script src="/js/board/likes.js"></script>
+		<script src="/js/board/board.js"></script>
+		<script src="/js/board/reply.js"></script>
+		<script src="/js/board/tag.js"></script>
+		<script src="/js/board/notification.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+		<script src="/js/board/applicant.js"></script>
 
 
+		<script>
+			$(document).ready(function () {
+
+				$('.slider-wrap').slick({
+					slide: 'div',
+					infinite: true,
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					speed: 500,
+					arrows: true,
+					autoplay: true,
+					autoplaySpeed: 10000,
+					pauseOnHover: true,
+					vertical: false,
+					prevArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; z-index:10;' class='slick-prev'>이전</button>",
+					nextArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; right:0 ; z-index:10;' class='slick-next'>다음</button>",
+					draggable: true,
+					responsive: [
+						{
+							breakpoint: 960, //화면 사이즈 960px
+							settings: {
+								slidesToShow: 4
+							}
+						},
+						{
+							breakpoint: 768, //화면 사이즈 768px
+							settings: {
+								slidesToShow: 5
+							}
+						}
+					]
+
+				});
+
+			})
+		</script>
 
 </body>
+
 </html>

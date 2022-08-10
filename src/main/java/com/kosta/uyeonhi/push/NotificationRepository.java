@@ -12,4 +12,5 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	
 	@Query(value="select * from notification where user_id = ?1 order by notification_id DESC", nativeQuery = true)
 	public List<Notification> selectNotiByReceiverId(String receiverId);
+
 }
