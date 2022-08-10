@@ -6,23 +6,15 @@
 	background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
 }
 
-#jihyun #textAll{
-
+#text1{
+	
 position: absolute;
-width: 50vw;
-height: 406px;
-left: 190px;
-top: 324px;
-}
-
- #jihyun #textAll #text1{
-/* position: absolute; */
-/* width: 831px;
-height: 213px; */
+width: 831px;
+height: 213px;
 width: 60vw;
 height: 10vw;
-left: 137px;
-top: 324px;
+left: 8%;
+top: 130%;
 
 font-family: 'Black Han Sans';
 font-style: normal;
@@ -35,13 +27,13 @@ color: #FFFFFF;
 }
  #jihyun #textAll #text2{
 	
-/* position: absolute; */
-/* width: 569px;
-height: 121px; */
+position: absolute;
+width: 569px;
+height: 121px;
 width: 30vw;
 height: 7vw;
-left: 137px;
-top: 586px;
+left:8%;
+top: 155%;
 
 font-family: 'Gowun Dodum';
 font-style: normal;
@@ -62,19 +54,19 @@ position: absolute;
 height: 567px; */
 width: 20vw;
 height: 27vw;
-left: 1480px;
-top: 273px;
+left: 58%;
+top: 130%;
 
 z-index : 2;
 }
  #jihyun #image2{
 position: absolute;
-/* width: 396px;
+/*  width: 396px;
 height: 567px; */
 width: 20vw;
 height: 27vw;
-left: 1790px;
-top: 273px;
+left: 68%;
+top: 130%;
 filter : blur(5px);
 
 z-index : 1;

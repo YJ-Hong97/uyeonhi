@@ -90,6 +90,7 @@
 .postimg {
 	width: 317px;
 	height: 317px;
+	border-radius: 10px;
 }
 
 .is-check {
@@ -325,16 +326,12 @@ i {
 								class="btn btn-light doMatch is-check dropdown-toggle"
 								data-bs-toggle="dropdown" aria-expanded="false">매칭성공</button>
 							<ul class="dropdown-menu">
-								<li><button class="dropdown-item" type="button">음성
-										통화</button></li>
-								<li><button class="dropdown-item" type="button"
-										id="videoChat">화상 통화</button></li>
-								<li><a class="dropdown-item" type="button"
-									th:href="@{/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
-								<li><hr class="dropdown-divider"></li>
-								<li><button class="dropdown-item"
-										onclick="cancelmatching()">매칭 취소</button></li>
-							</ul>
+							    <li><button class="dropdown-item" type="button">음성 통화</button></li>
+							    <li><button class="dropdown-item" type="button" id = "videoChat">화상 통화</button></li>
+							    <li><a class="dropdown-item" type="button" th:href="@{/chat/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
+							    <li><hr class="dropdown-divider"></li>
+   								<li><button class="dropdown-item" onclick ="cancelmatching()"> 매칭 취소 </button></li>
+						  	</ul>
 						</div>
 
 					</div>
@@ -358,7 +355,7 @@ i {
 		<div class="d-flex justify-content-evenly mb-3 nav nav-tabs">
 
 			<div class="p-2 type-btn nav-item">
-				<a class="nav-link active" aria-current="page" href="#">게시글</a>
+				<a id="commonboard" class="nav-link active" aria-current="page" href="#">게시글</a>
 			</div>
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} != ${session.user.id}">
@@ -370,46 +367,15 @@ i {
 			</div>
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} == ${session.user.id}">
-
 				<a class="nav-link" onClick="f_matchingSearch()" href="#"> 
 				내 매칭 상대 
 				</a>
-
 			</div>
-
 		</div>
-
 		<div id="select_tab"></div>
-		<div id="contentImg" class="d-flex justify-content-evenly flex-wrap">
-			<div class="p-2 contain">
-				<img class="postimg" alt=""
-					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
-			</div>
-			<div class="p-2 contain">
-				<img class="postimg" alt=""
-					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
-			</div>
-			<div class="p-2 contain">
-				<img class="postimg" alt=""
-					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
-			</div>
-			<div class="p-2 contain">
-				<img class="postimg" alt=""
-					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
-			</div>
-			<div class="p-2 contain">
-				<img class="postimg" alt=""
-					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
-			</div>
-			<div class="p-2 contain">
-				<img class="postimg" alt=""
-					src="https://uyeonhi.s3.ap-northeast-2.amazonaws.com//user%5Cuser/profile%5Cc30b851c-1a25-4c81-9fd2-537084fee46d_1000_1.jpg">
-			</div>
-
-		<!-- <div class="d-flex justify-content-evenly flex-wrap listt">
-
-		</div> -->
-	</div>
+		<div id="postmodum" class="d-flex justify-content-evenly flex-wrap listt">
+		</div>
+		
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -437,28 +403,73 @@ i {
 	<script th:inline="javascript">
 	//setting창 켜기
 	//setting창 끄기
-	/* $("#doChatt").click(function() {
-		$.ajax({
-			url : "/doChatt",
-			type : "get",
-			data: {"tid" : [[${profileOther.id}]],
-					"mid" : [[${session.user.id}]]},
-			success : function(responseData) {
-				for(data of responseData) {
-					console.log(data.user.profile[0].fileName);
-					str += `<a class="d-flex justify-content-around" href='/myPage/${data.user.id}' >`;
-					str += `<img class='profile' src=${data.user.profile[0].fileName} />`;
-					str += `<p id='nickts'> ${data.user.nickname} </p>`;
-					str += `</a>`;
-					str += `<hr>`;
+	$(() => {
+		commonboard();
+	});
+	function commonboard() {
+		var listboard = [[${listboard}]];
+		var boardpost = "";
+		for( board of listboard) {
+			if([[${session.user.id}]] == [[${profileOther.id}]]) {
+				if(board.image_path != null) {
+					var image = board.image_path.split(',');
+					boardpost += `<div class="p-2 contain">
+								<img class="postimg" alt=""
+									src="${image[0]}">
+							</div>`;
 				}
-				$("#followBox").html(str);
-			},
-			error:function(e){
-				console.log(e);
+				else {
+					boardpost += `<div class="p-2 contain">
+							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+						</div>`;
+				}
+			} else {
+				if(board.board_type == "게시글") {
+					if(board.image_path != null) {
+						var image = board.image_path.split(',');
+						boardpost += `<div class="p-2 contain">
+									<img class="postimg" alt=""
+										src="${image[0]}">
+								</div>`;
+					}
+					else {
+						boardpost += `<div class="p-2 contain">
+								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+							</div>`;
+					}
+				}
 			}
-		}); 
-	}); */
+		}
+		$("#postmodum").html(boardpost);
+	}
+	
+	function gatherboard() {
+		var listboard = [[${listboard}]];
+		var boardpost = "";
+		for( board of listboard) {
+			if(board.board_type == "모집글") {
+				if(board.image_path != null) {
+					var image = board.image_path.split(',');
+					boardpost += `<div class="p-2 contain">
+								<img class="postimg" alt=""
+									src="${image[0]}">
+							</div>`;
+				}
+			}
+			else {
+				boardpost += `<div class="p-2 contain">
+						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+					</div>`;
+			}
+		}
+		$("#postmodum").html(boardpost);
+	}
+	$("#commonboard").click(function () {
+		commonboard();
+	});
+	$("#gatherboard").click(function () {
+		gatherboard();
+	});
 	$(".listfollow").click(function () {
 		var str ="";
 		$(".modal-title").html("팔로워 목록");
@@ -656,24 +667,6 @@ i {
 			    });
 			}
 		});
-		//매칭신청 .
-		
-		/* function matching(){
-				$.ajax({
-			        url: "/matching",
-			        data: {target : [[${profileOther.id}]]},
-			        success: function(responseData) {
-			        	if($("#sendMat").hasClass("check") === false) {
-			        	$("#sendMat").html("매칭취소");
-			        	$("#sendMat").addClass("check");
-			            alert([[${profileOther.nickname}]] + "님께 매칭 신청을 보냈습니다.");
-			            location.reload();
-			        },
-			        error: function onError (error) {
-			        	alert([[${profileOther.nickname}]] + "매칭 신청을 실패하였습니다.");
-			        }
-			    });
-			} */
 		function matching(){
 			/* alert("aaa"); */
 			$.ajax({
@@ -695,7 +688,7 @@ i {
 			
 		function f_matchingSearch(){
 			//$("#contentImg").hide();
-			$("#contentImg").css("display","none");
+			$("#postmodum").css("display","none");
 			//alert("aaaa");
  			$.ajax({
  				url:"/matView",
