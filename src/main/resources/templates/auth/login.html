@@ -107,6 +107,7 @@ hr {
 	font-weight: 400;
 	font-size: 1.5rem;
 	line-height: 110%;
+	cursor: pointer;
 }
 
 #mangerBtn {
@@ -144,6 +145,7 @@ hr {
 	}
 	#kakaoBtn{
 		width:100vw;
+		cursor: pointer;
 	}
 	#mangerBtn{
 		width:100vw;
@@ -162,9 +164,7 @@ hr {
 	.inputContainer input{
 		width:90vw;
 	}
-	#kakaoBtn{
-		width:100vw;
-	}
+	
 	
 }
 
@@ -180,16 +180,14 @@ hr {
 	.inputContainer input{
 		width:90vw;
 	}
-	#kakaoBtn{
-		width:100vw;
-	}
+	
 }
 </style>
 </head>
 <body>
 	<div class="loginContainer">
 		<p id="logo">uyeonhi</p>
-		<form action = "login" method ="post">
+		<form action = "login" method ="post" id ="loginFrm">
 			<div class="inputContainer">
 				<input type="text" placeholder="id"name= "username" id="mid"><br> 
 				<input type="password" placeholder="password"name = "password" id="upassword">
@@ -202,15 +200,52 @@ hr {
 		</div>
 
 		<div class="btnContainer">
-			<input type="button" id="kakaoBtn" value="카카오로 시작하기"><br>
+			<input type="button" id="kakaoBtn" value="카카오로 로그인하기"><br>
 			<input type="button" id="mangerBtn" value="우연히 매니저 입장하기"><br>
 		</div>
 	</div>
+	<script src="http://localhost:7777/js/kakao/kakaoSDK.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script>
 		var signUpBtn = document.querySelector('#signUpBtn');
+		var kakaoSignUp = document.querySelector('#kakaoBtn');
 		signUpBtn.onclick = function(){
 			location.href = "/uyeonhi/signUp";
 		}
+		kakaoSignUp.onclick = function(){
+			Kakao.init("0f3294ba44da20810c9c68fbb7bfc24b");
+			Kakao.Auth.login({
+				scope: 'account_email',
+				success:function(response){
+					Kakao.API.request({
+						url:'/v2/user/me',
+						data:{
+							property_keys: ["kakao_account.email"]
+						},
+						success:function(result){
+							
+							let mid = result.kakao_account.email;
+							$.ajax({
+								url:`/auth/login/kakao/${mid}`,
+								type:"post",
+								success:function(response){
+									if(response){
+										document.querySelector("#mid").value = result.kakao_account.email;
+										document.querySelector("#upassword").value = result.id;
+										$('#loginFrm').submit();
+									}else{
+										location.href = "/uyeonhi/kakao/signUp2";
+									}
+								}
+							});
+							
+						}
+					});
+				}
+			});
+			
+		};
+		
 	</script>
 </body>
 </th:block>
