@@ -20,27 +20,100 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
 	integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+			rel="stylesheet">
 	<style type="text/css">
 		.doMatch {
 			border: none;
 			background-color: #B983FF;
 			color: white;
 		}
+		.cardContainer{
+		font-family: 'Gowun Dodum';
+				font-style: normal;
+		}
+		.card{
+			border-radius: 2rem;
+		}
+		.favDiv .card-text{
+			display: inline-block;
+			border-radius: 0.5rem;
+			background-color:  rgba(185, 131, 255, 0.6);
+			margin-right: 1%;
+			cursor: pointer;
+			
+		}
+		.favDiv{
+			height: 10vh;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.favModal{
+			display:none;
+			position:absolute;
+			top:50%;
+			left:50%;
+			transform:translate(-50%,-50%);
+			
+			width:30%;
+			border-radius:1rem;
+			background-color: rgba(0, 0, 0, 0.2);
+			
+			padding:2%;
+		}
+		.favModal p{
+			display: inline-block;
+			border-radius: 0.5rem;
+			background-color:  rgba(185, 131, 255, 1);
+			margin-right: 1%;
+			cursor: pointer;
+		}
+		#favModalClose{
+			cursor: pointer;
+		}
 	</style>
 </head>
 <body>
 	<h1>card slider</h1>
+	<div class = "cardContainer" th:each = "target:${targets}">
 	<div class="card" style="width: 18rem;">
-	  <img th:src="${session.user.profile[0].fileName}" class="card-img-top" alt="...">
+	  <img th:src="${target.key.profile[0].fileName}" class="card-img-top" alt="..." id = "cardImg">
 	  <div class="card-body">
-	    <h5 class="card-title">[[${session.user.nickname}]]</h5>
-	    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+	    <h5 class="card-title">[[${target.key.name}]]([[${target.key.nickname}]])</h5>
+	    <div class = "favDiv">
+	    <p class="card-text"  th:each ="fav:${target.value}"th:value = "${target.value}">#[[${fav}]]</p>
+	    </div>
 	    <div class="d-flex justify-content-between">
 		    <a href="#" class="btn btn-secondary">차단</a>
 		    <a href="#" class="btn doMatch">매칭 신청</a>
 	    </div>
 	  </div>
 	</div>
+	</div>
+	<div class = "favModal">
+		
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		 $('.card-text').click(function(){
+			 $('.favModal').css("display","block");
+			 let fav = $(this).attr("value").replace("[","");
+			 fav = fav.replace("]","");
+			 favarr = fav.split(",");
+			 let inputData = "<div id = 'favModalClose'>X</div>";
+			 for(let i in favarr){
+				 inputData+=`<p>#${favarr[i]}</p>`;
+			 }
+			 $('.favModal').html(inputData);
+			 
+			 $('#favModalClose').click(function(){
+				 $('.favModal').css("display","none");
+			 });
+		 });
+		 
+		
+	</script>
 </body>
 </html>
 

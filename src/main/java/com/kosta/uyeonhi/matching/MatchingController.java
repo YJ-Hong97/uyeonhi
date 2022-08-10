@@ -173,7 +173,7 @@ public class MatchingController {
 		}else {
 			yourGender = Gender.MALE;
 		}
-		
+		gradeRepo.deleteByUser(user);
 		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
 		for(UserVO you: allUserVOs) {
 			int grade = 0;
