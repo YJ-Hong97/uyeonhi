@@ -114,16 +114,28 @@ html {
 			eventClick : function(info) {
 				// 일정 클릭 시 발생할 이벤트
 				//클릭한 일정 Id
-				console.log(info);
+				/* console.log(info); */
+				var title = info.event.title;
+				var date = new Date(info.event.startStr);
 				
+				var str = date.getUTCFullYear()+"년 "+ (date.getUTCMonth()+1) +"월 "+date.getUTCDate()+"일 ";
+				str += date.getUTCHours()+"시 ";
+				str += date.getUTCMinutes()!=0 ? date.getUTCMinutes() +"분" : "";
+								
+				var obj= {
+				    "title": title,
+				    "date": str,
+				    "date2" : date
+				};
+				console.log(obj);
+				console.log(JSON.stringify(obj));
 				$.ajax({
-					url:"detail",
-					method:"post",
+					url : "detail",
+					method : "post",
 					contentType : "application/json;charset=UTF-8",
-					data:JSON.stringify(info),
-					success: function(responseData) {
-						$(".modal").load("detail");
-						
+					data :  JSON.stringify(obj),
+					success : function(responseData) {
+						alert(responseData);
 					}
 				});
 				
