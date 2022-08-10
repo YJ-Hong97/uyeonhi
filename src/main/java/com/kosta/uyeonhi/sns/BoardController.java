@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kosta.uyeonhi.chat.ChatRoomRepository;
+import com.kosta.uyeonhi.likes.LikesRepository;
 import com.kosta.uyeonhi.push.NotificationService;
 import com.kosta.uyeonhi.reply.ReplyService;
 import com.kosta.uyeonhi.signUp.ProfileRepository;
@@ -58,6 +59,7 @@ public class BoardController {
 	private final ProfileRepository profileRepository;
 	
 	private final NotificationService notificationService;
+	
 	
 	@Autowired
 	ChatRoomRepository roomrepo;
@@ -108,6 +110,17 @@ public class BoardController {
 		System.out.println(searchList.size());
 	 
 		return "sns/search";
+	}
+	
+	@GetMapping("/likeList")
+	public String LikeList(HttpSession session, Model model) {
+		UserVO user = (UserVO) session.getAttribute("user");	
+		System.out.println(user.getId());
+		List<Board> likeList = boardService.likeList(user.getId());
+		
+		model.addAttribute("likeList",likeList);
+	 
+		return "sns/likeList";
 	}
 	
 	

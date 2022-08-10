@@ -316,6 +316,7 @@ ul{
     color: #DDDDDD;
     width:3rem;
     height:3rem;
+    cursor: pointer;
 }
 
 #person{
@@ -390,9 +391,11 @@ ul{
 }
 
 #searchBtn{
-    font-size: 2.3em;
+    font-size: 3em;
     color: black;
-    margin-top: 16px;
+    margin-top: 15px;
+    margin-left: 20px;
+    font-weight: 900;
 }
 
 .text {

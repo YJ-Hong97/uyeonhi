@@ -73,6 +73,13 @@ public class BoardServiceImpl implements BoardService{
 		
 	}
 	
+	@Override
+	@Transactional
+	public List<Board> likeList(String userId){
+		 System.out.println("BoardServiceImpl : "+userId);
+		return boardRepository.likeBoardList(userId);
+	}
+	
 	/*
 	 * @Override
 	 * 

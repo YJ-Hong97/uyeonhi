@@ -144,12 +144,12 @@
 					<td>이름</td>
 					<td class ="tdv" ><input type="text" name="uname" id="uname"></td>
 				</tr>
-				<tr th:if="${signUpInfo.kakao}==false">
+				<tr th:if="${signUpInfo.kakao}=='false'">
 					<td>id</td>
 					<td class ="tdv"><input type="text" name="uid" id="uid"></td>
 					<td ><button id="validTestId" type="button" onclick="validIdBtn()">중복 확인</button></td>
 				</tr>
-				<tr th:if="${signUpInfo.kakao}==false">
+				<tr th:if="${signUpInfo.kakao}=='false'">
 					<td>비밀번호</td>
 					<td class ="tdv" colspan = "2"><input type="password" name="upassword" id="upassword" placeholder = "알파벳 소문자, 숫자, 특수문자 조합"></td>
 				</tr>
@@ -169,7 +169,7 @@
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script th:inline = "javascript">
 	/*<![CDATA[*/
-		var kakao = /*[[signUpInfo.kakao]]*/'default';
+		var kakao = /*[[${signUpInfo.kakao}]]*/'default';
 		
 		//id 중복확인
 		var validId = null;
@@ -186,7 +186,7 @@
 					if(response == 'success'){
 						
 						validId = 'success';
-						validIdBtn.innerText = "사용 가능";
+						$('#validTestId').text("사용 가능");
 					}else{
 						alert('사용할 수 없는 아이디입니다.');
 						validId = 'fail';
@@ -226,7 +226,7 @@
 					let uname = document.querySelector('#uname').value;
 					let uid = null;
 					let upassword = null;
-					if(kakao == false){
+					if(kakao =="false"){
 						uid = document.querySelector('#uid').value;
 						upassword = document.querySelector('#upassword').value;
 					}else{

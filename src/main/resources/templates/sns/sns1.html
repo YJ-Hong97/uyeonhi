@@ -52,7 +52,6 @@
 			<div class="flex-container">
 				<div class="disable-box">
 					<div id="socketAlert" style="display: none;">
-						.
 					</div>
 				</div>
 				<div class="center-container">
@@ -162,12 +161,10 @@
 									</div>
 									<!-- --------------------------------------------------------------------------------------------------------------------- 고친 칸 --------------------------- -->
 									<div class="text_container">
-										<div class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]
-										</div>
-										<span th:onclick="|textMore(${list.boardId})|"
-											th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</span>
-										<div id="recruitInfo" th:if="${list.board_type == '모집글'}"
-											th:class="|recruitInfo_${list.boardId}|">
+
+										<div class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</div>
+										<span style="cursor: pointer;" th:onclick="|textMore(${list.boardId})|" th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</span>
+										<div id="recruitInfo" th:if="${list.board_type == '모집글'}" th:class="|recruitInfo_${list.boardId}|">
 											<span th:text="|마감일 : ${list.deadline}|"
 												th:id="|deadline_${list.boardId}|"></span><br> <span
 												class="recruit_person" th:text="|신청 현황 : ${list.applicant.size()}| "
