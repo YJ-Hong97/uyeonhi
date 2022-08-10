@@ -11,19 +11,20 @@
 		crossorigin="anonymous">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<style>
-	.container {
+	.container2 {
 		position: fixed;
 		top: 11%;
+		left: 2%;
 		z-index: 99;
 		
 	}
-.container, .list-group {
+.container2, .list-group {
 	width: 400px;
 	height: 500px;
 }
 
-li {
-	border-bottom: solid black 1px;
+.list-group li {
+	border-bottom: solid #7F8487 1px;
 }
 .chatlisttitle {
 	height: 54px;
@@ -42,7 +43,7 @@ li {
 </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container2">
 		<ul class="list-group">
 			<li class="list-group-item chatlisttitle">채팅방 목록</li>
 			<li th:each="room : ${list}" class="list-group-item">
