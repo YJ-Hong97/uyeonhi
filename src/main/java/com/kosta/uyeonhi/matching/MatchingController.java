@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
 @Controller
@@ -18,20 +19,33 @@ public class MatchingController {
 
 	@Autowired
 	MatchingRepository mRepo;
-
+	@Autowired
+	UserRepository uRepo;
+	
 	@GetMapping(value = "/matching")
 	@ResponseBody
 	public String matchingRequest(String target, HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		System.out.println(user);
-		MatchingVO vo = MatchingVO.builder()
-				.id(user.getId())
-				.target(target)
-				.mconfirm(0)
-				.build();
-		System.out.println(vo);
-		MatchingVO saveResult = mRepo.save(vo);
-		/* return saveResult.getM_id() + "OK"; */
+		
+		MatchingVO mats = mRepo.matcheck(user.getId(), target);
+		
+		if(mats == null) {
+			MatchingVO vo = MatchingVO.builder()
+					.id(user)
+					.target(uRepo.findById(target).get())
+					.mconfirm(0)
+					.build();
+			System.out.println(vo);
+			MatchingVO saveResult = mRepo.save(vo);
+		} else {
+			mRepo.findById(mats.getMId()).ifPresent((mat) -> {
+				mat.setMconfirm(1);
+				mRepo.save(mat);
+			});
+		}
+		
+		
 		return "매칭 신청이 되었습니다." + "상대방의 응답을 기다려주세요.";
 	}
 
@@ -57,7 +71,7 @@ public class MatchingController {
 	@GetMapping(value = "/matView")
 	public ModelAndView matchingResponse(HttpSession session, ModelAndView mv) {
 		UserVO user = (UserVO) session.getAttribute("user");
-		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user.getId(), 0);
+		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user, 0);
 		mv.addObject("pickMeList", pickMeList);
 		mv.setViewName("/matching/matView");
 		

@@ -146,7 +146,7 @@ html {
 	});
 </script>
 <body>
-	<div id="header">header</div>
+	<th:block th:replace="~{/fragment/header :: header}"></th:block>
 	<div class="userArea">
 		<img id="profile" class="userPhoto" th:src = "${session.user.profile[0].fileName}">
 		<span class="userText"> 

@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kosta.uyeonhi.chat.ChatRoomRepository;
 import com.kosta.uyeonhi.push.NotificationService;
 import com.kosta.uyeonhi.reply.ReplyService;
 import com.kosta.uyeonhi.signUp.ProfileRepository;
@@ -56,6 +58,9 @@ public class BoardController {
 	private final ProfileRepository profileRepository;
 	
 	private final NotificationService notificationService;
+	
+	@Autowired
+	ChatRoomRepository roomrepo;
 
 	@GetMapping("/sns1")
 	public void boardList(Model model,
@@ -66,6 +71,9 @@ public class BoardController {
 		int endPage = startPage + 10 - 1 > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
 		UserVO user = (UserVO) session.getAttribute("user");
 		ProfileVO profile =profileRepository.findByUserAndType(user, ProfileType.MAIN);
+		
+
+		model.addAttribute("list", roomrepo.findByTargetOrId(user.getId()));
 		model.addAttribute("user", user);
 		model.addAttribute("boardList", boardService.pageList(pageable));
 		model.addAttribute("profile", profile);
