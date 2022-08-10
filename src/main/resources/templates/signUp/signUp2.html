@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.tymeleaf.org">
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -148,39 +148,87 @@ margin: 0;
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-	<script>
+	<script src="http://localhost:7777/js/kakao/kakaoSDK.js"></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
 		var nextBtn = document.querySelector('#nextBtn');
 		var validTest = document.querySelector('#validTest');
 		var hiddenContainer = document.querySelector('#hiddenContainer');
+		var kakao = /*[[${kakao}]]*/'default';
 		
-		nextBtn.onclick = nextFunc;
-		validTest.onclick = validFunc;
-		
-		function nextFunc(){
-			
-			//전화번호 가지고 controller로 넘기기
-			if(document.querySelector('#validCfrm').value == 'sucess'){
-				let phone = document.querySelector('#phone').value; 
-				$.ajax({
-					url:`signUp3/${phone}`,
-					type:"POST",
-					success: function(responseTest){
-						location.href = "signUp3";
-					},
-					fail : function(a){
-					}
-				});
-			}else{
-				hiddenContainer.style.display = "block";//$("#hiddenContainer").css("display","block" )
-				alert("전화번호 인증을 완료해주세요.");
+		if(kakao){
+			nextBtn.onclick = nextFunc;
+			validTest.onclick = validFunc;
+			function nextFunc(){
+				//전화번호 가지고 controller로 넘기기
+				if(document.querySelector('#validCfrm').value == 'sucess'){
+					let phone = document.querySelector('#phone').value; 
+					$.ajax({
+						url:`/uyeonhi/kakao/signUp3/${phone}`,
+						type:"POST",
+						success: function(responseTest){
+							Kakao.init("0f3294ba44da20810c9c68fbb7bfc24b");
+							Kakao.Auth.login({
+								scope: 'account_email',
+								success:function(response){
+									Kakao.API.request({
+										url:'/v2/user/me',
+										data:{
+											property_keys: ["kakao_account.email"]
+										},
+										success:function(result){
+											location.href = "/uyeonhi/kakao/signUp3/"+result.kakao_account.email+"/"+result.id;
+											
+										}
+									});
+								}
+							});
+						},
+						fail : function(a){
+						}
+					});
+				}else{
+					hiddenContainer.style.display = "block";//$("#hiddenContainer").css("display","block" )
+					alert("전화번호 인증을 완료해주세요.");
+				}
+				
 			}
 			
+			//전화번호 인증
+			function validFunc(){
+				document.querySelector('#validCfrm').value = 'sucess';
+			}
+			
+		}else{
+			nextBtn.onclick = nextFunc;
+			validTest.onclick = validFunc;
+			function nextFunc(){
+				//전화번호 가지고 controller로 넘기기
+				if(document.querySelector('#validCfrm').value == 'sucess'){
+					let phone = document.querySelector('#phone').value; 
+					$.ajax({
+						url:`signUp3/${phone}`,
+						type:"POST",
+						success: function(responseTest){
+							location.href = "signUp3";
+						},
+						fail : function(a){
+						}
+					});
+				}else{
+					hiddenContainer.style.display = "block";//$("#hiddenContainer").css("display","block" )
+					alert("전화번호 인증을 완료해주세요.");
+				}
+				
+			}
+			
+			//전화번호 인증
+			function validFunc(){
+				document.querySelector('#validCfrm').value = 'sucess';
+			}
 		}
 		
-		//전화번호 인증
-		function validFunc(){
-			document.querySelector('#validCfrm').value = 'sucess';
-		}
+	 /*]]>*/
 	</script>
 </body>
 </html>

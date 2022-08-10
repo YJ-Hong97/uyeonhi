@@ -28,6 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.follow.Follow;
 import com.kosta.uyeonhi.follow.FollowRepository;
+import com.kosta.uyeonhi.matching.MatchingRepository;
+import com.kosta.uyeonhi.matching.MatchingVO;
 import com.kosta.uyeonhi.security.MemberService;
 import com.kosta.uyeonhi.signUp.FavoriteMenuRepository;
 import com.kosta.uyeonhi.signUp.FavoriteRepository;
@@ -93,6 +95,9 @@ public class MyPageController {
 	@Autowired
 	FollowRepository fRepos;
 	
+	@Autowired
+	MatchingRepository mRepo;
+	
 	@GetMapping("/myPage/{mid}")
 	public ModelAndView myPage(@PathVariable String mid, ModelAndView model, HttpSession session) {
 		System.out.println(mid);
@@ -100,7 +105,25 @@ public class MyPageController {
 		mservice.getUserProfile(mid, model);
 		Follow follow = fRepos.checkFollow(mid, user.getId());
 		ProfileVO profile = profileRepo.findByUserAndType(mservice.getOther(mid), ProfileType.MAIN);
+		MatchingVO mcheck = mRepo.matcheck(user.getId(), mid);
+		int truemcheck = -2;
+		if(mcheck == null) {
+			truemcheck = -1;
+		}
 		
+		else {
+			if(mcheck.getMconfirm() == 1) {
+				truemcheck = 1;
+			}
+			else {
+				if(mcheck.getTarget().getId().equals(user.getId())) {
+					truemcheck = -1;
+				}
+				else truemcheck = mcheck.getMconfirm();
+			}
+		}
+		
+		model.addObject("mcheck", truemcheck);
 		model.addObject("isFollow", follow != null ? 1 : 0);
 		model.addObject("follower", followRepo.countFollower(mid));
 		model.addObject("following", followRepo.countFollowing(mid));

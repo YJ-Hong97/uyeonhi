@@ -1,6 +1,9 @@
 package com.kosta.uyeonhi.webrtc;
 
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +17,18 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kosta.uyeonhi.mypage.ChatType;
 import com.kosta.uyeonhi.mypage.ChattingRoomRepository;
 import com.kosta.uyeonhi.mypage.ChattingRoomVO;
 import com.kosta.uyeonhi.mypage.ChattingUsersRepository;
 import com.kosta.uyeonhi.mypage.ChattingUsersVO;
+import com.kosta.uyeonhi.promise.PromiseRepository;
+import com.kosta.uyeonhi.promise.PromiseVO;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -41,6 +48,8 @@ public class WebRTCController {
 	VideoChatRepository videoRepo;
 	@Autowired
 	VideoMessageRepository messageRepo;
+	@Autowired
+	PromiseRepository promiseRepository;
 	Map<String, List<String>> chatMap = new HashMap<>();
 	@RequestMapping("/video/socket/{roomNo}")
 	public ModelAndView test(ModelAndView mnv, HttpSession session,@PathVariable("roomNo")long roomNo) {
@@ -60,6 +69,57 @@ public class WebRTCController {
 		mnv.addObject("chatusers", chatusers);
 		mnv.setViewName("webrtc/index");
 		return mnv;
+	}
+	@RequestMapping("/video/existRoom/{mid}/{uid}")
+	public String existRoom(ModelAndView mnv, HttpSession session,@PathVariable("mid")String mid,@PathVariable("uid")String uid) {
+		List<ChattingUsersVO> muser = chatUserRepo.findByUser(uRepo.findById(mid).get());
+		List<ChattingUsersVO> uuser = chatUserRepo.findByUser(uRepo.findById(uid).get());
+		Long roomNo = null;
+		aa:for(ChattingUsersVO m: muser) {
+			for(ChattingUsersVO u: uuser) {
+				if(m.getRoom().getRoomNo()==u.getRoom().getRoomNo()) {
+					roomNo = m.getRoom().getRoomNo();
+					break aa;
+				}
+			}
+		}
+		if(roomNo != null) {
+			return roomNo.toString();
+		}else {
+			return "false";
+		}
+		
+		
+	}
+	@PostMapping("/video/makeRoom")
+	public ModelAndView makeRoom(HttpSession session,String title,String uid, ModelAndView mnv) {
+		log.info(uid);
+		UserVO user = (UserVO) session.getAttribute("user");
+		ChattingRoomVO room = ChattingRoomVO.builder()
+				.user(user)
+				.title(title)
+				.type(ChatType.video)
+				.build();
+		chatRoomRepo.save(room);
+		UserVO uuser = uRepo.findById(uid).get();
+		ChattingUsersVO mChattingUsersVO = ChattingUsersVO.builder()
+				.room(room)
+				.user(user)
+				.build();
+		chatUserRepo.save(mChattingUsersVO);
+		ChattingUsersVO uChattingUsersVO = ChattingUsersVO.builder()
+				.room(room)
+				.user(uuser)
+				.build();
+		chatUserRepo.save(uChattingUsersVO);
+		mnv.setViewName("redirect:/video/socket/"+room.getRoomNo());
+		return mnv;
+	}
+	@RequestMapping("/video/deleteRoom/{roomNo}")
+	public void deleteRoom(@PathVariable("roomNo")Long roomNo) {
+		chatUserRepo.deleteByRoom(chatRoomRepo.findById(roomNo).get());
+		chatRoomRepo.deleteByRoomNo(roomNo);
+		
 	}
 	@MessageMapping("/video/joined-info/{roomNo}")
 	public void joinRoom(@Header("simpSessionId")String sessionId,JSONObject ob){
@@ -116,22 +176,9 @@ public class WebRTCController {
 	public void chat(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
 		String nickname = ob.get("nickname").toString();
-		ChattingRoomVO room = chatRoomRepo.findById(Long.parseLong(roomNo)).get();
-		VideoChatVO video = videoRepo.findByRoom(room);
-		VideoChatMessageVO message = VideoChatMessageVO.builder()
-				.videoChatVO(video)
-				.message(ob.get("message").toString())
-				.nickname(nickname)
-				.build();
-		messageRepo.save(message);
-		List<VideoChatMessageVO> messagelist = messageRepo.findByVideoChatVO(video);
-		List<Map<String, String>> messageMaps = new ArrayList<>();
-		for(VideoChatMessageVO m:messagelist) {
-			Map<String,String> map = new HashMap<>();
-			map.put(m.getNickname(), m.getMessage());
-			messageMaps.add(map);
-		}
-		template.convertAndSend("/sub/video/message/"+roomNo, messageMaps);
+		String message = ob.get("message").toString();
+		
+		template.convertAndSend("/sub/video/message/"+roomNo, ob);
 	}
 	@RequestMapping("/video/initiator-disconnect/{mid}/{roomNo}")
 	public void disconnect(@PathVariable("mid")String mid,@PathVariable("roomNo")String roomNo) {
@@ -154,5 +201,18 @@ public class WebRTCController {
 		}
 		log.info(chatMap.toString());
 		template.convertAndSend("/sub/video/second-out/"+roomNo, "");
+	}
+	@MessageMapping("/video/promise-offer/{roomNo}")
+	public void promise(JSONObject ob) {
+		String roomNo = ob.get("roomNo").toString();
+		UserVO user = uRepo.findById(ob.get("offer").toString()).get();
+		PromiseVO promise = PromiseVO.builder()
+				.me(user)
+				.time((Date)ob.get("date"))
+				.location(ob.get("location").toString())
+				.build();
+		promiseRepository.save(promise);
+		ob.put("pid", promise.getProId());
+		template.convertAndSend("/sub/video/promise-accept/"+roomNo, ob);
 	}
 }

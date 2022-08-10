@@ -104,15 +104,6 @@ body div {
 	float: bottom;
 }
 
-.chatContainer span {
-	display: block;
-	color: white;
-	margin-bottom: 0;
-	margin-top: 5%;
-	margin-left: 10%;
-	text-align: left;
-}
-
 .timeContainer {
 	position: absolute;
 	top: 0;
@@ -174,17 +165,42 @@ body div {
 .messageBox::-webkit-scrollbar-track{
 	background-color: rgba(255,255,255,0.2);
 }
+.chatHeader{
+	width:80%;
+	margin-top:2rem;
+	text-align: left;
+	color:white;
+}
+.chatHeader span{
+	margin-right:1rem;
+}
+#promise{
+	width:5rem;
+	border-radius: 0.5rem;
+	border:0;
+	background-color: #B983FF;
+	vertical-align: 0.5rem;
+	cursor: pointer;
+	
+}
 </style>
 <body>
 	<div class="chatContainer">
-		<span class="material-symbols-outlined"> send </span>
+	<div class = "chatHeader">
+		<span class="material-symbols-outlined"> send </span><span><button type = "button" id = "promise">약속잡기</button></span>
+	</div>
 		<div class="chatBox">
-			<div class="messageBox"></div>
+			<div class="messageBox">
+				<table class="messageBox2">
+				
+				</table>
+			</div>
 			<div class="inputBox">
 				<input text id="message">
 				<button type="button" id="sendBtn">전송</button>
 			</div>
 		</div>
+		<th:block th:replace = "~{/fragment/promiseModal::promise}">
 	</div>
 	<div class="videoContainer">
 		<video id="remoteVideo" autoplay playsinline></video>
@@ -230,36 +246,62 @@ body div {
 	stomp = Stomp.over(sock);
 	//채팅 인풋
 	function chat(data){
-		messagelist = data.body;
-		 messagelist = messagelist.replace("[","");
-		 messagelist = messagelist.replace("]","");
-		 arr = messagelist.split(",");
-		 console.log(arr);
-		 
-		 inputData = "<table>"
-		 for(let i = 0; i<arr.length;i++){
-			 let input = JSON.parse(arr[i]);
-			 let key = Object.keys(input);
-			 if(key==nickname){
-				 inputData+=`<tr><td class= "mymessage">${input[key]}:${nickname}</td></tr>`;
-			 }else{
-				 inputData+=`<tr><td class = "yourmessage">${key}:${input[key]}</td></tr>`
-			 }
+		var inputData = "";
+		var content = JSON.parse(data.body);
+		 console.log('is that you? ' + content.message);
+		 if(content.mid == mid) {
+			inputData+=`<tr><td class= "mymessage">${content.message}:${content.nickname}</td></tr>`
+		 } else {
+			inputData+=`<tr><td class= "yourmessage">${content.nickname}:${content.message}</td></tr>`
 		 }
-		 inputData+="</table>"
-		 $(".messageBox").html(inputData);
+		 
+		 $(".messageBox2").append(inputData);
 		 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+		 $("#message").val("");
 	}
 	stomp.connect({},function(){
-		 stomp.subscribe(`/sub/video/message/${roomNo}`,chat(data));
+		stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
+			 chat(data);
+		 });
+		stomp.subscribe(`/sub/video/promise-accept/${roomNo}`,function(data){
+			pdata = JSON.parse(data.body);
+			if(pdata["offer"]==mid){
+				
+			}else{
+				$('#promiseSubmit').val("수락하기");
+				$('#location').val(pdata["location"]);
+				$('#date').val(pdata["date"]);
+				accept(pdata["pid"]);
+			}
+		});
 		//채팅
 		  $('#sendBtn').click(function(){
 			  message = $('#message').val();
+			  if(message == "") {
+				  alert("채팅 내용을 입력하세요.");
+				  return;
+			  }
 			  stomp.send(`/pub/video/message/${roomNo}`,{},JSON.stringify({
 				  roomNo:roomNo,
 				  message:message,
+				  mid:mid,
 				  nickname:nickname
 			  }));
+		  });
+		  $(document).keypress(function(e) {
+			  if(event.keyCode == 13 || event.witch == 13) {
+				  message = $('#message').val();
+				  if(message == "") {
+					  alert("채팅 내용을 입력하세요.");
+					  return;
+				  }
+				  stomp.send(`/pub/video/message/${roomNo}`,{},JSON.stringify({
+					  roomNo:roomNo,
+					  message:message,
+					  mid:mid,
+					  nickname:nickname
+				  }));
+			  }
 		  });
 	});
 	$('#connect').click(function(){
@@ -408,25 +450,18 @@ body div {
 				  }
 				}
 			 stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
-				 messagelist = data.body;
-				 messagelist = messagelist.replace("[","");
-				 messagelist = messagelist.replace("]","");
-				 arr = messagelist.split(",");
-				 console.log(arr);
-				 
-				 inputData = "<table>"
-				 for(let i = 0; i<arr.length;i++){
-					 let input = JSON.parse(arr[i]);
-					 let key = Object.keys(input);
-					 if(key==nickname){
-						 inputData+=`<tr><td class= "mymessage">${input[key]}:${nickname}</td></tr>`;
-					 }else{
-						 inputData+=`<tr><td class = "yourmessage">${key}:${input[key]}</td></tr>`
+				 var inputData = "";
+					var content = JSON.parse(data.body);
+					 console.log('is that you? ' + content.message);
+					 if(content.mid == mid) {
+						inputData+=`<tr><td class= "mymessage">${content.message}:${content.nickname}</td></tr>`
+					 } else {
+						inputData+=`<tr><td class= "yourmessage">${content.nickname}:${content.message}</td></tr>`
 					 }
-				 }
-				 inputData+="</table>"
-				 $(".messageBox").html(inputData);
-				 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+					 
+					 $(".messageBox2").append(inputData);
+					 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+					 $("#message").val("");
 			  });
 			 stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
 					parti = JSON.parse(data.body);
@@ -495,7 +530,26 @@ function clock(){
 		
 		event.returnValue = "";
 	});
- 
+	//약속잡기
+	$('#promiseSubmit').click(function(){
+		let location = $('#location').val();
+		let date = $('#date').val();
+		stomp.send(`/pub/video/promise-offer/${roomNo}`,{},JSON.stringify({
+			location:location,
+			date:date,
+			roomNo:roomNo,
+			offer:mid
+		}));
+		$('.promiseContainer').css("display","none");
+	});
+ 	function accept(pid){
+ 		$('#promiseSubmit').click(function(){
+ 			stomp.send(`/pub/video/promise-accept/${roomNo}`,{},JSON.stringify({
+ 				pid:pid
+ 			}))
+ 		});
+ 		$('promiseContainer').css("display","none");
+ 	}
   /*]]>*/
 </script>
 </body>
