@@ -12,7 +12,7 @@ function likes(boardId){
 			type:"POST",
 			url:"/api/sns/likes/" + boardId
 		}).done(res=>{
-			alert(res);
+			//alert(res);
 			heart.css("font-variation-settings","'FILL' 1");
 			heart.css("color","red");
 			heart.addClass("notlikes")
@@ -28,7 +28,7 @@ function likes(boardId){
 			type:"DELETE",
 			url:"/api/sns/notlikes/" + boardId
 		}).done(res=>{
-			alert(res);
+			//alert(res);
 			heart.css("font-variation-settings","'FILL' 0");
 			heart.css("color","black");
 			heart.removeClass('notlikes');

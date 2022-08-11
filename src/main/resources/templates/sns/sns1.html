@@ -70,7 +70,6 @@
 								th:src="${session.user.profile[0].fileName}">
 						</div>
 						<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on style="resize: none;"></textarea>
-						<!-- -------------------------------------------------------------------------------------------------------------- -->
 						<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
 						<div class="board_write_top">
 							<div class="board_info">
@@ -181,7 +180,6 @@
 									</div>
 								</div>
 								</div>
-					<!-- ------------------------- -->			
 								<div class="text_container">
 							<span style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</span>
 								<a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
@@ -215,7 +213,6 @@
 									</div>
 
 								</div>
-					<!-- ------------------------------ -->			
 							</div>
 							<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
 								<form class=reply_form>
