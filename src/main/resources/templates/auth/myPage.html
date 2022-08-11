@@ -182,7 +182,7 @@ body {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, 10%);
+	transform: translate(-50%, -50%);
 	width: 32%;
 	background-color: white;
 	font-family: 'Gowun Dodum';
@@ -537,6 +537,23 @@ i {
 		}else{
 			if(event.target==document.querySelector('.settingss')){
 				$('.settingContainer').css("display","block");
+				$('.settingContainer table').css("display","block");
+			}
+		}
+		if($('.updatePWContainer').css("display")=="block"){
+			if(event.target==document.querySelector(".updatePWContainer")||event.target==document.querySelector(".updatePWContainer input")||event.target==document.querySelector(".updatePWContainer table")){
+				$('.updatePWContainer').css("display","block");
+			}else{
+				$('.updatePWContainer').css("display","none");
+				$('.settingContainer').css("display","none");
+			}
+		}
+		if($('.daccountContainer').css("display")=="block"){
+			if(event.target==document.querySelector(".daccountContainer")||event.target==document.querySelector(".daccountContainer input")||event.target==document.querySelector(".daccountContainer table")){
+				$('.daccountContainer').css("display","block");
+			}else{
+				$('.daccountContainer').css("display","none");
+				$('.daccountContainer').css("display","none");
 			}
 		}
 	});
