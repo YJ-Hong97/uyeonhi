@@ -14,7 +14,7 @@ height: 213px;
 width: 60vw;
 height: 10vw;
 left: 8%;
-top: 130%;
+top: 230%;
 
 font-family: 'Black Han Sans';
 font-style: normal;
@@ -33,7 +33,7 @@ height: 121px;
 width: 30vw;
 height: 7vw;
 left:8%;
-top: 155%;
+top: 255%;
 
 font-family: 'Gowun Dodum';
 font-style: normal;
@@ -55,7 +55,7 @@ height: 567px; */
 width: 20vw;
 height: 27vw;
 left: 58%;
-top: 130%;
+top: 230%;
 
 z-index : 2;
 }
@@ -66,7 +66,7 @@ height: 567px; */
 width: 20vw;
 height: 27vw;
 left: 68%;
-top: 130%;
+top: 230%;
 filter : blur(5px);
 
 z-index : 1;
