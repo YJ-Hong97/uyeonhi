@@ -31,6 +31,12 @@
   #text{
   background-color: #D2D2FF;
   }
+  #profile{
+  	border-radius: 50%;
+	width: 3vh;
+	height: 3vh;
+	overflow: hidden;
+  }
   
   </style>
 </head>
@@ -44,11 +50,12 @@
 	<div id="select_tab">
 	    <ul>
 	      <li th:each="pick:${pickMeList}">
-	         <span th:text="${pick.id.nickname} + '님이 매칭 요청을 보내셨습니다.' "></span>
-	         <button th:onclick="location.href ='/matYes?pickid=[[${pick.id.id}]]'" class = "yes">수락</button>
-	        
-	         <button th:onclick="location.href ='/matNo?pickid=[[${pick.id.id}]]'" class = "no">거절</button>
-	          <hr>
+	      	<!-- <p th:each = "pro:${profile}"></p>	 -->
+	      	<img id="profile" th:src = "${pick.id.profile[0].fileName}" alt="">
+	        <span th:text="${pick.id.nickname} + '님이 매칭 요청을 보내셨습니다.' "></span>
+	        <button th:onclick="location.href ='/matYes?pickid=[[${pick.id.id}]]'" class = "yes">수락</button>
+	        <button th:onclick="location.href ='/matNo?pickid=[[${pick.id.id}]]'" class = "no">거절</button>
+	        <hr>
 	      </li>
 	    </ul>
 	    
