@@ -18,6 +18,7 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/video").setAllowedOrigins("http://localhost:7777").withSockJS();
+		registry.addEndpoint("/audio");
 	}
 
 	@Override
