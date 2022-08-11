@@ -86,6 +86,9 @@ public class MatchingController {
 				mRepo.save(mat);
 			});
 		}
+		
+		user.setCoin(user.getCoin() - 3);
+		uRepo.save(user);
 
 		return "매칭 신청이 되었습니다." + "상대방의 응답을 기다려주세요.";
 	}

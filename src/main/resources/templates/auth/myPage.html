@@ -696,7 +696,13 @@ i {
 			    });
 			}
 		});
+		var coin = [[${session.user.coin}]];
 		function matching(){
+			/* alert("aaa"); */
+			if(coin < 3) {
+				alert("우연이 부족합니다!");
+				return;
+			}
 			$.ajax({
 				url:"/matching",
 				data:{target:[[${profileOther.id}]]},
