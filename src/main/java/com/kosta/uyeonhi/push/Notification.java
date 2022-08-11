@@ -41,7 +41,7 @@ public class Notification {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int notification_id;
+	private Long notification_id;
 	
 	
 	private String senderId;
