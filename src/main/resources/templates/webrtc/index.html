@@ -274,6 +274,7 @@ body div {
 				$('#location').val(pdata["location"]);
 				$('#date').val(pdata["date"]);
 				$('#title').val(pdata["title"]);
+				$('#time').val(pdate["time"]);
 				$('.promiseContainer').css("display","block");
 				accept(pdata["pid"]);
 			}
@@ -543,11 +544,13 @@ function clock(){
 		let location = $('#location').val();
 		let date = $('#date').val();
 		let title = $('#title').val();
+		let time = $('#time').val();
 		stomp.send(`/pub/video/promise-offer/${roomNo}`,{},JSON.stringify({
 			location:location,
 			date:date,
 			roomNo:roomNo,
 			title:title,
+			time:time,
 			offer:mid
 		}));
 		$('.promiseContainer').css("display","none");
@@ -572,6 +575,7 @@ function clock(){
 		$('#location').val("");
 		$('#date').val("");
 		$('#title').val("");
+		$('#time').val("");
  		$('.promiseContainer').css("display","block");
  	});
   /*]]>*/
