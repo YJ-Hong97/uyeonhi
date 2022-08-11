@@ -377,7 +377,7 @@ i {
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} == ${session.user.id}">
 				<a class="nav-link" onClick="f_matchingSearch()"> 
-				내 매칭 상대 
+				내 매칭 상태 
 				</a>
 			</div>
 		</div>
@@ -680,7 +680,6 @@ i {
 			}
 		});
 		function matching(){
-			/* alert("aaa"); */
 			$.ajax({
 				url:"/matching",
 				data:{target:[[${profileOther.id}]]},
@@ -699,8 +698,6 @@ i {
 		} 	
 			
 		function f_matchingSearch(){
-			//$("#contentImg").hide();
-			//alert("aaaa");
  			$.ajax({
  				url:"/matView",
 				success:function(responseData){
@@ -708,8 +705,6 @@ i {
 					if(responseData == null){
 						alert("매칭 된 상대가 없습니다.");
 					} 
- 					
-					//$("#select_tab").html(html);
 					$("#select_tab").load("/matView");
 					$("#postmodum").html("");
   				}	
