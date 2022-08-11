@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+body {
+	position: relative;
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	text-align: center;
+	box-sizing: border-box;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5rem;
+	line-height: 110%;
+	text-align: center;
+}
+
+body div {
+	display: inline-block;
+}
+
+.videoContainer {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	width: 40%;
+	overflow: hidden;
+	z-index: 1;
+}
+
+.videoContainer #remoteVideo {
+	position: relative;
+	width: auto;
+	height: 100vh;
+	z-index: 1;
+	overflow: hidden;
+	z-index: 2;
+}
+
+.videoContainer #localVideo {
+	position: absolute;
+	top: 90%;
+	left: 20%;
+	transform: translate(-50%, -50%);
+	width: auto;
+	height: 30vh;
+	z-index: 5;
+}
+
+.chatContainer {
+	width: 30%;
+	height: 100vh;
+	float: left;
+}
+
+.chatBox {
+	width: 80%;
+	height: 80vh;
+	margin-top: 10%;
+	border-radius: 1rem;
+	margin-top: 1%;
+	border-radius: 1rem;
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+.chatBox #message {
+	width: 70%;
+	border: 0;
+	border-radius: 0.5rem;
+	background-color: white;
+}
+
+.chatBox #sendBtn {
+	width: 20%;
+	border: 0;
+	border-radius: 0.5rem;
+	background-color: #B983FF;
+	color: white;
+}
+
+.chatBox .messageBox {
+	height: 27rem;
+}
+
+.chatBox .inputBox {
+	width: 100%;
+	float: bottom;
+}
+
+.timeContainer {
+	position: absolute;
+	top: 0;
+	left: 85%;
+	transform: translate(-50%, 0);
+	width: 28%;
+	height: 100vh;
+	color: white;
+}
+
+.timeContainer span {
+	margin-top: 10%;
+	color: #B983FF;
+	font-size: 5rem;
+}
+
+.timeContainer .timeBox {
+	margin-top: 50%;
+}
+
+.messageBox {
+	width: 90%;
+	height: 90%
+}
+
+#connect {
+	cursor: pointer;
+}
+#disconnect{
+	display:none;
+	cursor:pointer;
+}
+#reconnect{
+	display:none;
+	cursor:pointer;
+}
+.messageBox{
+	overflow: auto;
+}
+.messageBox table{
+	width:100%;
+	font-size:1rem;
+	
+}
+.mymessage{
+	text-align: right;
+}
+.yourmessage{
+	text-align: left;
+}
+.messageBox::-webkit-scrollbar{
+	width: 1vw;
+	height: 1vh;
+}
+.messageBox::-webkit-scrollbar-thumb{
+	background-color: #B983FF;
+	border-radius: 1rem;
+}
+.messageBox::-webkit-scrollbar-track{
+	background-color: rgba(255,255,255,0.2);
+}
+.chatHeader{
+	width:80%;
+	margin-top:2rem;
+	text-align: left;
+	color:white;
+}
+.chatHeader span{
+	margin-right:1rem;
+}
+#promise{
+	width:5rem;
+	border-radius: 0.5rem;
+	border:0;
+	background-color: #B983FF;
+	vertical-align: 0.5rem;
+	cursor: pointer;
+	
+}
+</style>
+<body>
+	<div class="chatContainer">
+	<div class = "chatHeader">
+		<span class="material-symbols-outlined"> send </span><span><button type = "button" id = "promise">약속잡기</button></span>
+	</div>
+		<div class="chatBox">
+			<div class="messageBox">
+				<table class="messageBox2">
+				
+				</table>
+			</div>
+			<div class="inputBox">
+				<input text id="message">
+				<button type="button" id="sendBtn">전송</button>
+			</div>
+		</div>
+		<th:block th:replace = "~{/fragment/promiseModal::promise}">
+	</div>
+	<div class="videoContainer">
+		<video id="remoteVideo" autoplay playsinline></video>
+		<video id="localVideo" autoplay playsinline></video>
+
+
+	</div>
+	<div class="timeContainer">
+		<div class="timeBox">
+			<p id="time"></p>
+			<div th:if="${chatusers[1].user.id} == ${session.user.id}">
+				<p id="targetnick">[[${chatusers[0].user.nickname}]]님과 이만큼 통화 중!</p>
+			</div>
+			<div th:if="${chatusers[0].user.id} == ${session.user.id}">
+				<p id="targetnick">[[${chatusers[1].user.nickname}]]님과 이만큼 통화 중!</p>
+			</div>
+			<span class="material-symbols-rounded" id="connect">phone_in_talk </span>
+			<span class="material-symbols-rounded" id="disconnect">phone_disabled</span>
+			<span class="material-symbols-rounded" id="reconnect">phone_in_talk</span>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	var sock = new SockJS('/video');
+	var stomp;
+	var remoteVideo = document.querySelector('#remoteVideo');
+	var localVideo = document.querySelector('#localVideo');
+	var nickname = /*[[${user.nickname}]]*/'default';
+	var yournick;
+	var mid = /*[[${user.id}]]*/'default';
+	var roomNo = /*[[${room.roomNo}]]*/+"";
+	var initiator=false;
+	var mystream;
+	var parti = [];
+	var inputData="";
+	stomp = Stomp.over(sock);
+	//채팅 인풋
+	function chat(data){
+		var inputData = "";
+		var content = JSON.parse(data.body);
+		 console.log('is that you? ' + content.message);
+		 if(content.mid == mid) {
+			inputData+=`<tr><td class= "mymessage">${content.message}:${content.nickname}</td></tr>`
+		 } else {
+			inputData+=`<tr><td class= "yourmessage">${content.nickname}:${content.message}</td></tr>`
+		 }
+		 
+		 $(".messageBox2").append(inputData);
+		 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+		 $("#message").val("");
+	}
+	stomp.connect({},function(){
+		stomp.subscribe(`/sub/audio/message/${roomNo}`,function(data){
+			 chat(data);
+		 });
+		stomp.subscribe(`/sub/audio/promise-accept/${roomNo}`,function(data){
+			pdata = JSON.parse(data.body);
+			if(pdata["offer"]==mid){
+				return;
+			}else{
+				
+				$('#promiseSubmit').css("display","none");
+				$('#acceptBtn').css("display","block");
+				$('#location').val(pdata["location"]);
+				$('#date').val(pdata["date"]);
+				$('#title').val(pdata["title"]);
+				$('.promiseContainer').css("display","block");
+				accept(pdata["pid"]);
+			}
+		});
+		stomp.subscribe(`/sub/audio/promise-success/${roomNo}`,function(data){
+			console.log(data);
+			alert("약속이 등록되었습니다.");
+		});
+		//채팅
+		  $('#sendBtn').click(function(){
+			  message = $('#message').val();
+			  if(message == "") {
+				  alert("채팅 내용을 입력하세요.");
+				  return;
+			  }
+			  stomp.send(`/pub/audio/message/${roomNo}`,{},JSON.stringify({
+				  roomNo:roomNo,
+				  message:message,
+				  mid:mid,
+				  nickname:nickname
+			  }));
+		  });
+		  $(document).keypress(function(e) {
+			  if(event.keyCode == 13 || event.witch == 13) {
+				  message = $('#message').val();
+				  if(message == "") {
+					  alert("채팅 내용을 입력하세요.");
+					  return;
+				  }
+				  stomp.send(`/pub/audio/message/${roomNo}`,{},JSON.stringify({
+					  roomNo:roomNo,
+					  message:message,
+					  mid:mid,
+					  nickname:nickname
+				  }));
+			  }
+		  });
+	});
+	$('#connect').click(function(){
+		$(this).css("display","none");
+		$('#disconnect').css("display","block");			
+		stomp.subscribe(`/sub/audio/joined-info/${roomNo}`,function(data){
+			parti = JSON.parse(data.body);
+			parti = parti[roomNo];
+			if(parti.length==1){
+				initiator = true;
+			}else if(initiator==true){
+					initPeer();
+			}else{
+				secondPeer();
+			}
+		});
+		
+		stomp.send(`/pub/audio/joined-info/${roomNo}`,{},JSON.stringify({
+			roomNo:roomNo,
+			mid:mid,
+			}));
+		
+	});
+	function initPeer(){
+		
+		console.log("초기자");
+		navigator.mediaDevices.getUserMedia({
+			audio:true
+		}).then((stream)=>{
+			localVideo.srcObject =stream;
+			peer = new SimplePeer({
+				initiator:true,
+				trickle:false,
+				stream:stream
+			});
+			peer.on("signal",function(data){
+				signalData = {
+						signalId:roomNo,
+						type:data["type"],
+						sdp:data["sdp"]
+				};
+				stomp.send(`/pub/audio/caller-info/${roomNo}`,{},JSON.stringify(signalData));
+			});
+			peer.on("stream",function(stream){
+				remoteVideo.srcObject = stream;
+			});
+			stomp.subscribe(`/sub/audio/callee-info/${roomNo}`,function(data){
+				edata = JSON.parse(data.body);
+				signalData = {
+						type:edata["type"],
+						sdp:edata["sdp"]
+				}
+				peer.signal(signalData);
+				
+			});
+			stomp.subscribe(`/sub/audio/second-out/${roomNo}`,function(data){
+				for (const sub in this.stomp.subscriptions) {
+					  if (this.stomp.subscriptions.hasOwnProperty(sub)) {
+					    this.stomp.unsubscribe(sub);
+					  }
+					}
+				 stomp.subscribe(`/sub/audio/message/${roomNo}`,chat(data));
+				 stomp.subscribe(`/sub/audio/joined-info/${roomNo}`,function(data){
+						parti = JSON.parse(data.body);
+						parti = parti[roomNo];
+						if(parti.length==1){
+							initiator = true;
+						}else if(initiator==true){
+								initPeer();
+						}else{
+							secondPeer();
+						}
+					});
+			});
+		});
+		stomp.subscribe(`/sub/audio/callee-pause/${roomNo}`,function(data){
+			$('#remoteVideo')[0].pause();
+		});
+		stomp.subscribe(`/sub/audio/callee-play/${roomNo}`,function(data){
+			$('#remoteVideo')[0].play();
+		});
+		
+		$('#disconnect').click(function(){
+			$(this).css("display","none");
+			$('#reconnect').css("display","block");
+			$('#localVideo')[0].pause();
+			stomp.send(`/pub/audio/caller-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+		});
+		$('#reconnect').click(function(event){
+			$(this).css("display","none");
+			$('#disconnect').css("display","block");
+			$('#localVideo')[0].play();
+			stomp.send(`/pub/audio/caller-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			
+		});
+		clock();
+	};
+	function secondPeer(){
+		console.log("두번째");
+		navigator.mediaDevices.getUserMedia({
+			audio:true
+		}).then((stream)=>{
+			localVideo.srcObject =stream;
+			peer = new SimplePeer({
+				initiator:false,
+				trickle:false,
+				stream:stream
+			});
+			peer.on("signal",function(data){
+				 mysignalData = {
+						signalId:roomNo,
+						type:data["type"],
+						sdp:data["sdp"]
+				};
+				 
+				
+				 stomp.send(`/pub/audio/callee-info/${roomNo}`,{},JSON.stringify(mysignalData));
+				
+			});
+			peer.on("stream",function(stream){
+				remoteVideo.srcObject = stream;
+			});
+			 stomp.subscribe(`/sub/audio/caller-info/${roomNo}`,function(data){
+					edata = JSON.parse(data.body);
+					signalData = {
+							type:edata["type"],
+							sdp:edata["sdp"]
+					}
+					peer.signal(signalData);
+					
+				});
+			 
+		
+		});
+		stomp.subscribe(`/sub/audio/caller-pause/${roomNo}`,function(data){
+			$('#remoteVideo')[0].pause();
+		});
+	 	stomp.subscribe(`/sub/audio/caller-play/${roomNo}`,function(data){
+			 $('#remoteVideo')[0].play();
+		 });
+	 	stomp.subscribe(`/sub/audio/initiator-out/${roomNo}`,function(data){
+	 		initiator = true;
+	 		for (const sub in this.stomp.subscriptions) {
+				  if (this.stomp.subscriptions.hasOwnProperty(sub)) {
+				    this.stomp.unsubscribe(sub);
+				  }
+				}
+			 stomp.subscribe(`/sub/audio/message/${roomNo}`,function(data){
+				 var inputData = "";
+					var content = JSON.parse(data.body);
+					 console.log('is that you? ' + content.message);
+					 if(content.mid == mid) {
+						inputData+=`<tr><td class= "mymessage">${content.message}:${content.nickname}</td></tr>`
+					 } else {
+						inputData+=`<tr><td class= "yourmessage">${content.nickname}:${content.message}</td></tr>`
+					 }
+					 
+					 $(".messageBox2").append(inputData);
+					 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
+					 $("#message").val("");
+			  });
+			 stomp.subscribe(`/sub/audio/joined-info/${roomNo}`,function(data){
+					parti = JSON.parse(data.body);
+					parti = parti[roomNo];
+					if(parti.length==1){
+						initiator = true;
+					}else if(initiator==true){
+							initPeer();
+					}else{
+						secondPeer();
+					}
+				});
+	 		
+	 	});
+		$('#disconnect').click(function(){
+			$(this).css("display","none");
+			$('#reconnect').css("display","block");
+			$('#localVideo')[0].pause();
+			stomp.send(`/pub/audio/callee-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+		});
+		$('#reconnect').click(function(event){
+			$(this).css("display","none");
+			$('#disconnect').css("display","block");
+			$('#localVideo')[0].play();
+			stomp.send(`/pub/audio/callee-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			
+		});
+		clock();
+	};
+
+//시간 체크
+var hour = 0;
+var min = 0;
+var sec = 0;
+
+function clock(){
+	setInterval(function(){
+		if(sec == 60 && min!=60){
+			sec = 0;
+			min +=1;
+		}else if(sec ==60&& min==60){
+			sec= 0;
+			min=0;
+			hour +=1;
+		}else {
+			sec +=1;
+		}
+	inputTime = String(hour).padStart(2, '0') + ":"
+		+ String(min).padStart(2, '0') + ":"
+		+ String(sec).padStart(2, '0');
+	$('#time').html(`<span>${inputTime}</span>`);
+		
+	 },1000);
+}
+	window.addEventListener("beforeunload",function(event){
+		event.preventDefault();
+		if(initiator==true){
+			$.ajax({
+				url:`/audio/initiator-disconnect/${mid}/${roomNo}`
+			});
+		}else{
+			$.ajax({
+				url:`/audio/second-disconnect/${mid}/${roomNo}`
+			});
+		}
+		
+		event.returnValue = "";
+	});
+	//약속잡기
+	$('#promiseSubmit').click(function(){
+		let location = $('#location').val();
+		let date = $('#date').val();
+		let title = $('#title').val();
+		stomp.send(`/pub/audio/promise-offer/${roomNo}`,{},JSON.stringify({
+			location:location,
+			date:date,
+			roomNo:roomNo,
+			title:title,
+			offer:mid
+		}));
+		$('.promiseContainer').css("display","none");
+	});
+ 	function accept(pid){
+ 		
+ 		$('#acceptBtn').click(function(event){
+ 			event.preventDefault();
+ 			stomp.send(`/pub/audio/promise-accept/${roomNo}`,{},JSON.stringify({
+ 				pid:pid,
+ 				answer:mid,
+ 				roomNo:roomNo
+ 			}));
+ 			$('.promiseContainer').css("display","none");
+ 		});
+ 		
+ 		
+ 	}
+ 	$('#promise').click(function(){
+ 		$('#promiseSubmit').css("display","block");
+ 		$('#acceptBtn').css("display","none");
+		$('#location').val("");
+		$('#date').val("");
+		$('#title').val("");
+ 		$('.promiseContainer').css("display","block");
+ 	});
+  /*]]>*/
+</script>
+</body>
+</html>
