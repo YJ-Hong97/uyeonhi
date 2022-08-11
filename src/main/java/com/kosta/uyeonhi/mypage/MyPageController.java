@@ -192,7 +192,8 @@ public class MyPageController {
 		UserVO buser = uRepo.findByPhone(phone);
 		nRepo.deleteBlock(user, phone);
 		matchingGrade grade = gradeRepo.findByUserAndTarget(user, buser);
-		gradeRepo.deleteById(grade.getMid());
+		grade.setBlock(0);
+		gradeRepo.save(grade);
 		
 	}
 	@GetMapping("/inquiry")
