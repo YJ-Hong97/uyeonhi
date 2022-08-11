@@ -182,7 +182,7 @@ body {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, 10%);
+	transform: translate(-50%, -50%);
 	width: 32%;
 	background-color: white;
 	font-family: 'Gowun Dodum';
@@ -378,7 +378,7 @@ i {
 			<div class="p-2 type-btn nav-item"
 				th:if="${profileOther.id} == ${session.user.id}">
 				<a class="nav-link" onClick="f_matchingSearch()"> 
-				내 매칭 상대 
+				내 매칭 상태 
 				</a>
 			</div>
 		</div>
@@ -545,6 +545,23 @@ i {
 		}else{
 			if(event.target==document.querySelector('.settingss')){
 				$('.settingContainer').css("display","block");
+				$('.settingContainer table').css("display","block");
+			}
+		}
+		if($('.updatePWContainer').css("display")=="block"){
+			if(event.target==document.querySelector(".updatePWContainer")||event.target==document.querySelector(".updatePWContainer input")||event.target==document.querySelector(".updatePWContainer table")){
+				$('.updatePWContainer').css("display","block");
+			}else{
+				$('.updatePWContainer').css("display","none");
+				$('.settingContainer').css("display","none");
+			}
+		}
+		if($('.daccountContainer').css("display")=="block"){
+			if(event.target==document.querySelector(".daccountContainer")||event.target==document.querySelector(".daccountContainer input")||event.target==document.querySelector(".daccountContainer table")){
+				$('.daccountContainer').css("display","block");
+			}else{
+				$('.daccountContainer').css("display","none");
+				$('.daccountContainer').css("display","none");
 			}
 		}
 	});
@@ -689,7 +706,6 @@ i {
 			}
 		});
 		function matching(){
-			/* alert("aaa"); */
 			$.ajax({
 				url:"/matching",
 				data:{target:[[${profileOther.id}]]},
@@ -708,8 +724,6 @@ i {
 		} 	
 			
 		function f_matchingSearch(){
-			//$("#contentImg").hide();
-			//alert("aaaa");
  			$.ajax({
  				url:"/matView",
 				success:function(responseData){
@@ -717,8 +731,6 @@ i {
 					if(responseData == null){
 						alert("매칭 된 상대가 없습니다.");
 					} 
- 					
-					//$("#select_tab").html(html);
 					$("#select_tab").load("/matView");
 					$("#postmodum").html("");
   				}	

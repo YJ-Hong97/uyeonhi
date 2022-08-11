@@ -5,6 +5,7 @@ package com.kosta.uyeonhi.voiceChat;
 
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -223,12 +224,14 @@ public class VoiceController {
 	public void promise(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
 		Date date = Date.valueOf(ob.get("date").toString());
+		Timestamp time = Timestamp.valueOf(ob.get("date")+" "+ob.get("time").toString()+":00");
 		UserVO user = uRepo.findById(ob.get("offer").toString()).get();
 		PromiseVO promise = PromiseVO.builder()
 				.me(user)
 				.time(date)
 				.location(ob.get("location").toString())
 				.title(ob.get("title").toString())
+				.hourmin(time)
 				.build();
 		promiseRepository.save(promise);
 		ob.put("pid", promise.getProId());

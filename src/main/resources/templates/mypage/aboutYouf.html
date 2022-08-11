@@ -113,7 +113,7 @@ cursor:pointer;
 	$('.favoriteBtn').click(function(){
 		if(favoriteArr.length==5&&favoriteArr.includes($(this).val())){
 			$(this).css("background-color","rgba(185, 131, 255, 0.3)");
-			favoriteArr = idealArr.filter(i=>i!=$(this).val());
+			favoriteArr = favoriteArr.filter(i=>i!=$(this).val());
 			console.log(favoriteArr);
 		}else if(favoriteArr.includes($(this).val())){
 			$(this).css("background-color","rgba(185, 131, 255, 0.3)");

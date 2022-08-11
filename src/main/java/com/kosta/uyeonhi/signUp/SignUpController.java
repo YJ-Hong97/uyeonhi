@@ -147,7 +147,6 @@ public class SignUpController {
 		
 		boolean result = true;
 		result = uRepo.existsById(uid);
-		result = mRepo.existsById(uid);
 		
 		if(result) {
 			return "fail";
@@ -357,6 +356,7 @@ public class SignUpController {
 		
 		//내 소개 저장
 		mfList.forEach(mf->{
+			log.info(mf.toString());
 			FavoriteMenuVO favoritemenu = fRepo.findById(mf).get();
 			MFavoriteVO favorite = MFavoriteVO.builder()
 					.user(user)

@@ -36,12 +36,15 @@ import com.kosta.uyeonhi.matching.MatchingVO;
 import com.kosta.uyeonhi.matching.matchingGrade;
 import com.kosta.uyeonhi.security.MemberService;
 import com.kosta.uyeonhi.signUp.FavoriteMenuRepository;
+import com.kosta.uyeonhi.signUp.FavoriteMenuVO;
 import com.kosta.uyeonhi.signUp.FavoriteRepository;
 import com.kosta.uyeonhi.signUp.FavoriteVO;
 import com.kosta.uyeonhi.signUp.HobbyMenuRepository;
+import com.kosta.uyeonhi.signUp.HobbyMenuVO;
 import com.kosta.uyeonhi.signUp.HobbyRepository;
 import com.kosta.uyeonhi.signUp.HobbyVO;
 import com.kosta.uyeonhi.signUp.IdealMenuRepository;
+import com.kosta.uyeonhi.signUp.IdealMenuVO;
 import com.kosta.uyeonhi.signUp.IdealRepository;
 import com.kosta.uyeonhi.signUp.IdealTypeVO;
 import com.kosta.uyeonhi.signUp.MFavoriteRepository;
@@ -197,7 +200,8 @@ public class MyPageController {
 		UserVO buser = uRepo.findByPhone(phone);
 		nRepo.deleteBlock(user, phone);
 		matchingGrade grade = gradeRepo.findByUserAndTarget(user, buser);
-		gradeRepo.deleteById(grade.getMid());
+		grade.setBlock(0);
+		gradeRepo.save(grade);
 		
 	}
 	@GetMapping("/inquiry")
@@ -305,13 +309,13 @@ public class MyPageController {
 		
 		List<String> myList = new ArrayList<>();
 		mfRepo.findByUser(user).forEach(mf->{
-			myList.add(mf.getFavoriteId()+"f");
+			myList.add(mf.getFavorite().getFavoriteId()+"f");
 		});
 		mhRepo.findByUser(user).forEach(mh->{
-			myList.add(mh.getHobbyId()+"h");
+			myList.add(mh.getHobby().getHobbyId()+"h");
 		});
 		miRepo.findByUser(user).forEach(mi->{
-			myList.add(mi.getIdealId()+"i");
+			myList.add(mi.getIdeal().getIdealId()+"i");
 		});
 		
 		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
@@ -335,24 +339,27 @@ public class MyPageController {
 		for(int i = 0; i<mInfo.length; i++) {
 			if(mInfo[i].contains("h")) {
 				Long hId = Long.parseLong(mInfo[i].substring(0,mInfo[i].length()-1));
+				HobbyMenuVO hMenuVO = hMenuRepo.findById(hId).get();
 				MHobbyVO hobby = MHobbyVO.builder()
 						.user(user)
-						.hobbyId(hId)
+						.hobby(hMenuVO)
 						.build();
 				mhRepo.save(hobby);
 			}else if(mInfo[i].contains("f")) {
 				Long fId = Long.parseLong(mInfo[i].substring(0,mInfo[i].length()-1));
+				FavoriteMenuVO favoriteMenuVO = fMenuRepo.findById(fId).get();
 				MFavoriteVO favorite = MFavoriteVO.builder()
 						.user(user)
-						.favoriteId(fId)
+						.favorite(favoriteMenuVO)
 						.build();
 				mfRepo.save(favorite);
 				
 			}else if(mInfo[i].contains("i")){
 				Long iId = Long.parseLong(mInfo[i].substring(0,mInfo[i].length()-1));
+				IdealMenuVO idealMenuVO = iMenuRepo.findById(iId).get();
 				MIdealVO ideal = MIdealVO.builder()
 						.user(user)
-						.idealId(iId)
+						.ideal(idealMenuVO)
 						.build();
 				miRepo.save(ideal);
 			}
@@ -371,7 +378,7 @@ public class MyPageController {
 		
 		List<Long> myList = new ArrayList<>();
 		idealRepo.findByuserId(user.getId()).forEach(i->{
-			myList.add(i.getIdealId());
+			myList.add(i.getIdeal().getIdealId());
 		});
 		
 		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
@@ -390,9 +397,10 @@ public class MyPageController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		idealRepo.deleteByuserId(user.getId());
 		for(int i = 0 ; i<idealArr.length; i++) {
+			IdealMenuVO idealMenuVO = iMenuRepo.findById(idealArr[i]).get();
 			IdealTypeVO ideal = IdealTypeVO.builder()
 					.user(user)
-					.idealId(idealArr[i])
+					.ideal(idealMenuVO)
 					.build();
 			idealRepo.save(ideal);
 		}
@@ -409,7 +417,7 @@ public class MyPageController {
 		
 		List<Long> myList = new ArrayList<>();
 		fRepo.findByuserId(user.getId()).forEach(f->{
-			myList.add(f.getFavoriteId());
+			myList.add(f.getFavorite().getFavoriteId());
 		});
 		
 		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
@@ -428,9 +436,10 @@ public class MyPageController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		fRepo.deleteByUserId(user.getId());
 		for(int i = 0 ; i<favoriteArr.length; i++) {
+			FavoriteMenuVO favoriteMenuVO = fMenuRepo.findById(favoriteArr[i]).get();
 			FavoriteVO favorite = FavoriteVO.builder()
 					.user(user)
-					.favoriteId(favoriteArr[i])
+					.favorite(favoriteMenuVO)
 					.build();
 			fRepo.save(favorite);
 		}
@@ -447,7 +456,7 @@ public class MyPageController {
 		
 		List<Long> myList = new ArrayList<>();
 		hRepo.findByuserId(user.getId()).forEach(h->{
-			myList.add(h.getHobbyId());
+			myList.add(h.getHobby().getHobbyId());
 		});
 		
 		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
@@ -465,9 +474,10 @@ public class MyPageController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		hRepo.deleteByUserId(user.getId());
 		for(int i = 0 ; i<hobbyArr.length; i++) {
+			HobbyMenuVO hobbyMenuVO = hMenuRepo.findById(hobbyArr[i]).get();
 			HobbyVO hobby = HobbyVO.builder()
 					.user(user)
-					.hobbyId(hobbyArr[i])
+					.hobby(hobbyMenuVO)
 					.build();
 			hRepo.save(hobby);
 		}
