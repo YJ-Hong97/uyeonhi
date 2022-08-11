@@ -93,12 +93,6 @@ public class UyeonhiPayController {
 		 
 	    return list.getContent();
 	}
-	
-	@RequestMapping("/payView3.go")
-	public ModelAndView view3(ModelAndView mv) {
-		mv.setViewName("payment/view3");
-		return mv;
-	}
 
 	@PostMapping("/payInsert.go")
 	@ResponseBody
