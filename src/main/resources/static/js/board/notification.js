@@ -1,9 +1,8 @@
 function notificationMove(boardId, notiId) {
 	console.log(boardId);
 	console.log(notiId);
-	location.href = "/sns/sns1";
 
-	if ($("#board-box" + boardId).offset()) {
+		if ($("#board-box" + boardId).offset()) {
 		var offset = $("#board-box" + boardId).offset();
 
 		$('html, body').animate({ scrollTop: (offset.top - $('.window').height() / 5) }, 400);
@@ -31,6 +30,8 @@ function notificationMove(boardId, notiId) {
 			}
 		});
 	}
+
+	
 };
 
 

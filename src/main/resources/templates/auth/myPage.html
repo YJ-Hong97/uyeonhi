@@ -112,7 +112,7 @@
 
 		.top-container {
 			clear: both;
-			margin-top: 10vh;
+			margin-top: 20vh;
 		}
 
 		.settingContainer {
@@ -176,7 +176,7 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%, 10%);
+			transform: translate(-50%, -50%);
 			width: 32%;
 			background-color: white;
 			font-family: 'Gowun Dodum';
@@ -289,11 +289,11 @@
 
 <body>
 	<div class="top-container">
-	<div style="float:right">
-		<div id="socketAlert"></div>
-	</div>
 		<div class="d-flex">
 			<div class="flex-shrink-0">
+				<div id="socketAlert" style="display: none;">
+				</div>
+
 
 				<img id="profile" th:src="${profileOther.profile[0].fileName}" alt="...">
 
@@ -369,7 +369,7 @@
 			</div>
 			<div class="p-2 type-btn nav-item" th:if="${profileOther.id} == ${session.user.id}">
 				<a class="nav-link" onClick="f_matchingSearch()">
-					내 매칭 상대
+					내 매칭 상태
 				</a>
 			</div>
 		</div>
@@ -409,6 +409,7 @@
 		});
 		var midss = [[${session.user.id}]];
 		var ymidss = [[${profileOther.id}]];
+
 		$("#chatpopup").click(function () {
 			window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no")
 		});
@@ -419,28 +420,32 @@
 				if ([[${session.user.id}]] == [[${profileOther.id}]]) {
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
-						boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
-									src="${image[0]}">
+									src="${image[0]}"></a>
 							</div>`;
 					}
 					else {
 						boardpost += `<div class="p-2 contain">
-							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+						<a class="postdetail" th:data-boardId="${board.boardId}">
+							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 						</div>`;
 					}
 				} else {
 					if (board.board_type == "게시글") {
 						if (board.image_path != null) {
 							var image = board.image_path.split(',');
-							boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+							boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+							<a class="postdetail" th:data-boardId="${board.boardId}">
 									<img class="postimg" alt=""
-										src="${image[0]}">
+										src="${image[0]}"></a>
 								</div>`;
 						}
 						else {
 							boardpost += `<div class="p-2 contain">
-								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+							<a class="postdetail" th:data-boardId="${board.boardId}">
+								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 							</div>`;
 						}
 					}
@@ -456,15 +461,17 @@
 				if (board.board_type == "모집글") {
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
-						boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
-									src="${image[0]}">
+									src="${image[0]}"></a>
 							</div>`;
 					}
 				}
 				else {
 					boardpost += `<div class="p-2 contain">
-						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+					<a class="postdetail" th:data-boardId="${board.boardId}">
+						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 					</div>`;
 				}
 			}
@@ -531,6 +538,23 @@
 			} else {
 				if (event.target == document.querySelector('.settingss')) {
 					$('.settingContainer').css("display", "block");
+					$('.settingContainer table').css("display", "block");
+				}
+			}
+			if ($('.updatePWContainer').css("display") == "block") {
+				if (event.target == document.querySelector(".updatePWContainer") || event.target == document.querySelector(".updatePWContainer input") || event.target == document.querySelector(".updatePWContainer table")) {
+					$('.updatePWContainer').css("display", "block");
+				} else {
+					$('.updatePWContainer').css("display", "none");
+					$('.settingContainer').css("display", "none");
+				}
+			}
+			if ($('.daccountContainer').css("display") == "block") {
+				if (event.target == document.querySelector(".daccountContainer") || event.target == document.querySelector(".daccountContainer input") || event.target == document.querySelector(".daccountContainer table")) {
+					$('.daccountContainer').css("display", "block");
+				} else {
+					$('.daccountContainer').css("display", "none");
+					$('.daccountContainer').css("display", "none");
 				}
 			}
 		});
@@ -538,6 +562,7 @@
 		$('#logout').click(function () {
 			location.href = "/logout";
 		});
+
 		//아는 사람 만나지 않기
 		var setting = document.querySelector(".settingContainer table");
 		var block = document.querySelector(".blockContainer");
@@ -673,11 +698,11 @@
 				});
 			}
 		});
+		var coin = [[${session.user.coin}]];
 		function matching() {
 
-			let writer = [[${session.user.id}]];
 			let readWriter = [[${profileOther.id}]]
-
+			let writer = [[${session.user.id}]];
 			let alramData = {
 				senderId: writer,
 				receiverId: readWriter,
@@ -685,13 +710,17 @@
 			}
 
 
+			/* alert("aaa"); */
+			if (coin < 3) {
+				alert("우연이 부족합니다!");
+				return;
+			}
 			$.ajax({
 				url: "/matching",
 				data: {target: [[${profileOther.id}]]},
 				success: function (responseData) {
 					alert(responseData);
 					$("#sendMat").addClass("is-check");
-					console.log("여기까진 오니?");
 
 					alarmSave(alramData);
 
@@ -700,6 +729,8 @@
 						console.log(socketMsg);
 						websocket.send(socketMsg);
 					}
+
+
 
 					location.reload();
 				},
@@ -713,8 +744,6 @@
 		}
 
 		function f_matchingSearch() {
-			//$("#contentImg").hide();
-			//alert("aaaa");
 			$.ajax({
 				url: "/matView",
 				success: function (responseData) {
@@ -722,8 +751,6 @@
 					if (responseData == null) {
 						alert("매칭 된 상대가 없습니다.");
 					}
-
-					//$("#select_tab").html(html);
 					$("#select_tab").load("/matView");
 					$("#postmodum").html("");
 				}
@@ -779,6 +806,13 @@
 				}
 			});
 
+
+		});
+		$(".postdetail").click(function () {
+			alert($(this).attr("data-boardId"));
+			var id = $(this).attr("data-boardId");
+			var statuss = "width= 420px, height= 700px, location= no, scrollbars=no,resizable=no";
+			window.open(`/sns/${id}`, "postdetail", statuss);
 		});
 
 		$("body").not('#alarmList').on('click', function () {
@@ -786,8 +820,8 @@
 				$("#alarmList").css("display", "none");
 			}
 		});
-	</script>
 
+	</script>
 
 	<script th:inline="javascript">
 		var websocket = null;
@@ -818,6 +852,7 @@
 			};
 		};
 	</script>
+
 
 </body>
 

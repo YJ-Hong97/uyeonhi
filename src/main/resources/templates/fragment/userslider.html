@@ -22,6 +22,15 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
 			rel="stylesheet">
+			<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/sns.css}">
+	<link rel="stylesheet" th:href="@{/css/recruit.css}">
+	<script src="/js/board/likes.js"></script>
+	<script src="/js/board/board.js"></script>
+	<script src="/js/board/notification.js"></script>
+	<script src="/js/board/reply.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script src="/js/board/applicant.js"></script>
 	<style type="text/css">
 		.doMatch {
 			border: none;
@@ -34,7 +43,9 @@
 			display: inline-block;
 		}
 		.matcard{
+			display: inline-block;
 			border-radius: 2rem;
+			transition-duration: 0.5s;
 		}
 		.favDiv .card-text{
 			display: inline-block;
@@ -48,6 +59,7 @@
 			filter : blur(3px);
 			display: inline-block;
 			pointer-events: none;
+			transition-duration: 0.5s;
 		}
 		.pevpevCard {
 			display: none;
@@ -85,34 +97,336 @@
 			display: none;
 		}
 		
+		#slidecontainerreal {
+			/* width: 1037px; */
+			width: 1090px;
+			margin: auto;
+		}
+		.cardContainer {
+			margin-top: 60px;
+		}
+		.favDiv {
+			height: 70px;
+		}
+		
+		.pev, .next {
+			display: inline-block;
+			margin-top: -410px;
+			color: black;
+			border: none;
+			font-size: 3em;
+		}
+		.pev:hover, .next:hover {
+			border: none;
+		}
+		.pev {
+			margin-right: 10px;
+		}
+		.next {
+			margin-left: 5px;
+		}
+		
+		.flex-container {
+			width: 80% !important;
+			flex-wrap: wrap;
+		}
+		
+		a {
+			color: black;
+			text-decoration: none;
+		}
+		
 	</style>
 </head>
 <body>
-	<h1>card slider</h1>
-	<div class="pev btn"> &lt; 이전 </div>
-	<div class="next btn"> &gt; 다음 </div>
-	<div class = "cardContainer matcardc" th:each = "target:${targets}">
-		<div class="card matcard pevCard" style="width: 18rem;">
-		  <img th:src="${target.key.target.profile[0].fileName}" class="card-img-top" alt="..." id = "cardImg">
-		  <div class="card-body">
-		    <h5 class="card-title">[[${target.key.target.name}]]([[${target.key.target.nickname}]])</h5>
-		    <div class = "favDiv">
-		    	<p class="card-text"  th:each ="fav:${target.value}"th:value = "${target.value}">#[[${fav}]]</p>
-		    </div>
-		    <div class="d-flex justify-content-between">
-		    <p th:if="${target.key.block}==1" style="display: block" class = "blockMessage">차단된 사용자입니다.</p>
-			    <a th:unless="${target.key.block}==1" href="#" class="btn btn-secondary" th:value = "${target.key.target.id}">차단</a>
-			    <a th:unless="${target.key.block}==1" href="#" class="btn doMatch" th:data-targetId="${target.key.target.id}">매칭 신청</a>
-		    </div>
-		  </div>
+<th:block th:replace="~{/fragment/header::header}"></th:block>
+	<div id="slidecontainerreal">
+		<div class="pev btn"> &lt;</div>
+		
+		<div class = "cardContainer matcardc" th:each = "target:${targets}">
+			
+				<div class="card matcard pevCard" style="width: 18rem;">
+				  <img th:src="${target.key.target.profile[0].fileName}" height="300vh" class="card-img-top" alt="..." id = "cardImg">
+				  <div class="card-body">
+				  	<a th:href="@{/myPage/{mid}(mid = ${target.key.target.id})}">
+				    	<h5 class="card-title">[[${target.key.target.name}]]([[${target.key.target.nickname}]])</h5>
+				    </a>
+				    <div class = "favDiv">
+				    	<p class="card-text"  th:each ="fav:${target.value}"th:value = "${target.value}">#[[${fav}]]</p>
+				    </div>
+				    <div class="d-flex justify-content-between cardbutton">
+				    	<p th:if="${target.key.block}==1" style="display: block" class = "blockMessage">차단된 사용자입니다.</p>
+					    <a th:unless="${target.key.block}==1" href="#" class="btn btn-secondary" th:value = "${target.key.target.id}">차단</a>
+					    <a th:unless="${target.key.block}==1" href="#" class="btn doMatch" th:data-targetId="${target.key.target.id}">매칭 신청</a>
+				    </div>
+				  </div>
+				</div>
+			
 		</div>
+		<div class="next btn"> &gt;</div>
 	</div>
+	<div class="big-container">
+		<div class="flex-container">
+	<div class="center-container" th:each="list, status: ${boardList}">
+	<ul id="peedss" style="padding:0;">
+			<li>
+                  <div class="board-box" th:id="|board-box${list.boardId}|">
+                     <input type="hidden" class="boardId" th:value="${list.boardId}" />
+                     <input type="hidden" class="boardIndex" th:value="${status.index}" />
+                     
+                     <div th:id="|ex${status.count}|" class="modal">
+                        <div class="modal_Ct">
+                           <div class="modal_leftCt">
+                              <div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
+                                 이미지넣는곳</div>
+                           </div>
+                           <div class="modal_rightCt">
+                              <textarea th:id="|modify_${status.count}|"
+                                 placeholder="작성하세요.">[[${list.content}]]
+                              </textarea>
+                           </div>
+                           <button style="width: 100px; height: 30px;" th:value="${list.boardId}" type="button"
+                              th:aa=${status.count} class="update_button">수정</button>
+                        </div>
+                     </div>
+                     <!--  modal-->
+                     <div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
+                        
+                        <div
+                           style="margin: 0 0.5vw; background: #EEEEEE;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+                           <a th:href="|http://localhost:7777/myPage/${list.writer.id}|">
+                              <img style="width:100%; height:100%; object-fit:cover;" id="ellipse"
+                                 th:src="${list.writer.profile[0].fileName}">
+                           </a>
+                        </div>
+                        <span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
+                           th:class="|boardWriter${list.boardId}|" style="font-size: 1.3em;">[[${list.writer.id}]]</span>
+
+                        <button th:if="${list.writer.id == session.user.id}" 
+                        th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
+                        
+                     </div>
+                     <div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
+                        <div
+                           style="margin: 0 0.5vw; background: #EEEEEE;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+                           <a th:href="|http://localhost:7777/myPage/${list.writer.id}|">
+                              <img style="width:100%; height:100%; object-fit:cover;" id="ellipse"
+                                 th:src="${list.writer.profile[0].fileName}">
+                           </a>
+                           
+                           
+                        </div>
+                        <span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
+                           th:class="|boardWriter${list.boardId}|"
+                           style="color: white; font-size: 1.3em;">[[${list.writer.id}]]</span>
+                        <button th:if="${list.writer.id == session.user.id}" 
+                        th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
+                     </div>
+                     <div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
+                        <th:block th:replace="/fragment/slider :: sliderFragment"></th:block>
+                     </div>
+                     <div id="container4" th:value="${list.boardId}" class="conTainer4">
+                        <div class="container4-1">
+                        <span 
+                           th:text="${@time.convertLocaldatetimeToTime(list.regdate)}" id="regdate"></span>
+                        
+                              <button style="font-size: 1em; font-weight:700;  border:none; background-color:transparent;" class="show"
+                           onclick="show()" th:value="${status.index}"
+                           th:boardId="${list.boardId}">댓글</button>
+                        
+                        <span th:text="|좋아요 ${list.likes.size()}개|" class="liskeCount"></span>   
+                        <div class="like-box"
+                           th:if="${list.getLikes().size()==0 || @likeSearch.findUsingIterator(session.user.id,list.getLikes()) }">
+                           <span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
+                              th:onclick="|likes(${list.boardId})|">
+                              favorite </span>
+                        </div>
+                        <div th:each="likeCheck:${list.getLikes()}" class="like-box2">
+                           <div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
+                              <span class="material-symbols-outlined notlikes heartt"
+                                 th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
+                                 favorite </span>
+                           </div>
+                        </div>
+                        </div>
+               <!-- ------------------------- -->         
+                        <div class="text_container">
+                     <span style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</span>
+                        <a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
+                           <br>
+                     <div class="recruitInfo" th:if="${list.board_type == '모집글'}">
+                              <span th:text="|마감일 : ${list.deadline}|"
+                                 th:id="|deadline_${list.boardId}|"></span><br> <span class="recruit_person"
+                                 th:text="|신청 현황 : ${list.applicant.size()}| "
+                                 th:id="|applicant_person_${list.boardId}|"></span> <span
+                                 class="recruit_person" th:text="|/ ${list.total_person}|"
+                                 th:id="|total_person_${list.boardId}|"></span>
+                              <button
+                                 th:if="${list.writer.id != session.user.id && @applicantSearch.findUsingIterator(session.user.id,list.getApplicant())}"
+                                 th:id="|applyBtn_${list.boardId}|" class="apply"
+                                 th:onclick="|apply(${list.boardId})|">신청</button>
+                              <div th:each="apply:${list.getApplicant()}"
+                                 th:id="|cancleApply2_${list.boardId}|">
+                                 <button th:if="${session.user.id == apply.user.id}"
+                                    th:id="|applyBtn_${list.boardId}|" class="cancleApply"
+                                    th:onclick="|apply(${list.boardId})|">취소</button>
+                              </div>
+                              <span class="recurit_status" style="font-weight: 700;"
+                                 th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }">모집마감</span>
+                           </div>
+                           <br>
+                           <div class="tagList" 
+                                 th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
+                                 <a class="board_tag" style="font-size: 15px;" th:id="|tag_${list.boardId+status.count+status.index}|"
+                                    th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
+                                    th:text="|#${hashtag}|"></a>
+                           </div>
+
+                        </div>
+               <!-- ------------------------------ -->         
+                     </div>
+                     <div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
+                        <form class=reply_form>
+                           <div class="reply_container">
+                              <input type="hidden" th:class="|board${status.index}|"
+                                 th:value="${list.boardId}" />
+                              <div
+                                 style="margin: 0 0.5vw; background: #EEEEEE;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+                                 <img id="person" style="width:100%; height:100%; object-fit:cover;"
+                                    th:src="${session.user.profile[0].fileName}">
+                              </div>
+                              <textarea th:class="|reply_content${status.index}|" id="reply_text"
+                                 wrap=on></textarea>
+                              <button style="border-radius: 10px; margin-right: 13px; border: none; color: gray;" 
+                              th:class="btn_reply" type="button"
+                                 th:value="${status.index}">등록</button>
+                           </div>
+                        </form>
+                     </div>
+                    
+                  </div>
+               </li>
+           	</ul>
+           	</div>
+           	</div>
+           	</div>
 	<div class = "favModal">
 		
 	</div>
-	
-	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script th:inline="javascript">
+		var websocket = null;
+		$(document).ready(function () {
+			var user = [[${session.user}]];
+			websocket = new WebSocket("ws://localhost:7777/ws/noti");
+			console.log(user);
+			if (user != null) {
+				connectWs();
+			}
+		})
+		function connectWs() {
+
+			websocket.onopen = function () {
+				console.log('open');
+			};
+			websocket.onmessage = function (event) {
+				console.log("onmessage" + event.data);
+				let socketAlert = $('div#socketAlert');
+				socketAlert.html(event.data)
+				socketAlert.css('display', 'block');
+				setTimeout(function () {
+					socketAlert.css('display', 'none');
+				}, 10000);
+			};
+			websocket.onclose = function () {
+				console.log('close');
+			};
+		};
+		$('.conTainer4').each(function(){
+            //var content = $(this).children('.content');
+            var content = $(this).find('.board_text');
+ 
+            var content_txt = content.text();
+            var content_html = content.html();
+            var content_txt_short = content_txt.substring(0,20)+"...";
+            var btn_more =  $(this).find('.moreBtn');
+            var recruitInfo = $(this).find('.recruitInfo');
+            var tagList = $(this).find('.tagList');
+            var container4 = $(this);
+ 
+            
+            if(content_txt.length >= 20){
+                content.html(content_txt_short)
+                
+            }
+            
+            btn_more.click(textMore);
+            function textMore(){
+                if($(this).hasClass('short')){
+                    // 접기 상태
+                    $(this).html('더보기');
+                    content.html(content_txt_short)
+                    $(this).removeClass('short');
+                    recruitInfo.css("display", "none");
+		            tagList.css("display", "none");
+		 			container4.css("height", "10vh");
+                    
+                }else{
+                    // 더보기 상태
+                    $(this).html('접기');
+                    content.html(content_html);
+                    $(this).addClass('short');
+      			 	recruitInfo.css("display", "inline");
+		    		tagList.css("display", "inline");
+        			container4.css("height", "40vh");
+ 
+                }
+            }
+        });
+	</script>
+	<script>
+		$(document).ready(function () {
+			$(".big-container").not('#alarmList').on('click', function () {
+				if ($("#alarmList").css("display") == "block") {
+					$("#alarmList").css("display", "none");
+				}
+			});
+
+
+			$('.slider-wrap').slick({
+				slide: 'div',
+				infinite: true,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				speed: 500,
+				arrows: true,
+				autoplay: true,
+				autoplaySpeed: 10000,
+				pauseOnHover: true,
+				vertical: false,
+				prevArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; z-index:10;' class='slick-prev'>◀</button>",
+				nextArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; right:0 ; z-index:10;' class='slick-next'>▶</button>",
+				draggable: true,
+				responsive: [
+					{
+						breakpoint: 960, //화면 사이즈 960px
+						settings: {
+							slidesToShow: 4
+						}
+					},
+					{
+						breakpoint: 768, //화면 사이즈 768px
+						settings: {
+							slidesToShow: 5
+						}
+					}
+				]
+
+			});
+
+		})
+	</script>
+	<script th:inline="javascript">
+	
 	//차단하기
 	$('.btn-secondary').click(function(){
 		alert("다음 우연히부터 이 사람은 보이지 않습니다.\n차단하기를 해제하려면 아는 사람 만나지 않기에서 삭제해 주세요.");
@@ -127,14 +441,20 @@
 			}
 		});
 	});
+	
+	var coin = [[${session.user.coin}]];
 		$(".doMatch").click(function() {
 			var targetId = $(this).attr("data-targetid");
+			if(coin < 3) {
+				alert("우연이 부족합니다!");
+				return;
+			}
 			$.ajax({
 				url:"/matching",
 				data:{target: targetId},
 				success:function(responseData){
 					alert(responseData);
-					$(this).html("매칭신청중..");
+					location.reload();
 				},
 				fail:function(){
 					alert("매칭 신청을 실패하셨습니다.")

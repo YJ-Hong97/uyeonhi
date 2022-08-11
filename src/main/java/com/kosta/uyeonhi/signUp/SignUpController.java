@@ -1,13 +1,5 @@
 package com.kosta.uyeonhi.signUp;
 
-
-
-
-
-
-
-
-
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -16,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +29,8 @@ import com.kosta.uyeonhi.fileUpload.UploadS3Service;
 import com.kosta.uyeonhi.security.MemberService;
 
 import lombok.extern.java.Log;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 //http://aaaaaaaaa/hello.do/100
 //http://aaaaaaaaa/hello.do?id=100
 @Log
@@ -105,6 +101,32 @@ public class SignUpController {
 		mnv.setViewName("signUp/signUp3");
 		return mnv;
 	}
+	@PostMapping("/signUpp/{phone}")
+	public String phonecheck(@PathVariable("phone") String phone, HttpSession session) {
+		String api_key = "NCSNK3ZLZJS8QN23";
+		String api_secret = "QPO5Z4CQRJVFGWRIEZRHBOJ4HXYK91LX";
+		Message coolsms = new Message(api_key, api_secret);
+		
+		int checkNum = (int)(Math.random()*10000);
+		
+		// 4 params(to, from, type, text) are mandatory. must be filled
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("to", "01047486110");	// 수신전화번호
+		params.put("from", phone);	// 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+		params.put("type", "SMS");
+		params.put("text", String.valueOf(checkNum));
+		params.put("app_version", "test app 1.2"); // application name and version
+		
+		try {
+		  JSONObject obj = (JSONObject) coolsms.send(params);
+		  System.out.println(obj.toString());
+		} catch (CoolsmsException e) {
+		  System.out.println(e.getMessage());
+		  System.out.println(e.getCode());
+		}
+		
+		return String.valueOf(checkNum);
+	}
 	@PostMapping("/signUp4/{email}")
 	public void uSignUp4(@PathVariable("email")String email) {
 		log.info(email);
@@ -125,7 +147,6 @@ public class SignUpController {
 		
 		boolean result = true;
 		result = uRepo.existsById(uid);
-		result = mRepo.existsById(uid);
 		
 		if(result) {
 			return "fail";
@@ -335,6 +356,7 @@ public class SignUpController {
 		
 		//내 소개 저장
 		mfList.forEach(mf->{
+			log.info(mf.toString());
 			FavoriteMenuVO favoritemenu = fRepo.findById(mf).get();
 			MFavoriteVO favorite = MFavoriteVO.builder()
 					.user(user)

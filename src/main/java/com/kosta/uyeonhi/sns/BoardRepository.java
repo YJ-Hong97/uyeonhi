@@ -19,6 +19,9 @@ public interface BoardRepository extends PagingAndSortingRepository<Board, Long>
 	
 	List<Board> findByWriter(UserVO writer);
 	
+	@Query(value = "SELECT * FROM board b where b.board_type = ?1", nativeQuery = true)
+	List<Board> findByBoard_Type(String type);
+	
 	@Modifying
 	@Query(value = "update board set applicant_person = applicant_person + 1 where board_id = ?1", nativeQuery = true)
 	void recruitApply(Long boardId);
