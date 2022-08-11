@@ -102,6 +102,8 @@ ul{
 
 .flex-container .center-container .board-box{
     margin: 30px auto 0px auto;
+    display: flex;
+    flex-direction: column;
     width:100%;
 }
 
@@ -118,6 +120,8 @@ ul{
 }
 
 .flex-container .center-container .board-box #container2{
+	display:flex;
+	align-items: center;
     border-radius: 10px 10px 0 0;
     width:85%;
     height:8vh;
@@ -156,23 +160,28 @@ ul{
 
 .flex-container .center-container .board-box #container5{
 	width:85%;
-	height:6vh;
+	height:7vh;
 	border:#dddddd solid 1px;
 	border-radius: 0 0 10px 10px;
 	box-sizing: border-box;
+}
 
-
+.flex-container .center-container .board-box #container5 .reply_form{
+	height:100%;
 }
 
 .flex-container .center-container .board-box #container5 .reply_container{
 	border:solid #dddddd;
 	border-width: 1px 0 0 0;
+	display:flex;
+	align-items: center;
+	height:100%;
 }
 
 .flex-container .center-container .board-box #container5 .reply_container #reply_text{
 	margin:0 auto;
-	width:75%;
-	height:3.5vh;
+	width:70%;
+	height:50%;
 }
 
 .flex-container .center-container .box {
@@ -236,9 +245,6 @@ ul{
 	flex-grow: 1;
 }
 
-.big-container .flex-container .center-container #board_form .board_write_top .board_info {
-	margin:0 30px;
-}
 
 .big-container .flex-container .center-container #board_form .board_write_top #btn_fileUpload:hover {
 	cursor:pointer;
@@ -319,25 +325,14 @@ ul{
     cursor: pointer;
 }
 
-#person{
-	margin-left : 6px;
-	margin-top : 8px;
-    float: left;
-    color: #B983FF;
-    border-radius : 120px;
-    width: 40px;
-	height: 40px;
-    
-}
 
 #container3 {
     /* width: 478px;
     height: 398px;
     left: 655px;
     top: 283px; */
-
+	flex-shrink: 1;
     width: 85%;
-    height: 30vh;
     left: 40.938em;
     top: 17.688em;
 	overflow: hidden;
@@ -345,14 +340,6 @@ ul{
 
 }
 
-#ellipse {
-    position: absolute;
-    width: 46px;
-    height: 45px;
-    margin: 10px;
-
-    border-radius: 135px;
-}
 
 .heartt {
 	margin:4px;

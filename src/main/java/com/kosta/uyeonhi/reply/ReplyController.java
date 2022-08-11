@@ -28,4 +28,5 @@ public class ReplyController {
 		model.addAttribute("replyList", replyList);
 		return "sns/replyList";
 	}
+	
 }

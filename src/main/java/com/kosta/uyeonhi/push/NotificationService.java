@@ -10,5 +10,7 @@ public interface NotificationService {
 	
 	List<Notification> getNotiList(String receiverId);
 	
-	void notificationDelete(long notificationId);
+	void notificationDelete(Long notificationId);
+	
+	void notificationUpdate(String userId);
 }

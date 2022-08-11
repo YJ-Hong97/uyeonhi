@@ -41,27 +41,34 @@ body div {
 	left: 50%;
 	transform: translate(-50%, 0);
 	width: 40%;
-	overflow: hidden;
 	z-index: 1;
 }
 
 .videoContainer #remoteVideo {
-	position: relative;
-	width: auto;
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,0);
+	
+	overflow:hidden;
+	width: 100%;
 	height: 100vh;
-	z-index: 1;
-	overflow: hidden;
 	z-index: 2;
+	
+	background-color: white;
 }
 
 .videoContainer #localVideo {
 	position: absolute;
 	top: 90%;
-	left: 20%;
-	transform: translate(-50%, -50%);
+	left: 18%;
+	transform: translate(-50%, 0);
 	width: auto;
 	height: 30vh;
 	z-index: 5;
+	
+	background-color: white;
+	border: 0.1rem solid;
 }
 
 .chatContainer {
@@ -203,10 +210,8 @@ body div {
 		<th:block th:replace = "~{/fragment/promiseModal::promise}">
 	</div>
 	<div class="videoContainer">
-		<video id="remoteVideo" autoplay playsinline></video>
-		<video id="localVideo" autoplay playsinline></video>
-
-
+		<video id="remoteVideo" autoplay playsinline th:poster = "${target.profile[0].fileName}"></video>
+		<video id="localVideo" autoplay playsinline th:poster = "${user.profile[0].fileName}"></video>
 	</div>
 	<div class="timeContainer">
 		<div class="timeBox">
