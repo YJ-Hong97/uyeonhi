@@ -598,14 +598,23 @@ button:hover{
 	  }
       
     .show .popup .modal_picture_box{
+		background-color: #dddddd;
+		display:flex;
+		justify-content: center;
+		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
-		width:55%;
+	}
+	
+	.show .popup .modal_picture_box .replacePic{
+		align-items: center;
+		justify-content: center;
+		max-height:100%;
 	}
 	
 	.show .popup .modal_reply_box{
 		flex-grow: 1;
-		flex-shrink: 1;
+		flex-shrink: 0;
 		width:45%;
 		overflow:scroll;
 	}
@@ -614,8 +623,18 @@ button:hover{
 		display: none;
 	}
 	
+	.reply_origin_box{
+		margin-bottom:1vw;
+	}
+
+	
 	.reReply{
 		margin-left:30px;
+	}
+	
+	.reReply_box{
+		display:flex;
+		justify-content: end;
 	}
 	
 	.reply_list{
@@ -626,6 +645,22 @@ button:hover{
 		float:right;
 	}
 	
-	.reReply{
-		margin-left: 30px;
+	.btn_reReply{
+		border:none;
+		background-color: transparent;
+		font-weight: bold;
+		font-size: 0.1vw;
+		color:rgb(64, 0, 128)
 	}
+	
+	.reReply_view{
+		margin-top: -1vw;
+		border:none;
+		background-color: transparent;
+		font-weight: bold;
+		font-size: 0.1vw;
+		color:rgb(64, 0, 128);
+		float:right;
+	}
+	
+	

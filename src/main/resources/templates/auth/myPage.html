@@ -1,283 +1,278 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link
-	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
-	rel="stylesheet" />
-<link
-	href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap"
-	rel="stylesheet" />
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
-	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
-	integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-	integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+		integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+		integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+		integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
-<style type="text/css">
-.flex-shrink-0 #profile {
-	width: 134px;
-	height: 134px;
-	border-radius: 120px;
-	/* border: solid black 1px; */
-	display: inline-block;
-	margin-right: 10px;
-}
+	<style type="text/css">
+		.flex-shrink-0 #profile {
+			width: 134px;
+			height: 134px;
+			border-radius: 120px;
+			/* border: solid black 1px; */
+			display: inline-block;
+			margin-right: 10px;
+		}
 
-.doFollow, .doMatch {
-	font-family: 'Gowun Dodum';
-	border: solid black 1px;
-	border-radius: 10px;
-	margin-top: 15px;
-	background-color: white;
-}
+		.doFollow,
+		.doMatch {
+			font-family: 'Gowun Dodum';
+			border: solid black 1px;
+			border-radius: 10px;
+			margin-top: 15px;
+			background-color: white;
+		}
 
-.doFollow:hover, .doMatch:hover {
-	background-color: #B983FF;
-	color: white;
-}
-.contain {
-	height: 317px;
-}
+		.doFollow:hover,
+		.doMatch:hover {
+			background-color: #B983FF;
+			color: white;
+		}
 
-.nick {
-	font-family: 'Gowun Dodum';
-	font-size: 40px;
-}
+		.contain {
+			height: 317px;
+		}
 
-.default-txt {
-	font-family: 'Gowun Dodum';
-}
+		.nick {
+			font-family: 'Gowun Dodum';
+			font-size: 40px;
+		}
 
-.top-container {
-	width: 1000px;
-	margin: auto;
-}
+		.default-txt {
+			font-family: 'Gowun Dodum';
+		}
 
-.second-box {
-	margin-top: -10px;
-}
+		.top-container {
+			width: 1000px;
+			margin: auto;
+		}
 
-.nav-link {
-	width: 250px;
-	text-align: center;
-	color: black;
-}
+		.second-box {
+			margin-top: -10px;
+		}
 
-.nav-link:hover {
-	color: black;
-	border-bottom: 0px;
-	/* background-color: #B983FF;
+		.nav-link {
+			width: 250px;
+			text-align: center;
+			color: black;
+		}
+
+		.nav-link:hover {
+			color: black;
+			border-bottom: 0px;
+			/* background-color: #B983FF;
 	color: white; */
-}
+		}
 
-.active {
-	background-color: #B983FF;
-	color: white;
-}
+		.active {
+			background-color: #B983FF;
+			color: white;
+		}
 
-.postimg {
-	width: 317px;
-	height: 317px;
-	border-radius: 10px;
-}
+		.postimg {
+			width: 317px;
+			height: 317px;
+			border-radius: 10px;
+		}
 
-.is-check {
-	border: none;
-	background-color: #B983FF;
-	color: white;
-}
+		.is-check {
+			border: none;
+			background-color: #B983FF;
+			color: white;
+		}
 
-.check {
-	border: none;
-	background-color: #B983FF;
-	color: white;
-}
+		.check {
+			border: none;
+			background-color: #B983FF;
+			color: white;
+		}
 
-body {
-	position: relative;
-	margin: 0 auto;
-	width: 100%;
-	height: 100%;
-	text-align: center;
-}
+		body {
+			position: relative;
+			margin: 0 auto;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+		}
 
-.top-container {
-	clear: both;
-	margin-top: 20vh;
-}
+		.top-container {
+			clear: both;
+			margin-top: 20vh;
+		}
 
-.settingContainer {
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.1);
-	z-index: 6;
-}
+		.settingContainer {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.1);
+			z-index: 6;
+		}
 
-.settingContainer table {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	border: 0.05rem solid black;
-	border-radius: 0.5rem;
-	text-align: center;
-	border: 0.05rem solid black;
-}
+		.settingContainer table {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background-color: white;
+			border: 0.05rem solid black;
+			border-radius: 0.5rem;
+			text-align: center;
+			border: 0.05rem solid black;
+		}
 
-.settingContainer button {
-	cursor: pointer;
-	border: 0 solid;
-	background-color: white;
-	font-family: 'Gowun Dodum';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 1.5rem;
-	line-height: 110%;
-	text-align: center;
-}
+		.settingContainer button {
+			cursor: pointer;
+			border: 0 solid;
+			background-color: white;
+			font-family: 'Gowun Dodum';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 1.5rem;
+			line-height: 110%;
+			text-align: center;
+		}
 
-.settingContainer td {
-	border-bottom: 0.1rem solid #DDDDDD;
-	padding: 1.5rem;
-	padding-left: 6rem;
-	padding-right: 6rem;
-}
+		.settingContainer td {
+			border-bottom: 0.1rem solid #DDDDDD;
+			padding: 1.5rem;
+			padding-left: 6rem;
+			padding-right: 6rem;
+		}
 
-.settingContainer select {
-	width: 100%;
-	border: 0 solid;
-	background-color: white;
-	font-family: 'Gowun Dodum';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 1.5rem;
-	line-height: 110%;
-	text-align: center;
-}
+		.settingContainer select {
+			width: 100%;
+			border: 0 solid;
+			background-color: white;
+			font-family: 'Gowun Dodum';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 1.5rem;
+			line-height: 110%;
+			text-align: center;
+		}
 
-.blockContainer {
-	display: none;
-	border: 0.05rem solid black;
-	border-radius: 0.2rem;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 32%;
-	background-color: white;
-	font-family: 'Gowun Dodum';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 1.5rem;
-	line-height: 110%;
-	text-align: left;
-	font-family: 'Gowun Dodum';
-	z-index: 6;
-}
+		.blockContainer {
+			display: none;
+			border: 0.05rem solid black;
+			border-radius: 0.2rem;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 32%;
+			background-color: white;
+			font-family: 'Gowun Dodum';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 1.5rem;
+			line-height: 110%;
+			text-align: left;
+			font-family: 'Gowun Dodum';
+			z-index: 6;
+		}
 
-.blockContainer table {
-	width: 80%;
-	margin-left: auto;
-	margin-right: auto;
-}
+		.blockContainer table {
+			width: 80%;
+			margin-left: auto;
+			margin-right: auto;
+		}
 
-.block tr {
-	height: 4rem;
-}
+		.block tr {
+			height: 4rem;
+		}
 
-.block input {
-	border: 0 solid;
-	background-color: white;
-	font-family: 'Gowun Dodum';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 2rem;
-	line-height: 110%;
-	text-align: left;
-}
+		.block input {
+			border: 0 solid;
+			background-color: white;
+			font-family: 'Gowun Dodum';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 2rem;
+			line-height: 110%;
+			text-align: left;
+		}
 
-.block #bsubmit {
-	cursor: pointer;
-	width: 90%;
-	text-align: center;
-	font-size: 1.5rem;
-	background-color: #B983FF;
-}
+		.block #bsubmit {
+			cursor: pointer;
+			width: 90%;
+			text-align: center;
+			font-size: 1.5rem;
+			background-color: #B983FF;
+		}
 
-.blockList {
-	text-align: left;
-	margin-top: 5%;
-}
+		.blockList {
+			text-align: left;
+			margin-top: 5%;
+		}
 
-.blockList td {
-	height: 3rem;
-	border-bottom: 0.1rem solid #DDDDDD;
-	margin: 1rem;
-}
+		.blockList td {
+			height: 3rem;
+			border-bottom: 0.1rem solid #DDDDDD;
+			margin: 1rem;
+		}
 
-.blockList .delete {
-	cursor: pointer;
-	border: 0.1rem solid #B983FF;
-	border-radius: 1rem;
-	background-color: white;
-	color: #B983FF;
-}
+		.blockList .delete {
+			cursor: pointer;
+			border: 0.1rem solid #B983FF;
+			border-radius: 1rem;
+			background-color: white;
+			color: #B983FF;
+		}
 
-#close {
-	cursor: pointer;
-}
+		#close {
+			cursor: pointer;
+		}
 
-.material-symbols-outlined {
-	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48
-}
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL'0, 'wght'400, 'GRAD'0, 'opsz'48
+		}
 
-i {
-	cursor: pointer;
-}
+		i {
+			cursor: pointer;
+		}
 
-.listfollow, .listfollowing {
-	cursor: pointer;
-}
+		.listfollow,
+		.listfollowing {
+			cursor: pointer;
+		}
 
-.profile {
-	border-radius: 50%;
-	width: 8vh;
-	height: 8vh;
-	overflow: hidden;
-}
+		.profile {
+			border-radius: 50%;
+			width: 8vh;
+			height: 8vh;
+			overflow: hidden;
+		}
 
-#nickts {
-	margin-bottom: 0px;
-	margin-top: 20px;
-}
+		#nickts {
+			margin-bottom: 0px;
+			margin-top: 20px;
+		}
 
-#followBox a {
-	display: inline-block;
-	width: 100%;
-	margin-bottom: 10px;
-	text-decoration: none;
-	color: black;
-}
+		#followBox a {
+			display: inline-block;
+			width: 100%;
+			margin-bottom: 10px;
+			text-decoration: none;
+			color: black;
+		}
 
 .modal-body {
 	height: 500px;
@@ -286,29 +281,29 @@ i {
 #postmodum {
 	height: 700px;
 }
-
-</style>
+	</style>
 
 </head>
+
 <body>
 	<div class="top-container">
 		<div class="d-flex">
 			<div class="flex-shrink-0">
+				<div id="socketAlert" style="display: none;">
+				</div>
 
-				<img id="profile" th:src="${profileOther.profile[0].fileName}"
-					alt="...">
+
+				<img id="profile" th:src="${profileOther.profile[0].fileName}" alt="...">
 
 			</div>
 			<div class="d-flex flex-column mb-2">
 				<div class="d-flex flex-row mb-3">
 
 					<div class="p-2 nick">[[${profileOther.nickname}]]</div>
-					<div class="p-2"
-						th:unless="${profileOther.id} == ${session.user.id}">
+					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
 
 						<div th:if="${isFollow == 1}">
-							<button type="button" id="follows"
-								class="btn btn-light doFollow is-check">팔로우 취소</button>
+							<button type="button" id="follows" class="btn btn-light doFollow is-check">팔로우 취소</button>
 						</div>
 						<div th:unless="${isFollow == 1}">
 							<button type="button" id="follows" class="btn btn-light doFollow">
@@ -316,41 +311,39 @@ i {
 						</div>
 					</div>
 
-					<div class="p-2"
-						th:unless="${profileOther.id} == ${session.user.id}">
+					<div class="p-2" th:unless="${profileOther.id} == ${session.user.id}">
 						<div th:if="${mcheck} == -1">
 							<button type="button" id="sendMat" class="btn btn-light doMatch"
 								onclick="matching()">매칭신청</button>
 						</div>
 						<div th:if="${mcheck} == 0">
-							<button type="button" id="sendMat"
-								class="btn btn-light doMatch is-check">매칭신청중..</button>
+							<button type="button" id="sendMat" class="btn btn-light doMatch is-check">매칭신청중..</button>
 						</div>
 						<div th:if="${mcheck} == 1">
-							<button type="button" id="sendMat"
-								class="btn btn-light doMatch is-check dropdown-toggle"
+							<button type="button" id="sendMat" class="btn btn-light doMatch is-check dropdown-toggle"
 								data-bs-toggle="dropdown" aria-expanded="false">매칭성공</button>
 							<ul class="dropdown-menu">
-							    <li><button class="dropdown-item" type="button" id = "voiceChat">음성 통화</button></li>
-							    <li><button class="dropdown-item" type="button" id = "videoChat">화상 통화</button></li>
-							    <li><a class="dropdown-item" type="button" id="chatpopup">채팅</a></li>
-							    <li><hr class="dropdown-divider"></li>
-   								<li><button class="dropdown-item" onclick ="cancelmatching()"> 매칭 취소 </button></li>
-						  	</ul>
+								<li><button class="dropdown-item" type="button" id="voiceChat">음성 통화</button></li>
+								<li><button class="dropdown-item" type="button" id="videoChat">화상 통화</button></li>
+								<li><a class="dropdown-item" type="button" id="chatpopup">채팅</a></li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+								<li><button class="dropdown-item" onclick="cancelmatching()"> 매칭 취소 </button></li>
+							</ul>
 						</div>
 
 					</div>
 				</div>
 				<div class="d-flex flex-row mb-5 second-box">
 
-					<div class="p-2 default-txt listfollow" data-bs-toggle="modal"
-						data-bs-target="#exampleModal">팔로워</div>
+					<div class="p-2 default-txt listfollow" data-bs-toggle="modal" data-bs-target="#exampleModal">팔로워
+					</div>
 					<div class="p-2 default-txt">[[${follower}]]</div>
-					<div class="p-2 default-txt listfollowing" data-bs-toggle="modal"
-						data-bs-target="#exampleModal">팔로잉</div>
+					<div class="p-2 default-txt listfollowing" data-bs-toggle="modal" data-bs-target="#exampleModal">팔로잉
+					</div>
 					<div class="p-2 default-txt">[[${following}]]</div>
-					<div class="p-2 default-txt"
-						th:if="${profileOther.id} == ${session.user.id}">
+					<div class="p-2 default-txt" th:if="${profileOther.id} == ${session.user.id}">
 
 						<i class="fa-solid fa-gear settingss"></i>
 					</div>
@@ -362,42 +355,39 @@ i {
 			<div class="p-2 type-btn nav-item" id="commonboard">
 				<a id="commonboard" class="nav-link active" aria-current="page">게시글</a>
 			</div>
-			<div class="p-2 type-btn nav-item"
-				th:if="${profileOther.id} != ${session.user.id}" id="gatherboard">
+			<div class="p-2 type-btn nav-item" th:if="${profileOther.id} != ${session.user.id}" id="gatherboard">
 
-				<a class="nav-link" aria-current="page" href="#" >모집글</a>
-
-			</div>
-			<div class="p-2 type-btn nav-item likeList" 
-				th:if="${profileOther.id} == ${session.user.id}">
-
-				<a class="nav-link" href="#" >좋아요</a>
+				<a class="nav-link" aria-current="page" href="#">모집글</a>
 
 			</div>
-			<div class="p-2 type-btn nav-item"
-				th:if="${profileOther.id} == ${session.user.id}">
-				<a class="nav-link" onClick="f_matchingSearch()"> 
-				내 매칭 상태 
+			<div class="p-2 type-btn nav-item likeList" th:if="${profileOther.id} == ${session.user.id}">
+
+				<a class="nav-link" href="#">좋아요</a>
+
+			</div>
+			<div class="p-2 type-btn nav-item" th:if="${profileOther.id} == ${session.user.id}">
+				<a class="nav-link" onClick="f_matchingSearch()">
+					내 매칭 상태
 				</a>
 			</div>
 		</div>
 		<div id="select_tab"></div>
 		<div id="postmodum" class="d-flex justify-content-evenly flex-wrap listt">
 		</div>
-		
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">팔로워 목록</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="d-flex justify-content-around flex-column" id="followBox"></div>
+
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">팔로워 목록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="d-flex justify-content-around flex-column" id="followBox"></div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 	<th:block th:replace="~{/fragment/header::header}"></th:block>
 	<th:block th:replace="~{/mypage/setting :: setting}"></th:block>
@@ -407,178 +397,180 @@ i {
 	<th:block th:replace="~{/auth/videoRoomModal::makeVideo}"></th:block>
 	<th:block th:replace="~{/auth/audioRoomModal::makeAudio}"></th:block>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="/js/board/notification.js"></script>
+
 	<script th:inline="javascript">
-	//setting창 켜기
-	//setting창 끄기
-	$(() => {
-		commonboard();
-	});
-	var midss = [[${session.user.id}]];
-	var ymidss = [[${profileOther.id}]];
-	
-	$("#chatpopup").click(function () {
-		window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no")
-	});
-	function commonboard() {
-		var listboard = [[${listboard}]];
-		var boardpost = "";
-		for( board of listboard) {
-			if([[${session.user.id}]] == [[${profileOther.id}]]) {
-				if(board.image_path != null) {
-					var image = board.image_path.split(',');
-					boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+		//setting창 켜기
+		//setting창 끄기
+		$(() => {
+			commonboard();
+		});
+		var midss = [[${session.user.id}]];
+		var ymidss = [[${profileOther.id}]];
+
+		$("#chatpopup").click(function () {
+			window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no")
+		});
+		function commonboard() {
+			var listboard = [[${listboard}]];
+			var boardpost = "";
+			for (board of listboard) {
+				if ([[${session.user.id}]] == [[${profileOther.id}]]) {
+					if (board.image_path != null) {
+						var image = board.image_path.split(',');
+						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
 						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
 									src="${image[0]}"></a>
 							</div>`;
-				}
-				else {
-					boardpost += `<div class="p-2 contain">
+					}
+					else {
+						boardpost += `<div class="p-2 contain">
 						<a class="postdetail" th:data-boardId="${board.boardId}">
 							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 						</div>`;
-				}
-			} else {
-				if(board.board_type == "게시글") {
-					if(board.image_path != null) {
-						var image = board.image_path.split(',');
-						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+					}
+				} else {
+					if (board.board_type == "게시글") {
+						if (board.image_path != null) {
+							var image = board.image_path.split(',');
+							boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
 							<a class="postdetail" th:data-boardId="${board.boardId}">
 									<img class="postimg" alt=""
 										src="${image[0]}"></a>
 								</div>`;
-					}
-					else {
-						boardpost += `<div class="p-2 contain">
+						}
+						else {
+							boardpost += `<div class="p-2 contain">
 							<a class="postdetail" th:data-boardId="${board.boardId}">
 								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 							</div>`;
+						}
 					}
 				}
 			}
+			$("#postmodum").html(boardpost);
 		}
-		$("#postmodum").html(boardpost);
-	}
-	
-	function gatherboard() {
-		var listboard = [[${listboard}]];
-		var boardpost = "";
-		for( board of listboard) {
-			if(board.board_type == "모집글") {
-				if(board.image_path != null) {
-					var image = board.image_path.split(',');
-					boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+
+		function gatherboard() {
+			var listboard = [[${listboard}]];
+			var boardpost = "";
+			for (board of listboard) {
+				if (board.board_type == "모집글") {
+					if (board.image_path != null) {
+						var image = board.image_path.split(',');
+						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
 						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
 									src="${image[0]}"></a>
 							</div>`;
+					}
 				}
-			}
-			else {
-				boardpost += `<div class="p-2 contain">
+				else {
+					boardpost += `<div class="p-2 contain">
 					<a class="postdetail" th:data-boardId="${board.boardId}">
 						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 					</div>`;
-			}
-		}
-		$("#postmodum").html(boardpost);
-	}
-	$("#commonboard").click(function () {
-		commonboard();
-	});
-	$("#gatherboard").click(function () {
-		gatherboard();
-	});
-	$(".listfollow").click(function () {
-		var str ="";
-		$(".modal-title").html("팔로워 목록");
-		$.ajax({
-			url : "/listfollow",
-			type : "get",
-			data: {"id" : [[${profileOther.id}]]},
-			success : function(responseData) {
-				for(data of responseData) {
-					console.log(data.user.profile[0].fileName);
-					str += `<a class="d-flex justify-content-around" href='/myPage/${data.user.id}' >`;
-					str += `<img class='profile' src=${data.user.profile[0].fileName} />`;
-					str += `<p id='nickts'> ${data.user.nickname} </p>`;
-					str += `</a>`;
-					str += `<hr>`;
 				}
-				$("#followBox").html(str);
-			},
-			error:function(e){
-				console.log(e);
 			}
-		}); 
-	});
-	$(".listfollowing").click(function () {
-		var str ="";
-		$(".modal-title").html("팔로잉 목록");
-		$.ajax({
-			url : "/listfollowing",
-			type : "get",
-			data: {"id" : [[${profileOther.id}]]},
-			success : function(responseData) {
-				for(data of responseData) {
-					console.log(data.target.profile[0].fileName);
-					str += `<a class="d-flex justify-content-around" href='/myPage/${data.target.id}' >`;
-					str += `<img class='profile' src=${data.target.profile[0].fileName} />`;
-					str += `<p id='nickts'> ${data.target.nickname} </p>`;
-					str += `</a>`;
-					str += `<hr>`;
+			$("#postmodum").html(boardpost);
+		}
+		$("#commonboard").click(function () {
+			commonboard();
+		});
+		$("#gatherboard").click(function () {
+			gatherboard();
+		});
+		$(".listfollow").click(function () {
+			var str = "";
+			$(".modal-title").html("팔로워 목록");
+			$.ajax({
+				url: "/listfollow",
+				type: "get",
+				data: {"id": [[${profileOther.id}]]},
+				success: function (responseData) {
+					for (data of responseData) {
+						console.log(data.user.profile[0].fileName);
+						str += `<a class="d-flex justify-content-around" href='/myPage/${data.user.id}' >`;
+						str += `<img class='profile' src=${data.user.profile[0].fileName} />`;
+						str += `<p id='nickts'> ${data.user.nickname} </p>`;
+						str += `</a>`;
+						str += `<hr>`;
+					}
+					$("#followBox").html(str);
+				},
+				error: function (e) {
+					console.log(e);
 				}
-				$("#followBox").html(str);
-			},
-			error:function(e){
-				console.log(e);
+			});
+		});
+		$(".listfollowing").click(function () {
+			var str = "";
+			$(".modal-title").html("팔로잉 목록");
+			$.ajax({
+				url: "/listfollowing",
+				type: "get",
+				data: {"id": [[${profileOther.id}]]},
+				success: function (responseData) {
+					for (data of responseData) {
+						console.log(data.target.profile[0].fileName);
+						str += `<a class="d-flex justify-content-around" href='/myPage/${data.target.id}' >`;
+						str += `<img class='profile' src=${data.target.profile[0].fileName} />`;
+						str += `<p id='nickts'> ${data.target.nickname} </p>`;
+						str += `</a>`;
+						str += `<hr>`;
+					}
+					$("#followBox").html(str);
+				},
+				error: function (e) {
+					console.log(e);
+				}
+			});
+		});
+		window.addEventListener("click", function (event) {
+			if ($('.settingContainer').css("display") == "block") {
+				if (event.target == document.querySelector('.settingContainer table') || event.target == document.querySelector('.settingContainer select')) {
+				} else {
+					$('.settingContainer').css("display", "none");
+				}
+			} else {
+				if (event.target == document.querySelector('.settingss')) {
+					$('.settingContainer').css("display", "block");
+					$('.settingContainer table').css("display", "block");
+				}
 			}
-		}); 
-	});
-	window.addEventListener("click",function(event){
-		if($('.settingContainer').css("display")=="block"){
-			if(event.target==document.querySelector('.settingContainer table')||event.target==document.querySelector('.settingContainer select')){
-			}else{
-				$('.settingContainer').css("display","none");
+			if ($('.updatePWContainer').css("display") == "block") {
+				if (event.target == document.querySelector(".updatePWContainer") || event.target == document.querySelector(".updatePWContainer input") || event.target == document.querySelector(".updatePWContainer table")) {
+					$('.updatePWContainer').css("display", "block");
+				} else {
+					$('.updatePWContainer').css("display", "none");
+					$('.settingContainer').css("display", "none");
+				}
 			}
-		}else{
-			if(event.target==document.querySelector('.settingss')){
-				$('.settingContainer').css("display","block");
-				$('.settingContainer table').css("display","block");
+			if ($('.daccountContainer').css("display") == "block") {
+				if (event.target == document.querySelector(".daccountContainer") || event.target == document.querySelector(".daccountContainer input") || event.target == document.querySelector(".daccountContainer table")) {
+					$('.daccountContainer').css("display", "block");
+				} else {
+					$('.daccountContainer').css("display", "none");
+					$('.daccountContainer').css("display", "none");
+				}
 			}
-		}
-		if($('.updatePWContainer').css("display")=="block"){
-			if(event.target==document.querySelector(".updatePWContainer")||event.target==document.querySelector(".updatePWContainer input")||event.target==document.querySelector(".updatePWContainer table")){
-				$('.updatePWContainer').css("display","block");
-			}else{
-				$('.updatePWContainer').css("display","none");
-				$('.settingContainer').css("display","none");
-			}
-		}
-		if($('.daccountContainer').css("display")=="block"){
-			if(event.target==document.querySelector(".daccountContainer")||event.target==document.querySelector(".daccountContainer input")||event.target==document.querySelector(".daccountContainer table")){
-				$('.daccountContainer').css("display","block");
-			}else{
-				$('.daccountContainer').css("display","none");
-				$('.daccountContainer').css("display","none");
-			}
-		}
-	});
-	//로그아웃
-	$('#logout').click(function(){
-		location.href = "/logout";
-	});
-	
+		});
+		//로그아웃
+		$('#logout').click(function () {
+			location.href = "/logout";
+		});
+
 		//아는 사람 만나지 않기
 		var setting = document.querySelector(".settingContainer table");
 		var block = document.querySelector(".blockContainer");
-		$('#block').click(function(event) {
+		$('#block').click(function (event) {
 			$.ajax({
-				url : "/notToMeet",
-				type : "post",
-				success : function(responseData) {
+				url: "/notToMeet",
+				type: "post",
+				success: function (responseData) {
 					var output = "<tr><th>차단된 번호</th><th></th><th><span class='material-symbols-outlined' id = 'close'>close</span></th></tr>";
-					for(let i in responseData){
+					for (let i in responseData) {
 						output += `					
 							<tr>
 								<td>${responseData[i].phone}</td>
@@ -587,221 +579,279 @@ i {
 							</tr>`;
 					}
 					$("#tblBlock").html(output);
-					
+
 				},
-				error:function(e){
+				error: function (e) {
 					console.log(e);
 				}
-			}); 
+			});
 			setting.style.display = "none";
 			block.style.display = "block";
-			
+
 		});
 		//아는 사람 등록
-		$('#bsubmit').click(function(){
+		$('#bsubmit').click(function () {
 			let bname = $('#bname').val();
 			let bphone = $('#bphone').val();
 			$.ajax({
-				url:"/newBlock",
-				type:"post",
-				data:{"bname":bname,"bphone":bphone},
-				success:function(response){
-					if(response=="fail"){
+				url: "/newBlock",
+				type: "post",
+				data: {"bname": bname, "bphone": bphone},
+				success: function (response) {
+					if (response == "fail") {
 						alert("이미 등록된 사람입니다.");
-					}else{
+					} else {
 						setting.style.display = "block";
 						block.style.display = "none";
 					}
 				}
 			});
-			
+
 		});
 		//아는 사람 삭제
-		
-		$(document).on("click", ".delete", function() {
+
+		$(document).on("click", ".delete", function () {
 			let dvalue = $(this).val();
 			$.ajax({
-				url:"/dBlock/"+dvalue,
-				type:"post"
+				url: "/dBlock/" + dvalue,
+				type: "post"
 			});
 			setting.style.display = "block";
 			block.style.display = "none";
 		});
 		//아는 사람 모달 끄기
-		$(document).on("click","#close",function(){
+		$(document).on("click", "#close", function () {
 			setting.style.display = "block";
 			block.style.display = "none";
 		});
 		//고객센터
-		$('#inquiry').click(function(){
+		$('#inquiry').click(function () {
 			location.href = "/inquiry";
 		});
-		
-		
+
+
 		////계정설정
-		$('#accounting').change(function(){
-			if($(this).val()=="aboutMe"){
+		$('#accounting').change(function () {
+			if ($(this).val() == "aboutMe") {
 				location.href = "/aboutMe";
-				
-			}else if($(this).val()=="aboutYou"){
+
+			} else if ($(this).val() == "aboutYou") {
 				location.href = "/aboutYoui";
-				
-			}else if($(this).val()=="passwordUpdate"){
+
+			} else if ($(this).val() == "passwordUpdate") {
 				setting.style.display = "none";
-				$('.updatePWContainer').css("display","block");				
-			}else if($(this).val()=="secession"){
+				$('.updatePWContainer').css("display", "block");
+			} else if ($(this).val() == "secession") {
 				setting.style.display = "none";
-				$('.daccountContainer').css("display","block");		
+				$('.daccountContainer').css("display", "block");
 			}
 		});
 		//채팅 방 
-		$('#chat').click(function(){
-				location.href = "/loadChat";
+		$('#chat').click(function () {
+			location.href = "/loadChat";
 		});
 
-	
-		$(".nav-link").click(function() {
+
+		$(".nav-link").click(function () {
 			$(".nav-link").removeClass('active');
 			$(this).addClass('active');
 		});
-		
-		if($(".nav-link").length == 2) {
+
+		if ($(".nav-link").length == 2) {
 			$(".nav-link").css("width", "400px");
 		}
-		
-		$("#follows").click(function() {
-			if($("#follows").hasClass("is-check") === false) {
+
+		$("#follows").click(function () {
+			if ($("#follows").hasClass("is-check") === false) {
 				$.ajax({
-			        url: "/auth/dofollow",
-			        data: {"id" : [[${profileOther.id}]]},
-			        type:"POST",
-			        success: function onData (data) {
-			        	$("#follows").html("팔로우 취소");
-			        	$("#follows").addClass("is-check");
-			            alert([[${profileOther.nickname}]] + "님을 팔로우 했습니다.");
-			            location.reload();
-			        },
-			        error: function onError (error) {
-			        	alert([[${profileOther.nickname}]] + "팔로우 실패했습니다.");
-			        }
-			    });
+					url: "/auth/dofollow",
+					data: {"id": [[${profileOther.id}]]},
+					type: "POST",
+					success: function onData(data) {
+						$("#follows").html("팔로우 취소");
+						$("#follows").addClass("is-check");
+						alert([[${profileOther.nickname}]] + "님을 팔로우 했습니다.");
+						location.reload();
+					},
+					error: function onError(error) {
+						alert([[${profileOther.nickname}]] + "팔로우 실패했습니다.");
+					}
+				});
 			}
-			
+
 			else {
 				$.ajax({
-			        url: "/auth/dofollow",
-			        data: {"id" : [[${profileOther.id}]]},
-			        type:"DELETE",
-			        success: function onData (data) {
-			        	$("#follows").html("팔로우");
-			        	$("#follows").removeClass("is-check");
-			            alert([[${profileOther.nickname}]] + "님을 팔로우 취소 했습니다.");
-			            location.reload();
-			        },
-			        error: function onError (error) {
-			        	alert([[${profileOther.nickname}]] + "팔로우 실패했습니다.");
-			        }
-			    });
+					url: "/auth/dofollow",
+					data: {"id": [[${profileOther.id}]]},
+					type: "DELETE",
+					success: function onData(data) {
+						$("#follows").html("팔로우");
+						$("#follows").removeClass("is-check");
+						alert([[${profileOther.nickname}]] + "님을 팔로우 취소 했습니다.");
+						location.reload();
+					},
+					error: function onError(error) {
+						alert([[${profileOther.nickname}]] + "팔로우 실패했습니다.");
+					}
+				});
 			}
 		});
 		var coin = [[${session.user.coin}]];
-		function matching(){
+		function matching() {
+
+			let readWriter = [[${profileOther.id}]]
+			let writer = [[${session.user.id}]];
+			let alramData = {
+				senderId: writer,
+				receiverId: readWriter,
+				notificationType: "Matching"
+			}
+
+
 			/* alert("aaa"); */
-			if(coin < 3) {
+			if (coin < 3) {
 				alert("우연이 부족합니다!");
 				return;
 			}
 			$.ajax({
-				url:"/matching",
-				data:{target:[[${profileOther.id}]]},
-				success:function(responseData){
+				url: "/matching",
+				data: {target: [[${profileOther.id}]]},
+				success: function (responseData) {
 					alert(responseData);
 					$("#sendMat").addClass("is-check");
+
+					alarmSave(alramData);
+
+					if (websocket) {
+						let socketMsg = "Matching," + readWriter + "," + writer + ", 0";
+						console.log(socketMsg);
+						websocket.send(socketMsg);
+					}
+
+
+
 					location.reload();
 				},
-				fail:function(){
+				fail: function () {
 					alert("매칭 신청을 실패하셨습니다.")
 				}
 			});
-		} 
-		function cancelmatching(){
+		}
+		function cancelmatching() {
 			alert("매칭을 취소하겠습니까?");
-		} 	
-			
-		function f_matchingSearch(){
- 			$.ajax({
- 				url:"/matView",
-				success:function(responseData){
+		}
+
+		function f_matchingSearch() {
+			$.ajax({
+				url: "/matView",
+				success: function (responseData) {
 					console.log(responseData);
-					if(responseData == null){
+					if (responseData == null) {
 						alert("매칭 된 상대가 없습니다.");
-					} 
+					}
 					$("#select_tab").load("/matView");
 					$("#postmodum").html("");
-  				}	
-			}); 
- 		}	
-		
+				}
+			});
+		}
+
 		//화상통화
-		$('#videoChat').click(function(){
-				let tid = /*[[${profileOther.id}]]*/'default';
-				let mid = /*[[${session.user.id}]]*/'default';
-				$.ajax({
-					url:`/video/existRoom/${mid}/${tid}`,
-					success:function(response){
-						if(response=="false"){
-							$('.videoModalContainer').css("display","block");
-						}else{
+		$('#videoChat').click(function () {
+			let tid = /*[[${profileOther.id}]]*/'default';
+			let mid = /*[[${session.user.id}]]*/'default';
+			$.ajax({
+				url: `/video/existRoom/${mid}/${tid}`,
+				success: function (response) {
+					if (response == "false") {
+						$('.videoModalContainer').css("display", "block");
+					} else {
 						location.href = `/video/socket/${response}`;
 					}
 				}
 			});
 		});
 		//음성통화
-		$('#voiceChat').click(function(){
-				let tid = /*[[${profileOther.id}]]*/'default';
-				let mid = /*[[${session.user.id}]]*/'default';
-				$.ajax({
-					url:`/audio/existRoom/${mid}/${tid}`,
-					success:function(response){
-						if(response=="false"){
-							$('.audioModalContainer').css("display","block");
-						}else{
+		$('#voiceChat').click(function () {
+			let tid = /*[[${profileOther.id}]]*/'default';
+			let mid = /*[[${session.user.id}]]*/'default';
+			$.ajax({
+				url: `/audio/existRoom/${mid}/${tid}`,
+				success: function (response) {
+					if (response == "false") {
+						$('.audioModalContainer').css("display", "block");
+					} else {
 						location.href = `/audio/socket/${response}`;
 					}
 				}
 			});
 		});
-		
-		
+
+
 		//좋아요 리스트
-		 $('.likeList').on('click', function() {
+		$('.likeList').on('click', function () {
 			// $(".listt").text("와우");
-			 
- 				$.ajax({
-					url: '/sns/likeList',
-					type: "GET",
-					data:{"user_id":[[${session.user.id}]]},
-					dataType:"html",
-					success : function(res){
-						$(".listt").html(res);
-					},
-					error : function(error){
-						console.log(error);
-					}
-				}); 
- 				
 
-});
-		 $(".postdetail").click(function () {
-				alert($(this).attr("data-boardId"));
-				var id = $(this).attr("data-boardId");
-				var statuss = "width= 420px, height= 700px, location= no, scrollbars=no,resizable=no";
-				window.open(`/sns/${id}`, "postdetail", statuss);
+			$.ajax({
+				url: '/sns/likeList',
+				type: "GET",
+				data: {"user_id": [[${session.user.id}]]},
+				dataType: "html",
+				success: function (res) {
+					$(".listt").html(res);
+				},
+				error: function (error) {
+					console.log(error);
+				}
 			});
-		
+
+
+		});
+		$(".postdetail").click(function () {
+			alert($(this).attr("data-boardId"));
+			var id = $(this).attr("data-boardId");
+			var statuss = "width= 420px, height= 700px, location= no, scrollbars=no,resizable=no";
+			window.open(`/sns/${id}`, "postdetail", statuss);
+		});
+
+		$("body").not('#alarmList').on('click', function () {
+			if ($("#alarmList").css("display") == "block") {
+				$("#alarmList").css("display", "none");
+			}
+		});
+
 	</script>
+
+	<script th:inline="javascript">
+		var websocket = null;
+		$(document).ready(function () {
+			var user = [[${session.user}]];
+			websocket = new WebSocket("ws://localhost:7777/ws/noti");
+			console.log(user);
+			if (user != null) {
+				connectWs();
+			}
+		})
+		function connectWs() {
+
+			websocket.onopen = function () {
+				console.log('open');
+			};
+			websocket.onmessage = function (event) {
+				console.log("onmessage" + event.data);
+				let socketAlert = $('div#socketAlert');
+				socketAlert.html(event.data)
+				socketAlert.css('display', 'block');
+				setTimeout(function () {
+					socketAlert.css('display', 'none');
+				}, 10000);
+			};
+			websocket.onclose = function () {
+				console.log('close');
+			};
+		};
+	</script>
+
+
 </body>
+
 </html>
-
-

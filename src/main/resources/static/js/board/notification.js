@@ -1,7 +1,8 @@
 function notificationMove(boardId, notiId) {
 	console.log(boardId);
 	console.log(notiId);
-	if ($("#board-box" + boardId).offset()) {
+
+		if ($("#board-box" + boardId).offset()) {
 		var offset = $("#board-box" + boardId).offset();
 
 		$('html, body').animate({ scrollTop: (offset.top - $('.window').height() / 5) }, 400);
@@ -9,12 +10,12 @@ function notificationMove(boardId, notiId) {
 			url: "/api/notification/delete/" + notiId,
 			type: 'DELETE',
 			success: function(res) {
-				console.log("알림 삭제됨")
+				console.log("알림 삭제됨");
 				$('#alarmFlexBox').load(location.href + " #alarmFlexBox");
 			}
 		});
 	}
-	else{
+	else {
 		boardId -= 1;
 		notiId -= 1;
 		var offset = $("#board-box" + boardId).offset();
@@ -29,6 +30,8 @@ function notificationMove(boardId, notiId) {
 			}
 		});
 	}
+
+	
 };
 
 
@@ -54,7 +57,7 @@ function alarmSave(alarmData) {
 function alarmList() {
 	console.log("alarmList")
 	let memberId = $(".userSession").val();
-	
+
 	console.log(memberId);
 	$.ajax({
 		url: "/api/notification/update/" + memberId,
@@ -71,16 +74,30 @@ function alarmList() {
 		dataType: "json",
 		success: function(data) {
 			var a = '<div><h2 style="text-align:center;"> 알림</h2></div> ';
+			if (data.length == 0) {
+				a += `<div class="notification_contents">`
+				a += `<div class="small text-gray-500"></div>`;
+				a += `<span style="text-align:center;" class="font-weight-bold">알림이 없습니다.</span>`;
+				a += `</div>`;
+			};
 			$.each(data, function(index, value) {
+				console.log(value);
 				var date = timeForToday(value.regdate);
 				var categori = value.notificationType;
-				a += `<div class="notification_contents" onclick="notificationMove(${value.boardId}, ${value.notification_id})">`
-				a += `<div class="small text-gray-500">${date}</div>`;
 				if (categori == "Reply") {
+					a += `<div class="notification_contents" onclick="notificationMove(${value.boardId}, ${value.notification_id})">`
+					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 게시물에 댓글을 달았습니다</span>`;
 					a += `</div>`;
 				} else if (categori == "reReply") {
+					a += `<div class="notification_contents" onclick="notificationMove(${value.boardId}, ${value.notification_id})">`
+					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 댓글에 답변을 달았습니다</span>`;
+					a += `</div>`;
+				} else if (categori == "Matching") {
+					a += `<div class="notification_contents" onclick="notificationMove2('${memberId}', ${value.notification_id})">`
+					a += `<div class="small text-gray-500">${date}</div>`;
+					a += `<span class="font-weight-bold">${value.senderId}님이 회원님에게 매칭을 신청했습니다.</span>`;
 					a += `</div>`;
 				}
 			});
@@ -138,3 +155,17 @@ function alarmCount() {
 
 	});
 }
+
+function notificationMove2(userId, notiId) {
+	console.log(userId);
+	$.ajax({
+		url: "/api/notification/delete/" + notiId,
+		type: 'DELETE',
+		success: function(res) {
+			console.log("알림 삭제됨")
+			location.href = "/myPage/" + userId;
+		}
+	});
+}
+
+

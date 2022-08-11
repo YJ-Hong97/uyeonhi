@@ -74,6 +74,7 @@ public class NotificationHandler extends TextWebSocketHandler {
 							+ "</div>" 
 							);
 					boardWriterSession.sendMessage(tmpMsg);
+				//대댓글
 				} else if ("reReply".equals(cmd) && boardWriterSession != null) {
 					log.info("onmessage되나?");
 					TextMessage tmpMsg = new TextMessage("<div>"
@@ -82,6 +83,17 @@ public class NotificationHandler extends TextWebSocketHandler {
 							+ " <svg class='bd-placeholder-img rounded me-2' width='20' height='20' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' preserveAspectRatio='xMidYMid slice' focusable='false'><rect width='100%' height='100%' fill='#007aff'></rect></svg>"
 							+ "  <strong class='me-auto'>댓글알림</strong>" + "   <small>11 mins ago</small>" + "  </div>"
 							+ " <div class='toast-body'>" + replyWriter + "님이 " + boardWriter + "님의 댓글에 대댓글을 작성했습니다."
+							+ "  </div>" + " </div>" + "</div>");
+					boardWriterSession.sendMessage(tmpMsg);
+				//매칭알림	let socketMsg = "Matching," + readWriter + "," + writer + "," + boardId;
+				} else if("Matching".equals(cmd) && boardWriterSession != null) {
+					log.info("매칭되나?");
+					TextMessage tmpMsg = new TextMessage("<div>"
+							+ "<div class='toast-container position-fixed top-0 end-0 p-3' id='toastPlacement'>" + " <div class='toast fade show'>"
+							+ " <div class='toast-header'>"
+							+ " <svg class='bd-placeholder-img rounded me-2' width='20' height='20' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' preserveAspectRatio='xMidYMid slice' focusable='false'><rect width='100%' height='100%' fill='#007aff'></rect></svg>"
+							+ "  <strong class='me-auto'>댓글알림</strong>" + "   <small>11 mins ago</small>" + "  </div>"
+							+ " <div class='toast-body'>" + replyWriter + "님이 " + boardWriter + "님에게 매칭신청을 하셨습니다."
 							+ "  </div>" + " </div>" + "</div>");
 					boardWriterSession.sendMessage(tmpMsg);
 				}

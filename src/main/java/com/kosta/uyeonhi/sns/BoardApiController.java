@@ -60,7 +60,6 @@ public class BoardApiController {
 	
 	@PutMapping("/api/sns/boardUpdate/{board_id}")
 	public Long update(@PathVariable Long board_id, @RequestBody BoardRequestDTO boardDTO) {
-		
 		System.out.println(board_id + boardDTO.toString());
 		boardService.update(board_id, boardDTO);
 		return board_id;
