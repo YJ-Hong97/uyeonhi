@@ -1,7 +1,9 @@
 package com.kosta.uyeonhi.matching;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -173,40 +175,92 @@ public class MatchingController {
 		}else {
 			yourGender = Gender.MALE;
 		}
+		
+		//매칭 점수 초기화
+		matchingGrade mgrade = gradeRepo.findByUser(user);
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		long diff = now.getTime()-mgrade.getMakeTime().getTime();
+		diff = (diff/1000)/60/60;
+		if(diff<24) {
+			List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
+			Map<UserVO,List<String>> targets = new HashMap<>();
+			for(int i =0; i<grades.size(); i++) {
+				UserVO target = grades.get(i).getTarget();
+				List<String> favList = new ArrayList<>();
+				mfRepo.findByUser(target).forEach(mf->{
+					favList.add(mf.getFavorite().getFavoriteValue());
+				});
+				mhRepo.findByUser(target).forEach(mh->{
+					favList.add(mh.getHobby().getHobbyValue());
+				});
+				miRepo.findByUser(target).forEach(mi->{
+					favList.add(mi.getIdeal().getIdealValue());
+				});
+				targets.put(target, favList);
+			}
+			model.addAttribute("targets",targets);
+			return "/fragment/userslider";
+		}
 		gradeRepo.deleteByUser(user);
 		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
-		for(UserVO you: allUserVOs) {
-			int grade = 0;
-			List<MFavoriteVO> mFavoriteVOs = mfRepo.findByUser(you);
-			List<MHobbyVO>mHobbyVOs = mhRepo.findByUser(you);
-			List<MIdealVO>mIdealVOs = miRepo.findByUser(you);
-			for(MFavoriteVO m: mFavoriteVOs) {
-				for(FavoriteVO f:favoriteVOs) {
-					if(m.getFavorite().getFavoriteId()==f.getFavorite().getFavoriteId()) {
-						grade++;
+		//이미 매칭된 리스트
+		List<UserVO> alreadyList = new ArrayList<>();
+		List<UserVO> uyeonList = new ArrayList<>();
+		mRepo.findByTargetAndMconfirm(user, 1).forEach(m->{
+			alreadyList.add(m.getId());
+		});
+		//우연히 만나기로 보낸 사람
+		mRepo.findByTargetAndMconfirm(user, 0).forEach(m->{
+			if(m.getId().getMachingConfirm().equals("uyeon")) {
+				uyeonList.add(m.getId());
+			}
+		});
+		
+		aa:for(UserVO you: allUserVOs) {
+			if(alreadyList.contains(you)) {
+				continue aa;
+			}else if(uyeonList.contains(you)) {
+				matchingGrade gradeVo = matchingGrade.builder()
+						.user(user)
+						.target(you)
+						.grade(1000)
+						.build();
+				gradeRepo.save(gradeVo);
+				
+			}else {
+				int grade = 0;
+				List<MFavoriteVO> mFavoriteVOs = mfRepo.findByUser(you);
+				List<MHobbyVO>mHobbyVOs = mhRepo.findByUser(you);
+				List<MIdealVO>mIdealVOs = miRepo.findByUser(you);
+				for(MFavoriteVO m: mFavoriteVOs) {
+					for(FavoriteVO f:favoriteVOs) {
+						if(m.getFavorite().getFavoriteId()==f.getFavorite().getFavoriteId()) {
+							grade++;
+						}
 					}
 				}
-			}
-			for(MHobbyVO m: mHobbyVOs) {
-				for(HobbyVO f:hobbyVOs) {
-					if(m.getHobby().getHobbyId()==f.getHobby().getHobbyId()) {
-						grade++;
+				for(MHobbyVO m: mHobbyVOs) {
+					for(HobbyVO f:hobbyVOs) {
+						if(m.getHobby().getHobbyId()==f.getHobby().getHobbyId()) {
+							grade++;
+						}
 					}
 				}
-			}
-			for(MIdealVO m: mIdealVOs) {
-				for(IdealTypeVO f:idealTypeVOs) {
-					if(m.getIdeal().getIdealId()==f.getIdeal().getIdealId()) {
-						grade++;
+				for(MIdealVO m: mIdealVOs) {
+					for(IdealTypeVO f:idealTypeVOs) {
+						if(m.getIdeal().getIdealId()==f.getIdeal().getIdealId()) {
+							grade++;
+						}
 					}
 				}
+				matchingGrade gradeVo = matchingGrade.builder()
+						.user(user)
+						.target(you)
+						.grade(grade)
+						.build();
+				gradeRepo.save(gradeVo);
 			}
-			matchingGrade gradeVo = matchingGrade.builder()
-					.user(user)
-					.target(you)
-					.grade(grade)
-					.build();
-			gradeRepo.save(gradeVo);
+			
 		}
 		
 		List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);

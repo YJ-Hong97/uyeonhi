@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<th:block th:fragment="makeAudio">
+	<head>
+<link
+	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
+	rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text&display=swap"
+	rel="stylesheet" />
+<meta charset="UTF-8">
+<title>makeVideoRoom</title>
+<style>
+.audioModalContainer {
+	display:none;
+	position:fixed;
+	top:0;
+	left:0;
+	width : 100vw;
+	height:100vh;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+.audioModal{
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	
+	width:25vw;
+	height:30vh;
+	background-color: white;
+	text-align: center;
+	border: 0.05rem solid;
+	
+}
+.audioModal table {
+	width: 90%;
+	font-family: 'Gowun Dodum';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 110%;
+	
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	
+	border-collapse: collapse;
+}
+.audioModal input{
+text-align:center;
+	width:100%;
+}
+.audioModal th{
+	height: 4rem;
+}
+.audioModal td{
+	height: 2rem;
+}
+.audioModal #voicesubmit{
+	height:2rem;
+	background-color: #B983FF;
+	border:0;
+}
+#closeAudio{
+	cursor: pointer;
+}
+</style>
+	</head>
+	<body>
+		<div class="audioModalContainer">
+			<div class="audioModal">
+				<form action="/audio/makeRoom" method="post">
+					<table>
+						<thead>
+							<th>방이름을 정해주세요!</th>
+							<th id = "closeAudio">X</th>
+						</thead>
+						<tr>
+							<td colspan="2"><input type="text" name="title" id="voicetitle"></td>
+						</tr>
+						<input type = "hidden" name = "uid" id = "voiceuid">
+						<tr>
+							<td colspan="2"><input type="submit" value="방 만들기" id ="voicesubmit"></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+
+		</div>
+		<script th:inline = "javascript">
+		var uid = /*[[${profileOther.id}]]*/'default';
+		console.log(uid);
+		document.querySelector("#voiceuid").value = uid;
+			document.querySelector("#closeAudio").onclick = function(){
+				document.querySelector('.audioModalContainer').style.display = "none";
+		}
+		</script>
+	</body>
+</th:block>
+</html>

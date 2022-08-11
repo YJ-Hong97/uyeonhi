@@ -1,11 +1,15 @@
 package com.kosta.uyeonhi.matching;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -29,4 +33,6 @@ public class matchingGrade {
 	@ManyToOne
 	private UserVO target;
 	private int grade;
+	@CreationTimestamp
+	private Timestamp makeTime;
 }
