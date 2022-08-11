@@ -39,7 +39,12 @@
 #textMore{
 	color: #7F8487;
 }
-#moreBtn{
-	
+.moreBtn{
+	color : #7F8487;
 	cursor: pointer;
+	text-decoration: none;
+}
+.moreBtn:hover{
+	color: #7F8487;
+	
 }

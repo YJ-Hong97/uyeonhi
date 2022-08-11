@@ -94,6 +94,7 @@ z-index : 999;
 var title = /*[[ ${promise.title} ]]*/;
 var date = /*[[ ${date2} ]]*/;
 /*]]*/
+var reason = "";
 	$(function() {
 		$('.close').click(function() {
 			$('#modal').css('display', 'none');
@@ -104,14 +105,15 @@ var date = /*[[ ${date2} ]]*/;
 		$('.cancel').click(function(){
 			if(confirm("정말 약속을 취소하시겠습니까?")) {
 				$(".reason").css("display", "block");
-				$(".ok").css("display", "block");
 				$(".cancel").css("display", "none");
 				$(".modal_content").css("height", "36%");
+				$(".ok").css("display", "block");
+				$(".ok").prop('disabled', true);
 			}
 		});
 		$(".reason").on("propertychange change keyup paste input", function(){
-			var reason = $(".reason").val();
-			if(reason.length < 5 || reason.length > 50) {
+			reason = $(".reason").val();
+			if(reason.length < 5 || reason.length > 50 || reason.length == 0) {
 				$(".wait").css("display", "block");
 				$(".ok").prop('disabled', true);
 			} else {
@@ -168,7 +170,7 @@ var date = /*[[ ${date2} ]]*/;
 				</tr>
 				<tr>
 					<td class="tbl-title"><i class="fa-solid fa-user"></i> 대상</td>
-					<td th:text="${promise.you.id}"></td>
+					<td th:text="|${promise.you.id}님|"></td>
 				</tr>
 			</table>
 			<input type="text" class="reason" maxlength="50" placeholder="취소 사유를 적어주세요">
