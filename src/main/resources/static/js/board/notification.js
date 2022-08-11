@@ -1,7 +1,34 @@
-function notificationMove(boardId) {
+function notificationMove(boardId, notiId) {
 	console.log(boardId);
-	 var offset = $("#board-box" + boardId).offset();
-        $('html, body').animate({scrollTop : (offset.top - $('.window').height() / 5)}, 400);
+	console.log(notiId);
+	if ($("#board-box" + boardId).offset()) {
+		var offset = $("#board-box" + boardId).offset();
+
+		$('html, body').animate({ scrollTop: (offset.top - $('.window').height() / 5) }, 400);
+		$.ajax({
+			url: "/api/notification/delete/" + notiId,
+			type: 'DELETE',
+			success: function(res) {
+				console.log("알림 삭제됨")
+				$('#alarmFlexBox').load(location.href + " #alarmFlexBox");
+			}
+		});
+	}
+	else{
+		boardId -= 1;
+		notiId -= 1;
+		var offset = $("#board-box" + boardId).offset();
+
+		$('html, body').animate({ scrollTop: (offset.top - $('.window').height() / 5) }, 400);
+		$.ajax({
+			url: "/api/notification/delete/" + notiId,
+			type: 'DELETE',
+			success: function(res) {
+				console.log("알림 삭제됨")
+				$('#alarmFlexBox').load(location.href + " #alarmFlexBox");
+			}
+		});
+	}
 };
 
 
@@ -24,9 +51,19 @@ function alarmSave(alarmData) {
 
 
 //알람목록
-function alramList() {
-	console.log("alramList")
-	let memberId = $(".userSession").text();
+function alarmList() {
+	console.log("alarmList")
+	let memberId = $(".userSession").val();
+	
+	console.log(memberId);
+	$.ajax({
+		url: "/api/notification/update/" + memberId,
+		type: "PUT",
+		success: function(res) {
+			$('.notificationList').load(location.href + " .notificationList");
+		}
+	})
+
 	$.ajax({
 		url: `/notification/list`,
 		type: 'get',
@@ -37,13 +74,13 @@ function alramList() {
 			$.each(data, function(index, value) {
 				var date = timeForToday(value.regdate);
 				var categori = value.notificationType;
-				a += `<div class="notification_contents" onclick="notificationMove(${value.boardId})">`
+				a += `<div class="notification_contents" onclick="notificationMove(${value.boardId}, ${value.notification_id})">`
 				a += `<div class="small text-gray-500">${date}</div>`;
 				if (categori == "Reply") {
-					a += `<span class="font-weight-bold"><a href="#"  onclick="alramClick();">${value.senderId}님이 회원님의 게시물에 댓글을 달았습니다</a></span>`;
+					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 게시물에 댓글을 달았습니다</span>`;
 					a += `</div>`;
 				} else if (categori == "reReply") {
-					a += `<span class="font-weight-bold"><a href="#"  onclick="alramClick();">${value.senderId}님이 회원님의 댓글에 답변을 달았습니다</a></span>`;
+					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 댓글에 답변을 달았습니다</span>`;
 					a += `</div>`;
 				}
 			});
@@ -60,22 +97,7 @@ function alramList() {
 
 
 //목록클릭
-function alramClick(bgno, bno, formId) {
-	console.log("alramClick")
-	$.ajax({
-		url: '/board/alramClick',
-		type: 'post',
-		data: { 'memberId': formId, 'bno': bno },
-		dataType: "json",
-		success: function() {
 
-		}
-
-
-	});
-	location.href = "/board/readView?bno=" + bno + "&bgno=" + bgno;
-
-}
 
 function timeForToday(value) {
 	const today = new Date();
@@ -103,18 +125,15 @@ function timeForToday(value) {
 
 
 //알람
-function alramCount() {
-	console.log("alram")
-	var memberId = "${login.memberId}";
+function alarmCount() {
+	console.log("alarm")
 	$.ajax({
-		url: '/board/alramCount',
+		url: '/notification/count',
 		type: 'get',
-		data: { 'memberId': memberId },
-		dataType: "json",
-		success: function(alram) {
-			console.log(alram);
+		success: function(alarm) {
+			console.log(alarm);
 			console.log("알람성공");
-			$('#alramCount').text(alram);
+			$('.notification_count').text(alarm);
 		}
 
 	});

@@ -2,6 +2,8 @@ package com.kosta.uyeonhi.push;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kosta.uyeonhi.reply.ReplyService;
+import com.kosta.uyeonhi.signUp.UserVO;
 import com.kosta.uyeonhi.sns.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,16 @@ public class NotificationController {
 	@GetMapping("/list")
 	@ResponseBody
 	public List<Notification> notiList(String userId, Model model){
-		System.out.println("여기까지는 오나?");
 		List<Notification> list = notificationService.getNotiList(userId);
 		model.addAttribute("count", notificationService.notificationCount(userId));
 		return list;
+	}
+	
+	@GetMapping("/count")
+	@ResponseBody
+	public int notiCount(HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		int alarm = notificationService.notificationCount(user.getId());
+		return alarm;
 	}
 }

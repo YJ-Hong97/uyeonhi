@@ -54,7 +54,7 @@ $('.btn_reply').on('click', function() {
 
 	let sequence = $(this).val();
 	let boardId = $(".board" + sequence).val();
-	let writer = $(".userSession").text();
+	let writer = $(".userSession").val();
 	let readWriter = $(".boardWriter" + boardId).text();
 
 	let alramData = {
@@ -113,7 +113,7 @@ $(document).on("click", ".btn_reReply", function() {
 	let boardId = $(".hidden_boardId").val();
 	let content = $(".input_reReply" + parentId).val();
 	let replyWriter = $(".hidden_Writer" + parentId).val();
-	let reReplyWriter = $(".userSession").text();
+	let reReplyWriter = $(".userSession").val();
 
 
 

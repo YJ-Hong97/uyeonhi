@@ -5,9 +5,14 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import org.springframework.stereotype.Component;
+import org.thymeleaf.dialect.IExpressionObjectDialect;
+import org.thymeleaf.expression.IExpressionObjectFactory;
 
 
-public class Time {
+@Component
+public class Time{
+
 	public static final int SEC = 60;
 	public static final int MIN = 60;
 	public static final int HOUR = 24;
@@ -45,6 +50,8 @@ public class Time {
         diffTime = diffTime / MONTH;
         return diffTime + "년전";
     }
+
+	
 
 
 	 
