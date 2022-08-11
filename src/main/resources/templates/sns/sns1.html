@@ -132,7 +132,7 @@
 									</a>
 								</div>
 								<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
-									th:class="|boardWriter${list.boardId}|" style="font-size: 1.3em;">[[${list.writer.id}]]</span>
+									th:class="|boardWriter${list.boardId}|" style="font-size: 1.3em;">[[${list.writer.nickname}]]</span>
 
 								<button th:if="${list.writer.id == session.user.id}" 
 								th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
@@ -150,7 +150,7 @@
 								</div>
 								<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
 									th:class="|boardWriter${list.boardId}|"
-									style="color: white; font-size: 1.3em;">[[${list.writer.id}]]</span>
+									style="color: white; font-size: 1.3em;">[[${list.writer.nickname}]]</span>
 								<button th:if="${list.writer.id == session.user.id}" 
 								th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
 							</div>
