@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.kosta.uyeonhi.signUp.UserVO;
@@ -21,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.NonNull;
 
 @Getter @Setter
 @ToString
@@ -34,10 +36,12 @@ public class PromiseVO {
 	Long proId;
 	
 	String location;
-
+	
 	String title;
 	
 	Date time;
+	
+	Timestamp hourmin;
 	
 	@ManyToOne
 	UserVO me;
@@ -48,8 +52,10 @@ public class PromiseVO {
 	String reason;
 	
 	@Column(length = 1)
+	@ColumnDefault("o")
 	String promise_ox;
 	
 	@Column(length = 1)
+	@ColumnDefault("x")
 	String cancel_ox;
 }
