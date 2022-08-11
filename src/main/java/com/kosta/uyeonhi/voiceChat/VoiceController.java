@@ -1,10 +1,9 @@
 package com.kosta.uyeonhi.voiceChat;
 
 
-import static org.hamcrest.CoreMatchers.nullValue;
 
 
-import java.io.Console;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,6 +69,13 @@ public class VoiceController {
 					.build();
 			videoRepo.save(video);
 		}
+		chatUserRepo.findByRoom(room).forEach(c->{
+			if(c.getUser().getId().equals(user.getId())){
+				
+			}else {
+				mnv.addObject("target",c.getUser());
+			}
+		});
 		mnv.addObject("room",room);
 		mnv.addObject("user",user);
 		mnv.addObject("chatusers", chatusers);
