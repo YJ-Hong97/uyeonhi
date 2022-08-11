@@ -16,8 +16,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<style>
 		#msgArea {
-			width: 600px;
-			height: 500px;
+			width: 400px;
+			height: 600px;
 			overflow: auto;
 			
 		}
@@ -35,16 +35,29 @@
 		.chatBoxx {
 			margin-bottom: 10px;
 		}
+		.chatinput {
+			width: 420px;
+			margin-left: -12px;
+			background-color: #B983FF;
+			color: white;
+		}
+		
+		.chatname {
+			width: 420px;
+			margin-left: -12px;
+			background-color: #B983FF;
+			color: white;
+		}
 	</style>
 </head>
 <body>
 	<div class="container">
-		<div class="col-6">
+		<div class="col-6 chatname">
 			<div th:if="${room.mid.id} == ${session.user.id}">
-				<h1>[[${room.target.nickname}]]</h1>
+				<h1>&nbsp; &nbsp;[[${room.target.nickname}]]</h1>
 			</div>
 			<div th:if="${room.mid.id} != ${session.user.id}">
-				<h1>[[${room.mid.nickname}]]</h1>
+				<h1>&nbsp; &nbsp;[[${room.mid.nickname}]]</h1>
 			</div>
 		</div>
 		<div>
@@ -69,10 +82,10 @@
 				</div>
 			</div>
 			<div class="col-6">
-				<div class="input-group mb-3">
+				<div class="input-group mb-3 chatinput">
 					<input type="text" id="msg" class="form-control" required="required">
 					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button"
+						<button class="btn" type="button"
 							id="button-send">전송</button>
 					</div>
 				</div>
