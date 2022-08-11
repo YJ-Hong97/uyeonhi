@@ -19,6 +19,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://kit.fontawesome.com/4f1859afb7.js" crossorigin="anonymous"></script>
 	<!--	<script>
 		window.onload = function () {
 			function modalOn() {
@@ -64,7 +65,7 @@
 					<form id="board_form">
 						<!-- --------------------------------------------person-----textarea------------------------------------------------------------- -->
 						<div
-							style="margin: 8px 0.5vw 0; background: #BDBDBD;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+							style="margin: 6px 0.7vw 0; background:#EEEEEE;width:2.7vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
 							<img id="person" style="width:100%; height:100%; object-fit:cover;"
 								th:src="${session.user.profile[0].fileName}">
 						</div>
@@ -75,7 +76,9 @@
 							<div class="board_info">
 
 								<form enctype="multipart/form-data" id="form">
-									<label for="img"></label> <input id="btn_fileUpload" type="file" required multiple>
+									<label for="btn_fileUpload">
+									<i class="fa-solid fa-image upload-btn" ></i></label> 
+									<input id="btn_fileUpload" type="file" required multiple>
 									<!--<img class="file_image" src="../images/image-outline.svg" style="width: 3rem;">-->
 									</input>
 								</form>
@@ -83,11 +86,13 @@
 									<option value="normal">게시글</option>
 									<option value="recruit">모집글</option>
 								</select>
-								<input type="number" max="10" class="total_person"> <input type="date" class="deadline">
+								<br>
+								<input type="number" max="10" class="total_person" placeholder="최대 10명">
+								<input type="date" class="deadline">
 							</div>
 							<!--  board_info-->
 
-							<button id="btn_board" type="button">등록</button>
+							<button id="btn_board" type="button">업로드</button>
 						</div>
 						<!-- board_write_top -->
 					</form>
@@ -100,8 +105,7 @@
 						<div class="board-box" th:id="|board-box${list.boardId}|">
 							<input type="hidden" class="boardId" th:value="${list.boardId}" />
 							<input type="hidden" class="boardIndex" th:value="${status.index}" />
-							<button th:if="${list.writer.id == session.user.id}" style="width: 100px; height: 30px;"
-								th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
+							
 							<div th:id="|ex${status.count}|" class="modal">
 								<div class="modal_Ct">
 									<div class="modal_leftCt">
@@ -119,50 +123,50 @@
 							</div>
 							<!--  modal-->
 							<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
-								<!-- -----------------------------------------ellipse---------------------------------------------------------------------  -->
+								
 								<div
-									style="margin: 0 0.5vw; background: #BDBDBD;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+									style="margin: 0 0.5vw; background: #EEEEEE;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
 									<a th:href="|http://localhost:7777/myPage/${list.writer.id}|">
 										<img style="width:100%; height:100%; object-fit:cover;" id="ellipse"
 											th:src="${list.writer.profile[0].fileName}">
 									</a>
 								</div>
 								<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
-									th:class="|boardWriter${list.boardId}|">[[${list.writer.id}]]</span>
+									th:class="|boardWriter${list.boardId}|" style="font-size: 1.3em;">[[${list.writer.id}]]</span>
 
-								<!-- ---------------------------------------------------------------------------------------------------------------  -->
-								<span class="material-symbols-outlined" id="btnModal">
-									more_horiz </span>
+								<button th:if="${list.writer.id == session.user.id}" 
+								th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
+								
 							</div>
 							<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
-								<!-- -------------------------------------------ellipse-------------------------------------------------------------------  -->
 								<div
-									style="margin: 0 0.5vw; background: #BDBDBD;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+									style="margin: 0 0.5vw; background: #EEEEEE;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
 									<a th:href="|http://localhost:7777/myPage/${list.writer.id}|">
 										<img style="width:100%; height:100%; object-fit:cover;" id="ellipse"
 											th:src="${list.writer.profile[0].fileName}">
 									</a>
+									
+									
 								</div>
 								<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
 									th:class="|boardWriter${list.boardId}|"
-									style="color: white;">[[${list.writer.id}]]</span>
-								<!-- ---------------------------------------------------------------------------------------------------------------  -->
-								<span class="material-symbols-outlined" id="btnModal">
-									more_horiz </span>
+									style="color: white; font-size: 1.3em;">[[${list.writer.id}]]</span>
+								<button th:if="${list.writer.id == session.user.id}" 
+								th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
 							</div>
 							<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
 								<th:block th:replace="/fragment/slider :: sliderFragment"></th:block>
 							</div>
-							<!-- ----------------------------------------------변경됨----------------------------------------------------------------- -->
 							<div id="container4" th:value="${list.boardId}" class="conTainer4">
-								<!-- --------------------------------------------------------------------------------------------------------------- -->
-								<span style="font-size: 0.7vw;"
+								<div class="container4-1">
+								<span 
 									th:text="${@time.convertLocaldatetimeToTime(list.regdate)}" id="regdate"></span>
-								<!-- <button type="button" class="reply_show" >댓글보기</button> -->
-								<button style="font-size: 10px; border:none; background-color:transparent;" class="show"
+								
+										<button style="font-size: 1em; font-weight:700;  border:none; background-color:transparent;" class="show"
 									onclick="show()" th:value="${status.index}"
-									th:boardId="${list.boardId}">댓글열기</button>
-								<span th:text="|좋아요 ${list.likes.size()}개|"></span>
+									th:boardId="${list.boardId}">댓글</button>
+								
+								<span th:text="|좋아요 ${list.likes.size()}개|" class="liskeCount"></span>	
 								<div class="like-box"
 									th:if="${list.getLikes().size()==0 || @likeSearch.findUsingIterator(session.user.id,list.getLikes()) }">
 									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
@@ -176,13 +180,13 @@
 											favorite </span>
 									</div>
 								</div>
-								<!-- --------------------------------------------------------------------------------------------------------------------- 고친 칸 --------------------------- -->
+								</div>
+					<!-- ------------------------- -->			
 								<div class="text_container">
-
-<!--  -->								<div style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</div>
-<!--  -->									<a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
-<!--  -->									<br>
-<!--  -->								<div class="recruitInfo" th:if="${list.board_type == '모집글'}">
+							<span style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</span>
+								<a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
+									<br>
+							<div class="recruitInfo" th:if="${list.board_type == '모집글'}">
 										<span th:text="|마감일 : ${list.deadline}|"
 											th:id="|deadline_${list.boardId}|"></span><br> <span class="recruit_person"
 											th:text="|신청 현황 : ${list.applicant.size()}| "
@@ -199,35 +203,34 @@
 												th:id="|applyBtn_${list.boardId}|" class="cancleApply"
 												th:onclick="|apply(${list.boardId})|">취소</button>
 										</div>
-										<span class="recurit_status"
+										<span class="recurit_status" style="font-weight: 700;"
 											th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }">모집마감</span>
 									</div>
 									<br>
-<!--  -->									<div class="tagList" 
+									<div class="tagList" 
 											th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-											<a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|"
+											<a class="board_tag" style="font-size: 15px;" th:id="|tag_${list.boardId+status.count+status.index}|"
 												th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
 												th:text="|#${hashtag}|"></a>
 									</div>
 
 								</div>
-								<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------ -->
-								<!-- text_container -->
+					<!-- ------------------------------ -->			
 							</div>
-							<!-- container4 -->
 							<div id="container5" th:value="${list.boardId}" th:class="${list.boardId}">
 								<form class=reply_form>
 									<div class="reply_container">
 										<input type="hidden" th:class="|board${status.index}|"
 											th:value="${list.boardId}" />
 										<div
-											style="margin: 0 0.5vw; background: #BDBDBD;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+											style="margin: 0 0.5vw; background: #EEEEEE;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
 											<img id="person" style="width:100%; height:100%; object-fit:cover;"
 												th:src="${session.user.profile[0].fileName}">
 										</div>
 										<textarea th:class="|reply_content${status.index}|" id="reply_text"
 											wrap=on></textarea>
-										<button th:class="btn_reply" type="button"
+										<button style="border-radius: 10px; margin-right: 13px; border: none; color: gray;" 
+										th:class="btn_reply" type="button"
 											th:value="${status.index}">등록</button>
 									</div>
 								</form>
@@ -253,9 +256,9 @@
 				<div id="search-container">
 					<div id="search">
 						<div id="searchbox">
-							<form id="search-form">
-								<span class="material-symbols-outlined" id="searchBtn">search</span>
-								<input type="text" class="box" id="searchTag" name="tag">
+							<form id="search-form" style="margin-top: 24px;">
+								<span class="material-symbols-outlined" id="searchBtn" >search</span>
+								<input type="text" class="box" id="searchTag" name="tag" style="background-color: #EEEEEE;">
 							</form>
 						</div>
 						<div class="text" id="searchContent">
@@ -364,8 +367,8 @@
 				autoplaySpeed: 10000,
 				pauseOnHover: true,
 				vertical: false,
-				prevArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; z-index:10;' class='slick-prev'>이전</button>",
-				nextArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; right:0 ; z-index:10;' class='slick-next'>다음</button>",
+				prevArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; z-index:10;' class='slick-prev'>◀</button>",
+				nextArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; right:0 ; z-index:10;' class='slick-next'>▶</button>",
 				draggable: true,
 				responsive: [
 					{
