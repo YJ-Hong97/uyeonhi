@@ -26,12 +26,6 @@ html {
 	font-size: 20px;
 }
 
-#header {
-	height: 5%;
-	padding: 1.5%;
-	border-bottom: 1px solid #eee;
-}
-
 .userArea {
 	display: flex;
 	flex-direction: row;
@@ -70,7 +64,25 @@ html {
 
 .modal {
 	width: 100%;
+	display:none;
 	height: 100%;
+}
+#modal_back { /* 팝업 배경 css */
+    position: fixed;
+    width: 100%;
+    height: 1000px;
+    top: 0px;
+    left: 0px;
+    display: none; 
+    background-color:#000;
+    opacity: 0.3;
+}
+.fc-event-title {
+    white-space: normal;
+}
+.fc-toolbar-chunk {
+  display: flex; 
+  align-items: center; 
 }
 </style>
 <script>
@@ -78,8 +90,8 @@ html {
 		var calendarEl = document.getElementById('calendar');
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			headerToolbar : {
-				start : 'prev,next',
-				center : 'title',
+				start : '',
+				center :  "prev title next",
 				end : 'today'
 			},
 			titleFormat : function(date) {
@@ -90,7 +102,8 @@ html {
 			},
 			initialView : 'dayGridMonth',
 			contentHeight : 900,//캘린더 칸 길이
-			selectable : true,
+			selectable : false,
+			dayMaxEvents: true, 
 			events : $.ajax({
 				type : "post",
 				url : "promiseList",
@@ -99,11 +112,14 @@ html {
 					var result = responseData;
 					console.log(result);
 					for (i = 0; i < result.length; i++) {
-						calendar.addEvent({
-							title : result[i]['title'],
-							start : result[i]['time'],
-							allDay : false
-						})
+						if(result[i]['promise_ox'] == 'o') {
+							calendar.addEvent({
+								title : result[i]['title'],
+								start : result[i]['hourmin'],
+								allDay : false,
+								color : "#" + Math.round(Math.random() * 0xffffff).toString(16)
+							})
+						}
 					}
 				}
 			}),
@@ -114,20 +130,24 @@ html {
 			eventClick : function(info) {
 				// 일정 클릭 시 발생할 이벤트
 				//클릭한 일정 Id
-				/* console.log(info); */
+				console.log(info); 
 				var title = info.event.title;
-				var date = new Date(info.event.startStr);
 				
-				var str = date.getUTCFullYear()+"년 "+ (date.getUTCMonth()+1) +"월 "+date.getUTCDate()+"일 ";
-				str += date.getUTCHours()+"시 ";
-				str += date.getUTCMinutes()!=0 ? date.getUTCMinutes() +"분" : "";
-								
+				/* 2022-0808 12:00:00 */
+				var date = info.event.startStr;
+				date = date.substr(0, date.toString().indexOf("+"));
+				date = date.substr(0, date.indexOf("T")) + " " + date.substr(date.indexOf("T")+1);
+				
+				/* 2022년 9월 10일 6시 30분 */
+				var format = new Date(date);
+				var str = format.getFullYear() + "년 " + (format.getMonth() + 1) +"월 " + format.getDate() + "일 ";
+				str += format.getHours() +"시 ";
+				str += format.getMinutes()!=0 ? format.getMinutes() +"분" : "";
 				var obj= {
 				    "title": title,
-				    "date": str,
-				    "date2" : date
+				    "date": str, /* 2022년 9월 10일 6시 30분 */
+				    "date2" : date /* 2022-08-08 13:00:00 */
 				};
-				console.log(obj);
 				console.log(JSON.stringify(obj));
 				$.ajax({
 					url : "detail",
@@ -135,7 +155,21 @@ html {
 					contentType : "application/json;charset=UTF-8",
 					data :  JSON.stringify(obj),
 					success : function(responseData) {
-						alert(responseData);
+					  	
+						$(".modal").html(responseData);
+						
+						var popWidth = $('.modal').width();
+						var popHeight = $('.modal').height();
+						var clientWidth = popWidth / 2;
+						var clientHeight = popHeight / 2;
+						
+					  	$("#modal_back").css("display","block"); 
+			            
+					  	$(".modal").css({'marginLeft':'-'+ clientWidth +'px '  ,'marginTop':'-'+ clientHeight +'px'});
+			            $(".modal").css("display","block");
+			            
+			            $("body").css("overflow","hidden"); 
+						 
 					}
 				});
 				
@@ -150,10 +184,14 @@ html {
 	<div class="userArea">
 		<img id="profile" class="userPhoto" th:src = "${session.user.profile[0].fileName}">
 		<span class="userText"> 
-			이번 주 <span class="userId" th:text="${session.user.nickname}"></span>님은 <span th:text="3번" class="userCount"></span>의 약속이 있습니다.			
+			이번 달 <span class="userId" th:text="${session.user.nickname}"></span>님은 <span th:text="|${count}번|" class="userCount"></span>의 약속이 있습니다.			
 		</span>
 	</div>
 	<div id='calendar'></div>
-	<div class="modal"></div>
+	<div id ="modal_back" ></div> 
+	<div class="modal">
+	 <!--  <iframe src="./modal.html"></iframe> -->
+	</div>
+
 </body>
 </html>
