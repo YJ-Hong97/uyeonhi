@@ -9,19 +9,9 @@
 }
 
 .board_text{
-	
+
   word-break:break-all;
- display: inline-block;
- white-space: nowrap;
- overflow: hidden;
-  text-overflow: ellipsis;
-   width: 20vw;
-/*   width: 20vw;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; */
-/*   white-space: nomal;  줄바꿈*/
-  vertical-align: top; 
+
 	
 }
 .recruit_person{
@@ -39,10 +29,10 @@
 	
 	
 }
-#tagList{
+.tagList{
 	display: none;
 }
-#recruitInfo{
+.recruitInfo{
 	
 	display: none;
 }
