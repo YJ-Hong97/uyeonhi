@@ -94,6 +94,7 @@ z-index : 999;
 var title = /*[[ ${promise.title} ]]*/;
 var date = /*[[ ${date2} ]]*/;
 /*]]*/
+var reason = "";
 	$(function() {
 		$('.close').click(function() {
 			$('#modal').css('display', 'none');
@@ -110,7 +111,7 @@ var date = /*[[ ${date2} ]]*/;
 			}
 		});
 		$(".reason").on("propertychange change keyup paste input", function(){
-			var reason = $(".reason").val();
+			reason = $(".reason").val();
 			if(reason.length < 5 || reason.length > 50) {
 				$(".wait").css("display", "block");
 				$(".ok").prop('disabled', true);
