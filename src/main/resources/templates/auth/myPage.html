@@ -282,6 +282,13 @@ i {
 	height: 500px;
 	overflow: auto;
 }
+#postmodum {
+	height: 1000px;
+	overflow: auto;
+}
+.modal {
+	z-index: 99;
+}
 </style>
 
 </head>
@@ -704,17 +711,6 @@ i {
 			}); 
  		}	
 		
-	/* 	var html = '';
-			html += '<ul>';
-			for(let i in responseData){
-				html += '	<li>';
-				html += '		<span th:text = responseData.id ></span>';
-				html += '		<button th:onclick="location.href =\'/matYes?pickid=[[responseData.id]]\'">수락</button>';
-				html += '		<button th:onclick="location.href =\'/matNo?pickid=[[responseData.id]]\'">거절</button>';
-				html += '	</li>';
-			}
-			html += '</ul>'; */
-			
 		//화상통화
 		$('#videoChat').click(function(){
 				let tid = /*[[${profileOther.id}]]*/'default';
