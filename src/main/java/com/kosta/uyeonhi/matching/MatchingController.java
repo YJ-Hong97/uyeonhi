@@ -110,21 +110,22 @@ public class MatchingController {
 	 */
 
 	@GetMapping(value = "/matView")
-
 	@ResponseBody
-	public ModelAndView matchingResponse(HttpSession session, ModelAndView mv) {
+	public ModelAndView matchingResponse(HttpSession session, ModelAndView mv ,String target) {
 		UserVO user = (UserVO) session.getAttribute("user");
-
-		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user, 0); //
-		mv.addObject("pickMeList", pickMeList); //
+		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user, 0); 
+		List<MatchingVO> pickYou = mRepo.findById(user);
+		
+		mv.addObject("pickYou", pickYou);
+		mv.addObject("pickMeList", pickMeList); 
+		
+		
 		mv.setViewName("/matching/matView");
-
+		
 		System.out.println(pickMeList.size() + "왔냐고오오오오");
-		//System.out.println(pickMeList.get(0) + "오라고오오");
+		System.out.println(pickYou + "왔");
+		
 
-		mv.addObject("pickMeList", pickMeList);
-		mv.setViewName("/matching/matView");
-			
 		return mv;
 
 	}
@@ -155,6 +156,7 @@ public class MatchingController {
 		return "redirect:/myPage/"+user.getId();
 	}
 
+	
 	@Transactional
 	@GetMapping(value = "/matNo")
 	public String matchingNo(String pickid, HttpSession session) {
@@ -165,7 +167,22 @@ public class MatchingController {
 
 		return "redirect:/myPage/"+user.getId();
 	}
-
+	
+	/*
+	 * @GetMapping(value = "/responseMat")
+	 * 
+	 * @ResponseBody public ModelAndView responseMat(String pickid , HttpSession
+	 * session ,ModelAndView mv) { System.out.println("오라오라"+pickid); pickid =
+	 * pickid.replaceAll("\"", ""); UserVO user = (UserVO)
+	 * session.getAttribute("user");
+	 * 
+	 * 
+	 * System.out.println("와라라" +pickYou.size());
+	 * 
+	 * mv.setViewName("/matching/matView");
+	 * 
+	 * return mv; }
+	 */
 	/*
 	 * @GetMapping(value = "/matching/response") public String aa() {
 	 * 
