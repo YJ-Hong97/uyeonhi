@@ -7,10 +7,9 @@
 		rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Libre+Barcode+39+Text&display=swap"
 		rel="stylesheet">
-		<link rel="stylesheet" th:href="@{/css/main.css}">
-	<link
-	href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap"
-	rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap"
+		rel="stylesheet">
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<style>
@@ -26,7 +25,7 @@
 			line-height: 110%;
 			text-align: left;
 		}
-    
+
 
 
 		#yujin {
@@ -65,7 +64,7 @@
 			border-radius: 0.5rem;
 			border-radius: 0.5rem;
 			transform: translate(50%, -50%);
-      box-shadow: 0.5rem 0.5rem 0.5rem black;
+			box-shadow: 0.5rem 0.5rem 0.5rem black;
 		}
 
 		#yujinImg {
@@ -250,6 +249,34 @@
 			width: 20%;
 			margin-right: 4%;
 		}
+
+		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+		.text1 {
+			height: 55px;
+			display: flex;
+			justify-content: center;
+			align-items: flex-end;
+			font-size: 1.8rem;
+		}
+
+		h1 {
+			margin-left: .6rem;
+			border-right: 2px solid #777;
+			padding-right: .4rem;
+			font-size: 2.2rem;
+			animation: cursor .9s infinite steps(2);
+		}
+
+		@keyframes cursor {
+			from {
+				border-right: 2px solid #222;
+			}
+
+			to {
+				border-right: 2px solid #777;
+			}
+		}
 	</style>
 </head>
 
@@ -325,8 +352,11 @@
 							<div class="speech_bubble">
 							</div>
 							<div class="bubble_text">
-								<p class="manna">“우리,</p>
-								<p class="manna">우연히 만나 볼까요?”</p>
+
+								<div class="text1"><h1 class="text"></h1>
+								</div>
+
+
 							</div>
 						</div>
 
@@ -344,6 +374,12 @@
 				</div>
 			</div>
 		</div>
+
+		<script>
+
+
+		</script>
+
 		<th:block th:replace="~{auth/login::login}"></th:block>
 	</div>
 </body>
