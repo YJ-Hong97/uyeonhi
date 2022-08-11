@@ -16,8 +16,10 @@ background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
 	<div th:each="list, status : ${likeList}">
 		<div th:if="${!#strings.isEmpty(list.image_path)}">
 			<div class="p-2 contain" th:each="imageURL, status: ${#strings.arraySplit(list.image_path, ',')}">
-				<img class="postimg" th:if="${status.count == 1}"
+				<a th:href="@{/sns/{boardId}(boardId = ${list.boardId})}">
+					<img class="postimg" th:if="${status.count == 1}"
 					th:src="${imageURL}"></img>
+				</a>
 			</div>
 		</div>
 		<div th:if="${#strings.isEmpty(list.image_path)}">
