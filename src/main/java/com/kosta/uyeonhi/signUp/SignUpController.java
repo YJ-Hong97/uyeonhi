@@ -181,21 +181,26 @@ public class SignUpController {
 		signUpInfo.put("upassword", upassword);
 		signUpInfo.put("unick", unick);
 		log.info(signUpInfo.toString());
-		log.info("4-1post왔다");
 		
 	}
 
 	
 	 @GetMapping("/signUp4-1") public ModelAndView uMyinfo2(ModelAndView mnv) {
-	 Map<String, String> infoMap = new HashMap<>(); iRepo.findAll().forEach(i->{
-	 infoMap.put(i.getIdealId()+"i", i.getIdealValue()); });
-	 fRepo.findAll().forEach(f->{ infoMap.put(f.getFavoriteId()+"f",
-	 f.getFavoriteValue()); }); hRepo.findAll().forEach(h->{
-	 infoMap.put(h.getHobbyId()+"h", h.getHobbyValue()); });
-	 mnv.addObject("infoMap", infoMap);
-	 mnv.addObject("nick",signUpInfo.get("unick"));
+		 Map<String, String> infoMap = new HashMap<>(); 
+		 iRepo.findAll().forEach(i->{
+			 infoMap.put(i.getIdealId()+"i", i.getIdealValue());
+		});
+		 fRepo.findAll().forEach(f->{ 
+			 infoMap.put(f.getFavoriteId()+"f",f.getFavoriteValue()); 
+		}); 
+		 hRepo.findAll().forEach(h->{
+					 infoMap.put(h.getHobbyId()+"h", h.getHobbyValue()); 
+		});
+		mnv.addObject("infoMap", infoMap);
+		mnv.addObject("nick",signUpInfo.get("unick"));
 	 
-	 mnv.setViewName("signUp/signUp4-1"); return mnv; }
+		mnv.setViewName("signUp/signUp4-1"); return mnv;
+	}
 	 
 	@PostMapping("/signUp5")
 	public void uSignUp5(String[] mInfo) {

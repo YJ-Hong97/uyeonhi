@@ -17,4 +17,5 @@ public interface UserRepository extends CrudRepository<UserVO, String>{
 	@Modifying
 	void deleteById(String userId);
 	List<UserVO> findByGender(Gender gender);
+	UserVO findByPhone(String phone);
 }
