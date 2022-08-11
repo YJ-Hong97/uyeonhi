@@ -282,6 +282,13 @@ i {
 	height: 500px;
 	overflow: auto;
 }
+#postmodum {
+	height: 1000px;
+	overflow: auto;
+}
+.modal {
+	z-index: 99;
+}
 </style>
 
 </head>
@@ -326,7 +333,7 @@ i {
 								class="btn btn-light doMatch is-check dropdown-toggle"
 								data-bs-toggle="dropdown" aria-expanded="false">매칭성공</button>
 							<ul class="dropdown-menu">
-							    <li><button class="dropdown-item" type="button">음성 통화</button></li>
+							    <li><button class="dropdown-item" type="button" id = "voiceChat">음성 통화</button></li>
 							    <li><button class="dropdown-item" type="button" id = "videoChat">화상 통화</button></li>
 							    <li><a class="dropdown-item" type="button" th:href="@{/chat/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
 							    <li><hr class="dropdown-divider"></li>
@@ -399,6 +406,7 @@ i {
 	<th:block th:replace="~{/mypage/updatePW::updatePW}"></th:block>
 	<th:block th:replace="~{/mypage/daccount::daccount}"></th:block>
 	<th:block th:replace="~{/auth/videoRoomModal::makeVideo}"></th:block>
+	<th:block th:replace="~{/auth/audioRoomModal::makeAudio}"></th:block>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script th:inline="javascript">
 	//setting창 켜기
@@ -704,17 +712,6 @@ i {
 			}); 
  		}	
 		
-	/* 	var html = '';
-			html += '<ul>';
-			for(let i in responseData){
-				html += '	<li>';
-				html += '		<span th:text = responseData.id ></span>';
-				html += '		<button th:onclick="location.href =\'/matYes?pickid=[[responseData.id]]\'">수락</button>';
-				html += '		<button th:onclick="location.href =\'/matNo?pickid=[[responseData.id]]\'">거절</button>';
-				html += '	</li>';
-			}
-			html += '</ul>'; */
-			
 		//화상통화
 		$('#videoChat').click(function(){
 				let tid = /*[[${profileOther.id}]]*/'default';
@@ -726,6 +723,21 @@ i {
 							$('.videoModalContainer').css("display","block");
 						}else{
 						location.href = `/video/socket/${response}`;
+					}
+				}
+			});
+		});
+		//음성통화
+		$('#voiceChat').click(function(){
+				let tid = /*[[${profileOther.id}]]*/'default';
+				let mid = /*[[${session.user.id}]]*/'default';
+				$.ajax({
+					url:`/audio/existRoom/${mid}/${tid}`,
+					success:function(response){
+						if(response=="false"){
+							$('.audioModalContainer').css("display","block");
+						}else{
+						location.href = `/audio/socket/${response}`;
 					}
 				}
 			});

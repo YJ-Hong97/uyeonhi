@@ -1,7 +1,8 @@
-package com.kosta.uyeonhi.webrtc;
+package com.kosta.uyeonhi.voiceChat;
 
 
 import static org.hamcrest.CoreMatchers.nullValue;
+
 
 import java.io.Console;
 import java.sql.Date;
@@ -32,11 +33,15 @@ import com.kosta.uyeonhi.promise.PromiseRepository;
 import com.kosta.uyeonhi.promise.PromiseVO;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
+import com.kosta.uyeonhi.webrtc.SignalEntity;
+import com.kosta.uyeonhi.webrtc.VideoChatRepository;
+import com.kosta.uyeonhi.webrtc.VideoChatVO;
+import com.kosta.uyeonhi.webrtc.VideoMessageRepository;
 
 import lombok.extern.java.Log;
 @Log
 @RestController
-public class WebRTCController {
+public class VoiceController {
 	@Autowired
 	ChattingRoomRepository chatRoomRepo;
 	@Autowired
@@ -52,7 +57,7 @@ public class WebRTCController {
 	@Autowired
 	PromiseRepository promiseRepository;
 	Map<String, List<String>> chatMap = new HashMap<>();
-	@RequestMapping("/video/socket/{roomNo}")
+	@RequestMapping("/audio/socket/{roomNo}")
 	public ModelAndView test(ModelAndView mnv, HttpSession session,@PathVariable("roomNo")long roomNo) {
 		ChattingRoomVO room = chatRoomRepo.findById(roomNo).get();
 		List<ChattingUsersVO> chatusers = chatUserRepo.findByRoom(room);
@@ -68,10 +73,10 @@ public class WebRTCController {
 		mnv.addObject("room",room);
 		mnv.addObject("user",user);
 		mnv.addObject("chatusers", chatusers);
-		mnv.setViewName("webrtc/index");
+		mnv.setViewName("voice/index");
 		return mnv;
 	}
-	@RequestMapping("/video/existRoom/{mid}/{uid}")
+	@RequestMapping("/audio/existRoom/{mid}/{uid}")
 	public String existRoom(ModelAndView mnv, HttpSession session,@PathVariable("mid")String mid,@PathVariable("uid")String uid) {
 		List<ChattingUsersVO> muser = chatUserRepo.findByUser(uRepo.findById(mid).get());
 		List<ChattingUsersVO> uuser = chatUserRepo.findByUser(uRepo.findById(uid).get());
@@ -81,7 +86,7 @@ public class WebRTCController {
 				if(m.getRoom().getRoomNo()==u.getRoom().getRoomNo()) {
 					roomNo = m.getRoom().getRoomNo();
 					ChattingRoomVO room = chatRoomRepo.findById(roomNo).get();
-					if(room.getType()==ChatType.video) {
+					if(room.getType()==ChatType.voice) {
 						break aa;
 					}else {
 						roomNo = null;
@@ -97,14 +102,14 @@ public class WebRTCController {
 		
 		
 	}
-	@PostMapping("/video/makeRoom")
+	@PostMapping("/audio/makeRoom")
 	public ModelAndView makeRoom(HttpSession session,String title,String uid, ModelAndView mnv) {
 		log.info(uid);
 		UserVO user = (UserVO) session.getAttribute("user");
 		ChattingRoomVO room = ChattingRoomVO.builder()
 				.user(user)
 				.title(title)
-				.type(ChatType.video)
+				.type(ChatType.voice)
 				.build();
 		chatRoomRepo.save(room);
 		UserVO uuser = uRepo.findById(uid).get();
@@ -118,16 +123,16 @@ public class WebRTCController {
 				.user(uuser)
 				.build();
 		chatUserRepo.save(uChattingUsersVO);
-		mnv.setViewName("redirect:/video/socket/"+room.getRoomNo());
+		mnv.setViewName("redirect:/audio/socket/"+room.getRoomNo());
 		return mnv;
 	}
-	@RequestMapping("/video/deleteRoom/{roomNo}")
+	@RequestMapping("/audio/deleteRoom/{roomNo}")
 	public void deleteRoom(@PathVariable("roomNo")Long roomNo) {
 		chatUserRepo.deleteByRoom(chatRoomRepo.findById(roomNo).get());
 		chatRoomRepo.deleteByRoomNo(roomNo);
 		
 	}
-	@MessageMapping("/video/joined-info/{roomNo}")
+	@MessageMapping("/audio/joined-info/{roomNo}")
 	public void joinRoom(@Header("simpSessionId")String sessionId,JSONObject ob){
 		String roomNo = ob.get("roomNo").toString();
 		String mid = ob.get("mid").toString();
@@ -140,53 +145,53 @@ public class WebRTCController {
 			members.add(mid);
 			chatMap.put(roomNo, members);
 		}
-		String destination = "/sub/video/joined-info/"+roomNo;
+		String destination = "/sub/audio/joined-info/"+roomNo;
 		template.convertAndSend(destination,chatMap);
 		
 	}
-	@MessageMapping("/video/caller-info/{roomNo}")
+	@MessageMapping("/audio/caller-info/{roomNo}")
 	public void caller(SignalEntity ob) {
 		log.info("caller 송신");
 		log.info(ob.toString());
 		String roomNo = ob.getSignalId();
-		String destination = "/sub/video/caller-info/"+roomNo;
+		String destination = "/sub/audio/caller-info/"+roomNo;
 	
 		template.convertAndSend(destination,ob);
 	}
-	@MessageMapping("/video/callee-info/{roomNo}")
+	@MessageMapping("/audio/callee-info/{roomNo}")
 	public void answerCall(SignalEntity ob) {
 		String roomNo = ob.getSignalId();
-		template.convertAndSend("/sub/video/callee-info/"+roomNo, ob);
+		template.convertAndSend("/sub/audio/callee-info/"+roomNo, ob);
 	}
-	@MessageMapping("/video/caller-pause/{roomNo}")
+	@MessageMapping("/audio/caller-pause/{roomNo}")
 	public void callerPause(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
-		template.convertAndSend("/sub/video/caller-pause/"+roomNo,ob);
+		template.convertAndSend("/sub/audio/caller-pause/"+roomNo,ob);
 	}
-	@MessageMapping("/video/callee-pause/{roomNo}")
+	@MessageMapping("/audio/callee-pause/{roomNo}")
 	public void calleePause(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
-		template.convertAndSend("/sub/video/callee-pause/"+roomNo,ob);
+		template.convertAndSend("/sub/audio/callee-pause/"+roomNo,ob);
 	}
-	@MessageMapping("/video/caller-play/{roomNo}")
+	@MessageMapping("/audio/caller-play/{roomNo}")
 	public void callerPlay(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
-		template.convertAndSend("/sub/video/caller-play/"+roomNo,ob);
+		template.convertAndSend("/sub/audio/caller-play/"+roomNo,ob);
 	}
-	@MessageMapping("/video/callee-play/{roomNo}")
+	@MessageMapping("/audio/callee-play/{roomNo}")
 	public void calleePlay(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
-		template.convertAndSend("/sub/video/callee-play/"+roomNo,ob);
+		template.convertAndSend("/sub/audio/callee-play/"+roomNo,ob);
 	}
-	@MessageMapping("/video/message/{roomNo}")
+	@MessageMapping("/audio/message/{roomNo}")
 	public void chat(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
 		String nickname = ob.get("nickname").toString();
 		String message = ob.get("message").toString();
 		
-		template.convertAndSend("/sub/video/message/"+roomNo, ob);
+		template.convertAndSend("/sub/audio/message/"+roomNo, ob);
 	}
-	@RequestMapping("/video/initiator-disconnect/{mid}/{roomNo}")
+	@RequestMapping("/audio/initiator-disconnect/{mid}/{roomNo}")
 	public void disconnect(@PathVariable("mid")String mid,@PathVariable("roomNo")String roomNo) {
 		
 		if(chatMap.containsKey(roomNo)) {
@@ -195,10 +200,10 @@ public class WebRTCController {
 			
 		}
 		log.info(chatMap.toString());
-		template.convertAndSend("/sub/video/initiator-out/"+roomNo, "");
+		template.convertAndSend("/sub/audio/initiator-out/"+roomNo, "");
 		
 	}
-	@RequestMapping("/video/second-disconnect/{mid}/{roomNo}")
+	@RequestMapping("/audio/second-disconnect/{mid}/{roomNo}")
 	public void disconnectSecond(@PathVariable("mid")String mid,@PathVariable("roomNo")String roomNo) {
 		if(chatMap.containsKey(roomNo)) {
 			chatMap.get(roomNo).remove(mid);
@@ -206,9 +211,9 @@ public class WebRTCController {
 			
 		}
 		log.info(chatMap.toString());
-		template.convertAndSend("/sub/video/second-out/"+roomNo, "");
+		template.convertAndSend("/sub/audio/second-out/"+roomNo, "");
 	}
-	@MessageMapping("/video/promise-offer/{roomNo}")
+	@MessageMapping("/audio/promise-offer/{roomNo}")
 	public void promise(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
 		Date date = Date.valueOf(ob.get("date").toString());
@@ -221,9 +226,9 @@ public class WebRTCController {
 				.build();
 		promiseRepository.save(promise);
 		ob.put("pid", promise.getProId());
-		template.convertAndSend("/sub/video/promise-accept/"+roomNo, ob);
+		template.convertAndSend("/sub/audio/promise-accept/"+roomNo, ob);
 	}
-	@MessageMapping("/video/promise-accept/{roomNo}")
+	@MessageMapping("/audio/promise-accept/{roomNo}")
 	public void promiseSuccess(JSONObject ob) {
 		String roomNo = ob.get("roomNo").toString();
 		UserVO user = uRepo.findById(ob.get("answer").toString()).get();
@@ -231,7 +236,7 @@ public class WebRTCController {
 		promise.setPromise_ox("o");
 		promise.setYou(user);
 		promiseRepository.save(promise);
-		template.convertAndSend("/sub/video/promise-success/"+roomNo, ob);
+		template.convertAndSend("/sub/audio/promise-success/"+roomNo, ob);
 		
 	}
 }
