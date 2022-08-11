@@ -34,7 +34,7 @@ public class SecurityController {
 		System.out.println("방법4:" +userDetails3);
 		System.out.println("/auth/loginSuccess");
 		
-		return "redirect:/sns/sns1";
+		return "redirect:/matchingList";
 	}
 	@RequestMapping("/accessDenied")
 	public String accessDenied() {

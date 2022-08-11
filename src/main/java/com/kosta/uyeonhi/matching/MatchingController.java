@@ -38,6 +38,8 @@ import com.kosta.uyeonhi.signUp.MIdealVO;
 import com.kosta.uyeonhi.signUp.ProfileRepository;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
+import com.kosta.uyeonhi.sns.Board;
+import com.kosta.uyeonhi.sns.BoardRepository;
 
 import lombok.extern.java.Log;
 @Log
@@ -67,6 +69,9 @@ public class MatchingController {
 	MatchingGradeRepository gradeRepo;
 	@Autowired
 	NotToMeetRepository notRepo;
+	
+	@Autowired
+	BoardRepository brepo;
 
 	@GetMapping(value = "/matching")
 	@ResponseBody
@@ -195,7 +200,8 @@ public class MatchingController {
 		List<FavoriteVO> favoriteVOs = fRepo.findByuserId(user.getId());
 		List<HobbyVO> hobbyVOs = hRepo.findByuserId(user.getId());
 		List<IdealTypeVO> idealTypeVOs = iRepo.findByuserId(user.getId());
-		
+		List<Board> boardList = brepo.findByBoard_Type("모집글");
+		System.out.println("너 맞냐?" +boardList);
 		Gender yourGender = null;
 		if(user.getGender()==Gender.MALE) {
 			yourGender = Gender.FEMALE;
@@ -227,6 +233,7 @@ public class MatchingController {
 					});
 					targets.put(grades.get(i), favList);
 				}
+				model.addAttribute("boardList",boardList);
 				model.addAttribute("targets",targets);
 				return "/fragment/userslider";
 			}
@@ -315,6 +322,8 @@ public class MatchingController {
 			});
 			targets.put(grades.get(i), favList);
 		}
+		model.addAttribute("boardList", boardList);
+		
 		model.addAttribute("targets",targets);
 		return "/fragment/userslider";
 		

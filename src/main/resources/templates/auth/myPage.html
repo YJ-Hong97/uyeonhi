@@ -287,6 +287,7 @@ i {
 	height: 700px;
 	overflow: auto;
 }
+
 </style>
 
 </head>
@@ -415,6 +416,7 @@ i {
 	});
 	var midss = [[${session.user.id}]];
 	var ymidss = [[${profileOther.id}]];
+	
 	$("#chatpopup").click(function () {
 		window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no")
 	});
@@ -425,28 +427,32 @@ i {
 			if([[${session.user.id}]] == [[${profileOther.id}]]) {
 				if(board.image_path != null) {
 					var image = board.image_path.split(',');
-					boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+					boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
-									src="${image[0]}">
+									src="${image[0]}"></a>
 							</div>`;
 				}
 				else {
 					boardpost += `<div class="p-2 contain">
-							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+						<a class="postdetail" th:data-boardId="${board.boardId}">
+							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 						</div>`;
 				}
 			} else {
 				if(board.board_type == "게시글") {
 					if(board.image_path != null) {
 						var image = board.image_path.split(',');
-						boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+							<a class="postdetail" th:data-boardId="${board.boardId}">
 									<img class="postimg" alt=""
-										src="${image[0]}">
+										src="${image[0]}"></a>
 								</div>`;
 					}
 					else {
 						boardpost += `<div class="p-2 contain">
-								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+							<a class="postdetail" th:data-boardId="${board.boardId}">
+								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 							</div>`;
 					}
 				}
@@ -462,15 +468,17 @@ i {
 			if(board.board_type == "모집글") {
 				if(board.image_path != null) {
 					var image = board.image_path.split(',');
-					boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+					boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
-									src="${image[0]}">
+									src="${image[0]}"></a>
 							</div>`;
 				}
 			}
 			else {
 				boardpost += `<div class="p-2 contain">
-						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+					<a class="postdetail" th:data-boardId="${board.boardId}">
+						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 					</div>`;
 			}
 		}
@@ -544,6 +552,7 @@ i {
 	$('#logout').click(function(){
 		location.href = "/logout";
 	});
+	
 		//아는 사람 만나지 않기
 		var setting = document.querySelector(".settingContainer table");
 		var block = document.querySelector(".blockContainer");
@@ -764,8 +773,15 @@ i {
 						console.log(error);
 					}
 				}); 
+ 				
 
 });
+		 $(".postdetail").click(function () {
+				alert($(this).attr("data-boardId"));
+				var id = $(this).attr("data-boardId");
+				var statuss = "width= 420px, height= 700px, location= no, scrollbars=no,resizable=no";
+				window.open(`/sns/${id}`, "postdetail", statuss);
+			});
 		
 	</script>
 </body>
