@@ -34,6 +34,7 @@
 		}
 		.chatBoxx {
 			margin-bottom: 10px;
+			margin-right: 5px;
 		}
 		.chatinput {
 			width: 420px;
@@ -48,17 +49,33 @@
 			background-color: #B983FF;
 			color: white;
 		}
+		.cid {
+			color: #B983FF;
+		}
+		#promise {
+			border: none;
+			color: white;
+			background-color: #B983FF;
+			
+		}
+		#promise:hover {
+			background-color: white;
+			color: black;
+			border: 1px solid #B983FF;
+			border-radius: 10px;
+		}
 	</style>
 </head>
 <body>
 	<div class="container">
-		<div class="col-6 chatname">
+		<div class="col-6 chatname d-flex justify-content-between flex-wrap">
 			<div th:if="${room.mid.id} == ${session.user.id}">
 				<h1>&nbsp; &nbsp;[[${room.target.nickname}]]</h1>
 			</div>
 			<div th:if="${room.mid.id} != ${session.user.id}">
 				<h1>&nbsp; &nbsp;[[${room.mid.nickname}]]</h1>
 			</div>
+			<button type="button" id="promise">약속잡기</button>
 		</div>
 		<div>
 			<div id="msgArea">
@@ -67,7 +84,7 @@
 						<div class="d-flex justify-content-start">
 							 <img class="chatpro" th:src="${message.writer.profile[0].fileName}">
 							 <div class="d-flex flex-column mb-3 chatBoxx">
-	                           <b> [[${message.writer.nickname}]] </b> 
+	                           <b class="cid"> [[${message.writer.nickname}]] </b> 
 	                           <b>[[${message.message}]]</b> 
 	                           <b class="chattime">[[${message.regdate}]]</b>
 	                           </div>
@@ -80,6 +97,7 @@
                            </div>
 					</div>
 				</div>
+				<th:block th:replace = "~{/fragment/promiseModal::promise}">
 			</div>
 			<div class="col-6">
 				<div class="input-group mb-3 chatinput">
@@ -93,8 +111,30 @@
 		</div>
 		<div class="col-6">
 		</div>
+		
 	</div>
-	
+	<style>
+		.promiseContainer {
+			display:none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 400px;
+			height: 100vh;
+			
+		}
+		
+		.promiseModal {
+			width: 80%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: left;
+			border-radius: 10px;
+			background-color: rgba(239, 228, 255);
+		}
+	</style>
 	<script th:inline="javascript">
             $(document).ready(function(){
             	$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
@@ -132,13 +172,32 @@
                            str = "<div class='d-flex justify-content-start'>";
                            str += `<img class='chatpro' src=${content.writer.profile[0].fileName}>`;
                            str += "<div class='d-flex flex-column mb-3 chatBoxx'>";
-                           str += "<b>"+ writer +"</b> ";
+                           str += "<b class='cid'>"+ writer +"</b> ";
                            str += "<b>"+content.message + "</b> <b class='chattime'>" + content.regdate +"</b>";
                            str += "</div></div>";
                            $("#msgArea").append(str);
                        }
                        $('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
                    });
+                   stomp.subscribe(`/sub/video/promise-accept/${roomId}`,function(data){
+           			pdata = JSON.parse(data.body);
+           			if(pdata["offer"]==username.id){
+           				return;
+           			}else{
+           				
+           				$('#promiseSubmit').css("display","none");
+           				$('#acceptBtn').css("display","block");
+           				$('#location').val(pdata["location"]);
+           				$('#date').val(pdata["date"]);
+           				$('#title').val(pdata["title"]);
+           				$('.promiseContainer').css("display","block");
+           				accept(pdata["pid"]);
+           			}
+	           		});
+	           		stomp.subscribe(`/sub/video/promise-success/${roomId}`,function(data){
+	           			console.log(data);
+	           			alert("약속이 등록되었습니다.");
+	           		});
 
                 });
 				
@@ -167,6 +226,42 @@
                     stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: username, regdate: timeString}));
                     msg.value = '';
                 }
+                
+                $('#promiseSubmit').click(function(){
+            		let location = $('#location').val();
+            		let date = $('#date').val();
+            		let title = $('#title').val();
+            		stomp.send(`/pub/video/promise-offer/${roomId}`,{},JSON.stringify({
+            			location:location,
+            			date:date,
+            			roomNo:roomId,
+            			title:title,
+            			offer:username.id
+            		}));
+            		$('.promiseContainer').css("display","none");
+            	});
+             	function accept(pid){
+             		
+             		$('#acceptBtn').click(function(event){
+             			event.preventDefault();
+             			stomp.send(`/pub/video/promise-accept/${roomId}`,{},JSON.stringify({
+             				pid:pid,
+             				answer:username.id,
+             				roomNo:roomId
+             			}));
+             			$('.promiseContainer').css("display","none");
+             		});
+             		
+             		
+             	}
+             	$('#promise').click(function(){
+             		$('#promiseSubmit').css("display","block");
+             		$('#acceptBtn').css("display","none");
+            		$('#location').val("");
+            		$('#date').val("");
+            		$('#title').val("");
+             		$('.promiseContainer').css("display","block");
+             	});
             });
         </script>
         </body>
