@@ -113,6 +113,7 @@
 	
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script th:inline="javascript">
+	
 	//차단하기
 	$('.btn-secondary').click(function(){
 		alert("다음 우연히부터 이 사람은 보이지 않습니다.\n차단하기를 해제하려면 아는 사람 만나지 않기에서 삭제해 주세요.");
@@ -127,14 +128,20 @@
 			}
 		});
 	});
+	
+	var coin = [[${session.user.coin}]];
 		$(".doMatch").click(function() {
 			var targetId = $(this).attr("data-targetid");
+			if(coin < 3) {
+				alert("우연이 부족합니다!");
+				return;
+			}
 			$.ajax({
 				url:"/matching",
 				data:{target: targetId},
 				success:function(responseData){
 					alert(responseData);
-					$(this).html("매칭신청중..");
+					location.reload();
 				},
 				fail:function(){
 					alert("매칭 신청을 실패하셨습니다.")
