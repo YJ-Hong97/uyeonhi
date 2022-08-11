@@ -189,30 +189,30 @@ public class MatchingController {
 		}
 		
 		//매칭 점수 초기화
-		matchingGrade mgrade = gradeRepo.findByUser(user);
-		Timestamp now = new Timestamp(System.currentTimeMillis());
-		long diff = now.getTime()-mgrade.getMakeTime().getTime();
-		diff = (diff/1000)/60/60;
-		if(diff<24) {
-			List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
-			Map<UserVO,List<String>> targets = new HashMap<>();
-			for(int i =0; i<grades.size(); i++) {
-				UserVO target = grades.get(i).getTarget();
-				List<String> favList = new ArrayList<>();
-				mfRepo.findByUser(target).forEach(mf->{
-					favList.add(mf.getFavorite().getFavoriteValue());
-				});
-				mhRepo.findByUser(target).forEach(mh->{
-					favList.add(mh.getHobby().getHobbyValue());
-				});
-				miRepo.findByUser(target).forEach(mi->{
-					favList.add(mi.getIdeal().getIdealValue());
-				});
-				targets.put(target, favList);
-			}
-			model.addAttribute("targets",targets);
-			return "/fragment/userslider";
-		}
+//		matchingGrade mgrade = gradeRepo.findByUser(user);
+//		Timestamp now = new Timestamp(System.currentTimeMillis());
+//		long diff = now.getTime()-mgrade.getMakeTime().getTime();
+//		diff = (diff/1000)/60/60;
+//		if(diff<24) {
+//			List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
+//			Map<UserVO,List<String>> targets = new HashMap<>();
+//			for(int i =0; i<grades.size(); i++) {
+//				UserVO target = grades.get(i).getTarget();
+//				List<String> favList = new ArrayList<>();
+//				mfRepo.findByUser(target).forEach(mf->{
+//					favList.add(mf.getFavorite().getFavoriteValue());
+//				});
+//				mhRepo.findByUser(target).forEach(mh->{
+//					favList.add(mh.getHobby().getHobbyValue());
+//				});
+//				miRepo.findByUser(target).forEach(mi->{
+//					favList.add(mi.getIdeal().getIdealValue());
+//				});
+//				targets.put(target, favList);
+//			}
+//			model.addAttribute("targets",targets);
+//			return "/fragment/userslider";
+//		}
 		gradeRepo.deleteByUser(user);
 		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
 		//이미 매칭된 리스트

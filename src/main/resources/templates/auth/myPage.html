@@ -335,7 +335,7 @@ i {
 							<ul class="dropdown-menu">
 							    <li><button class="dropdown-item" type="button" id = "voiceChat">음성 통화</button></li>
 							    <li><button class="dropdown-item" type="button" id = "videoChat">화상 통화</button></li>
-							    <li><a class="dropdown-item" type="button" th:href="@{/chat/doChatt(mid = ${session.user.id}, tid= ${profileOther.id})}">채팅</a></li>
+							    <li><a class="dropdown-item" type="button" id="chatpopup">채팅</a></li>
 							    <li><hr class="dropdown-divider"></li>
    								<li><button class="dropdown-item" onclick ="cancelmatching()"> 매칭 취소 </button></li>
 						  	</ul>
@@ -361,12 +361,12 @@ i {
 		</div>
 		<div class="d-flex justify-content-evenly mb-3 nav nav-tabs">
 
-			<div class="p-2 type-btn nav-item">
+			<div class="p-2 type-btn nav-item" id="commonboard">
 				<a id="commonboard" class="nav-link active" aria-current="page" href="#">게시글</a>
 			</div>
 			<div class="p-2 type-btn nav-item"
-				th:if="${profileOther.id} != ${session.user.id}">
-				<a class="nav-link active" aria-current="page" href="#">모집글</a>
+				th:if="${profileOther.id} != ${session.user.id}" id="gatherboard">
+				<a class="nav-link" aria-current="page" href="#">모집글</a>
 			</div>
 			<div class="p-2 type-btn nav-item likeList" 
 				th:if="${profileOther.id} == ${session.user.id}">
@@ -413,6 +413,11 @@ i {
 	//setting창 끄기
 	$(() => {
 		commonboard();
+	});
+	var midss = [[${session.user.id}]];
+	var ymidss = [[${profileOther.id}]];
+	$("#chatpopup").click(function () {
+		window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no")
 	});
 	function commonboard() {
 		var listboard = [[${listboard}]];
@@ -708,6 +713,7 @@ i {
  					
 					//$("#select_tab").html(html);
 					$("#select_tab").load("/matView");
+					$("#postmodum").html("");
   				}	
 			}); 
  		}	
