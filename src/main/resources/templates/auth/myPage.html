@@ -706,10 +706,10 @@ i {
  			$.ajax({
  				url:"/matView",
 				success:function(responseData){
+					console.log(responseData);
 					if(responseData == null){
 						alert("매칭 된 상대가 없습니다.");
 					} 
- 					console.log(responseData);
  					
 					//$("#select_tab").html(html);
 					$("#select_tab").load("/matView");
@@ -772,20 +772,5 @@ i {
 	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
