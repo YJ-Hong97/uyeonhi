@@ -18,9 +18,9 @@
 	border-radius: 0.2rem;
 	
 	position: absolute;
-	top: 50%;
+	top:0;
 	left: 50%;
-	transform: translate(-50%,50%);
+	transform: translate(-50%,0);
 	
 	width: 32%;
 	background-color: white; 
@@ -32,7 +32,7 @@
 	line-height: 110%;
 	text-align: left;
 	
-	z-index:6;
+	z-index:10;
 }
 
 .updatePWContainer table {
@@ -93,7 +93,7 @@
 					type:"POST",
 					data:{"password":password},
 					success:function(){
-						location.href = "/setting";
+						location.href = "/auth/login";
 					}
 				});
 			});
