@@ -38,11 +38,21 @@
 			background-color: white;
 		}
 
+<<<<<<< HEAD
 		.doFollow:hover,
 		.doMatch:hover {
 			background-color: #B983FF;
 			color: white;
 		}
+=======
+.doFollow:hover, .doMatch:hover {
+	background-color: #B983FF;
+	color: white;
+}
+.contain {
+	height: 317px;
+}
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 
 		.nick {
 			font-family: 'Gowun Dodum';
@@ -106,12 +116,19 @@
 			text-align: center;
 		}
 
+<<<<<<< HEAD
 		.top-container {
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, 5%);
 		}
+=======
+.top-container {
+	clear: both;
+	margin-top: 10vh;
+}
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 
 		.settingContainer {
 			display: none;
@@ -272,6 +289,7 @@
 			color: black;
 		}
 
+<<<<<<< HEAD
 		.modal-body {
 			height: 500px;
 			overflow: auto;
@@ -286,6 +304,17 @@
 			z-index: 99;
 		}
 	</style>
+=======
+.modal-body {
+	height: 500px;
+	overflow: auto;
+}
+#postmodum {
+	height: 700px;
+	overflow: auto;
+}
+</style>
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 
 </head>
 <body>
@@ -353,23 +382,47 @@
 		<div class="d-flex justify-content-evenly mb-3 nav nav-tabs">
 
 			<div class="p-2 type-btn nav-item" id="commonboard">
-				<a id="commonboard" class="nav-link active" aria-current="page" href="#">게시글</a>
+				<a id="commonboard" class="nav-link active" aria-current="page">게시글</a>
 			</div>
+<<<<<<< HEAD
 			<div class="p-2 type-btn nav-item" th:if="${profileOther.id} != ${session.user.id}" id="gatherboard">
 				<a class="nav-link" aria-current="page" href="#">모집글</a>
+=======
+			<div class="p-2 type-btn nav-item"
+				th:if="${profileOther.id} != ${session.user.id}" id="gatherboard">
+
+				<a class="nav-link" aria-current="page" href="#" >모집글</a>
+
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 			</div>
+<<<<<<< HEAD
 			<div class="p-2 type-btn nav-item likeList" th:if="${profileOther.id} == ${session.user.id}">
 				<a class="nav-link" href="#">좋아요</a>
+=======
+			<div class="p-2 type-btn nav-item likeList" 
+				th:if="${profileOther.id} == ${session.user.id}">
+
+				<a class="nav-link" href="#" >좋아요</a>
+
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 			</div>
+<<<<<<< HEAD
 			<div class="p-2 type-btn nav-item" th:if="${profileOther.id} == ${session.user.id}">
 				<a class="nav-link" onClick="f_matchingSearch()" href="#">
 					내 매칭 상대
+=======
+			<div class="p-2 type-btn nav-item"
+				th:if="${profileOther.id} == ${session.user.id}">
+				<a class="nav-link" onClick="f_matchingSearch()"> 
+				내 매칭 상대 
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 				</a>
 			</div>
 		</div>
 		<div id="select_tab"></div>
 		<div id="postmodum" class="d-flex justify-content-evenly flex-wrap listt">
 		</div>
+<<<<<<< HEAD
 
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -381,6 +434,18 @@
 					<div class="modal-body">
 						<div class="d-flex justify-content-around flex-column" id="followBox"></div>
 					</div>
+=======
+		
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">팔로워 목록</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="d-flex justify-content-around flex-column" id="followBox"></div>
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 				</div>
 			</div>
 		</div>
@@ -396,6 +461,7 @@
 	<script src="/js/board/notification.js"></script>
 
 	<script th:inline="javascript">
+<<<<<<< HEAD
 		//setting창 켜기
 		//setting창 끄기
 		$(() => {
@@ -414,9 +480,46 @@
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
 						boardpost += `<div class="p-2 contain">
+=======
+	//setting창 켜기
+	//setting창 끄기
+	$(() => {
+		commonboard();
+	});
+	var midss = [[${session.user.id}]];
+	var ymidss = [[${profileOther.id}]];
+	$("#chatpopup").click(function () {
+		window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no")
+	});
+	function commonboard() {
+		var listboard = [[${listboard}]];
+		var boardpost = "";
+		for( board of listboard) {
+			if([[${session.user.id}]] == [[${profileOther.id}]]) {
+				if(board.image_path != null) {
+					var image = board.image_path.split(',');
+					boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 								<img class="postimg" alt=""
 									src="${image[0]}">
 							</div>`;
+<<<<<<< HEAD
+=======
+				}
+				else {
+					boardpost += `<div class="p-2 contain">
+							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p>
+						</div>`;
+				}
+			} else {
+				if(board.board_type == "게시글") {
+					if(board.image_path != null) {
+						var image = board.image_path.split(',');
+						boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+									<img class="postimg" alt=""
+										src="${image[0]}">
+								</div>`;
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 					}
 					else {
 						boardpost += `<div class="p-2 contain">
@@ -442,6 +545,7 @@
 			}
 			$("#postmodum").html(boardpost);
 		}
+<<<<<<< HEAD
 
 		function gatherboard() {
 			var listboard = [[${listboard}]];
@@ -451,6 +555,19 @@
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
 						boardpost += `<div class="p-2 contain">
+=======
+		$("#postmodum").html(boardpost);
+	}
+	
+	function gatherboard() {
+		var listboard = [[${listboard}]];
+		var boardpost = "";
+		for( board of listboard) {
+			if(board.board_type == "모집글") {
+				if(board.image_path != null) {
+					var image = board.image_path.split(',');
+					boardpost += `<div class="p-2 contain postdetail" data-boardId="${board.boardId}">
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 								<img class="postimg" alt=""
 									src="${image[0]}">
 							</div>`;
@@ -708,7 +825,10 @@
 
 		function f_matchingSearch() {
 			//$("#contentImg").hide();
+<<<<<<< HEAD
 			$("#postmodum").css("display", "none");
+=======
+>>>>>>> branch 'master' of https://github.com/YJ-Hong97/uyeonhi.git
 			//alert("aaaa");
 			$.ajax({
 				url: "/matView",

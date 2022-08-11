@@ -23,11 +23,8 @@ body {
 	width: 20vw;
 	height: 90vh;
 	position: absolute;
-	left: 45%;
-	/* top: 21%; */
-	top: 33%;
-	margin-left: -150px;
-	margin-top: -150px;
+	border-radius: 10px;
+
 }
 
 .postimg {
@@ -39,18 +36,20 @@ body {
 	width: 20vw;
 	height: 25vh;
 	background-color: white;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
 
 #nickname {
 	left: 100px;
 	font-weight: bold;
-	font-size: 1.7em;
+	font-size: 1.5em;
 	color: black;
 }
 
 #user-id {
 	color: #B2B1B9;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	text-decoration: none;
 }
 
@@ -58,10 +57,13 @@ body {
 	display: inline-block;
 	margin-left: 10px;
 	height: 4vh;
+	width: 19vw;
 }
 .recruitInFo{
 display: none;
 font-size: 0.65em;
+width: 200px;
+
 }
 .apply, .cancleApply{
 	background-color:  #B983FF;
@@ -69,19 +71,21 @@ font-size: 0.65em;
 	border-radius : 10px;
 	color: white;
 	cursor: pointer;
-	width: 10%;
-	margin-left: 10px;
-	
+	width: 3vw;
+	margin-right: 10px;
+	height: 2vh;
 	
 	
 }
 .contentBox{
 font-size: 1.3em;
 margin-left: 10px; 
+
 }
 .board_tag{
 font-size:  0.85em;
 color: blue;
+float: left;
 }
 
 .heartt {
@@ -90,7 +94,7 @@ color: blue;
     color: black;
     width: 30px;
     height: 20px;
-    
+    margin-right: 50px;
 }
 
 .heartt:hover {
@@ -116,9 +120,23 @@ color: blue;
 	height: 2.5vh;
 	float: right;
 }
+
+.recruit{
+width: 50px;
+height: 3vh;
+}
+.slick-prev, .slick-next{
+font-size: 2em;
+	color: #EEEEEE;
+}
+.contain{
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+}
 </style>
 </head>
 <body>
+<div id="boarddetailcontainer">
 	<div id="result" th:each="detail : ${boardDetail}">
 		<div id="here">닫기</div>
 		<div class="p-2 contain">
@@ -154,26 +172,34 @@ color: blue;
 
 				<div class="recruitInFo" th:if="${detail.board_type == '모집글'}">
 					<span th:text="|마감일 : ${detail.deadline}|"
-						th:id="|deadline_${detail.boardId}|"></span><br> <span
+						th:id="|deadline_${detail.boardId}|"></span><br> 
+						<div id="recruit">
+						<div id="recruit-2" style="width: 140px; float: left;">
+						<span
 						class="recruit_person"
 						th:text="|신청 현황 : ${detail.applicant.size()}| "
 						th:id="|applicant_person_${detail.boardId}|"></span> <span
 						class="recruit_person" th:text="|/ ${detail.total_person}|"
 						th:id="|total_person_${detail.boardId}|"></span>
+						</div>
 					<button
 						th:if="${detail.writer.id != session.user.id && @applicantSearch.findUsingIterator(session.user.id,detail.getApplicant())}"
 						th:id="|applyBtn_${detail.boardId}|" class="apply"
 						th:onclick="|apply(${detail.boardId})|">신청</button>
-					<div th:each="apply:${detail.getApplicant()}"
-						th:id="|cancleApply2_${detail.boardId}|">
+						
+							<div th:each="apply:${detail.getApplicant()}"
+						th:id="|cancleApply2_${detail.boardId}|" style="width: 20px; float: left;">
 						<button th:if="${session.user.id == apply.user.id}"
 							th:id="|applyBtn_${detail.boardId}|" class="cancleApply"
 							th:onclick="|apply(${detail.boardId})|">취소</button>
-					</div>
+					</div>	
+						
+						</div>
 					<span class="recurit_status"
 						th:if="${detail.applicant.size() == detail.total_person || detail.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }">모집마감</span>
 				</div>
 
+<br>
 				<div class="board_tag"
 					th:each="hashtag, status : ${#strings.arraySplit(detail.tag,',')}">
 					<span class="board_tag"
@@ -182,6 +208,7 @@ color: blue;
 			</div>
 		</div>
 
+	</div>
 	</div>
 	<script src="/js/board/likes.js"></script>
 	<script src="/js/board/applicant.js"></script>
@@ -207,8 +234,8 @@ color: blue;
 												autoplaySpeed : 10000,
 												pauseOnHover : true,
 												vertical : false,
-												prevArrow : "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; z-index:10;' class='slick-prev'>이전</button>",
-												nextArrow : "<button type='button' style='border:none;background:transparent;position:absolute; top:30%; right:0 ; z-index:10;' class='slick-next'>다음</button>",
+												prevArrow : "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; z-index:10;' class='slick-prev'>◀</button>",
+												nextArrow : "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; right:0 ; z-index:10;' class='slick-next'>▶</button>",
 												draggable : true,
 												responsive : [ {
 													breakpoint : 960, //화면 사이즈 960px
@@ -276,16 +303,14 @@ color: blue;
 																'short');
 														contentt.css(
 																"height",
-																"20vh");
+																"25vh");
 														contentBox.css(
 																"text-align",
 																"left");
 														recruitInFo.css(
 																"display",
 																"none");
-														$("#result").css(
-																"top",
-																"33%");
+											
 
 													} else {
 														// 더보기 상태
@@ -303,9 +328,7 @@ color: blue;
 														recruitInFo.css(
 																"display",
 																"inline");
-														$("#result").css(
-																"top",
-																"21%");
+												
 
 													}
 												}

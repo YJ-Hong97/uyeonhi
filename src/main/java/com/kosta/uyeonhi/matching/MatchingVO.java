@@ -25,15 +25,15 @@ public class MatchingVO {
 
 	@Id
 	@GeneratedValue( strategy =GenerationType.AUTO)
-	private Long mId; //key값
+	private Long mId; 
 	
 	@ManyToOne
-	private UserVO id; //신청 한 아이디 //신청인 여기다 넣고
+	private UserVO id; 
 	
 	@ManyToOne
-	private UserVO target; //요청받은 아이디 //요청인 아이디에 넣기
+	private UserVO target; 
 	
-	private int mconfirm; //확인 컬
+	private int mconfirm; 
 	private String type;
 	
 }
