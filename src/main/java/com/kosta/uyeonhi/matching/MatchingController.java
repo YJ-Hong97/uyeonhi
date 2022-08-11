@@ -31,6 +31,9 @@ import com.kosta.uyeonhi.signUp.MHobbyRepository;
 import com.kosta.uyeonhi.signUp.MHobbyVO;
 import com.kosta.uyeonhi.signUp.MIdealRepository;
 import com.kosta.uyeonhi.signUp.MIdealVO;
+import com.kosta.uyeonhi.signUp.ProfileRepository;
+import com.kosta.uyeonhi.signUp.ProfileType;
+import com.kosta.uyeonhi.signUp.ProfileVO;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
@@ -38,10 +41,12 @@ import com.kosta.uyeonhi.signUp.UserVO;
 public class MatchingController {
 
 	@Autowired
+	ProfileRepository profileRepo;
+	
+	@Autowired
 	MatchingRepository mRepo;
 	@Autowired
 	UserRepository uRepo;
-
 	@Autowired
 	MFavoriteRepository mfRepo;
 	@Autowired
@@ -114,7 +119,14 @@ public class MatchingController {
 		mv.addObject("pickMeList", pickMeList);
 		mv.setViewName("/matching/matView");
 			
+		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mv.addObject("profile",profile);
+		mv.addObject("user",user);
+		mv.setViewName("/matching/matView");
+		System.out.println("프로피리이잉" + profile);
+		System.out.println("유저저ㅓ저" + user);
 		return mv;
+
 	}
 
 	/*
@@ -140,7 +152,7 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.modifyMatching(pickid, user.getId());
 		System.out.println(pickid + "--id:" + user.getId());
-		return "redirect:/myPage/'user.getId()'";
+		return "redirect:/myPage/"+user.getId();
 	}
 
 	@Transactional
@@ -151,7 +163,7 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.deletMatching(pickid, user.getId());
 
-		return "redirect:/myPage/'user.getId()'";
+		return "redirect:/myPage/"+user.getId();
 	}
 
 	/*
@@ -173,12 +185,10 @@ public class MatchingController {
 		}else {
 			yourGender = Gender.MALE;
 		}
-		
+		gradeRepo.deleteByUser(user);
 		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
-		aa:for(UserVO you: allUserVOs) {
-			if(you.getId()==user.getId()) {
-				continue aa;
-			}else {
+		for(UserVO you: allUserVOs) {
+			
 				int grade = 0;
 				List<MFavoriteVO> mFavoriteVOs = mfRepo.findByUser(you);
 				List<MHobbyVO>mHobbyVOs = mhRepo.findByUser(you);
@@ -210,7 +220,6 @@ public class MatchingController {
 						.grade(grade)
 						.build();
 				gradeRepo.save(gradeVo);
-			}
 		}
 		
 		List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
@@ -233,11 +242,11 @@ public class MatchingController {
 				break;
 			}
 		}
-		model.addAttribute("user", user);
 		model.addAttribute("targets",targets);
-		return "/matching/main";
+		return "/fragment/userslider";
 		
 		
 	}
-
+	
+	
 }
