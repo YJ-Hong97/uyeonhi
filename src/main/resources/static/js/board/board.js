@@ -2,12 +2,12 @@
 
 $('#toggleBtn').click(function() {
 	$('#toggleBtn').css("height", "180px");
-	$('#container').css("height", "300px");
+	$('#container').css("height", "310px");
 	$('.userSession').css({ "display": "inline" });
-	$('#btn_board').css("display", "block");
-	$('.board_write_top').css({ "display": "block", "float":"right", "width":"80%", "margin-right" : "8px"});
-	$('#sns_select').css({ "display": "inline" });
-	$('#btn_fileUpload').css({
+	$('#btn_board').css({"display": "block","float":"right","margin-right":"10px"});
+	$('.board_write_top').css({ "display": "block", "float":"right", "width":"80%", "margin-right" : "10px","height":"100px","margin-top":"8px"});
+	$('#sns_select').css({ "display": "inline","float":"left","margin-top":"3px"});
+/*	$('#btn_fileUpload').css({
 		"display": "block",
 		"width" : "100%",
 		"padding": "6px 25px",
@@ -15,9 +15,13 @@ $('#toggleBtn').click(function() {
 		"border-radius": "4px",
 		"color": "white",
 		"cursor": "pointer;"
-	});
+	});*/
 	$('.file_image').css({ "display": "inline" });
 	$('.tag').css("display", "inline");
+	$('label').css("width", "32px");
+	$('.upload-btn').css({"display": "inline","float":"left","margin-left":"10px"});
+	$('.board_info ').css({"width":"300px"});
+	
 });
 
 $('#sns_select').change(function() {
@@ -25,8 +29,9 @@ $('#sns_select').change(function() {
 	var result = $('#sns_select option:selected').val();
 	if (result == 'recruit') {
 		$(".total_person").css("display", "inline");
+		$(".total_person").css("height", "29px");
 		$(".deadline").css("display", "inline");
-		$('#container').css("height", "330px");
+		$('#container').css("height", "335px");
 	} else {
 		$(".deadline").css("display", "none");
 		$(".total_person").css("display", "none");
