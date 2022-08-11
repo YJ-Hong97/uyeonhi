@@ -15,5 +15,7 @@ public interface MatchingGradeRepository extends CrudRepository<matchingGrade, L
 	@Transactional
 	@Modifying
 	void deleteByUser(UserVO user);
-	matchingGrade findByUser(UserVO user);
+	List<matchingGrade> findByUser(UserVO user);
+	matchingGrade findByUserAndTarget(UserVO user,UserVO target);
+	boolean existsByUser(UserVO user);
 }
