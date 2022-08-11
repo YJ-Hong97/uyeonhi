@@ -28,8 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.uyeonhi.follow.Follow;
 import com.kosta.uyeonhi.follow.FollowRepository;
+import com.kosta.uyeonhi.matching.MatchingGradeRepository;
 import com.kosta.uyeonhi.matching.MatchingRepository;
 import com.kosta.uyeonhi.matching.MatchingVO;
+import com.kosta.uyeonhi.matching.matchingGrade;
 import com.kosta.uyeonhi.security.MemberService;
 import com.kosta.uyeonhi.signUp.FavoriteMenuRepository;
 import com.kosta.uyeonhi.signUp.FavoriteRepository;
@@ -104,6 +106,8 @@ public class MyPageController {
 	BoardRepository boardRepo;
 	@Autowired
 	UserRepository uRepo;
+	@Autowired
+	MatchingGradeRepository gradeRepo;
 	
 	@GetMapping("/myPage/{mid}")
 	public ModelAndView myPage(@PathVariable String mid, ModelAndView model, HttpSession session) {
@@ -185,7 +189,11 @@ public class MyPageController {
 	public void dBlock(@PathVariable String phone,HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO) session.getAttribute("user");
+		UserVO buser = uRepo.findByPhone(phone);
 		nRepo.deleteBlock(user, phone);
+		matchingGrade grade = gradeRepo.findByUserAndTarget(user, buser);
+		gradeRepo.deleteById(grade.getMid());
+		
 	}
 	@GetMapping("/inquiry")
 	public ModelAndView inquiry(ModelAndView mnv, HttpServletRequest request,PageVO pageVO) {
