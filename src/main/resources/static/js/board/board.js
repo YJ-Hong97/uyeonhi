@@ -5,10 +5,11 @@ $('#toggleBtn').click(function() {
 	$('#container').css("height", "300px");
 	$('.userSession').css({ "display": "inline" });
 	$('#btn_board').css("display", "block");
-	$('.board_write_top').css({ "display": "flex", "justify-content": "space-between" });
+	$('.board_write_top').css({ "display": "block", "float":"right", "width":"80%", "margin-right" : "8px"});
 	$('#sns_select').css({ "display": "inline" });
 	$('#btn_fileUpload').css({
 		"display": "block",
+		"width" : "100%",
 		"padding": "6px 25px",
 		"background-color": "rgb(142 85 255)",
 		"border-radius": "4px",

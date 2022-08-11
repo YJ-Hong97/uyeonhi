@@ -18,11 +18,13 @@
 
 		.writer_info_box {
 			display: flex;
-			height: 2.5vw;
+			height: 3.5vw;
 			width: 100%;
 			margin-top: 0px;
 			border: solid #dddddd;
 			border-width: 0 0 1px 0;
+			align-items: center;
+
 		}
 
 		.writer_info_box #person {
@@ -75,8 +77,13 @@
 
 <body>
 	<div class="writer_info_box">
-		<span class="material-symbols-outlined" id="person">
-			account_circle </span>
+		<div
+			style="margin: 0 0.5vw; background: #BDBDBD;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+			<a th:href="|http://localhost:7777/myPage/${board.writer.id}|">
+				<img style="width:100%; height:100%; object-fit:cover;" id="ellipse"
+					th:src="${board.writer.profile[0].fileName}">
+			</a>
+		</div>
 		<div class="writer_nickname">[[${board.writer.nickname}]]</div>
 	</div>
 
@@ -95,7 +102,7 @@
 
 						</div>
 						<p th:class="|reply_content${reply.reply_id}|">[[${reply.reply_content}]]</p>
-						<div class="reply_button_box">
+						<div th:if="${session.user.id == reply.user.id}" class="reply_button_box">
 							<button class="delete_reply_button" th:value="${reply.reply_id}" type="button">
 								<img src="../images/trash-outline.svg">
 							</button>
@@ -117,7 +124,7 @@
 				<div class="reReply_box">
 					<textarea th:class="|input_reReply${reply.reply_id}|"></textarea>
 					<input type="hidden" class="hidden_boardId" th:value="${reply.boardId}"></input>
-					
+
 					<button th:value="${reply.reply_id}" class="btn_reReply" type="button">대댓글</button>
 				</div>
 
@@ -132,7 +139,7 @@
 									<p style="margin-right: 10px;">[[${reReply.user.nickname}]]</p>
 								</div>
 								<p th:class="|reply_content${reReply.reply_id}|">[[${reReply.reply_content}]]</p>
-								<div class="reply_button_box">
+								<div th:if="${session.user.id == reReply.user.id}" class="reply_button_box">
 									<button class="delete_reply_button" th:value="${reReply.reply_id}" type="button">
 										<img src="../images/trash-outline.svg">
 									</button>
@@ -155,11 +162,11 @@
 
 					</li>
 				</ul>
-				</div>
+			</div>
 		</li>
 	</ul>
-	
-	
+
+
 
 
 </body>

@@ -97,28 +97,33 @@
 			#alarmList::-webkit-scrollbar {
 				display: none;
 			}
-			
-			#alarmList #alarmFlexBox{
-				display:flex;
-				flex-direction:column;
+
+			#alarmList #alarmFlexBox {
+				display: flex;
+				flex-direction: column;
 			}
-			
-			.notification_contents{
-				display:flex;
-				flex-direction:column;
+
+			.notification_contents {
+				display: flex;
+				flex-direction: column;
 				justify-content: center;
-				height:80px;
-				padding:0 0 0 10px ;
+				height: 80px;
+				padding: 0 0 0 10px;
 			}
-			
-			.notification_contents:hover{
-				background-color:#dddddd;
+
+			.notification_contents:hover {
+				background-color: #dddddd;
 				transition: 0.5s;
 			}
-			
-			.notificationList{
-				border:none;
-				background:transparent;
+
+			.notificationList {
+				border: none;
+				background: transparent;
+			}
+
+			#badge {
+				font-size: 35%;
+				height: 22%;
 			}
 		</style>
 	</head>
@@ -130,10 +135,11 @@
 				<tr>
 					<td id="logo">uyeonhi</td>
 					<td width="50%"></td>
-					<td>
-						<button type="button" onclick=alramList() class="notificationList">
+					<td class="notiArea">
+						<button type="button" onclick=alarmList() class="notificationList">
 							<i style="font-size:25px" class="fa-regular fa-bell iconlef">
-								<span class="position-absolute top-5 start-90 translate-middle badge rounded-pill bg-danger">
+								<span id="badge"
+									class="position-absolute top-5 start-90 translate-middle badge rounded-pill bg-danger">
 									<p class="notification_count">[[${notiCount}]]</p>
 								</span>
 							</i>
@@ -152,11 +158,11 @@
 
 		</div>
 	</body>
-	<div th:id="alarmList">
+	<section th:id="alarmList">
 		<div id="alarmFlexBox">
 		</div>
-	</div>
-	
+	</section>
+
 
 </th:block>
 

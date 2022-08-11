@@ -26,14 +26,18 @@ public class NotificationApiController {
 	
 	@PostMapping("/api/notification/save")
 	public void saveNoti(@RequestBody NotificationRequestDTO notificationRequestDTO) {
-		int alram = 1;
 		notificationService.notificationSave(notificationRequestDTO);
 		
 	}
 	
-	@DeleteMapping("/api/notification/delete/{notificationId}")
-    public void delete(@PathVariable Long notificationId){
-		notificationService.notificationDelete(notificationId);
+	@DeleteMapping("/api/notification/delete/{notiId}")
+    public void delete(@PathVariable Long notiId){
+		notificationService.notificationDelete(notiId);
+    }
+	
+	@PutMapping("/api/notification/update/{userId}")
+    public void update(@PathVariable String userId){
+		notificationService.notificationUpdate(userId);
     }
 	
 	

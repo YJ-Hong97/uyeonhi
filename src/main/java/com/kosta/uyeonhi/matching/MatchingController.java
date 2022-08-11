@@ -41,6 +41,7 @@ public class MatchingController {
 	MatchingRepository mRepo;
 	@Autowired
 	UserRepository uRepo;
+
 	@Autowired
 	MFavoriteRepository mfRepo;
 	@Autowired
@@ -55,21 +56,17 @@ public class MatchingController {
 	IdealRepository iRepo;
 	@Autowired
 	MatchingGradeRepository gradeRepo;
-	
+
 	@GetMapping(value = "/matching")
 	@ResponseBody
 	public String matchingRequest(String target, HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		System.out.println(user);
-		
+
 		MatchingVO mats = mRepo.matcheck(user.getId(), target);
-		
-		if(mats == null) {
-			MatchingVO vo = MatchingVO.builder()
-					.id(user)
-					.target(uRepo.findById(target).get())
-					.mconfirm(0)
-					.build();
+
+		if (mats == null) {
+			MatchingVO vo = MatchingVO.builder().id(user).target(uRepo.findById(target).get()).mconfirm(0).build();
 			System.out.println(vo);
 			MatchingVO saveResult = mRepo.save(vo);
 		} else {
@@ -78,8 +75,7 @@ public class MatchingController {
 				mRepo.save(mat);
 			});
 		}
-		
-		
+
 		return "매칭 신청이 되었습니다." + "상대방의 응답을 기다려주세요.";
 	}
 
@@ -103,45 +99,67 @@ public class MatchingController {
 	 */
 
 	@GetMapping(value = "/matView")
+
+	@ResponseBody
 	public ModelAndView matchingResponse(HttpSession session, ModelAndView mv) {
 		UserVO user = (UserVO) session.getAttribute("user");
-		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user, 0);
+
+		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user, 0); //
+		mv.addObject("pickMeList", pickMeList); //
+		mv.setViewName("/matching/matView");
+
+		System.out.println(pickMeList.size() + "왔냐고오오오오");
+		//System.out.println(pickMeList.get(0) + "오라고오오");
+
 		mv.addObject("pickMeList", pickMeList);
 		mv.setViewName("/matching/matView");
-		
+			
 		return mv;
 	}
-	
+
+	/*
+	 * @GetMapping(value = "/matView")
+	 * 
+	 * @ResponseBody public MatchingVO matcheck(HttpSession session ,String target)
+	 * { UserVO user = (UserVO) session.getAttribute("user"); MatchingVO list =
+	 * mRepo.matcheck(user.getId(),target); System.out.println(list.toString() +
+	 * "왔냐고오오오오"); //System.out.println(pickMeList.get(0) + "오라고오오");
+	 * 
+	 * //mv.addObject("pickMeList", pickMeList);
+	 * //mv.setViewName("/matching/matView");
+	 * 
+	 * return list; }
+	 */
+
 	@Transactional
 	@GetMapping(value = "/matYes")
-	public String matchingYes( String pickid  , HttpSession session) {
-		
+	public String matchingYes(String pickid, HttpSession session) {
+
 		pickid = pickid.replaceAll("\"", "");
-		
+
 		UserVO user = (UserVO) session.getAttribute("user");
-		mRepo.modifyMatching( pickid, user.getId());
+		mRepo.modifyMatching(pickid, user.getId());
 		System.out.println(pickid + "--id:" + user.getId());
-		return "redirect:/matView";
+		return "redirect:/myPage/";
 	}
-	
-	
+
 	@Transactional
 	@GetMapping(value = "/matNo")
-	public String matchingNo( String pickid  , HttpSession session) {
+	public String matchingNo(String pickid, HttpSession session) {
 		System.out.println(pickid);
 		pickid = pickid.replaceAll("\"", "");
 		UserVO user = (UserVO) session.getAttribute("user");
-		mRepo.deletMatching(pickid ,user.getId());
-		
-		return "redirect:/matView";
+		mRepo.deletMatching(pickid, user.getId());
+
+		return "redirect:/myPage/";
 	}
-	
-	
+
 	/*
 	 * @GetMapping(value = "/matching/response") public String aa() {
 	 * 
 	 * return "/matching/NewFile"; }
 	 */
+
 	@GetMapping("/matchingList")
 	public String matchingList(Model model,HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("user");
@@ -221,5 +239,5 @@ public class MatchingController {
 		
 		
 	}
-		 
+
 }
