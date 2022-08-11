@@ -163,10 +163,10 @@
 									<!-- --------------------------------------------------------------------------------------------------------------------- 고친 칸 --------------------------- -->
 									<div class="text_container" th:id="|tContainer${list.boardId}|">
 
-										<div style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</div>
-										<a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
-										<br>
-										<div class="recruitInfo" th:if="${list.board_type == '모집글'}">
+<!--  -->										<div style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</div>
+<!--  -->										<a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
+<!--  -->										<br>
+<!--  -->										<div class="recruitInfo" th:if="${list.board_type == '모집글'}">
 											<span th:text="|마감일 : ${list.deadline}|"
 												th:id="|deadline_${list.boardId}|"></span><br> <span
 												class="recruit_person" th:text="|신청 현황 : ${list.applicant.size()}| "
@@ -187,7 +187,7 @@
 												th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }">모집마감</span>
 										</div>
 										<br>
-										<div class="tagList" 
+<!--  -->									<div class="tagList" 
 											th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
 											<a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|"
 												th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
@@ -239,8 +239,8 @@
 								</form>
 							</div>
 							<div class="text" id="searchContent">
-							<br>
-								<p id="searchBefore" style="color: #B1B1B1;">태그를 검색해 주세요</p>
+<!--  -->							<br>
+<!--  -->								<p id="searchBefore" style="color: #B1B1B1;">태그를 검색해 주세요</p>
 							</div>
 						</div>
 					</div>
