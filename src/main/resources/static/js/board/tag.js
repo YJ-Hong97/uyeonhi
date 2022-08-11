@@ -1,8 +1,7 @@
 /**
  * 
  */
-
-  $('#searchTag').autocomplete({
+ $('#searchTag').autocomplete({
 	 source : function(request, response) { //source: 입력시 보일 목록
 	     $.ajax({
 	           url : "/autocomplete"   
@@ -14,7 +13,7 @@
 	                     return {
 	                    	     label : item.data    	// 목록에 표시되는 값
 	                           , value : item.data		// 선택 시 input창에 표시되는 값
-	                           
+
 	                     };
 	                 })
 	             );    //response
@@ -105,13 +104,45 @@ function tag(boardId,count,index){
 	}
 	
 };*/
-
-function textMore(boardId){
-	alert("누름");
-	$('#boardText_'+boardId).css("white-space", "nomal");
-	//$('.board_text').css("display", "inline-block");
-	$('.container4_'+boardId).css("height", "25vh");
-	$('.recruitInfo_'+boardId).css("display", "inline");
-	$('.tagList_'+boardId).css("display", "inline");
-};
+$('.conTainer4').each(function(){
+            //var content = $(this).children('.content');
+            var content = $(this).find('.board_text');
+ 
+            var content_txt = content.text();
+            var content_html = content.html();
+            var content_txt_short = content_txt.substring(0,20)+"...";
+            var btn_more =  $(this).find('.moreBtn');
+            var recruitInfo = $(this).find('.recruitInfo');
+            var tagList = $(this).find('.tagList');
+            var container4 = $(this);
+ 
+            
+            if(content_txt.length >= 20){
+                content.html(content_txt_short)
+                
+            }
+            
+            btn_more.click(textMore);
+            function textMore(){
+                if($(this).hasClass('short')){
+                    // 접기 상태
+                    $(this).html('더보기');
+                    content.html(content_txt_short)
+                    $(this).removeClass('short');
+                    recruitInfo.css("display", "none");
+		            tagList.css("display", "none");
+		 			container4.css("height", "10vh");
+                    
+                }else{
+                    // 더보기 상태
+                    $(this).html('접기');
+                    content.html(content_html);
+                    $(this).addClass('short');
+      			 	recruitInfo.css("display", "inline");
+		    		tagList.css("display", "inline");
+        			container4.css("height", "40vh");
+ 
+                }
+            }
+        });
 

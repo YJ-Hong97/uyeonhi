@@ -33,7 +33,7 @@ function likes(boardId){
 			heart.css("color","black");
 			heart.removeClass('notlikes');
 			heart.addClass('likes');
-			//location.href = "/sns/sns1";
+			 location.reload();
 		}).fail(error=>{
 			console.log("오류",error);
 		});

@@ -14,14 +14,15 @@
 <style>
 #search-result{
 
-width: 500px;
-height: 150px;
+width: 20vw;
+height: 15vh;
 border-bottom: 1px gray solid;
 margin: auto;
 }
 .not-Find{
 font-size: 1em;
-font-family: 'Gowun Dodum';
+/* font-family: 'Gowun Dodum'; */
+color: #B1B1B1;
 }
 #profile{
 width: 29px;
@@ -29,10 +30,14 @@ height: 29px;
 float: left;
 }
 #profile-image{
-	width: 27px;
-	height: 27px;
+	/* width: 27px;
+	height: 27px; +0.7*/
+	margin-top : 5px;
+	margin-left : 5px;
+	width: 2vw;
+	height: 4vh;
 	border-radius: 120px;
-	/* border: solid black 1px; */
+	border: solid white 1px;
 	line-height: 29px;
 	display: inline-block;
 	
@@ -40,25 +45,33 @@ float: left;
 #nickname{
 left:100px;
 font-weight: bold;
-font-size: 0.75em;
+font-size: 1.3em;
 
 }
 #user-id{
 color: #B2B1B9;
-font-size: 0.75em;
+font-size: 0.9em;
+text-decoration: none;
+
 }
 #account{
 display:inline-block;
 /* margin-left: 5%; */
 float: left;
+margin-top : 14px;
+margin-left : 30px;
+height: 4vh;
 }
 #contnet-box{
 margin-top: 5%;
+float: left;
+width: 20vw;
+text-align: left;
 }
-#content{
+.content{
 font-size: 0.65em;
  word-break:break-all; 
- float: left;
+ text-align: left;
 }
 .board_tag{
 font-size: 0.65em;
@@ -72,6 +85,13 @@ font-size: 1.2em;
 #like{
 border-top: 1px gray solid;
 }
+.recruitInFo{
+display: none;
+font-size: 0.65em;
+}
+.apply{
+width: 3vw;
+}
 </style>
 </head>
 <body>
@@ -82,26 +102,121 @@ border-top: 1px gray solid;
 <span th:text="${list.writer.id}" class="board"></span>
 </div> -->
 <div class="not-Find"><br>[[${msg}]]</div>
-<div id="search-result" th:each="list : ${searchList}">
-<div id="profile">
-	<img id="profile-image" th:src="${list.writer.profile[0].fileName}"
+	<div class="searchResult" id="search-result"
+		th:each="list : ${searchList}">
+
+
+		<div th:if="${list.board_type == '모집글'}"
+			style="background-color: black; width: 20vw; height: 5vh;">
+			<div id="profile">
+				<img id="profile-image" th:src="${list.writer.profile[0].fileName}"
 					alt="...">
-</div>
-<div id=account>
-<span id="nickname" th:text="${list.writer.nickname}">닉네임</span>
-<span id="user-id" th:text="|@${list.writer.id}|" >@아이디</span>
-</div>
-<br>
-<div id="contnet-box">
-<span id="content" th:text="${list.content}"></span><br>
-<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-<span class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|" th:onclick="|tag(${list.boardId},${status.count},${status.index})|" th:text="|#${hashtag}|"></span>
-</div>
+			</div>
+			<div id=account>
+				<span id="nickname" th:text="${list.writer.nickname}"
+					style="color: white;">닉네임</span> <a id="user-id"
+					th:text="|@${list.writer.id}|"
+					th:href="@{/myPage/{mid}(mid = ${list.writer.id})}">@아이디</a>
+			</div>
+		</div>
 
+		<div th:unless="${list.board_type == '모집글'}" style="width: 20vw; height: 5vh;">
+			<div id="profile">
+				<img id="profile-image" th:src="${list.writer.profile[0].fileName}"
+					alt="...">
+			</div>
+			<div id=account>
+				<span id="nickname" th:text="${list.writer.nickname}"
+					>닉네임</span> <a id="user-id"
+					th:text="|@${list.writer.id}|"
+					th:href="@{/myPage/{mid}(mid = ${list.writer.id})}">@아이디</a>
+			</div>
+		</div>
+		<br>
+		<div id="contnet-box" class="contentBox">
+			<span id="content" class="contentText" th:text="${list.content}"></span>
+			<a class="btnMore" th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' }">더보기</a> <br>
 
+			<div class="recruitInFo" th:if="${list.board_type == '모집글'}">
+				<span th:text="|마감일 : ${list.deadline}|"
+					th:id="|deadline_${list.boardId}|" ></span><br> <span
+					class="recruit_person"
+					th:text="|신청 현황 : ${list.applicant.size()}| "
+					th:id="|applicant_person_${list.boardId}|"></span> <span
+					class="recruit_person" th:text="|/ ${list.total_person}|"
+					th:id="|total_person_${list.boardId}|"></span>
+				<button
+					th:if="${list.writer.id != session.user.id && @applicantSearch.findUsingIterator(session.user.id,list.getApplicant())}"
+					th:id="|applyBtn_${list.boardId}|" class="apply"
+					th:onclick="|apply(${list.boardId})|">신청</button>
+				<div th:each="apply:${list.getApplicant()}"
+					th:id="|cancleApply2_${list.boardId}|">
+					<button th:if="${session.user.id == apply.user.id}"
+						th:id="|applyBtn_${list.boardId}|" class="cancleApply"
+						th:onclick="|apply(${list.boardId})|">취소</button>
+				</div>
+				<span class="recurit_status"
+					th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }">모집마감</span>
+			</div>
 
-</div>
-</div> 
-<script src="/js/board/tag.js"></script>
+			<div th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
+				<span class="board_tag"
+					th:id="|tag_${list.boardId+status.count+status.index}|"
+					th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
+					th:text="|#${hashtag}|"></span>
+			</div>
+		</div>
+	</div>
+	<script src="/js/board/tag.js"></script>
+<script>
+$(document).ready(function () {
+
+$('.searchResult').each(function(){
+    //var content = $(this).children('.content');
+    var content = $(this).find('.contentText');
+
+    var content_txt = content.text();
+    var content_html = content.html();
+    var content_txt_short = content_txt.substr(0,20)+"...";
+    var btn_more =  $(this).find('.btnMore');
+    var contentBox =  $(this).find('.contentBox');
+    var searchResult = $(this);
+    var recruitInFo = $(this).find('.recruitInFo');
+
+    content.css("font-size","0.65em");
+    //content.css("text-align","left");
+    btn_more.css("font-size","0.65em");
+    btn_more.css("color","#D9D9D9");
+    
+    
+    if(content_txt.length >= 20){
+        content.html(content_txt_short);
+        
+    }
+    
+    btn_more.click(texTMore);
+    function texTMore(){
+        if($(this).hasClass('short')){
+            // 접기 상태
+            $(this).html('더보기');
+            content.html(content_txt_short)
+            $(this).removeClass('short');
+            searchResult.css("height", "15vh");
+            contentBox.css("text-align","left");
+            recruitInFo.css("display", "none");
+            
+        }else{
+            // 더보기 상태
+            $(this).html('접기');
+            content.html(content_html);
+            $(this).addClass('short');
+            searchResult.css("height", "35vh");
+            contentBox.css("text-align","left");
+            recruitInFo.css("display", "inline");
+        }
+    }
+});
+})
+</script>
 </body>
 </html>
