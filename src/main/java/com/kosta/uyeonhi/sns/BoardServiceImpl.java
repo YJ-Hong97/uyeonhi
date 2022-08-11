@@ -19,8 +19,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class BoardServiceImpl implements BoardService{
 
-	@Autowired
 	private final BoardRepository boardRepository;
+	
+	private final BoardS3Uploader boardS3Uploader;
 	
 	@Override
 	public Long saveBoard(BoardRequestDTO boardDTO) {
@@ -70,6 +71,13 @@ public class BoardServiceImpl implements BoardService{
 		IllegalArgumentException("해당 게시물이 존재하지 않습니다. " + board_id));
 		board.setApplicant_person(boardRequestDTO.getApplicant_person()); 
 		
+	}
+	
+	@Override
+	@Transactional
+	public List<Board> likeList(String userId){
+		 System.out.println("BoardServiceImpl : "+userId);
+		return boardRepository.likeBoardList(userId);
 	}
 	
 	/*

@@ -13,6 +13,7 @@
 	</head>
 	<style>
 .promiseContainer {
+	display:none;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -51,6 +52,12 @@
 #closePromise{
 	cursor: pointer;
 }
+#acceptBtn{
+	display:none;
+	border: 0;
+	background-color: rgba(185, 131, 255, 1);
+	cursor: pointer;
+}
 </style>
 	<body>
 		<div class="promiseContainer">
@@ -61,6 +68,10 @@
 							<th colspan=>약속해요!</th><th id = "closePromise">[닫기]</th>
 						</tr>
 					</thead>
+					<tr>
+						<td>제목</td>
+						<td><input type = "text"  id = "title" name = "title"></td>
+					</tr>
 					<tr>
 						<td>장소</td>
 						<td><input type="text" id="location" name="location"></td>
@@ -73,6 +84,9 @@
 						<td colspan="2"><input type="button" value="약속 제안하기"
 							id="promiseSubmit"></td>
 					</tr>
+					<tr>
+						<td colspan="2"><input type = "button" value = "약속 수락하기" id = "acceptBtn"></td>
+					</tr>
 				</table>
 			</div>
 
@@ -80,7 +94,7 @@
 		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 		<script>
 			$('#closePromise').click(function(){
-				$('#promiseContainer').css("display","none");
+				$('.promiseContainer').css("display","none");
 			});
 			
 		</script>

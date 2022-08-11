@@ -67,7 +67,7 @@ function tag(boardId,count,index){
 		dataType:"text",
 		success : function(res){
 			$("#searchContent").html(res);
-			$(".board_tag").css("font-size","20px");
+			$(".board_tag").css("font-size","14.3893px");
 		},
 		error : function(error){
 			console.log(error);
@@ -105,3 +105,13 @@ function tag(boardId,count,index){
 	}
 	
 };*/
+
+function textMore(boardId){
+	alert("누름");
+	$('#boardText_'+boardId).css("white-space", "nomal");
+	//$('.board_text').css("display", "inline-block");
+	$('.container4_'+boardId).css("height", "25vh");
+	$('.recruitInfo_'+boardId).css("display", "inline");
+	$('.tagList_'+boardId).css("display", "inline");
+};
+

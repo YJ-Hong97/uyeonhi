@@ -32,7 +32,7 @@ float: left;
 	width: 27px;
 	height: 27px;
 	border-radius: 120px;
-	border: solid black 1px;
+	/* border: solid black 1px; */
 	line-height: 29px;
 	display: inline-block;
 	
@@ -81,14 +81,15 @@ border-top: 1px gray solid;
 <span th:text="${list.tag}" class="board"></span>
 <span th:text="${list.writer.id}" class="board"></span>
 </div> -->
-<div class="not-Find">[[${msg}]]</div>
+<div class="not-Find"><br>[[${msg}]]</div>
 <div id="search-result" th:each="list : ${searchList}">
 <div id="profile">
-<span id="profile-image"></span>
+	<img id="profile-image" th:src="${list.writer.profile[0].fileName}"
+					alt="...">
 </div>
 <div id=account>
 <span id="nickname" th:text="${list.writer.nickname}">닉네임</span>
-<span id="user-id" th:text="|@${list.writer.id}|">@아이디</span>
+<span id="user-id" th:text="|@${list.writer.id}|" >@아이디</span>
 </div>
 <br>
 <div id="contnet-box">

@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kosta.uyeonhi.chat.ChatRoomRepository;
+import com.kosta.uyeonhi.likes.LikesRepository;
 import com.kosta.uyeonhi.push.NotificationService;
 import com.kosta.uyeonhi.reply.ReplyService;
 import com.kosta.uyeonhi.signUp.ProfileRepository;
@@ -59,6 +60,7 @@ public class BoardController {
 	
 	private final NotificationService notificationService;
 	
+	
 	@Autowired
 	ChatRoomRepository roomrepo;
 
@@ -71,8 +73,8 @@ public class BoardController {
 		int endPage = startPage + 10 - 1 > pageable.getPageSize() ? pageable.getPageSize() : startPage + 10 - 1;
 		UserVO user = (UserVO) session.getAttribute("user");
 		ProfileVO profile =profileRepository.findByUserAndType(user, ProfileType.MAIN);
-		
-
+				
+		model.addAttribute("notiCount", notificationService.notificationCount(user.getId()));
 		model.addAttribute("list", roomrepo.findByTargetOrId(user.getId()));
 		model.addAttribute("user", user);
 		model.addAttribute("boardList", boardService.pageList(pageable));
@@ -110,15 +112,18 @@ public class BoardController {
 		return "sns/search";
 	}
 	
+	@GetMapping("/likeList")
+	public String LikeList(HttpSession session, Model model) {
+		UserVO user = (UserVO) session.getAttribute("user");	
+		System.out.println(user.getId());
+		List<Board> likeList = boardService.likeList(user.getId());
+		
+		model.addAttribute("likeList",likeList);
+	 
+		return "sns/likeList";
+	}
 	
 	
-	
-	
-	
-	/*@GetMapping("/boardWrite")
-	public String boardWirteGet() {
-		return "sns1";
-	}*/
 	
 	
 

@@ -260,10 +260,10 @@ body div {
 		 $("#message").val("");
 	}
 	stomp.connect({},function(){
-		stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
+		stomp.subscribe(`/sub/audio/message/${roomNo}`,function(data){
 			 chat(data);
 		 });
-		stomp.subscribe(`/sub/video/promise-accept/${roomNo}`,function(data){
+		stomp.subscribe(`/sub/audio/promise-accept/${roomNo}`,function(data){
 			pdata = JSON.parse(data.body);
 			if(pdata["offer"]==mid){
 				return;
@@ -278,7 +278,7 @@ body div {
 				accept(pdata["pid"]);
 			}
 		});
-		stomp.subscribe(`/sub/video/promise-success/${roomNo}`,function(data){
+		stomp.subscribe(`/sub/audio/promise-success/${roomNo}`,function(data){
 			console.log(data);
 			alert("약속이 등록되었습니다.");
 		});
@@ -289,7 +289,7 @@ body div {
 				  alert("채팅 내용을 입력하세요.");
 				  return;
 			  }
-			  stomp.send(`/pub/video/message/${roomNo}`,{},JSON.stringify({
+			  stomp.send(`/pub/audio/message/${roomNo}`,{},JSON.stringify({
 				  roomNo:roomNo,
 				  message:message,
 				  mid:mid,
@@ -303,7 +303,7 @@ body div {
 					  alert("채팅 내용을 입력하세요.");
 					  return;
 				  }
-				  stomp.send(`/pub/video/message/${roomNo}`,{},JSON.stringify({
+				  stomp.send(`/pub/audio/message/${roomNo}`,{},JSON.stringify({
 					  roomNo:roomNo,
 					  message:message,
 					  mid:mid,
@@ -315,7 +315,7 @@ body div {
 	$('#connect').click(function(){
 		$(this).css("display","none");
 		$('#disconnect').css("display","block");			
-		stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
+		stomp.subscribe(`/sub/audio/joined-info/${roomNo}`,function(data){
 			parti = JSON.parse(data.body);
 			parti = parti[roomNo];
 			if(parti.length==1){
@@ -327,7 +327,7 @@ body div {
 			}
 		});
 		
-		stomp.send(`/pub/video/joined-info/${roomNo}`,{},JSON.stringify({
+		stomp.send(`/pub/audio/joined-info/${roomNo}`,{},JSON.stringify({
 			roomNo:roomNo,
 			mid:mid,
 			}));
@@ -337,7 +337,7 @@ body div {
 		
 		console.log("초기자");
 		navigator.mediaDevices.getUserMedia({
-			video:true
+			audio:true
 		}).then((stream)=>{
 			localVideo.srcObject =stream;
 			peer = new SimplePeer({
@@ -351,12 +351,12 @@ body div {
 						type:data["type"],
 						sdp:data["sdp"]
 				};
-				stomp.send(`/pub/video/caller-info/${roomNo}`,{},JSON.stringify(signalData));
+				stomp.send(`/pub/audio/caller-info/${roomNo}`,{},JSON.stringify(signalData));
 			});
 			peer.on("stream",function(stream){
 				remoteVideo.srcObject = stream;
 			});
-			stomp.subscribe(`/sub/video/callee-info/${roomNo}`,function(data){
+			stomp.subscribe(`/sub/audio/callee-info/${roomNo}`,function(data){
 				edata = JSON.parse(data.body);
 				signalData = {
 						type:edata["type"],
@@ -365,14 +365,14 @@ body div {
 				peer.signal(signalData);
 				
 			});
-			stomp.subscribe(`/sub/video/second-out/${roomNo}`,function(data){
+			stomp.subscribe(`/sub/audio/second-out/${roomNo}`,function(data){
 				for (const sub in this.stomp.subscriptions) {
 					  if (this.stomp.subscriptions.hasOwnProperty(sub)) {
 					    this.stomp.unsubscribe(sub);
 					  }
 					}
-				 stomp.subscribe(`/sub/video/message/${roomNo}`,chat(data));
-				 stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
+				 stomp.subscribe(`/sub/audio/message/${roomNo}`,chat(data));
+				 stomp.subscribe(`/sub/audio/joined-info/${roomNo}`,function(data){
 						parti = JSON.parse(data.body);
 						parti = parti[roomNo];
 						if(parti.length==1){
@@ -385,10 +385,10 @@ body div {
 					});
 			});
 		});
-		stomp.subscribe(`/sub/video/callee-pause/${roomNo}`,function(data){
+		stomp.subscribe(`/sub/audio/callee-pause/${roomNo}`,function(data){
 			$('#remoteVideo')[0].pause();
 		});
-		stomp.subscribe(`/sub/video/callee-play/${roomNo}`,function(data){
+		stomp.subscribe(`/sub/audio/callee-play/${roomNo}`,function(data){
 			$('#remoteVideo')[0].play();
 		});
 		
@@ -396,13 +396,13 @@ body div {
 			$(this).css("display","none");
 			$('#reconnect').css("display","block");
 			$('#localVideo')[0].pause();
-			stomp.send(`/pub/video/caller-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			stomp.send(`/pub/audio/caller-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
 		});
 		$('#reconnect').click(function(event){
 			$(this).css("display","none");
 			$('#disconnect').css("display","block");
 			$('#localVideo')[0].play();
-			stomp.send(`/pub/video/caller-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			stomp.send(`/pub/audio/caller-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
 			
 		});
 		clock();
@@ -410,7 +410,7 @@ body div {
 	function secondPeer(){
 		console.log("두번째");
 		navigator.mediaDevices.getUserMedia({
-			video:true
+			audio:true
 		}).then((stream)=>{
 			localVideo.srcObject =stream;
 			peer = new SimplePeer({
@@ -426,13 +426,13 @@ body div {
 				};
 				 
 				
-				 stomp.send(`/pub/video/callee-info/${roomNo}`,{},JSON.stringify(mysignalData));
+				 stomp.send(`/pub/audio/callee-info/${roomNo}`,{},JSON.stringify(mysignalData));
 				
 			});
 			peer.on("stream",function(stream){
 				remoteVideo.srcObject = stream;
 			});
-			 stomp.subscribe(`/sub/video/caller-info/${roomNo}`,function(data){
+			 stomp.subscribe(`/sub/audio/caller-info/${roomNo}`,function(data){
 					edata = JSON.parse(data.body);
 					signalData = {
 							type:edata["type"],
@@ -444,20 +444,20 @@ body div {
 			 
 		
 		});
-		stomp.subscribe(`/sub/video/caller-pause/${roomNo}`,function(data){
+		stomp.subscribe(`/sub/audio/caller-pause/${roomNo}`,function(data){
 			$('#remoteVideo')[0].pause();
 		});
-	 	stomp.subscribe(`/sub/video/caller-play/${roomNo}`,function(data){
+	 	stomp.subscribe(`/sub/audio/caller-play/${roomNo}`,function(data){
 			 $('#remoteVideo')[0].play();
 		 });
-	 	stomp.subscribe(`/sub/video/initiator-out/${roomNo}`,function(data){
+	 	stomp.subscribe(`/sub/audio/initiator-out/${roomNo}`,function(data){
 	 		initiator = true;
 	 		for (const sub in this.stomp.subscriptions) {
 				  if (this.stomp.subscriptions.hasOwnProperty(sub)) {
 				    this.stomp.unsubscribe(sub);
 				  }
 				}
-			 stomp.subscribe(`/sub/video/message/${roomNo}`,function(data){
+			 stomp.subscribe(`/sub/audio/message/${roomNo}`,function(data){
 				 var inputData = "";
 					var content = JSON.parse(data.body);
 					 console.log('is that you? ' + content.message);
@@ -471,7 +471,7 @@ body div {
 					 $(".messageBox").scrollTop($(".messageBox")[0].scrollHeight);
 					 $("#message").val("");
 			  });
-			 stomp.subscribe(`/sub/video/joined-info/${roomNo}`,function(data){
+			 stomp.subscribe(`/sub/audio/joined-info/${roomNo}`,function(data){
 					parti = JSON.parse(data.body);
 					parti = parti[roomNo];
 					if(parti.length==1){
@@ -488,13 +488,13 @@ body div {
 			$(this).css("display","none");
 			$('#reconnect').css("display","block");
 			$('#localVideo')[0].pause();
-			stomp.send(`/pub/video/callee-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			stomp.send(`/pub/audio/callee-pause/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
 		});
 		$('#reconnect').click(function(event){
 			$(this).css("display","none");
 			$('#disconnect').css("display","block");
 			$('#localVideo')[0].play();
-			stomp.send(`/pub/video/callee-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
+			stomp.send(`/pub/audio/callee-play/${roomNo}`,{},JSON.stringify({roomNo:roomNo}));
 			
 		});
 		clock();
@@ -528,11 +528,11 @@ function clock(){
 		event.preventDefault();
 		if(initiator==true){
 			$.ajax({
-				url:`/video/initiator-disconnect/${mid}/${roomNo}`
+				url:`/audio/initiator-disconnect/${mid}/${roomNo}`
 			});
 		}else{
 			$.ajax({
-				url:`/video/second-disconnect/${mid}/${roomNo}`
+				url:`/audio/second-disconnect/${mid}/${roomNo}`
 			});
 		}
 		
@@ -543,7 +543,7 @@ function clock(){
 		let location = $('#location').val();
 		let date = $('#date').val();
 		let title = $('#title').val();
-		stomp.send(`/pub/video/promise-offer/${roomNo}`,{},JSON.stringify({
+		stomp.send(`/pub/audio/promise-offer/${roomNo}`,{},JSON.stringify({
 			location:location,
 			date:date,
 			roomNo:roomNo,
@@ -556,7 +556,7 @@ function clock(){
  		
  		$('#acceptBtn').click(function(event){
  			event.preventDefault();
- 			stomp.send(`/pub/video/promise-accept/${roomNo}`,{},JSON.stringify({
+ 			stomp.send(`/pub/audio/promise-accept/${roomNo}`,{},JSON.stringify({
  				pid:pid,
  				answer:mid,
  				roomNo:roomNo

@@ -49,7 +49,10 @@ import com.kosta.uyeonhi.signUp.MIdealVO;
 import com.kosta.uyeonhi.signUp.ProfileRepository;
 import com.kosta.uyeonhi.signUp.ProfileType;
 import com.kosta.uyeonhi.signUp.ProfileVO;
+import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
+import com.kosta.uyeonhi.sns.Board;
+import com.kosta.uyeonhi.sns.BoardRepository;
 import com.kosta.uyeonhi.util.PageMaker;
 import com.kosta.uyeonhi.util.PageVO;
 
@@ -97,6 +100,10 @@ public class MyPageController {
 	
 	@Autowired
 	MatchingRepository mRepo;
+	@Autowired
+	BoardRepository boardRepo;
+	@Autowired
+	UserRepository uRepo;
 	
 	@GetMapping("/myPage/{mid}")
 	public ModelAndView myPage(@PathVariable String mid, ModelAndView model, HttpSession session) {
@@ -106,6 +113,8 @@ public class MyPageController {
 		Follow follow = fRepos.checkFollow(mid, user.getId());
 		ProfileVO profile = profileRepo.findByUserAndType(mservice.getOther(mid), ProfileType.MAIN);
 		MatchingVO mcheck = mRepo.matcheck(user.getId(), mid);
+		List<Board> listboard = boardRepo.findByWriter(uRepo.findById(mid).get());
+		
 		int truemcheck = -2;
 		if(mcheck == null) {
 			truemcheck = -1;
@@ -123,6 +132,8 @@ public class MyPageController {
 			}
 		}
 		
+		model.addObject("listboard", listboard != null ? listboard : 0);
+		System.out.println(listboard);
 		model.addObject("mcheck", truemcheck);
 		model.addObject("isFollow", follow != null ? 1 : 0);
 		model.addObject("follower", followRepo.countFollower(mid));

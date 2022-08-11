@@ -1,10 +1,7 @@
-package com.kosta.uyeonhi.signUp;
+package com.kosta.uyeonhi.matching;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
-
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,30 +9,30 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.kosta.uyeonhi.signUp.UserVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "favorite")
-public class FavoriteVO {
+@Table(name = "matchingGrade")
+public class matchingGrade {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long favoriteId;
-	@ManyToOne
-	private FavoriteMenuVO favorite;
+	private long mid;
 	@ManyToOne
 	private UserVO user;
+	@ManyToOne
+	private UserVO target;
+	private int grade;
+	@CreationTimestamp
+	private Timestamp makeTime;
 }

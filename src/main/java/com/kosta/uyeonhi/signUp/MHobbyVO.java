@@ -27,7 +27,10 @@ import lombok.ToString;
 @Table(name = "m_hobby")
 public class MHobbyVO {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long hobbyId;
+	@ManyToOne
+	private HobbyMenuVO hobby;
 	@ManyToOne
 	private UserVO user;
 }

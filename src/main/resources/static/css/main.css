@@ -1,0 +1,74 @@
+
+#jihyun{
+	display:block;
+	width: 100vw;
+	height: 100vh;
+	background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
+}
+
+#text1{
+	
+position: absolute;
+width: 831px;
+height: 213px;
+width: 60vw;
+height: 10vw;
+left: 8%;
+top: 130%;
+
+font-family: 'Black Han Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 4.5vw;
+line-height: 110.5%;
+
+
+color: #FFFFFF;
+}
+ #jihyun #textAll #text2{
+	
+position: absolute;
+width: 569px;
+height: 121px;
+width: 30vw;
+height: 7vw;
+left:8%;
+top: 155%;
+
+font-family: 'Gowun Dodum';
+font-style: normal;
+font-weight: 400;
+font-size: 2vw;
+line-height: 110.5%;
+/* or 55px */
+
+
+color: #FFFFFF;
+}
+
+
+ #jihyun #image1{
+
+position: absolute;
+/* width: 396px;
+height: 567px; */
+width: 20vw;
+height: 27vw;
+left: 58%;
+top: 130%;
+
+z-index : 2;
+}
+ #jihyun #image2{
+position: absolute;
+/*  width: 396px;
+height: 567px; */
+width: 20vw;
+height: 27vw;
+left: 68%;
+top: 130%;
+filter : blur(5px);
+
+z-index : 1;
+
+}

@@ -5,6 +5,8 @@ package com.kosta.uyeonhi.signUp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -29,8 +31,10 @@ import lombok.ToString;
 @Table(name = "ideal_type")
 public class IdealTypeVO {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idealId;
-	
+	@ManyToOne
+	private IdealMenuVO ideal;
 	@ManyToOne
 	private UserVO user;
 }

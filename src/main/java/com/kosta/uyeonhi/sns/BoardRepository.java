@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import com.kosta.uyeonhi.signUp.UserVO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
@@ -16,8 +17,13 @@ public interface BoardRepository extends PagingAndSortingRepository<Board, Long>
 	
 	List<Board> findByTagContaining(String tag);
 	
+	List<Board> findByWriter(UserVO writer);
+	
 	@Modifying
 	@Query(value = "update board set applicant_person = applicant_person + 1 where board_id = ?1", nativeQuery = true)
 	void recruitApply(Long boardId);
+	
+	@Query(value = "select b.* from board b,likes l WHERE b.board_id = l.board_id AND l.user_id = ?", nativeQuery = true)
+	List<Board> likeBoardList(String userId);
 	
 }

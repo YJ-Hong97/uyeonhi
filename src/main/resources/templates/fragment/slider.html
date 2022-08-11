@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="sliderFragment">
+
+	<head>
+		<link rel="stylesheet" type="text/css"
+			href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+		<script type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+	</head>
+
+	<body>
+		<div class="slider-wrap">
+			<div th:each="imageURL : ${#strings.arraySplit(list.image_path, ',')}">
+				<div>
+					<img style="margin:auto; max-width: 100%; height: auto;" th:src="${imageURL}"></img>
+				</div>
+			</div>
+		</div>
+	</body>
+	
+</th:block>
+
+</html>

@@ -25,5 +25,4 @@ public interface MatchingRepository extends CrudRepository<MatchingVO, Long> {
 	@Modifying
 	@Query(value = "delete from matching where id_id = ?1 and target_id = ?2", nativeQuery = true)
 	public int deletMatching(String id , String target);
-	
 }

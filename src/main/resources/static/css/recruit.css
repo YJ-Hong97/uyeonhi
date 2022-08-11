@@ -10,12 +10,17 @@
 
 .board_text{
 	
-	
- 	display: inline-block;
-  width: 100%;
+  word-break:break-all;
+ display: inline-block;
+ white-space: nowrap;
+ overflow: hidden;
+  text-overflow: ellipsis;
+   width: 20vw;
+/*   width: 20vw;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: nowrap; */
+/*   white-space: nomal;  줄바꿈*/
   vertical-align: top; 
 	
 }
@@ -33,4 +38,18 @@
 	
 	
 	
+}
+#tagList{
+	display: none;
+}
+#recruitInfo{
+	
+	display: none;
+}
+#textMore{
+	color: #7F8487;
+}
+#moreBtn{
+	
+	cursor: pointer;
 }

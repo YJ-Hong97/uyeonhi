@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+#empty{
+margin-bottom :10px;
+width: 15vw;
+height: 30vh;
+background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
+}
+</style>
+</head>
+<body>
+	<div th:each="list, status : ${likeList}">
+		<div th:if="${!#strings.isEmpty(list.image_path)}">
+			<div class="p-2 contain" th:each="imageURL, status: ${#strings.arraySplit(list.image_path, ',')}">
+				<img class="postimg" th:if="${status.count == 1}"
+					th:src="${imageURL}"></img>
+			</div>
+		</div>
+		<div th:if="${#strings.isEmpty(list.image_path)}">
+			<div id="empty"></div>
+		</div>
+	</div>
+	<!-- 
+<div id="empty"></div> -->
+<!-- 		<div  th:each="imageURL : ${#strings.arraySplit(list.image_path, ',')}">
+			<div th:if="${!#strings.isEmpty(imageURL)}">
+				<img style="margin: auto; max-width: 421px; height: 421px;"
+					th:src="${imageURL}"></img>
+			</div>
+			<div th:if="${#strings.isEmpty(imageURL)}">
+				<div th:text="${list.writer.id}"></div>
+			</div>
+		</div> -->
+</body>
+</html>
