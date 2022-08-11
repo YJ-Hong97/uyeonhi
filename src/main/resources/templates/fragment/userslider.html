@@ -34,7 +34,9 @@
 			display: inline-block;
 		}
 		.matcard{
+			display: inline-block;
 			border-radius: 2rem;
+			transition-duration: 1s;
 		}
 		.favDiv .card-text{
 			display: inline-block;
@@ -48,6 +50,7 @@
 			filter : blur(3px);
 			display: inline-block;
 			pointer-events: none;
+			transition-duration: 1s;
 		}
 		.pevpevCard {
 			display: none;
@@ -85,27 +88,61 @@
 			display: none;
 		}
 		
+		#slidecontainerreal {
+			width: 994px;
+			margin: auto;
+		}
+		.cardContainer {
+			margin-top: 60px;
+		}
+		.favDiv {
+			height: 70px;
+		}
+		
+		.pev, .next {
+			display: inline-block;
+			height: 474px;
+			margin-top: -410px;
+			padding-top: 220px;
+			color: white;
+			background-color: rgba(185, 131, 255, 0.8);
+		}
+		.pev {
+			margin-right: 10px;
+		}
+		.next {
+			margin-left: 10px;
+		}
+		#postmodum {
+			height: 700px;
+			overflow: auto;
+		}
 	</style>
 </head>
 <body>
-	<h1>card slider</h1>
-	<div class="pev btn"> &lt; 이전 </div>
-	<div class="next btn"> &gt; 다음 </div>
-	<div class = "cardContainer matcardc" th:each = "target:${targets}">
-		<div class="card matcard pevCard" style="width: 18rem;">
-		  <img th:src="${target.key.target.profile[0].fileName}" class="card-img-top" alt="..." id = "cardImg">
-		  <div class="card-body">
-		    <h5 class="card-title">[[${target.key.target.name}]]([[${target.key.target.nickname}]])</h5>
-		    <div class = "favDiv">
-		    	<p class="card-text"  th:each ="fav:${target.value}"th:value = "${target.value}">#[[${fav}]]</p>
-		    </div>
-		    <div class="d-flex justify-content-between">
-		    <p th:if="${target.key.block}==1" style="display: block" class = "blockMessage">차단된 사용자입니다.</p>
-			    <a th:unless="${target.key.block}==1" href="#" class="btn btn-secondary" th:value = "${target.key.target.id}">차단</a>
-			    <a th:unless="${target.key.block}==1" href="#" class="btn doMatch" th:data-targetId="${target.key.target.id}">매칭 신청</a>
-		    </div>
-		  </div>
+<th:block th:replace="~{/fragment/header::header}"></th:block>
+	<div id="slidecontainerreal">
+		<div class="pev btn"> &lt;</div>
+		
+		<div class = "cardContainer matcardc" th:each = "target:${targets}">
+			<div class="card matcard pevCard" style="width: 18rem;">
+			  <img th:src="${target.key.target.profile[0].fileName}" height="300vh" class="card-img-top" alt="..." id = "cardImg">
+			  <div class="card-body">
+			    <h5 class="card-title">[[${target.key.target.name}]]([[${target.key.target.nickname}]])</h5>
+			    <div class = "favDiv">
+			    	<p class="card-text"  th:each ="fav:${target.value}"th:value = "${target.value}">#[[${fav}]]</p>
+			    </div>
+			    <div class="d-flex justify-content-between cardbutton">
+			    	<p th:if="${target.key.block}==1" style="display: block" class = "blockMessage">차단된 사용자입니다.</p>
+				    <a th:unless="${target.key.block}==1" href="#" class="btn btn-secondary" th:value = "${target.key.target.id}">차단</a>
+				    <a th:unless="${target.key.block}==1" href="#" class="btn doMatch" th:data-targetId="${target.key.target.id}">매칭 신청</a>
+			    </div>
+			  </div>
+			</div>
 		</div>
+		<div class="next btn"> &gt;</div>
+	</div>
+	<div id="postmodum" class="d-flex justify-content-evenly flex-wrap listt">
 	</div>
 	<div class = "favModal">
 		

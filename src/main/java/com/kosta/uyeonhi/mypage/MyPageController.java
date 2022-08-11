@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kosta.uyeonhi.chat.ChatRoomDTO;
+import com.kosta.uyeonhi.chat.ChatRoomRepository;
 import com.kosta.uyeonhi.follow.Follow;
 import com.kosta.uyeonhi.follow.FollowRepository;
 import com.kosta.uyeonhi.matching.MatchingGradeRepository;
@@ -108,6 +110,9 @@ public class MyPageController {
 	UserRepository uRepo;
 	@Autowired
 	MatchingGradeRepository gradeRepo;
+	
+	@Autowired
+	ChatRoomRepository rrrepo;
 	
 	@GetMapping("/myPage/{mid}")
 	public ModelAndView myPage(@PathVariable String mid, ModelAndView model, HttpSession session) {
@@ -487,6 +492,7 @@ public class MyPageController {
 		Map<ChattingRoomVO,List<ProfileVO>> roomMap = new HashMap<>();
 		List<ChattingRoomVO> rooms = chatRoomRepo.findByUser(user);
 		List<ChattingUsersVO> cusers = chatUserRepo.findByUser(user);
+		List<ChatRoomDTO> chatrooms = rrrepo.findByTargetOrId(user.getId());
 		for(ChattingUsersVO c: cusers) {
 			ChattingRoomVO room = chatRoomRepo.findById(c.getRoom().getRoomNo()).get();
 			List<ChattingUsersVO> users = chatUserRepo.findByRoom(room);
@@ -500,6 +506,7 @@ public class MyPageController {
 		
 		
 		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
+		mnv.addObject("chatrooms", chatrooms);
 		mnv.addObject("profile",profile);
 		mnv.addObject("roomMap",roomMap);
 		mnv.setViewName("/mypage/chatRoom");
