@@ -26,6 +26,5 @@ public interface MatchingRepository extends CrudRepository<MatchingVO, Long> {
 	@Query(value = "delete from matching where id_id = ?1 and target_id = ?2", nativeQuery = true)
 	public int deletMatching(String id , String target);
 	
-	@Query(value = "select mconfirm =0 from matching where id_id = ?1 and target_id = ?2", nativeQuery = true)
-	public MatchingVO responseMat(String id , String target);
+	List<MatchingVO> findById(UserVO id);
 }

@@ -114,7 +114,7 @@ public class MatchingController {
 	public ModelAndView matchingResponse(HttpSession session, ModelAndView mv ,String target) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		List<MatchingVO> pickMeList = mRepo.findByTargetAndMconfirm(user, 0); 
-		MatchingVO pickYou = mRepo.responseMat(user.getId(),target);
+		List<MatchingVO> pickYou = mRepo.findById(user);
 		
 		mv.addObject("pickYou", pickYou);
 		mv.addObject("pickMeList", pickMeList); 

@@ -66,6 +66,7 @@
 	<div id="select_tab">
 	    <ul>
 	      <li th:each="pick:${pickMeList}">
+	      
 	      	<img id="profile" th:src = "${pick.id.profile[0].fileName}" alt="">
 	        <span class = "nameText" th:text="${pick.id.nickname} + '님이 매칭 요청을 보내셨습니다.' "></span>
 	        <button th:onclick="location.href ='/matYes?pickid=[[${pick.id.id}]]'" class = "yes">수락</button>
@@ -77,10 +78,12 @@
 	</div>
 	
 	<div id="pickYou">
+	
 	    <ul>
 	      <li th:each="pic:${pickYou}">
-	      	<img id="profile2" th:src = "${pic.id.profile[0].fileName}" alt="">
-	        <span class = "nameText2" th:text="${pick.target.nickname} + '님께 매칭 요청을 보내셨습니다.' "></span>
+	      
+	      	<img id="profile2" th:src = "${pic.target.profile[0].fileName}" alt="">
+	        <span class = "nameText2" th:text="${pic.target.nickname} + '님께 매칭 요청을 보내셨습니다.' "></span>
 	        <hr>
 	      </li>
 	    </ul>

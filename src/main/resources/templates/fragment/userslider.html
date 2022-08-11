@@ -163,7 +163,7 @@
 		 if(i == 0) {
 			 var currentcard = $(".matcard")[i];
 			 currentcard.classList.remove("pevCard");
-			 for(var j = 3; j < 6; j++) {
+			 for(var j = 3; j < maxSize; j++) {
 				 $(".matcard")[j].classList.add("pevpevCard");
 			 }
 		 }
@@ -223,7 +223,7 @@
 				 nextcard.classList.add("pevCard");
 			}
 			
-			if (i <= 5 && i > 0) {
+			if (i <= maxSize-1 && i > 0) {
 				 $(".matcard")[i+2].classList.add("pevpevCard");
 			 }
 			

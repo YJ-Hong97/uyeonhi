@@ -23,11 +23,7 @@ body {
 	width: 20vw;
 	height: 90vh;
 	position: absolute;
-	left: 45%;
-	/* top: 21%; */
-	top: 33%;
-	margin-left: -150px;
-	margin-top: -150px;
+
 }
 
 .postimg {
@@ -119,6 +115,7 @@ color: blue;
 </style>
 </head>
 <body>
+<div id="boarddetailcontainer">
 	<div id="result" th:each="detail : ${boardDetail}">
 		<div id="here">닫기</div>
 		<div class="p-2 contain">
@@ -182,6 +179,7 @@ color: blue;
 			</div>
 		</div>
 
+	</div>
 	</div>
 	<script src="/js/board/likes.js"></script>
 	<script src="/js/board/applicant.js"></script>
