@@ -121,12 +121,6 @@ public class MatchingController {
 		mv.addObject("pickMeList", pickMeList);
 		mv.setViewName("/matching/matView");
 			
-		ProfileVO profile = profileRepo.findByUserAndType(user, ProfileType.MAIN);
-		mv.addObject("profile",profile);
-		mv.addObject("user",user);
-		mv.setViewName("/matching/matView");
-		System.out.println("프로피리이잉" + profile);
-		System.out.println("유저저ㅓ저" + user);
 		return mv;
 
 	}
