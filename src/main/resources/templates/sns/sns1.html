@@ -46,6 +46,7 @@
 </head>
 
 <body style="margin-top:80px;">
+	<input type="hidden" th:value="${session.user.id}" th:class="userSession">
 	<th:block th:replace="~{/fragment/header :: header}"></th:block>
 	<div></div>
 	<div class="big-container">
@@ -53,9 +54,7 @@
 			<div class="disable-box">
 				<div id="socketAlert" style="display: none;">
 				</div>
-
 				<th:block th:replace="~{/chat/rooms :: chatrooms}"></th:block>
-
 			</div>
 
 			<div class="center-container">
@@ -69,7 +68,6 @@
 							<img id="person" style="width:100%; height:100%; object-fit:cover;"
 								th:src="${session.user.profile[0].fileName}">
 						</div>
-
 						<textarea class="box" id="toggleBtn" rows=20 cols=60 wrap=on style="resize: none;"></textarea>
 						<!-- -------------------------------------------------------------------------------------------------------------- -->
 						<input type="text" class="tag" placeholder="해시태그를 입력해 주세요(예 : 태그1,태그2)">
@@ -156,7 +154,7 @@
 								<th:block th:replace="/fragment/slider :: sliderFragment"></th:block>
 							</div>
 							<!-- ----------------------------------------------변경됨----------------------------------------------------------------- -->
-							<div id="container4" th:value="${list.boardId}" th:class="|container4_${list.boardId}|">
+							<div id="container4" th:value="${list.boardId}" class="conTainer4">
 								<!-- --------------------------------------------------------------------------------------------------------------- -->
 								<span style="font-size: 0.7vw;"
 									th:text="${@time.convertLocaldatetimeToTime(list.regdate)}" id="regdate"></span>
@@ -181,12 +179,10 @@
 								<!-- --------------------------------------------------------------------------------------------------------------------- 고친 칸 --------------------------- -->
 								<div class="text_container">
 
-									<div class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]
-									</div>
-									<span style="cursor: pointer;" th:onclick="|textMore(${list.boardId})|"
-										th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</span>
-									<div id="recruitInfo" th:if="${list.board_type == '모집글'}"
-										th:class="|recruitInfo_${list.boardId}|">
+<!--  -->								<div style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</div>
+<!--  -->									<a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
+<!--  -->									<br>
+<!--  -->								<div class="recruitInfo" th:if="${list.board_type == '모집글'}">
 										<span th:text="|마감일 : ${list.deadline}|"
 											th:id="|deadline_${list.boardId}|"></span><br> <span class="recruit_person"
 											th:text="|신청 현황 : ${list.applicant.size()}| "
@@ -207,11 +203,11 @@
 											th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }">모집마감</span>
 									</div>
 									<br>
-									<div id="tagList" th:class="|tagList_${list.boardId}|"
-										th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-										<a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|"
-											th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
-											th:text="|#${hashtag}|"></a>
+<!--  -->									<div class="tagList" 
+											th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
+											<a class="board_tag" th:id="|tag_${list.boardId+status.count+status.index}|"
+												th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
+												th:text="|#${hashtag}|"></a>
 									</div>
 
 								</div>
@@ -263,7 +259,8 @@
 							</form>
 						</div>
 						<div class="text" id="searchContent">
-							<p id="searchBefore">태그를 검색해 주세요</p>
+<!--  -->							<br>
+<!--  -->								<p id="searchBefore" style="color: #B1B1B1;">태그를 검색해 주세요</p>
 						</div>
 					</div>
 				</div>

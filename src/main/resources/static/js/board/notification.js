@@ -53,8 +53,9 @@ function alarmSave(alarmData) {
 //알람목록
 function alarmList() {
 	console.log("alarmList")
-	let memberId = $(".userSession").text();
-
+	let memberId = $(".userSession").val();
+	
+	console.log(memberId);
 	$.ajax({
 		url: "/api/notification/update/" + memberId,
 		type: "PUT",

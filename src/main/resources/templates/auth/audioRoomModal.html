@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.tymeleaf.org">
-<th:block th:fragment="makeVideo">
+<th:block th:fragment="makeAudio">
 	<head>
 <link
 	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <title>makeVideoRoom</title>
 <style>
-.videoModalContainer {
+.audioModalContainer {
 	display:none;
 	position:fixed;
 	top:0;
@@ -20,7 +20,7 @@
 	height:100vh;
 	background-color: rgba(0, 0, 0, 0.1);
 }
-.videoModal{
+.audioModal{
 	position:absolute;
 	top:50%;
 	left:50%;
@@ -33,7 +33,7 @@
 	border: 0.05rem solid;
 	
 }
-.videoModal table {
+.audioModal table {
 	width: 90%;
 	font-family: 'Gowun Dodum';
 	font-style: normal;
@@ -48,41 +48,41 @@
 	
 	border-collapse: collapse;
 }
-.videoModal input{
+.audioModal input{
 text-align:center;
 	width:100%;
 }
-.videoModal th{
+.audioModal th{
 	height: 4rem;
 }
-.videoModal td{
+.audioModal td{
 	height: 2rem;
 }
-.videoModal #submit{
+.audioModal #voicesubmit{
 	height:2rem;
 	background-color: #B983FF;
 	border:0;
 }
-#closeVideo{
+#closeAudio{
 	cursor: pointer;
 }
 </style>
 	</head>
 	<body>
-		<div class="videoModalContainer">
-			<div class="videoModal">
-				<form action="/video/makeRoom" method="post">
+		<div class="audioModalContainer">
+			<div class="audioModal">
+				<form action="/audio/makeRoom" method="post">
 					<table>
 						<thead>
 							<th>방이름을 정해주세요!</th>
-							<th id = "closeVideo">X</th>
+							<th id = "closeAudio">X</th>
 						</thead>
 						<tr>
-							<td colspan="2"><input type="text" name="title" id="title"></td>
+							<td colspan="2"><input type="text" name="title" id="voicetitle"></td>
 						</tr>
-						<input type = "hidden" name = "uid" id = "uid">
+						<input type = "hidden" name = "uid" id = "voiceuid">
 						<tr>
-							<td colspan="2"><input type="submit" value="방 만들기" id ="submit"></td>
+							<td colspan="2"><input type="submit" value="방 만들기" id ="voicesubmit"></td>
 						</tr>
 					</table>
 				</form>
@@ -91,9 +91,10 @@ text-align:center;
 		</div>
 		<script th:inline = "javascript">
 		var uid = /*[[${profileOther.id}]]*/'default';
-		document.querySelector("#uid").value = uid;
-			document.querySelector("#closeVideo").onclick = function(){
-				document.querySelector('.videoModalContainer').style.display = "none";
+		console.log(uid);
+		document.querySelector("#voiceuid").value = uid;
+			document.querySelector("#closeAudio").onclick = function(){
+				document.querySelector('.audioModalContainer').style.display = "none";
 		}
 		</script>
 	</body>

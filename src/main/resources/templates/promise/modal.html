@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>modal</title>
 </head>
 <link
 	href="https://fonts.googleapis.com/css?family=Gowun+Dodum&display=swap"
@@ -18,18 +18,15 @@
 body {
 }
 #modal {
-	position: absolute;
+z-index : 999;
+	position: fixed;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	top: 0;
-	left: 0;
+	top: 50%;
+	left: 50%;
 }
 
 .modal_content {
-	position: absolute;
-	top: 50%;
-	left: 50%;
 	width: 33%;
 	height: 30%;
 	padding: 2% 3% 3% 3%;
@@ -67,42 +64,117 @@ body {
 	margin-top:2%;
 	margin-bottom: 5%;
 }
+.reason {
+	width: 81%;
+	padding: 2% 3%;
+	border-radius: 25px;
+	border: 1px solid #bababa;
+	display: none;
+	margin-top: 3%;
+	float: left;
+}
+.ok {
+	margin-top: 3%;
+	float: right;
+	border: none;
+	background-color: #eee;
+	padding: 2.2% 3%;
+	border-radius: 10px;
+	display: none;
+	cursor: pointer;
+}
+.wait {
+	color: #ca0000;
+	font-size: 0.6rem;
+	display: none;
+}
 </style>
-<script type="text/javascript">
+<script th:inline="javascript">
+/*<![CDATA[*/
+var title = /*[[ ${promise.title} ]]*/;
+var date = /*[[ ${date2} ]]*/;
+/*]]*/
 	$(function() {
 		$('.close').click(function() {
 			$('#modal').css('display', 'none');
-		});
+			$("#modal_back").css("display","none"); 
+            $(".modal").css("display","none"); 
+            $("body").css("overflow","auto");
+		}); 
 		$('.cancel').click(function(){
-			var result = confirm("정말 약속을 취소하시겠습니까?");
-			alert(result);
+			if(confirm("정말 약속을 취소하시겠습니까?")) {
+				$(".reason").css("display", "block");
+				$(".ok").css("display", "block");
+				$(".cancel").css("display", "none");
+				$(".modal_content").css("height", "36%");
+			}
+		});
+		$(".reason").on("propertychange change keyup paste input", function(){
+			var reason = $(".reason").val();
+			if(reason.length < 5 || reason.length > 50) {
+				$(".wait").css("display", "block");
+				$(".ok").prop('disabled', true);
+			} else {
+				$(".wait").css("display", "none");
+				$(".ok").prop('disabled', false);
+			}
+			
+		});
+		$(".ok").click(function(){
+				
+			var obj = {
+				"title": title,
+				"date": date,
+				"reason": reason
+			};
+			if(confirm("취소하면 되돌릴 수 없습니다!\n정말로 취소하시겠습니까?")) {
+				$.ajax({
+					url: "cancel",
+					method: "post",
+					contentType : "application/json;charset=UTF-8",
+					data :  JSON.stringify(obj),
+					success : function(responseData) {
+						if(responseData == "success") {
+							alert("취소되었습니다.");
+							location.href="promise";
+						} else {
+							alert("취소에 실패했습니다.\n관리자에게 문의해주세요.");
+						}
+					}
+				}); 
+			}
 		});
 	});
 </script>
 <body>
 	<div id="modal">
 		<div class="modal_content">
+		
 			<div class="close">
 				<i class="fa-solid fa-xmark"></i>
+				
 			</div>
-		<h3 class="title">사람1과 약속</h3>
+		<h3 class="title" th:text="${promise.title}" ></h3>
 			<table class="tbl">
 				<tr>
 					<td class="tbl-title"><i class="fa-solid fa-calendar-check"></i>
 						일자</td>
-					<td>2022년 8월 5일 15시 50분</td>
+					<td th:text="${date}"></td>
 				</tr>
 				<tr>
 					<td class="tbl-title"><i class="fa-solid fa-location-dot"></i>
 						장소</td>
-					<td>서울특별시 중구 세종대로 110</td>
+					<td th:text="${promise.location}"></td>
 				</tr>
 				<tr>
 					<td class="tbl-title"><i class="fa-solid fa-user"></i> 대상</td>
-					<td>qwer78님</td>
+					<td th:text="${promise.you.id}"></td>
 				</tr>
 			</table>
-			<div class="cancel">약속 취소</div>
+			<input type="text" class="reason" maxlength="50" placeholder="취소 사유를 적어주세요">
+			<button class="ok">확인</button>
+			<div class="wait">5~50자 이내로 입력해주세요</div>
+			<div class="cancel" >약속 취소</div>
 		</div>
 	</div>
 </body>
