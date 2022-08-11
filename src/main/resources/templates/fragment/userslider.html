@@ -28,11 +28,12 @@
 			background-color: #B983FF;
 			color: white;
 		}
-		.cardContainer{
-		font-family: 'Gowun Dodum';
-				font-style: normal;
+		.matcardc{
+			font-family: 'Gowun Dodum';
+			font-style: normal;
+			display: inline-block;
 		}
-		.card{
+		.matcard{
 			border-radius: 2rem;
 		}
 		.favDiv .card-text{
@@ -42,6 +43,14 @@
 			margin-right: 1%;
 			cursor: pointer;
 			
+		}
+		.pevCard {
+			filter : blur(3px);
+			display: inline-block;
+			pointer-events: none;
+		}
+		.pevpevCard {
+			display: none;
 		}
 		.favDiv{
 			height: 10vh;
@@ -76,26 +85,44 @@
 </head>
 <body>
 	<h1>card slider</h1>
-	<div class = "cardContainer" th:each = "target:${targets}">
-	<div class="card" style="width: 18rem;">
-	  <img th:src="${target.key.profile[0].fileName}" class="card-img-top" alt="..." id = "cardImg">
-	  <div class="card-body">
-	    <h5 class="card-title">[[${target.key.name}]]([[${target.key.nickname}]])</h5>
-	    <div class = "favDiv">
-	    <p class="card-text"  th:each ="fav:${target.value}"th:value = "${target.value}">#[[${fav}]]</p>
-	    </div>
-	    <div class="d-flex justify-content-between">
-		    <a href="#" class="btn btn-secondary">차단</a>
-		    <a href="#" class="btn doMatch">매칭 신청</a>
-	    </div>
-	  </div>
-	</div>
+	<div class="pev btn"> &lt; 이전 </div>
+	<div class="next btn"> &gt; 다음 </div>
+	<div class = "cardContainer matcardc" th:each = "target:${targets}">
+		<div class="card matcard pevCard" style="width: 18rem;">
+		  <img th:src="${target.key.profile[0].fileName}" class="card-img-top" alt="..." id = "cardImg">
+		  <div class="card-body">
+		    <h5 class="card-title">[[${target.key.name}]]([[${target.key.nickname}]])</h5>
+		    <div class = "favDiv">
+		    	<p class="card-text"  th:each ="fav:${target.value}"th:value = "${target.value}">#[[${fav}]]</p>
+		    </div>
+		    <div class="d-flex justify-content-between">
+			    <a href="#" class="btn btn-secondary">차단</a>
+			    <a href="#" class="btn doMatch" th:data-targetId="${target.key.id}">매칭 신청</a>
+		    </div>
+		  </div>
+		</div>
 	</div>
 	<div class = "favModal">
 		
 	</div>
+	
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-	<script>
+	<script th:inline="javascript">
+		$(".doMatch").click(function() {
+			var targetId = $(this).attr("data-targetid");
+			$.ajax({
+				url:"/matching",
+				data:{target: targetId},
+				success:function(responseData){
+					alert(responseData);
+					$(this).html("매칭신청중..");
+				},
+				fail:function(){
+					alert("매칭 신청을 실패하셨습니다.")
+				}
+			});
+		});
+	
 		 $('.card-text').click(function(){
 			 $('.favModal').css("display","block");
 			 let fav = $(this).attr("value").replace("[","");
@@ -110,6 +137,81 @@
 			 $('#favModalClose').click(function(){
 				 $('.favModal').css("display","none");
 			 });
+		 });
+		 var i = 0;
+		 var maxSize = [[${targets.size}]];
+		 
+		 if(i == 0) {
+			 var currentcard = $(".matcard")[i];
+			 currentcard.classList.remove("pevCard");
+			 for(var j = 3; j < 6; j++) {
+				 $(".matcard")[j].classList.add("pevpevCard");
+			 }
+		 }
+		 
+		 $(".next").click(()=>{
+			 i++;
+			 if( i == 0) {
+				 var currentcard = $(".matcard")[i];
+				 var nextcard = $(".matcard")[i+1];
+				 currentcard.classList.remove("pevCard");
+				 nextcard.classList.add("pevCard");
+				 nextcard.classList.remove("pevpevCard");
+			 }
+			 else if ( i >= 1) {
+				 var pevcard = $(".matcard")[i-1];
+				 var currentcard = $(".matcard")[i];
+				 var nextcard = $(".matcard")[i+1];
+				 pevcard.classList.add("pevCard");
+				 currentcard.classList.remove("pevCard");
+				 nextcard.classList.add("pevCard");
+				 nextcard.classList.remove("pevpevCard");
+				 
+			 }
+			 
+			 if (i >= 2) {
+				 $(".matcard")[i-2].classList.add("pevpevCard");
+			 }
+			 
+			 if (i > 6) {
+				 alert("더이상 넘길 카드가 없습니다.");
+				 return;
+			 }
+		 });
+		 
+		 $(".pev").click(()=>{
+			 i--;
+			if(i >= 2) {
+				 var pevcard = $(".matcard")[i-1];
+				 var currentcard = $(".matcard")[i];
+				 var nextcard = $(".matcard")[i+1];
+				 pevcard.classList.add("pevCard");
+				 pevcard.classList.remove("pevpevCard");
+				 currentcard.classList.remove("pevCard");
+				 nextcard.classList.add("pevCard");
+			} else if (i == 1) {
+				var pevcard = $(".matcard")[i-1];
+				 var currentcard = $(".matcard")[i];
+				 var nextcard = $(".matcard")[i+1];
+				 pevcard.classList.add("pevCard");
+				 pevcard.classList.remove("pevpevCard");
+				 currentcard.classList.remove("pevCard");
+				 nextcard.classList.add("pevCard");
+			} else if( i == 0) {
+				var currentcard = $(".matcard")[i];
+				 var nextcard = $(".matcard")[i+1];
+				 currentcard.classList.remove("pevCard");
+				 nextcard.classList.add("pevCard");
+			}
+			
+			if (i <= 5 && i > 0) {
+				 $(".matcard")[i+2].classList.add("pevpevCard");
+			 }
+			
+			else if (i == 0) {
+				$(".matcard")[i+3].classList.add("pevpevCard");
+			}
+			
 		 });
 		 
 		
