@@ -287,7 +287,6 @@ public class MatchingController {
 			
 		}
 		model.addAttribute("boardList", boardList);
-		
 		model.addAttribute("targets",targets);
 		return "/fragment/userslider";
 
