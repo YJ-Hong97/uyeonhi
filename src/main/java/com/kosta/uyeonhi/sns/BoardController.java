@@ -131,8 +131,14 @@ public class BoardController {
 		System.out.println(boardDetail);
 		
 		model.addAttribute("boardDetail",boardDetail);
-	 
 		return "sns/boardDetail";
+	}
+	
+	@ResponseBody
+	@GetMapping("/modal/{boardId}")
+	public Board modalBoard(@PathVariable Long boardId, Model model) {
+		Board boardDetail = boardService.findByBoardID(boardId);
+		return boardDetail;
 	}
 	
 	

@@ -1,6 +1,8 @@
 function notificationMove(boardId, notiId) {
 	console.log(boardId);
 	console.log(notiId);
+	location.href = "/sns/sns1";
+
 	if ($("#board-box" + boardId).offset()) {
 		var offset = $("#board-box" + boardId).offset();
 
@@ -9,7 +11,7 @@ function notificationMove(boardId, notiId) {
 			url: "/api/notification/delete/" + notiId,
 			type: 'DELETE',
 			success: function(res) {
-				console.log("알림 삭제됨")
+				console.log("알림 삭제됨");
 				$('#alarmFlexBox').load(location.href + " #alarmFlexBox");
 			}
 		});
@@ -71,6 +73,12 @@ function alarmList() {
 		dataType: "json",
 		success: function(data) {
 			var a = '<div><h2 style="text-align:center;"> 알림</h2></div> ';
+			if (data.length == 0) {
+				a += `<div class="notification_contents">`
+				a += `<div class="small text-gray-500"></div>`;
+				a += `<span style="text-align:center;" class="font-weight-bold">알림이 없습니다.</span>`;
+				a += `</div>`;
+			};
 			$.each(data, function(index, value) {
 				console.log(value);
 				var date = timeForToday(value.regdate);
@@ -86,7 +94,7 @@ function alarmList() {
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 댓글에 답변을 달았습니다</span>`;
 					a += `</div>`;
 				} else if (categori == "Matching") {
-					a += `<div class="notification_contents" onclick="notificationMove2(${value.user_id}, ${value.notification_id})">`
+					a += `<div class="notification_contents" onclick="notificationMove2('${memberId}', ${value.notification_id})">`
 					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님에게 매칭을 신청했습니다.</span>`;
 					a += `</div>`;
@@ -147,13 +155,16 @@ function alarmCount() {
 	});
 }
 
-function notificationMove2(userId, notiId){
+function notificationMove2(userId, notiId) {
+	console.log(userId);
 	$.ajax({
-			url: "/api/notification/delete/" + notiId,
-			type: 'DELETE',
-			success: function(res) {
-				console.log("알림 삭제됨")
-				location.href="/mypage/"+ userId;
-			}
-		});
+		url: "/api/notification/delete/" + notiId,
+		type: 'DELETE',
+		success: function(res) {
+			console.log("알림 삭제됨")
+			location.href = "/myPage/" + userId;
+		}
+	});
 }
+
+
