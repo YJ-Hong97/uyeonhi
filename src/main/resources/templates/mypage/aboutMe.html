@@ -125,13 +125,15 @@
 			
 		});
 		$('#updateBtn').click(function(){
+			
 			$.ajax({
 				url:"/aboutMe",
 				type:"post",
 				traditional:true,
 				data:{"mInfo":mInfo},
 				success:function(){
-					location.href = "/setting";
+					mid = /*[[${user.id}]]*/'default';
+					location.href = "/myPage/"+mid;
 				}
 				
 			});

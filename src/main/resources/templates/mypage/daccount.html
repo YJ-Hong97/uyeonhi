@@ -12,9 +12,9 @@
 	border-radius: 0.2rem;
 	
 	position: absolute;
-	top: 50%;
+	top: 0;
 	left: 50%;
-	transform: translate(-50%,50%);
+	transform: translate(-50%,0);
 	
 	width: 32%;
 	background-color: white; 
@@ -26,7 +26,7 @@
 	line-height: 110%;
 	text-align: left;
 	
-	z-index:6;
+	z-index:10;
 }
 
 .daccountContainer table {
@@ -73,14 +73,14 @@
 					<th>우연히 그만하기</th>
 					
 				</tr>
-				<tr><td><input type = "password" id = "password" placeholder = "영문 소문자, 숫자, 특수문자 조합" name = "password"></td></tr>
+				<tr><td><input type = "password" id = "dpassword" placeholder = "영문 소문자, 숫자, 특수문자 조합" name = "password"></td></tr>
 				<tr><td><input type = "button" id = "dsubmit" value = "등록하기"></td></tr>
 			</table>
 		</div>
 		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 		<script>
 			$('#dsubmit').click(function(){
-				let password = $('#password').val();
+				let password = $('#dpassword').val();
 				$.ajax({
 					url:"/daccount",
 					type:"POST",

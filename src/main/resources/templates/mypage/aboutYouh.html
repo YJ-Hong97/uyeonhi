@@ -135,7 +135,8 @@ cursor:pointer;
 			traditional: true,
 			data:{"hobbyArr":hobbyArr},
 			success: function(){
-				location.href = "/setting";
+				mid = /*[[${user.id}]]*/'default';
+				location.href = "/myPage/"+mid;
 			}
 		});
 	};

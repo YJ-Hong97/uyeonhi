@@ -302,18 +302,21 @@ public class MatchingController {
 		List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
 		Map<matchingGrade,List<String>> targets = new HashMap<>();
 		for(int i =0; i<grades.size(); i++) {
-			UserVO target = grades.get(i).getTarget();
-			List<String> favList = new ArrayList<>();
-			mfRepo.findByUser(target).forEach(mf->{
-				favList.add(mf.getFavorite().getFavoriteValue());
-			});
-			mhRepo.findByUser(target).forEach(mh->{
-				favList.add(mh.getHobby().getHobbyValue());
-			});
-			miRepo.findByUser(target).forEach(mi->{
-				favList.add(mi.getIdeal().getIdealValue());
-			});
-			targets.put(grades.get(i), favList);
+			if(i<10) {
+				UserVO target = grades.get(i).getTarget();
+				List<String> favList = new ArrayList<>();
+				mfRepo.findByUser(target).forEach(mf->{
+					favList.add(mf.getFavorite().getFavoriteValue());
+				});
+				mhRepo.findByUser(target).forEach(mh->{
+					favList.add(mh.getHobby().getHobbyValue());
+				});
+				miRepo.findByUser(target).forEach(mi->{
+					favList.add(mi.getIdeal().getIdealValue());
+				});
+				targets.put(grades.get(i), favList);
+			}
+			
 		}
 		model.addAttribute("targets",targets);
 		return "/fragment/userslider";
