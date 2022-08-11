@@ -42,10 +42,10 @@
 		height: 4rem;
 		font-size: 1rem;
 	}
-	.chatContainer #chatList:hover{
+	.chatContainer .chatList:hover{
 		background-color: rgba(0,0,0,0.1);
 	}
-	.chatTitle{
+	.chatTitle,.realchatTitle{
 		cursor: pointer;
 	}
 	#triangle{
@@ -75,7 +75,7 @@
 		<thead>
 			<th colspan="2">채팅<span class="material-symbols-outlined" id ="triangle">change_history</span></th>
 		</thead>
-		<tr th:each="room:${roomMap}" id = "chatList">
+		<tr th:each="room:${roomMap}" class = "chatList">
 			<td th:each="profile:${room.value}" class = "profileImg" width="3%">
 				<img th:unless="${profile.user.id==user.id}"th:src = "${profile.fileName}">
 				<span th:if= "${profile.user.id==user.id}" class = "hiddenSpan"></span>
@@ -83,11 +83,30 @@
 			<td th:text= "${room.key.title}" width="80%" class = "chatTitle" th:type="${room.key.type}"th:value = "${room.key.roomNo}"></td>
 			<td class = "delRoom" th:type="${room.key.type}" th:value = "${room.key.roomNo}">X</td>
 		</tr>
+		<tr th:each="room:${chatrooms}" class = "chatList">
+			<td th:if="${room.mid} == ${session.user.id}" class = "profileImg" width="3%">
+				<img th:src = "${room.target.profile[0].fileName}">
+			</td>
+			<td th:unless="${room.mid} == ${session.user.id}" class = "profileImg" width="3%">
+				<img th:src = "${room.mid.profile[0].fileName}">
+			</td>
+			<div th:if="${room.mid} == ${session.user.id}">
+				<td th:text= "${room.name}" width="80%" class = "realchatTitle" th:value = "${room.roomId}" th:data-targetId="${room.target.id}"></td>
+			</div>
+			<div th:if="${room.mid} != ${session.user.id}">
+				<td th:text= "${room.name}" width="80%" class = "realchatTitle" th:value = "${room.roomId}" th:data-targetId="${room.mid.id}"></td>
+			</div>
+		</tr>
 	</table>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-	<script>
+	<script th:inline="javascript">
 		$('.hiddenSpan').parent().css("display","none");
+		$(".realchatTitle").click(function () {
+			var midss = [[${session.user.id}]];
+			var ymidss = $(this).attr("data-targetId");
+			window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no");
+		});
 		$('.chatTitle').click(function(){
 			let type = $(this).attr('type');
 			let roomNo = $(this).attr('value');
