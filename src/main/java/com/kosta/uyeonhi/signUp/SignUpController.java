@@ -103,16 +103,15 @@ public class SignUpController {
 	}
 	@PostMapping("/signUpp/{phone}")
 	public String phonecheck(@PathVariable("phone") String phone, HttpSession session) {
-		String api_key = "NCSNK3ZLZJS8QN23";
-		String api_secret = "QPO5Z4CQRJVFGWRIEZRHBOJ4HXYK91LX";
+		String api_key = "NCSCQEKEAEFMVVCU";
+		String api_secret = "20XDVFZF8GFEH8CS0D3O27DPKF3XQXYQ";
 		Message coolsms = new Message(api_key, api_secret);
 		
 		int checkNum = (int)(Math.random()*10000);
-		
 		// 4 params(to, from, type, text) are mandatory. must be filled
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("to", "01047486110");	// 수신전화번호
-		params.put("from", phone);	// 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+		params.put("to", phone);	// 수신전화번호
+		params.put("from", "01041596136");	// 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
 		params.put("type", "SMS");
 		params.put("text", String.valueOf(checkNum));
 		params.put("app_version", "test app 1.2"); // application name and version
