@@ -87,31 +87,50 @@
 		<div class="writer_nickname">[[${board.writer.nickname}]]</div>
 	</div>
 
-	<ul>
+	<ul style="margin: 1.5vw;">
 		<li th:if="${reply.depth}=='0'" th:each="reply, status: ${replyList}">
 			<div class="replyText1">
 
 				<div class="reply_content">
 					<div th:class="reply_origin_box" th:id="|reply_origin_box${reply.reply_id}|">
-						<div th:class="replyer_info">
-							<div class="user_profile">
+						<div style="display:flex; flex-direction:row; align-items:center;" th:class="replyer_info">
+
+							<div
+								style="margin: 6px 0.7vw 0; background:#EEEEEE;width:2.7vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+								<img id="person" style="width:100%; height:100%; object-fit:cover;"
+									th:src="${reply.user.profile[0].fileName}">
+
 							</div>
-							<p style="margin-right: 10px;">[[${reply.user.nickname}]]</p>
+							<div>[[${reply.user.nickname}]]</div>
+
 							<input type="hidden" th:class="|hidden_Writer${reply.reply_id}|"
 								th:value="${reply.user.id}"></input>
 
 						</div>
-						<p th:class="|reply_content${reply.reply_id}|">[[${reply.reply_content}]]</p>
+						<p style="padding:0; margin:0" th:class="|reply_content${reply.reply_id}|">
+							[[${reply.reply_content}]]</p>
 						<div th:if="${session.user.id == reply.user.id}" class="reply_button_box">
+							<div style="text-align: center;" th:class="time" th:value="${reply.date}">[[${reply.date}]]
+							</div>
+
 							<button class="delete_reply_button" th:value="${reply.reply_id}" type="button">
 								<img src="../images/trash-outline.svg">
 							</button>
 							<button class="update_reply_button" th:value="${reply.reply_id}" type="button">
 								<img src="../images/create-outline.svg">
 							</button>
-							<div th:class="time" th:value="${reply.date}">[[${reply.date}]]</div>
 						</div>
+
 					</div>
+					<button class="reReply_view" th:value="${reply.reply_id}" type="button">답글달기</button>
+
+					<script>
+						$(".reReply_view").on('click', function () {
+							$("#box" + $(this).val()).css("display", "flex");
+							$(this).css("display", "none");
+						});
+					</script>
+
 
 					<div th:class="reply_update_box" th:id="|reply_update_box${reply.reply_id}|">
 						<textarea th:class="reply_update_textarea"
@@ -121,22 +140,27 @@
 						<button type="button" class="reply_update_cancel">취소하기</button>
 					</div>
 				</div>
-				<div class="reReply_box">
-					<textarea th:class="|input_reReply${reply.reply_id}|"></textarea>
+				<div style="display: none;" th:id="|box${reply.reply_id}|" class="reReply_box">
+					<img class="reReply_right" src="../images/return-down-forward-outline.svg" style="width: 1vw;">
+					<textarea
+						style="width:70%; margin-left: 1vw; border:rgb(213, 213, 213) 0.5px solid; border-radius:10px"
+						th:class="|input_reReply${reply.reply_id}|"></textarea>
 					<input type="hidden" class="hidden_boardId" th:value="${reply.boardId}"></input>
-
-					<button th:value="${reply.reply_id}" class="btn_reReply" type="button">대댓글</button>
+					<button th:value="${reply.reply_id}" class="btn_reReply" type="button">보내기</button>
 				</div>
 
-				<ul style="margin-left:30px">
+				<ul style="margin-left:30px; display:flex;">
 					<li th:if="${reReply.parentId} == ${reply.reply_id}" class="reReply_info_box"
 						th:each="reReply, status: ${replyList}">
-						<div class="reply_content">
 							<div th:class="reply_origin_box" th:id="|reply_origin_box${reReply.reply_id}|">
 								<div th:class="replyer_info">
-									<div class="user_profile">
+
+									<div
+										style="margin: 6px 0.7vw 0; background:#EEEEEE;width:2.7vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
+										<img id="person" style="width:100%; height:100%; object-fit:cover;"
+											th:src="${reReply.user.profile[0].fileName}">
 									</div>
-									<p style="margin-right: 10px;">[[${reReply.user.nickname}]]</p>
+									<div>[[${reReply.user.nickname}]]</div>
 								</div>
 								<p th:class="|reply_content${reReply.reply_id}|">[[${reReply.reply_content}]]</p>
 								<div th:if="${session.user.id == reReply.user.id}" class="reply_button_box">
@@ -157,13 +181,13 @@
 									th:class="|reply_update_ok${reReply.reply_id}|">수정하기</button>
 								<button type="button" class="reply_update_cancel">취소하기</button>
 							</div>
-						</div>
 
 
 					</li>
 				</ul>
 			</div>
 		</li>
+
 	</ul>
 
 

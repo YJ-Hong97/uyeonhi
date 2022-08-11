@@ -8,6 +8,7 @@
 
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -75,7 +76,7 @@
 
 								<form enctype="multipart/form-data" id="form">
 									<label for="btn_fileUpload">
-									<i class="fa-solid fa-image upload-btn" ></i></label> 
+										<i class="fa-solid fa-image upload-btn"></i></label>
 									<input id="btn_fileUpload" type="file" required multiple>
 									<!--<img class="file_image" src="../images/image-outline.svg" style="width: 3rem;">-->
 									</input>
@@ -103,25 +104,11 @@
 						<div class="board-box" th:id="|board-box${list.boardId}|">
 							<input type="hidden" class="boardId" th:value="${list.boardId}" />
 							<input type="hidden" class="boardIndex" th:value="${status.index}" />
-							
-							<div th:id="|ex${status.count}|" class="modal">
-								<div class="modal_Ct">
-									<div class="modal_leftCt">
-										<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
-											이미지넣는곳</div>
-									</div>
-									<div class="modal_rightCt">
-										<textarea th:id="|modify_${status.count}|"
-											placeholder="작성하세요.">[[${list.content}]]
-										</textarea>
-									</div>
-									<button style="width: 100px; height: 30px;" th:value="${list.boardId}" type="button"
-										th:aa=${status.count} class="update_button">수정</button>
-								</div>
-							</div>
+
+
 							<!--  modal-->
 							<div th:if="${list.board_type == '게시글'}" id="container2" class="normal_board">
-								
+
 								<div
 									style="margin: 0 0.5vw; background: #EEEEEE;width:2.5vw;height:2.5vw;border-radius:30%; overflow:hidden; display:inline-block">
 									<a th:href="|http://localhost:7777/myPage/${list.writer.id}|">
@@ -130,11 +117,12 @@
 									</a>
 								</div>
 								<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
-									th:class="|boardWriter${list.boardId}|" style="font-size: 1.3em;">[[${list.writer.id}]]</span>
+									th:class="|boardWriter${list.boardId}|"
+									style="font-size: 1.3em;">[[${list.writer.nickname}]]</span>
 
-								<button th:if="${list.writer.id == session.user.id}" 
-								th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
-								
+								<button th:if="${list.writer.id == session.user.id}" th:value="${list.boardId}"
+									type="button" class="delete_button">삭제</button>
+
 							</div>
 							<div th:if="${list.board_type == '모집글'}" id="container2" class="recruit_board">
 								<div
@@ -143,47 +131,50 @@
 										<img style="width:100%; height:100%; object-fit:cover;" id="ellipse"
 											th:src="${list.writer.profile[0].fileName}">
 									</a>
-									
-									
+
+
 								</div>
 								<span th:id="|boardWriter${list.boardId}|" th:value="${list.writer.id}"
 									th:class="|boardWriter${list.boardId}|"
-									style="color: white; font-size: 1.3em;">[[${list.writer.id}]]</span>
-								<button th:if="${list.writer.id == session.user.id}" 
-								th:value="${list.boardId}" type="button" class="delete_button">삭제</button>
+									style="color: white; font-size: 1.3em;">[[${list.writer.nickname}]]</span>
+								<button th:if="${list.writer.id == session.user.id}" th:value="${list.boardId}"
+									type="button" class="delete_button">삭제</button>
 							</div>
 							<div id="container3" th:value="${list.boardId}" th:class="${list.boardId}">
 								<th:block th:replace="/fragment/slider :: sliderFragment"></th:block>
 							</div>
 							<div id="container4" th:value="${list.boardId}" class="conTainer4">
 								<div class="container4-1">
-								<span 
-									th:text="${@time.convertLocaldatetimeToTime(list.regdate)}" id="regdate"></span>
-								
-										<button style="font-size: 1em; font-weight:700;  border:none; background-color:transparent;" class="show"
-									onclick="show()" th:value="${status.index}"
-									th:boardId="${list.boardId}">댓글</button>
-								
-								<span th:text="|좋아요 ${list.likes.size()}개|" class="liskeCount"></span>	
-								<div class="like-box"
-									th:if="${list.getLikes().size()==0 || @likeSearch.findUsingIterator(session.user.id,list.getLikes()) }">
-									<span class="material-symbols-outlined likes heartt" th:id="|heart_${list.boardId}|"
-										th:onclick="|likes(${list.boardId})|">
-										favorite </span>
-								</div>
-								<div th:each="likeCheck:${list.getLikes()}" class="like-box2">
-									<div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
-										<span class="material-symbols-outlined notlikes heartt"
+									<span th:text="${@time.convertLocaldatetimeToTime(list.regdate)}"
+										id="regdate"></span>
+
+									<button
+										style="font-size: 1em; font-weight:700;  border:none; background-color:transparent;"
+										class="show" onclick="show()" th:value="${status.index}"
+										th:boardId="${list.boardId}">댓글</button>
+
+									<span th:text="|좋아요 ${list.likes.size()}개|" class="liskeCount"></span>
+									<div class="like-box"
+										th:if="${list.getLikes().size()==0 || @likeSearch.findUsingIterator(session.user.id,list.getLikes()) }">
+										<span class="material-symbols-outlined likes heartt"
 											th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
 											favorite </span>
 									</div>
-								</div>
+									<div th:each="likeCheck:${list.getLikes()}" class="like-box2">
+										<div class="like-box" th:if="${session.user.id == likeCheck.user.id}">
+											<span class="material-symbols-outlined notlikes heartt"
+												th:id="|heart_${list.boardId}|" th:onclick="|likes(${list.boardId})|">
+												favorite </span>
+										</div>
+									</div>
 								</div>
 								<div class="text_container">
-							<span style="text-align: left;" class="board_text" th:id="|boardText_${list.boardId}|">[[${list.content}]]</span>
-								<a class="moreBtn" style="cursor: pointer;"  th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
+									<span style="text-align: left;" class="board_text"
+										th:id="|boardText_${list.boardId}|">[[${list.content}]]</span>
+									<a class="moreBtn" style="cursor: pointer;"
+										th:if="${#strings.length(list.content) > 20 || list.board_type == '모집글' || !#strings.isEmpty(list.tag)}">더보기</a>
 									<br>
-							<div class="recruitInfo" th:if="${list.board_type == '모집글'}">
+									<div class="recruitInfo" th:if="${list.board_type == '모집글'}">
 										<span th:text="|마감일 : ${list.deadline}|"
 											th:id="|deadline_${list.boardId}|"></span><br> <span class="recruit_person"
 											th:text="|신청 현황 : ${list.applicant.size()}| "
@@ -204,11 +195,12 @@
 											th:if="${list.applicant.size() == list.total_person || list.deadline == #calendars.format(#calendars.createNow(),'yyyy-MM-dd') }">모집마감</span>
 									</div>
 									<br>
-									<div class="tagList" 
-											th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
-											<a class="board_tag" style="font-size: 15px;" th:id="|tag_${list.boardId+status.count+status.index}|"
-												th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
-												th:text="|#${hashtag}|"></a>
+									<div class="tagList"
+										th:each="hashtag, status : ${#strings.arraySplit(list.tag,',')}">
+										<a class="board_tag" style="font-size: 15px;"
+											th:id="|tag_${list.boardId+status.count+status.index}|"
+											th:onclick="|tag(${list.boardId},${status.count},${status.index})|"
+											th:text="|#${hashtag}|"></a>
 									</div>
 
 								</div>
@@ -225,9 +217,9 @@
 										</div>
 										<textarea th:class="|reply_content${status.index}|" id="reply_text"
 											wrap=on></textarea>
-										<button style="border-radius: 10px; margin-right: 13px; border: none; color: gray;" 
-										th:class="btn_reply" type="button"
-											th:value="${status.index}">등록</button>
+										<button
+											style="border-radius: 10px; margin-right: 13px; border: none; color: gray;"
+											th:class="btn_reply" type="button" th:value="${status.index}">등록</button>
 									</div>
 								</form>
 							</div>
@@ -253,13 +245,15 @@
 					<div id="search">
 						<div id="searchbox">
 							<form id="search-form" style="margin-top: 24px;">
-								<span class="material-symbols-outlined" id="searchBtn" >search</span>
-								<input type="text" class="box" id="searchTag" name="tag" style="background-color: #EEEEEE;">
+								<span class="material-symbols-outlined" id="searchBtn">search</span>
+								<input type="text" class="box" id="searchTag" name="tag"
+									style="background-color: #EEEEEE;">
 							</form>
 						</div>
 						<div class="text" id="searchContent">
-<!--  -->							<br>
-<!--  -->								<p id="searchBefore" style="color: #B1B1B1;">태그를 검색해 주세요</p>
+							<!--  --> <br>
+							<!--  -->
+							<p id="searchBefore" style="color: #B1B1B1;">태그를 검색해 주세요</p>
 						</div>
 					</div>
 				</div>
@@ -274,7 +268,8 @@
 		<div class="window">
 			<div class="popup">
 				<div class="modal_picture_box">
-					
+					<div class="replacePic">
+					</div>
 
 				</div>
 				<div style="display:flex; flex-direction:column; " class="modal_reply_box">
@@ -284,7 +279,8 @@
 
 				</div>
 
-				<button id="close">팝업닫기</button>
+				<button style="position:absolute; right:0; top:0" id="close">팝업닫기</button>
+				
 			</div>
 		</div>
 	</div>
@@ -383,9 +379,48 @@
 
 			});
 
+			$(".slider").slick({
+				slide: 'div',
+				infinite: true,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				speed: 500,
+				arrows: true,
+				autoplay: true,
+				autoplaySpeed: 10000,
+				pauseOnHover: true,
+				vertical: false,
+				prevArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; z-index:10;' class='slick-prev'>◀</button>",
+				nextArrow: "<button type='button' style='border:none;background:transparent;position:absolute; top:45%; right:0 ; z-index:10;' class='slick-next'>▶</button>",
+				draggable: true,
+				responsive: [
+					{
+						breakpoint: 960, //화면 사이즈 960px
+						settings: {
+							slidesToShow: 4
+						}
+					},
+					{
+						breakpoint: 768, //화면 사이즈 768px
+						settings: {
+							slidesToShow: 5
+						}
+					}
+					]
+			});
+
+
 		})
+		
 	</script>
 
 </body>
 
 </html>
+
+
+
+
+
+	
+	
