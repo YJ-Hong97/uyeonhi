@@ -11,9 +11,9 @@
 
 	<body>
 		<div class="slider-wrap">
-			<div th:each="imageURL : ${#strings.arraySplit(list.image_path, ',')}">
+			<div th:each="imageURL : ${#strings.arraySplit(detail.image_path, ',')}">
 				<div>
-					<img style="margin:auto; width: 100%; height: 30vh;;" th:src="${imageURL}"></img>
+					<img style="margin:auto; width: 20vw; height: 45vh;;" th:src="${imageURL}"></img>
 				</div>
 			</div>
 		</div>

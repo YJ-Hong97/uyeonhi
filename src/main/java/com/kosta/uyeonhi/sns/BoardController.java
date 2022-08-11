@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -121,6 +122,17 @@ public class BoardController {
 		model.addAttribute("likeList",likeList);
 	 
 		return "sns/likeList";
+	}
+	
+	@GetMapping("/{boardId}")
+	public String boardDetail(@PathVariable Long boardId, Model model) {
+		System.out.println(boardId);
+		Board boardDetail = boardService.findByBoardID(boardId);
+		System.out.println(boardDetail);
+		
+		model.addAttribute("boardDetail",boardDetail);
+	 
+		return "sns/boardDetail";
 	}
 	
 	
