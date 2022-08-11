@@ -63,7 +63,7 @@
 		height: 3rem;
 		vertical-align: middle;
 	}
-	#delRoom{
+	.delRoom{
 		cursor: pointer;
 	}
 </style>
@@ -81,7 +81,7 @@
 				<span th:if= "${profile.user.id==user.id}" class = "hiddenSpan"></span>
 			</td>
 			<td th:text= "${room.key.title}" width="80%" class = "chatTitle" th:type="${room.key.type}"th:value = "${room.key.roomNo}"></td>
-			<td id = "delRoom" th:type="${room.key.type}" th:value = "${room.key.roomNo}">X</td>
+			<td class = "delRoom" th:type="${room.key.type}" th:value = "${room.key.roomNo}">X</td>
 		</tr>
 	</table>
 	</div>
@@ -95,15 +95,24 @@
 			console.log(roomNo);
 			if(type=="video"){
 				window.open('http://localhost:7777/video/socket/'+roomNo, '_blank'); 
+			}else if(type = "audio"){
+				window.open("http://localhost:7777/audio/socket/"+roomNo,"_blank");
 			}
 		});
-		$('#delRoom').click(function(){
+		$('.delRoom').click(function(){
 			if(confirm("정말 삭제하시겠습니까?")){
 				let type = $(this).attr('type');
 				let roomNo = $(this).attr('value');
 				if(type =="video"){
 					$.ajax({
 						url:`/video/deleteRoom/${roomNo}`,
+						success:function(){
+							window.location.reload();
+						}
+					});	
+				}else if(type =="voice"){
+					$.ajax({
+						url:`/audio/deleteRoom/${roomNo}`,
 						success:function(){
 							window.location.reload();
 						}

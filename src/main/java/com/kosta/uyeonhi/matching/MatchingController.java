@@ -1,7 +1,5 @@
 package com.kosta.uyeonhi.matching;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
@@ -17,9 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kosta.uyeonhi.mypage.NotToMeetRepository;
+import com.kosta.uyeonhi.mypage.NotToMeetVO;
 import com.kosta.uyeonhi.signUp.FavoriteRepository;
 import com.kosta.uyeonhi.signUp.FavoriteVO;
 import com.kosta.uyeonhi.signUp.Gender;
@@ -33,17 +35,22 @@ import com.kosta.uyeonhi.signUp.MHobbyRepository;
 import com.kosta.uyeonhi.signUp.MHobbyVO;
 import com.kosta.uyeonhi.signUp.MIdealRepository;
 import com.kosta.uyeonhi.signUp.MIdealVO;
+import com.kosta.uyeonhi.signUp.ProfileRepository;
 import com.kosta.uyeonhi.signUp.UserRepository;
 import com.kosta.uyeonhi.signUp.UserVO;
 
+import lombok.extern.java.Log;
+@Log
 @Controller
 public class MatchingController {
 
 	@Autowired
+	ProfileRepository profileRepo;
+	
+	@Autowired
 	MatchingRepository mRepo;
 	@Autowired
 	UserRepository uRepo;
-
 	@Autowired
 	MFavoriteRepository mfRepo;
 	@Autowired
@@ -58,6 +65,8 @@ public class MatchingController {
 	IdealRepository iRepo;
 	@Autowired
 	MatchingGradeRepository gradeRepo;
+	@Autowired
+	NotToMeetRepository notRepo;
 
 	@GetMapping(value = "/matching")
 	@ResponseBody
@@ -117,6 +126,7 @@ public class MatchingController {
 		mv.setViewName("/matching/matView");
 			
 		return mv;
+
 	}
 
 	/*
@@ -142,7 +152,7 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.modifyMatching(pickid, user.getId());
 		System.out.println(pickid + "--id:" + user.getId());
-		return "redirect:/myPage/";
+		return "redirect:/myPage/"+user.getId();
 	}
 
 	@Transactional
@@ -153,7 +163,7 @@ public class MatchingController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		mRepo.deletMatching(pickid, user.getId());
 
-		return "redirect:/myPage/";
+		return "redirect:/myPage/"+user.getId();
 	}
 
 	/*
@@ -177,37 +187,46 @@ public class MatchingController {
 		}
 		
 		//매칭 점수 초기화
-//		matchingGrade mgrade = gradeRepo.findByUser(user);
-//		Timestamp now = new Timestamp(System.currentTimeMillis());
-//		long diff = now.getTime()-mgrade.getMakeTime().getTime();
-//		diff = (diff/1000)/60/60;
-//		if(diff<24) {
-//			List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
-//			Map<UserVO,List<String>> targets = new HashMap<>();
-//			for(int i =0; i<grades.size(); i++) {
-//				UserVO target = grades.get(i).getTarget();
-//				List<String> favList = new ArrayList<>();
-//				mfRepo.findByUser(target).forEach(mf->{
-//					favList.add(mf.getFavorite().getFavoriteValue());
-//				});
-//				mhRepo.findByUser(target).forEach(mh->{
-//					favList.add(mh.getHobby().getHobbyValue());
-//				});
-//				miRepo.findByUser(target).forEach(mi->{
-//					favList.add(mi.getIdeal().getIdealValue());
-//				});
-//				targets.put(target, favList);
-//			}
-//			model.addAttribute("targets",targets);
-//			return "/fragment/userslider";
-//		}
+		if(gradeRepo.existsByUser(user)) {
+			List<matchingGrade> mgrade = gradeRepo.findByUser(user);
+			Timestamp now = new Timestamp(System.currentTimeMillis());
+			long diff = now.getTime()-mgrade.get(0).getMakeTime().getTime();
+			diff = (diff/1000)/60/60;
+			log.info(diff+"="+now.getTime()+"-"+mgrade.get(0).getMakeTime().getTime());
+			if(diff<24) {
+				List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
+				Map<matchingGrade,List<String>> targets = new HashMap<>();
+				for(int i =0; i<grades.size(); i++) {
+					UserVO target = grades.get(i).getTarget();
+					List<String> favList = new ArrayList<>();
+					mfRepo.findByUser(target).forEach(mf->{
+						favList.add(mf.getFavorite().getFavoriteValue());
+					});
+					mhRepo.findByUser(target).forEach(mh->{
+						favList.add(mh.getHobby().getHobbyValue());
+					});
+					miRepo.findByUser(target).forEach(mi->{
+						favList.add(mi.getIdeal().getIdealValue());
+					});
+					targets.put(grades.get(i), favList);
+				}
+				model.addAttribute("targets",targets);
+				return "/fragment/userslider";
+			}
+		}
+		
 		gradeRepo.deleteByUser(user);
 		List<UserVO> allUserVOs = uRepo.findByGender(yourGender);
 		//이미 매칭된 리스트
+		//아는 사람 만나지 않기
 		List<UserVO> alreadyList = new ArrayList<>();
 		List<UserVO> uyeonList = new ArrayList<>();
 		mRepo.findByTargetAndMconfirm(user, 1).forEach(m->{
 			alreadyList.add(m.getId());
+		});
+		notRepo.findByUser(user).forEach(n->{
+			UserVO nuser = uRepo.findByPhone(n.getPhone());
+			alreadyList.add(nuser);
 		});
 		//우연히 만나기로 보낸 사람
 		mRepo.findByTargetAndMconfirm(user, 0).forEach(m->{
@@ -264,7 +283,7 @@ public class MatchingController {
 		}
 		
 		List<matchingGrade> grades = gradeRepo.findByUserOrderByGradeDesc(user);
-		Map<UserVO,List<String>> targets = new HashMap<>();
+		Map<matchingGrade,List<String>> targets = new HashMap<>();
 		for(int i =0; i<grades.size(); i++) {
 			UserVO target = grades.get(i).getTarget();
 			List<String> favList = new ArrayList<>();
@@ -277,12 +296,27 @@ public class MatchingController {
 			miRepo.findByUser(target).forEach(mi->{
 				favList.add(mi.getIdeal().getIdealValue());
 			});
-			targets.put(target, favList);
+			targets.put(grades.get(i), favList);
 		}
 		model.addAttribute("targets",targets);
 		return "/fragment/userslider";
 		
 		
 	}
-
+	
+	@PostMapping(value = "/matchingBlock")
+	@ResponseBody
+	public void matchingBlock(String buser,String mid) {
+		UserVO user = uRepo.findById(mid).get();
+		UserVO block = uRepo.findById(buser).get();
+		NotToMeetVO not = NotToMeetVO.builder()
+				.name(block.getName())
+				.phone(block.getPhone())
+				.user(user)
+				.build();
+		notRepo.save(not);
+		matchingGrade grade = gradeRepo.findByUserAndTarget(user, block);
+		grade.setBlock(1);
+		gradeRepo.save(grade);
+	}
 }

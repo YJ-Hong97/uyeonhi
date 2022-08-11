@@ -35,4 +35,5 @@ public class matchingGrade {
 	private int grade;
 	@CreationTimestamp
 	private Timestamp makeTime;
+	private int block;
 }
