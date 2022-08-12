@@ -14,6 +14,9 @@ function notificationMove(boardId, notiId) {
 				$('#alarmFlexBox').load(location.href + " #alarmFlexBox");
 			}
 		});
+		
+		
+		
 	}
 	else {
 		boardId -= 1;
@@ -85,20 +88,20 @@ function alarmList() {
 				var date = timeForToday(value.regdate);
 				var categori = value.notificationType;
 				if (categori == "Reply") {
-					a += `<div class="notification_contents" onclick="notificationMove(${value.boardId}, ${value.notification_id})">`
+					a += `<button class="notification_contents" id="${value.notification_id}" value=` + value.boardId + ` onclick="show()">`
 					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 게시물에 댓글을 달았습니다</span>`;
-					a += `</div>`;
+					a += `</button>`;
 				} else if (categori == "reReply") {
-					a += `<div class="notification_contents" onclick="notificationMove(${value.boardId}, ${value.notification_id})">`
+					a += `<button class="notification_contents" value="${value.boardId}" onclick="show()">`
 					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 댓글에 답변을 달았습니다</span>`;
-					a += `</div>`;
+					a += `</button>`;
 				} else if (categori == "Matching") {
-					a += `<div class="notification_contents" onclick="notificationMove2('${memberId}', ${value.notification_id})">`
+					a += `<button class="notification_contents" href="/myPage/${'.userSession'}">`
 					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님에게 매칭을 신청했습니다.</span>`;
-					a += `</div>`;
+					a += `</button>`;
 				}
 			});
 			$("#alarmList").css({ "display": "block" });

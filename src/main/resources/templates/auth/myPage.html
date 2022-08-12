@@ -241,9 +241,7 @@
 			cursor: pointer;
 		}
 
-		.material-symbols-outlined {
-			font-variation-settings: 'FILL'0, 'wght'400, 'GRAD'0, 'opsz'48
-		}
+	
 
 		i {
 			cursor: pointer;
@@ -418,11 +416,11 @@
 				if ([[${session.user.id}]] == [[${profileOther.id}]]) {
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
-						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
+						boardpost += `<button onclick="show()" class="p-2 contain" value="${board.boardId}">
 						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
 									src="${image[0]}"></a>
-							</div>`;
+							</button>`;
 					}
 					else {
 						boardpost += `<div class="p-2 contain">
