@@ -15,11 +15,11 @@ background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
 <body>
 	<div th:each="list, status : ${likeList}">
 		<div th:if="${!#strings.isEmpty(list.image_path)}">
-			<div class="p-2 contain" th:each="imageURL, status: ${#strings.arraySplit(list.image_path, ',')}">
-				<a class="postdetail" th:data-boardId="${list.boardId}">
+			<div class="p-2 contain"   th:each="imageURL, status: ${#strings.arraySplit(list.image_path, ',')}">
+				<button class="modal-bbtn postdetail" onclick="show3()" th:value="${list.boardId}" th:data-boardId="${list.boardId}">
 					<img class="postimg" th:if="${status.count == 1}"
 					th:src="${imageURL}"></img>
-				</a>
+				</button>
 			</div>
 		</div>
 		<div th:if="${#strings.isEmpty(list.image_path)}">
@@ -27,11 +27,6 @@ background: linear-gradient(180deg, #B983FF 0%, rgba(255, 131, 243, 0.33) 100%);
 		</div>
 	</div>
 	<script th:inline="javascript">
-	$(".postdetail").click(function () {
-		var id = $(this).attr("data-boardId");
-		var statuss = "width= 420px, height= 700px, location= no, scrollbars=no,resizable=no";
-		window.open(`/sns/${id}`, "postdetail", statuss);
-	});
 	</script>
 </body>
 </html>

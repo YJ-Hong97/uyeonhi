@@ -88,17 +88,17 @@ function alarmList() {
 				var date = timeForToday(value.regdate);
 				var categori = value.notificationType;
 				if (categori == "Reply") {
-					a += `<button class="notification_contents" id="${value.notification_id}" value=` + value.boardId + ` onclick="show()">`
+					a += `<button class="notification_contents" id="${value.notification_id}" value=` + value.boardId + ` onclick="show(this.id)">`
 					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 게시물에 댓글을 달았습니다</span>`;
 					a += `</button>`;
 				} else if (categori == "reReply") {
-					a += `<button class="notification_contents" value="${value.boardId}" onclick="show()">`
+					a += `<button class="notification_contents" value="${value.boardId}" onclick="show(this.id)">`
 					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님의 댓글에 답변을 달았습니다</span>`;
 					a += `</button>`;
 				} else if (categori == "Matching") {
-					a += `<button class="notification_contents" href="/myPage/${'.userSession'}">`
+					a += `<button class="notification_contents2" id="${value.notification_id}" onclick="show2(this.id, '${memberId}')">`
 					a += `<div class="small text-gray-500">${date}</div>`;
 					a += `<span class="font-weight-bold">${value.senderId}님이 회원님에게 매칭을 신청했습니다.</span>`;
 					a += `</button>`;
@@ -106,6 +106,7 @@ function alarmList() {
 			});
 			$("#alarmList").css({ "display": "block" });
 			$("#alarmFlexBox").html(a);
+			alarmCount();
 
 		}
 
@@ -159,16 +160,5 @@ function alarmCount() {
 	});
 }
 
-function notificationMove2(userId, notiId) {
-	console.log(userId);
-	$.ajax({
-		url: "/api/notification/delete/" + notiId,
-		type: 'DELETE',
-		success: function(res) {
-			console.log("알림 삭제됨")
-			location.href = "/myPage/" + userId;
-		}
-	});
-}
 
 
