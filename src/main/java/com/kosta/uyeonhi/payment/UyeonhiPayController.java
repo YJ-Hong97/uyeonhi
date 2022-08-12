@@ -98,15 +98,13 @@ public class UyeonhiPayController {
 			throws ParseException, UnsupportedEncodingException {
 		request.setCharacterEncoding("utf-8");
 		HttpSession session = request.getSession();
+		UserVO user = (UserVO) session.getAttribute("user");
 		// int userId =Integer.parseInt(request.getParameter("memberid")) ;
 
-		Map<String, Object> user = (Map<String, Object>) map.get("params");
-		String userId = (String) user.get("userId");// 사용자 id
+		String userId = user.getId();// 사용자 id
 		int amount = (int) map.get("price");// 구매금액
 		int unum = amount / 100;// 우연 갯수
 
-		System.out.println(map);
-		System.out.println(user);
 		String date = (String) map.get("requested_at");// 구매일자
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date rdate = formatter.parse(date);

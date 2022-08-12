@@ -116,12 +116,10 @@
 			</tr>
 		</table>
 	</div>
-	<script>
+	<script th:inline="javascript">
 		function pay(btn) {
 			var cost = $(btn).val();
 			var uCount = cost / 100;
-			var userId = "hyj1077";
-			var username = "홍길동";
 			if (confirm("우연 " + uCount + "개를 구매하시겠습니까?")) {
 
 				BootPay.request({
@@ -138,16 +136,12 @@
 						price : 100, //상품 단가
 					} ],
 					user_info : {
-						username : username,
+						username : /*[[ ${session.user.nickname} ]]*/,
 						email : 'abc@gmail.com',
 						addr : '제주특별자치도 서귀포시 동홍동 문부로 27-8',
 						phone : '010-1234-4567'
 					},
 					order_id : 'kosta_uyeonhi_444', //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
-					params : {
-						userId : userId,
-						username : username
-					},
 				}).error(function(data) {
 					//결제 진행시 에러가 발생하면 수행됩니다.
 					alert("결제 오류: 관리자에게 문의해주세요.");
@@ -184,8 +178,6 @@
 							if (responseData == "success") {
 								alert("결제가 완료되었습니다!");
 								$(location).attr('href', '/uyeonhi/uyeonPay');
-								$(".two").trigger("click");
-								$("#select_tab").load("/uyeonhi/payView2.go");
 							} else if(responseData == "fail") {
 								alert("결제에 실패했습니다.\n관리자에게 문의해주세요.");
 								$(location).attr('href', '/uyeonhi/uyeonPay');

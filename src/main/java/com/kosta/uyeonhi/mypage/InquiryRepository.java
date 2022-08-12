@@ -1,6 +1,7 @@
 package com.kosta.uyeonhi.mypage;
 
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+
 import org.springframework.data.repository.CrudRepository;
 
 import com.querydsl.core.BooleanBuilder;
