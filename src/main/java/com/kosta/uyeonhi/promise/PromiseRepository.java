@@ -11,11 +11,12 @@ import com.kosta.uyeonhi.signUp.UserVO;
 
 public interface PromiseRepository extends CrudRepository<PromiseVO, Long>{
 	public List<PromiseVO> findByMe(UserVO me);
+	public List<PromiseVO> findByYou(UserVO you);
 
-	@Query(value ="select * from promise where me_id = ?1 and hourmin = STR_TO_DATE(?2,'%Y-%m-%d %H:%i:%S') "
+	@Query(value ="select * from promise where (me_id = ?1 or you_id = ?1) and hourmin = STR_TO_DATE(?2,'%Y-%m-%d %H:%i:%S') "
 			+ "and title like %?3%", nativeQuery = true)
 	PromiseVO selectByDetail(String me_id, String hourmin,String title);
 	
-	@Query(value = "select count(*) from promise p where MONTH(hourmin)= ?1 and me_id = ?2 and promise_ox != 'x'", nativeQuery = true)
+	@Query(value = "select count(*) from promise p where MONTH(hourmin)= ?1 and (me_id = ?2 or you_id = ?2) and promise_ox != 'x'", nativeQuery = true)
 	int selectByMonth(int month, String me_id);
 }

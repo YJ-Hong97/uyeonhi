@@ -49,8 +49,6 @@ public class UyeonhiPayController {
 		UserVO user = (UserVO) session.getAttribute("user");
 		String id = user.getId();
 		
-		mv.addObject("coin", user.getCoin());
-		mv.addObject("id", id);
 		mv.setViewName("payment/pay");
 		return mv;
 	}
