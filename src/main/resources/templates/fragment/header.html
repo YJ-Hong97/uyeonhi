@@ -149,7 +149,7 @@
 							<i style="font-size:25px" class="fa-regular fa-bell iconlef">
 								<span id="badge"
 									class="position-absolute top-5 start-90 translate-middle badge rounded-pill bg-danger">
-									<p class="notification_count">[[${notiCount}]]</p>
+									<p class="notification_count">0</p>
 								</span>
 							</i>
 						</button>
@@ -194,6 +194,12 @@
 		</div>
 	</section>
 	<script src="/js/board/reply.js"></script>
+	<script src="/js/board/notification.js"></script>
+	<script>
+		$(document).ready(function(){
+			alarmCount();
+		});
+	</script>
 
 	<script src="/js/board/notification.js"></script>
 </th:block>

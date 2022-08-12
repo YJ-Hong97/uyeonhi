@@ -35,9 +35,9 @@ $('.show').on('click', function() {
 	})
 });
 $(document).on("click",'.notification_contents',function(){ 
-	console.log("여까지 옴?");
+	
 	let boardId = $(this).val();
-	console.log(boardId);
+	console.log(notiId);
 	$.ajax({
 		url: `/reply/${boardId}`,
 		type: "get",
@@ -64,9 +64,10 @@ $(document).on("click",'.notification_contents',function(){
 			
 		}
 	})
+	
 });
 
-$(document).on("click",'.p-2',function(){ 
+$(document).on("click",'.modal-bbtn',function(){ 
 	console.log("여까지 옴?");
 	let boardId = $(this).val();
 	console.log(boardId);
@@ -287,7 +288,39 @@ $(document).on("click", ".update_reply_button", function() {
 //document.querySelector(".show").addEventListener("click", show);
 document.querySelector("#close").addEventListener("click", close);
 
-function show() {
+
+function show(id) {
+	document.querySelector(".background").className = "background show";
+		notiId = id;
+		$.ajax({
+			url: "/api/notification/delete/" + notiId,
+			type: 'DELETE',
+			success: function(res) {
+				console.log("알림 삭제됨");
+				$('#alarmFlexBox').load(location.href + " #alarmFlexBox");
+			}
+		});
+
+}
+
+function show2(id, memberId) {
+		
+		notiId = id;
+		member = memberId;
+	
+		$.ajax({
+			url: "/api/notification/delete/" + notiId,
+			type: 'DELETE',
+			success: function(res) {
+				console.log("알림 삭제됨");
+				location.href="/myPage/" + member
+			}
+		});
+
+}
+
+
+function show3() {
 	document.querySelector(".background").className = "background show";
 }
 
