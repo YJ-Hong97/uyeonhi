@@ -139,11 +139,10 @@ function timeForToday(value) {
 	return `${Math.floor(betweenTimeDay / 365)}년전`;
 }
 
-
-
 //알람
 function alarmCount() {
-	console.log("alarm")
+	console.log("alarm");
+	
 	$.ajax({
 		url: '/notification/count',
 		type: 'get',

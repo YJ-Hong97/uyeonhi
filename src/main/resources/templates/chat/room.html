@@ -190,14 +190,15 @@
            				$('#location').val(pdata["location"]);
            				$('#date').val(pdata["date"]);
            				$('#title').val(pdata["title"]);
+           				$('#time').val(pdata["time"]);
            				$('.promiseContainer').css("display","block");
            				accept(pdata["pid"]);
            			}
-	           		});
-	           		stomp.subscribe(`/sub/video/promise-success/${roomId}`,function(data){
-	           			console.log(data);
-	           			alert("약속이 등록되었습니다.");
-	           		});
+           		});
+           		stomp.subscribe(`/sub/video/promise-success/${roomId}`,function(data){
+           			console.log(data);
+           			alert("약속이 등록되었습니다.");
+           		});
 
                 });
 				
@@ -231,11 +232,13 @@
             		let location = $('#location').val();
             		let date = $('#date').val();
             		let title = $('#title').val();
+            		let time = $('#time').val();
             		stomp.send(`/pub/video/promise-offer/${roomId}`,{},JSON.stringify({
             			location:location,
             			date:date,
             			roomNo:roomId,
             			title:title,
+            			time:time,
             			offer:username.id
             		}));
             		$('.promiseContainer').css("display","none");
@@ -260,6 +263,7 @@
             		$('#location').val("");
             		$('#date').val("");
             		$('#title').val("");
+            		$('#time').val("");
              		$('.promiseContainer').css("display","block");
              	});
             });

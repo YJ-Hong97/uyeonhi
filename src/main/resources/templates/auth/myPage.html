@@ -46,6 +46,7 @@
 
 		.contain {
 			height: 317px;
+			margin-bottom: 10px;
 		}
 
 		.nick {
@@ -281,6 +282,10 @@
 #postmodum {
 	height: 700px;
 }
+a {
+	color: black;
+	text-decoration: none;
+}
 	</style>
 
 </head>
@@ -356,14 +361,10 @@
 				<a id="commonboard" class="nav-link active" aria-current="page">게시글</a>
 			</div>
 			<div class="p-2 type-btn nav-item" th:if="${profileOther.id} != ${session.user.id}" id="gatherboard">
-
-				<a class="nav-link" aria-current="page" href="#">모집글</a>
-
+				<a class="nav-link" aria-current="page">모집글</a>
 			</div>
 			<div class="p-2 type-btn nav-item likeList" th:if="${profileOther.id} == ${session.user.id}">
-
-				<a class="nav-link" href="#">좋아요</a>
-
+				<a class="nav-link">좋아요</a>
 			</div>
 			<div class="p-2 type-btn nav-item" th:if="${profileOther.id} == ${session.user.id}">
 				<a class="nav-link" onClick="f_matchingSearch()">
@@ -407,7 +408,11 @@
 		});
 		var midss = [[${session.user.id}]];
 		var ymidss = [[${profileOther.id}]];
-
+		function boardPop(bId) {
+			var id = $(bId).attr("data-boardId");
+			var statuss = "width= 420px, height= 700px, location= no, scrollbars=no,resizable=no";
+			window.open(`/sns/${id}`, "postdetails", statuss);
+		};
 		$("#chatpopup").click(function () {
 			window.open(`/chat/doChatt?mid=${midss}&tid=${ymidss}`, "chatting", "width= 420px, height= 700px, location= no, scrollbars= no,resizable= no")
 		});
@@ -419,14 +424,14 @@
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
 						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
-						<a class="postdetail" th:data-boardId="${board.boardId}">
+						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
 								<img class="postimg" alt=""
 									src="${image[0]}"></a>
 							</div>`;
 					}
 					else {
 						boardpost += `<div class="p-2 contain">
-						<a class="postdetail" th:data-boardId="${board.boardId}">
+						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
 							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 						</div>`;
 					}
@@ -435,14 +440,14 @@
 						if (board.image_path != null) {
 							var image = board.image_path.split(',');
 							boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
-							<a class="postdetail" th:data-boardId="${board.boardId}">
+							<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
 									<img class="postimg" alt=""
 										src="${image[0]}"></a>
 								</div>`;
 						}
 						else {
 							boardpost += `<div class="p-2 contain">
-							<a class="postdetail" th:data-boardId="${board.boardId}">
+							<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
 								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
 							</div>`;
 						}
@@ -460,25 +465,27 @@
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
 						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
-						<a class="postdetail" th:data-boardId="${board.boardId}">
+						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
 								<img class="postimg" alt=""
 									src="${image[0]}"></a>
 							</div>`;
 					}
-				}
-				else {
-					boardpost += `<div class="p-2 contain">
-					<a class="postdetail" th:data-boardId="${board.boardId}">
-						<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
-					</div>`;
+					else {
+						boardpost += `<div class="p-2 contain">
+						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
+							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
+						</div>`;
+					}
 				}
 			}
 			$("#postmodum").html(boardpost);
 		}
 		$("#commonboard").click(function () {
+			$(".dadda").trigger("click");
 			commonboard();
 		});
 		$("#gatherboard").click(function () {
+			$(".dadda").trigger("click");
 			gatherboard();
 		});
 		$(".listfollow").click(function () {
@@ -790,7 +797,7 @@
 		//좋아요 리스트
 		$('.likeList').on('click', function () {
 			// $(".listt").text("와우");
-
+			$(".dadda").trigger("click");
 			$.ajax({
 				url: '/sns/likeList',
 				type: "GET",
@@ -806,12 +813,7 @@
 
 
 		});
-		$(".postdetail").click(function () {
-			alert($(this).attr("data-boardId"));
-			var id = $(this).attr("data-boardId");
-			var statuss = "width= 420px, height= 700px, location= no, scrollbars=no,resizable=no";
-			window.open(`/sns/${id}`, "postdetail", statuss);
-		});
+		
 
 		$("body").not('#alarmList').on('click', function () {
 			if ($("#alarmList").css("display") == "block") {
