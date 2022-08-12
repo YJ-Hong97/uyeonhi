@@ -280,7 +280,7 @@
 		</div>
 
 		<script th:inline="javascript">
-			var websocket = null;
+			var websocket = null; 
 			$(document).ready(function () {
 				var user = [[${session.user}]];
 				websocket = new WebSocket("ws://localhost:7777/ws/noti");

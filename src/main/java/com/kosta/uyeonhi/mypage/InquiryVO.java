@@ -34,7 +34,7 @@ import lombok.ToString;
 @Table(name = "inquiry")
 public class InquiryVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long inquiryId;
 	private String title;
 	@Column(length = 1000)

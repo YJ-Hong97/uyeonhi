@@ -39,6 +39,7 @@ public class PromiseController {
 
 		mv.addObject("count", count);
 		mv.addObject("plist", proRepo.findByMe(user));
+		
 		mv.setViewName("promise/promise");
 		return mv;
 	}
@@ -47,8 +48,11 @@ public class PromiseController {
 	public List<PromiseVO> promiseList(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO) session.getAttribute("user");
-		System.out.println(proRepo.findByMe(user));
-		return proRepo.findByMe(user);
+		List<PromiseVO> vo = proRepo.findByMe(user);
+		proRepo.findByYou(user).forEach(pr->{
+			vo.add(pr);
+		});
+		return vo;
 	}
 
 	@PostMapping("/detail")
@@ -70,7 +74,6 @@ public class PromiseController {
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO) session.getAttribute("user");
 
-		
 		PromiseVO vo = proRepo.selectByDetail(user.getId(), map.get("date"), map.get("title"));
 		vo.setCancel_ox("o"); 
 		vo.setPromise_ox("x"); 
