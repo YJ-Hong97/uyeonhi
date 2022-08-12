@@ -120,12 +120,14 @@
 
 
 <div class="alert alert-primary alert-dismissible fade show" id = "text">
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button> 
+    <button type="button" class="btn-close dadda" data-bs-dismiss="alert"></button> 
 	
 	<div id="select_tab">
 	    <ul>
 	      <li th:each="pick:${pickMeList}">
-	      	<img id="profiless" th:src = "${pick.id.profile[0].fileName}" alt="">
+	      	<a th:href="@{/myPage/{mid}(mid = ${pick.id.id})}">
+	      		<img id="profiless" th:src = "${pick.id.profile[0].fileName}" alt="">
+	      	</a>
 	        <span class = "nameText" th:text="${pick.id.nickname} + '님이 매칭 요청을 보내셨습니다.' "></span>
 	        <button th:onclick="location.href ='/matYes?pickid=[[${pick.id.id}]]'" class = "yes">수락</button>
 	        <button th:onclick="location.href ='/matNo?pickid=[[${pick.id.id}]]'" class = "no">거절</button>
@@ -137,7 +139,9 @@
 	<div id="pickYou">
 	    <ul>
 	      <li th:each="pic:${pickYou}">
-	      	<img id="profile1" th:src = "${pic.target.profile[0].fileName}" alt="">
+	      	<a th:href="@{/myPage/{mid}(mid = ${pic.target.id})}">
+	      		<img id="profile1" th:src = "${pic.target.profile[0].fileName}" alt="">
+	      	</a>
 	        <span class = "nameText2" th:text="${pic.target.nickname} + '님께 매칭 요청을 보내셨습니다.' "></span>
 	        <button th:onclick="location.href ='/matCancel?target=[[${pic.target.id}]]'" class ="cancel">취소</button>
 	        <hr>
@@ -149,9 +153,13 @@
 	    <ul>
 	      <li th:each="list:${matchingList}">
 	      	<!-- [[${list}]]  -->
-	      	<img id="profile2" th:src = "${list.id.profile[0].fileName}" alt="">
+	      	<a th:href="@{/myPage/{mid}(mid = ${list.id.id})}">
+	      		<img id="profile2" th:src = "${list.id.profile[0].fileName}" alt="">
+	      	</a>
 	      	<span class = "nameText3" th:text="${list.id.nickname} +' ♥ ' + ${list.target.nickname}"></span>
-	     	<img id="profile3" th:src = "${list.target.profile[0].fileName}" alt="">
+	      	<a th:href="@{/myPage/{mid}(mid = ${list.target.id})}">
+	     		<img id="profile3" th:src = "${list.target.profile[0].fileName}" alt="">
+	     	</a>
 	     	<button th:onclick="location.href ='/matDelete?target=[[${list.target.id}]]&mid=[[${list.id.id}]]'" id="delete">매칭 끊기</button>
 	        <hr>
 	      </li>
