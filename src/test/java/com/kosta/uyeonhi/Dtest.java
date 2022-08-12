@@ -60,7 +60,7 @@ public class Dtest {
 	@Autowired
 	IdealMenuRepository iRepo;
 	
-	//@Test
+	@Test
 	public void insert() {
 		FavoriteMenuVO fmenu = FavoriteMenuVO.builder()
 				.favoriteValue("하루필름")
@@ -131,7 +131,7 @@ public class Dtest {
 				.build();
 		fRepo.save(fmenu16);
 	}
-	//@Test
+	@Test
 	public void insert2() {
 		IdealMenuVO imenu1 = IdealMenuVO.builder()
 				.idealValue("180cm이상")
@@ -230,7 +230,7 @@ public class Dtest {
 				.build();
 		fRepo.save(fmenu20);
 	}
-	//@Test
+	@Test
 	public void insert3() {
 		HobbyMenuVO hmenu1 = HobbyMenuVO.builder()
 				.hobbyValue("등산")

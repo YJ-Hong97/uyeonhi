@@ -13,8 +13,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,18 +46,16 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 public class BoardController {
-
-	private final PasswordEncoder passwordEncoder;
-
-	private final BoardRepository boardRepository;
-
-	private final BoardService boardService;
-
-	private final ReplyService replyService;
-	
-	private final ProfileRepository profileRepository;
-	
-	private final NotificationService notificationService;
+	@Autowired
+	BoardRepository boardRepository;
+	@Autowired
+	BoardService boardService;
+	@Autowired
+	ReplyService replyService;
+	@Autowired
+	ProfileRepository profileRepository;
+	@Autowired
+	NotificationService notificationService;
 	
 	
 	@Autowired
