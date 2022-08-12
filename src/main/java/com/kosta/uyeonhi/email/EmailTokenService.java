@@ -26,7 +26,7 @@ public class EmailTokenService {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(receiverEmail);
 		mailMessage.setSubject("안녕하세요 우연히입니다.");
-		mailMessage.setText("http://localhost:7777/uyeonhi/validEmail/"+emailToken.getId()+"/"+receiverEmail);	
+		mailMessage.setText("http://3.39.158.96:7777/uyeonhi/validEmail/"+emailToken.getId()+"/"+receiverEmail);	
 		
 		emailService.sendMail(mailMessage);
 		return emailToken.getId();
