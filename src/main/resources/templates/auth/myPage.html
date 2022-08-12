@@ -286,6 +286,12 @@ a {
 	color: black;
 	text-decoration: none;
 }
+
+.modal-bbtn, .modal-bbtn:hover {
+	border: none;
+	background-color: white;
+}
+
 	</style>
 
 </head>
@@ -423,33 +429,33 @@ a {
 				if ([[${session.user.id}]] == [[${profileOther.id}]]) {
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
-						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
-						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
+						boardpost += `<button onclick="show()" class="p-2 contain modal-bbtn" value="${board.boardId}">
+						<a class="postdetail" th:data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
 									src="${image[0]}"></a>
-							</div>`;
+							</button>`;
 					}
 					else {
-						boardpost += `<div class="p-2 contain">
-						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
+						boardpost += `<button onclick="show()" class="p-2 contain modal-bbtn" value="${board.boardId}">
+						<a class="postdetail" data-boardId="${board.boardId}">
 							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
-						</div>`;
+						</button>`;
 					}
 				} else {
 					if (board.board_type == "게시글") {
 						if (board.image_path != null) {
 							var image = board.image_path.split(',');
-							boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
-							<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
+							boardpost += `<button onclick="show()" class="p-2 contain modal-bbtn" value="${board.boardId}">
+							<a class="postdetail" data-boardId="${board.boardId}">
 									<img class="postimg" alt=""
 										src="${image[0]}"></a>
-								</div>`;
+								</button>`;
 						}
 						else {
-							boardpost += `<div class="p-2 contain">
-							<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
+							boardpost += `<button onclick="show()" class="p-2 contain modal-bbtn" value="${board.boardId}">
+							<a class="postdetail" data-boardId="${board.boardId}">
 								<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
-							</div>`;
+							</button>`;
 						}
 					}
 				}
@@ -464,17 +470,17 @@ a {
 				if (board.board_type == "모집글") {
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
-						boardpost += `<div class="p-2 contain" data-boardId="${board.boardId}">
-						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
+						boardpost += `<button onclick="show()" class="p-2 contain modal-bbtn" value="${board.boardId}">
+						<a class="postdetail" data-boardId="${board.boardId}">
 								<img class="postimg" alt=""
 									src="${image[0]}"></a>
-							</div>`;
+							</button>`;
 					}
 					else {
-						boardpost += `<div class="p-2 contain">
-						<a class="postdetail" data-boardId="${board.boardId}" onclick="boardPop(this)">
+						boardpost += `<button onclick="show()" class="p-2 contain modal-bbtn" value="${board.boardId}">
+						<a class="postdetail" data-boardId="${board.boardId}">
 							<p class="postimg" style="background-color: gray; color: white; padding-top: 48%;"> 사진이 없는 게시글입니다.</p></a>
-						</div>`;
+						</button>`;
 					}
 				}
 			}

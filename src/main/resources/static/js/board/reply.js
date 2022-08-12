@@ -14,7 +14,7 @@ $('.show').on('click', function() {
 			$('#here').html(res);
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
@@ -30,10 +30,74 @@ $('.show').on('click', function() {
 			
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	})
 });
+$(document).on("click",'.notification_contents',function(){ 
+	console.log("여까지 옴?");
+	let boardId = $(this).val();
+	console.log(boardId);
+	$.ajax({
+		url: `/reply/${boardId}`,
+		type: "get",
+		success: function(res) {
+			$('#here').html(res);
+		},
+		error: function(err) {
+			
+		}
+	});
+
+	$.ajax({
+		url: `/sns/modal/${boardId}`,
+		type: "get",
+		success: function(data) {
+			var a = '';
+			let str = data.image_path;
+			const arr = str.split(",");
+				a += `<img style="width: 100%; height: auto; max-width: 100%; max-height: 100%;" src="` + arr[0] + `"></img>`
+			$(".replacePic").html(a);
+			
+		},
+		error: function(err) {
+			
+		}
+	})
+});
+
+$(document).on("click",'.p-2',function(){ 
+	console.log("여까지 옴?");
+	let boardId = $(this).val();
+	console.log(boardId);
+	$.ajax({
+		url: `/reply/${boardId}`,
+		type: "get",
+		success: function(res) {
+			$('#here').html(res);
+		},
+		error: function(err) {
+			
+		}
+	});
+
+	$.ajax({
+		url: `/sns/modal/${boardId}`,
+		type: "get",
+		success: function(data) {
+			var a = '';
+			let str = data.image_path;
+			const arr = str.split(",");
+				a += `<img style="width: 100%; height: auto; max-width: 100%; max-height: 100%;" src="` + arr[0] + `"></img>`
+			$(".replacePic").html(a);
+			
+		},
+		error: function(err) {
+			
+		}
+	})
+});
+
 
 
 $('.btn_reply').on('click', function() {
@@ -85,7 +149,7 @@ $('.btn_reply').on('click', function() {
 			}
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
@@ -150,7 +214,7 @@ $(document).on("click", ".btn_reReply", function() {
 
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
