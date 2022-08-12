@@ -48,18 +48,18 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 public class BoardController {
-
-	private final PasswordEncoder passwordEncoder;
-
-	private final BoardRepository boardRepository;
-
-	private final BoardService boardService;
-
-	private final ReplyService replyService;
-	
-	private final ProfileRepository profileRepository;
-	
-	private final NotificationService notificationService;
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	@Autowired
+	BoardRepository boardRepository;
+	@Autowired
+	BoardService boardService;
+	@Autowired
+	ReplyService replyService;
+	@Autowired
+	ProfileRepository profileRepository;
+	@Autowired
+	NotificationService notificationService;
 	
 	
 	@Autowired
