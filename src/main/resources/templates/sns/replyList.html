@@ -149,7 +149,7 @@
 					<button th:value="${reply.reply_id}" class="btn_reReply" type="button">보내기</button>
 				</div>
 
-				<ul style="margin-left:30px; display:flex;">
+				<ul style="margin-left:30px; display:flex; flex-direction: column;">
 					<li th:if="${reReply.parentId} == ${reply.reply_id}" class="reReply_info_box"
 						th:each="reReply, status: ${replyList}">
 							<div th:class="reply_origin_box" th:id="|reply_origin_box${reReply.reply_id}|">
