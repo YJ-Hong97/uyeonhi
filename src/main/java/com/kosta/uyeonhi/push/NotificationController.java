@@ -37,6 +37,8 @@ public class NotificationController {
 	public int notiCount(HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("user");
 		int alarm = notificationService.notificationCount(user.getId());
+		
+		session.setAttribute("alCount", alarm);
 		return alarm;
 	}
 }
