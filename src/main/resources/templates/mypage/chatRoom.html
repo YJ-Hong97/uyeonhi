@@ -90,10 +90,10 @@
 			<td th:unless="${room.mid} == ${session.user.id}" class = "profileImg" width="3%">
 				<img th:src = "${room.mid.profile[0].fileName}">
 			</td>
-			<div th:if="${room.mid} == ${session.user.id}">
+			<div th:if="${room.mid.id} == ${session.user.id}">
 				<td th:text= "${room.name}" width="80%" class = "realchatTitle" th:value = "${room.roomId}" th:data-targetId="${room.target.id}"></td>
 			</div>
-			<div th:if="${room.mid} != ${session.user.id}">
+			<div th:if="${room.mid.id} != ${session.user.id}">
 				<td th:text= "${room.name}" width="80%" class = "realchatTitle" th:value = "${room.roomId}" th:data-targetId="${room.mid.id}"></td>
 			</div>
 		</tr>

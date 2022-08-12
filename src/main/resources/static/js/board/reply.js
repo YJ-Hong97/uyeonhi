@@ -14,7 +14,7 @@ $('.show').on('click', function() {
 			$('#here').html(res);
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
@@ -30,7 +30,7 @@ $('.show').on('click', function() {
 			
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	})
 });
@@ -45,7 +45,7 @@ $(document).on("click",'.notification_contents',function(){
 			$('#here').html(res);
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
@@ -61,7 +61,7 @@ $(document).on("click",'.notification_contents',function(){
 			
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	})
 	
@@ -78,7 +78,7 @@ $(document).on("click",'.modal-bbtn',function(){
 			$('#here').html(res);
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
@@ -94,7 +94,7 @@ $(document).on("click",'.modal-bbtn',function(){
 			
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	})
 });
@@ -150,7 +150,7 @@ $('.btn_reply').on('click', function() {
 			}
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
@@ -215,7 +215,7 @@ $(document).on("click", ".btn_reReply", function() {
 
 		},
 		error: function(err) {
-			alert(err);
+			
 		}
 	});
 
