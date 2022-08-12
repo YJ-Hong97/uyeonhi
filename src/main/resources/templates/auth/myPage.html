@@ -424,7 +424,7 @@ a {
 			var listboard = [[${listboard}]];
 			var boardpost = "";
 			for (board of listboard) {
-				if ([[${session.user.id}]] == [[${profileOther.id}]]) {
+				if (/*[[${session.user.id}]]*/'' == [[${profileOther.id}]]) {
 					if (board.image_path != null) {
 						var image = board.image_path.split(',');
 						boardpost += `<button onclick="show3()" class="modal-bbtn p-2 contain modal-bbtn" value="${board.boardId}">
@@ -521,7 +521,7 @@ a {
 			$.ajax({
 				url: "/listfollowing",
 				type: "get",
-				data: {"id": [[${profileOther.id}]]},
+				data: {"id": /*[[${profileOther.id}]]*/''},
 				success: function (responseData) {
 					for (data of responseData) {
 						console.log(data.target.profile[0].fileName);

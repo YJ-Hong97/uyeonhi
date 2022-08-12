@@ -25,7 +25,8 @@ $('.show').on('click', function() {
 			var a = '';
 			let str = data.image_path;
 			const arr = str.split(",");
-				a += `<img style="width: 100%; height: auto; max-width: 100%; max-height: 100%;" src="` + arr[0] + `"></img>`
+				a += `<img style="flex-grow:6 width: 100%; height: auto; max-width: 100%; max-height: 70%;" src="` + arr[0] + `"></img>`;
+				a += `<div style="flex-grow:2; font-weight:bold; font-size:1vw; text-align:center; align-items:center; color:white; background-color:black; width:100%;" class="modal_bottom_info"><p style="margin:1vw 2vw;"><div id="regdate">${data.regdate}</div><p>${data.content}</p></div>`
 			$(".replacePic").html(a);
 			
 		},
@@ -34,6 +35,7 @@ $('.show').on('click', function() {
 		}
 	})
 });
+
 $(document).on("click",'.notification_contents',function(){ 
 	
 	let boardId = $(this).val();

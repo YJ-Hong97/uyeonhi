@@ -607,6 +607,8 @@ button:hover{
 	}
 	
 	.show .popup .modal_picture_box .replacePic{
+		display:flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		max-height:100%;
@@ -615,7 +617,7 @@ button:hover{
 	.show .popup .modal_reply_box{
 		flex-grow: 1;
 		flex-shrink: 0;
-		width:45%;
+		width:50%;
 		overflow:scroll;
 	}
 	
