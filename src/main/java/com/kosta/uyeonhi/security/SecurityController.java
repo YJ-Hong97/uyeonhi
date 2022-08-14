@@ -38,7 +38,7 @@ public class SecurityController {
 	}
 	@RequestMapping("/accessDenied")
 	public String accessDenied() {
-		System.out.println("/auth/accessDenied");
+		System.out.println("/auth/accessDenied"); 
 		return "/auth/accessDenied";
 	}
 	
